@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build on Windows
-    runs-on: windows-latest
+    name: Build on Linux
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        architecture: [x86, AMD64]
+        architecture: [x86_64, i686]
 
     steps:
       - name: Checkout code
@@ -30,8 +30,8 @@ jobs:
 
       - name: Build wheels
         env:
-          CIBW_ARCHS_WINDOWS: ${{ matrix.architecture }}
-          CIBW_SKIP: "*-win_arm64"
+          CIBW_ARCHS_LINUX: ${{ matrix.architecture }}
+          CIBW_SKIP: "*-musllinux_*"
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - name: Upload wheels
