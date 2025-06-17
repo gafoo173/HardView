@@ -35,6 +35,9 @@
 #include <netinet/in.h> // For internet address structures (sockaddr_in, sockaddr_in6)
 #include <dirent.h>     // For opendir, readdir, closedir (to read directory contents)
 #include <ctype.h>      // For isdigit (to check for digits)
+#include <net/if.h>     // For IF_NAMESIZE (Linux specific)
+#include <linux/if_packet.h> // For struct sockaddr_ll (Linux specific)
+
 
 // Prefix path for DMI information files on Linux systems
 #define DMI_PATH_PREFIX "/sys/class/dmi/id/"
@@ -153,14 +156,24 @@ static char* _read_proc_sys_value(const char* path, const char* key) {
             }
 
             while (*start == ' ' || *start == '\t') start++; // Skip leading spaces/tabs
-            char* end_ptr = strcspn(start, "\n"); // Find newline character
-            if (end_ptr > 0) {
+            size_t len_to_newline = strcspn(start, "\n"); // Find length to newline character
+            if (len_to_newline > 0) {
                 char temp[MAX_INFO_LEN];
-                strncpy(temp, start, end_ptr);
-                temp[end_ptr] = '\0';
+                // Ensure we don't copy more than MAX_INFO_LEN - 1 characters
+                size_t copy_len = len_to_newline < (MAX_INFO_LEN - 1) ? len_to_newline : (MAX_INFO_LEN - 1);
+                strncpy(temp, start, copy_len);
+                temp[copy_len] = '\0'; // Null-terminate the copied string
                 free(value);
                 value = strdup(temp);
                 break;
+            } else {
+                // If the line is just the key with no value, or empty after stripping.
+                // This might indicate an empty value, or just a newline.
+                // For simplicity, we consider it N/A if no content found before newline.
+                if (strlen(key) > 0 && strlen(start) == len_to_newline) {
+                    free(value);
+                    value = strdup("N/A");
+                }
             }
         }
     }
@@ -286,7 +299,7 @@ static HRESULT _initialize_wmi(IWbemLocator **pLoc, IWbemServices **pSvc) {
     hr = CoInitializeSecurity(
         NULL, -1, NULL, NULL,
         RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE,
-        NULL, EOAC_NONE, NULL
+        NULL, EOAC_NONE
     );
     if (FAILED(hr) && hr != RPC_E_TOO_LATE && hr != HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)) {
         CoUninitialize(); // Only uninitialize if we initialized it and failed here
@@ -1037,9 +1050,15 @@ char* get_disk_info_json() {
 
         // Simple check: if the name contains a digit and is longer than 3 chars (like nvme0n1p1)
         // or ends with a digit. This isn't perfect but covers common cases.
-        if (strlen(entry->d_name) > 3 && (isdigit(entry->d_name[strlen(entry->d_name)-1]) || strchr(entry->d_name, 'p'))) {
-            continue;
+        // We only want whole disk devices, not partitions (e.g., sda, not sda1)
+        int is_partition = 0;
+        for (size_t i = 0; i < strlen(entry->d_name); i++) {
+            if (isdigit(entry->d_name[i]) && i > 0 && !isdigit(entry->d_name[i-1])) {
+                is_partition = 1;
+                break;
+            }
         }
+        if (is_partition) continue;
 
 
         char* model = strdup("N/A");
@@ -1275,10 +1294,6 @@ char* get_network_info_json() {
     }
 
     int first_adapter = 1;
-    char name[IF_NAMESIZE];
-    char mac_addr_str[18]; // XX:XX:XX:XX:XX:XX + null
-    char ip_v4_list_str[MAX_INFO_LEN];
-    char ip_v6_list_str[MAX_INFO_LEN];
 
     // Use a temporary structure to collect all IP addresses for each interface
     typedef struct {
@@ -1286,7 +1301,6 @@ char* get_network_info_json() {
         char mac_address[18];
         char ipv4_addresses[MAX_INFO_LEN];
         char ipv6_addresses[MAX_INFO_LEN];
-        int processed;
     } NetAdapterInfo;
 
     // Since we're not using dynamic data structures (like linked lists),
@@ -1297,7 +1311,6 @@ char* get_network_info_json() {
 
     // Initialize adapters array
     for (int i = 0; i < 32; i++) {
-        adapters[i].processed = 0;
         strcpy(adapters[i].mac_address, "N/A");
         strcpy(adapters[i].ipv4_addresses, "[");
         strcpy(adapters[i].ipv6_addresses, "[");
@@ -1305,6 +1318,9 @@ char* get_network_info_json() {
 
     for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
         if (ifa->ifa_addr == NULL) continue;
+
+        // Skip loopback interface
+        if (ifa->ifa_flags & IFF_LOOPBACK) continue;
 
         int found_adapter_idx = -1;
         for (int i = 0; i < num_adapters; i++) {
@@ -1320,7 +1336,7 @@ char* get_network_info_json() {
             strncpy(adapters[found_adapter_idx].name, ifa->ifa_name, IF_NAMESIZE - 1);
             adapters[found_adapter_idx].name[IF_NAMESIZE - 1] = '\0';
         } else if (found_adapter_idx == -1) {
-            // Adapter buffer overflow
+            // Adapter buffer overflow, skip this interface
             continue;
         }
 
