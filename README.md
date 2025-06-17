@@ -117,13 +117,16 @@ classDiagram
 
 *(Example benchmark data - replace with actual measurements)*
 
-Benchmark Results (Seconds):  |
-| CPU            : 0.010707 sec |
-| RAM            : 0.022965 sec |
-| BIOS           : 0.026767 sec |
-| Baseboard      : 0.009477 sec |
-| Disk Drives    : 0.012865 sec |
-| Network Adapters: 0.104378 sec|
+# Benchmark Results (Seconds)
+
+| Component        | Time (sec)   |
+|------------------|--------------|
+| CPU              | 0.010707     |
+| RAM              | 0.022965     |
+| BIOS             | 0.026767     |
+| Baseboard        | 0.009477     |
+| Disk Drives      | 0.012865     |
+| Network Adapters | 0.104378     |
 
 ## Development
 
