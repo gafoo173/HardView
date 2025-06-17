@@ -14,9 +14,9 @@
 
 ## Installation
 ### From PyPI (when available)
+```
 ```bash
 pip install HardView
-```
 
 ### From Source
 ```bash
