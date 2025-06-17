@@ -11,15 +11,12 @@
 🐍 Python Integration: Easy-to-use Python API  
 
 ---
-```bash
-pip install HardView
+
 ## Installation
+
 ### From PyPI (when available)
-```
-### From Source
 ```bash
 pip install HardView
-```
 
 > **Note:** Use exact casing when importing: `import HardView`
 
