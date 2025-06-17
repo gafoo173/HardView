@@ -1,3 +1,4 @@
+
 ```markdown
 # HardView - Python Hardware Information Module
 
@@ -14,9 +15,10 @@
 
 ## Installation
 
-### From PyPI (when available)
+### From PyPI
 ```bash
 pip install HardView
+```
 
 > **Note:** Use exact casing when importing: `import HardView`
 
@@ -43,16 +45,16 @@ pprint.pprint(cpu_info)
 ---
 
 ## API Reference
-| Function              | Description                           | Sample Output                                                                 |
-|-----------------------|---------------------------------------|-------------------------------------------------------------------------------|
+| Function              | Description                           | Sample Output |
+|-----------------------|---------------------------------------|---------------|
 | `get_bios_info()`     | BIOS vendor, version, release date   | `{"vendor": "American Megatrends", "version": "F2", "release_date": "2020-05-15"}` |
 | `get_system_info()`   | System manufacturer, product name    | `{"manufacturer": "Dell", "product_name": "XPS 15", "uuid": "123e4567-e89b-..."}` |
 | `get_baseboard_info()`| Motherboard information              | `{"manufacturer": "ASUS", "product": "Z390-A", "serial_number": "MB12345678"}` |
-| `get_chassis_info()`  | Chassis/computer case info           | `{"manufacturer": "Dell", "type": "Laptop", "serial_number": "CH12345678"}`   |
+| `get_chassis_info()`  | Chassis/computer case info           | `{"manufacturer": "Dell", "type": "Laptop", "serial_number": "CH12345678"}` |
 | `get_cpu_info()`      | Processor details                    | `{"cpus": [{"name": "Intel i7-9750H", "cores": 6, "threads": 12, "speed": 2.6}]}` |
-| `get_ram_info()`      | Memory modules and totals            | `{"total": 16, "modules": [{"size": 8, "speed": 2666}]}`                     |
-| `get_disk_info()`     | Storage devices                      | `{"disks": [{"model": "Samsung 970 EVO", "size": 500}]}`                     |
-| `get_network_info()`  | Network adapters                     | `{"adapters": [{"name": "eth0", "mac": "00:1A:2B:3C:4D:5E"}]}`               |
+| `get_ram_info()`      | Memory modules and totals            | `{"total": 16, "modules": [{"size": 8, "speed": 2666}]}` |
+| `get_disk_info()`     | Storage devices                      | `{"disks": [{"model": "Samsung 970 EVO", "size": 500}]}` |
+| `get_network_info()`  | Network adapters                     | `{"adapters": [{"name": "eth0", "mac": "00:1A:2B:3C:4D:5E"}]}` |
 
 ---
 
@@ -121,20 +123,14 @@ classDiagram
 
 ## Development
 ### Build Instructions
-**Windows:**
-```bash
-python setup.py build_ext --inplace
-```
-
-**Linux:**
 ```bash
 python setup.py build_ext --inplace
 ```
 
 ### Dependencies
 - Python 3.6+
-- Windows: WMI libraries (automatically available)
-- Linux: Standard system libraries (libc, etc.)
+- Windows: WMI libraries
+- Linux: Standard system libraries
 
 ---
 
@@ -142,7 +138,7 @@ python setup.py build_ext --inplace
 MIT License - Free for commercial and personal use.
 
 ## Contribution
-Contributions welcome! Submit pull requests or open issues for features/bugs.
+Contributions welcome! Submit pull requests or open issues.
 
 ---
 
