@@ -35,7 +35,9 @@
 #include <netinet/in.h> // For internet address structures (sockaddr_in, sockaddr_in6)
 #include <dirent.h>     // For opendir, readdir, closedir (to read directory contents)
 #include <ctype.h>      // For isdigit (to check for digits)
-#include <net/if.h>     // For IFNAMSIZ
+
+// Prefix path for DMI information files on Linux systems
+#define DMI_PATH_PREFIX "/sys/class/dmi/id/"
 #endif
 
 // Maximum buffer size for reading DMI info and JSON strings
@@ -165,14 +167,6 @@ static char* _read_proc_sys_value(const char* path, const char* key) {
     fclose(fp);
     return value;
 }
-
-// Structure to store network adapter information
-typedef struct {
-    char name[IFNAMSIZ];
-    char mac_address[18]; // XX:XX:XX:XX:XX:XX + null
-    char ipv4_addresses[MAX_INFO_LEN]; // JSON array string
-    char ipv6_addresses[MAX_INFO_LEN]; // JSON array string
-} NetworkAdapterInfo;
 
 #endif // _WIN32
 
@@ -374,7 +368,7 @@ char* get_bios_info_json() {
     IWbemClassObject *pclsObj = NULL;
     HRESULT hr;
     char* json_result = NULL;
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     hr = _initialize_wmi(&pLoc, &pSvc);
     if (FAILED(hr)) {
@@ -459,7 +453,7 @@ char* get_system_info_json() {
     IWbemClassObject *pclsObj = NULL;
     HRESULT hr;
     char* json_result = NULL;
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     hr = _initialize_wmi(&pLoc, &pSvc);
     if (FAILED(hr)) {
@@ -535,7 +529,7 @@ char* get_baseboard_info_json() {
     IWbemClassObject *pclsObj = NULL;
     HRESULT hr;
     char* json_result = NULL;
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     hr = _initialize_wmi(&pLoc, &pSvc);
     if (FAILED(hr)) {
@@ -611,7 +605,7 @@ char* get_chassis_info_json() {
     IWbemClassObject *pclsObj = NULL;
     HRESULT hr;
     char* json_result = NULL;
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     hr = _initialize_wmi(&pLoc, &pSvc);
     if (FAILED(hr)) {
@@ -690,7 +684,7 @@ char* get_cpu_info_json() {
     char* full_json_string = (char*)malloc(INITIAL_JSON_BUFFER_SIZE);
     size_t current_buffer_size = INITIAL_JSON_BUFFER_SIZE;
     size_t current_len = 0;
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for CPU JSON buffer.\"}");
     strcpy(full_json_string, "{\"cpus\": [");
@@ -806,7 +800,7 @@ char* get_ram_info_json() {
     size_t current_buffer_size = INITIAL_JSON_BUFFER_SIZE;
     size_t current_len = 0;
     long long total_physical_memory_bytes = 0; // From Win32_ComputerSystem
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for RAM JSON buffer.\"}");
     strcpy(full_json_string, "{\"total_physical_memory_bytes\": 0, \"memory_modules\": [");
@@ -941,7 +935,7 @@ char* get_disk_info_json() {
     char* full_json_string = (char*)malloc(INITIAL_JSON_BUFFER_SIZE);
     size_t current_buffer_size = INITIAL_JSON_BUFFER_SIZE;
     size_t current_len = 0;
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for Disk JSON buffer.\"}");
     strcpy(full_json_string, "{\"disk_drives\": [");
@@ -1124,7 +1118,7 @@ char* get_network_info_json() {
     char* full_json_string = (char*)malloc(INITIAL_JSON_BUFFER_SIZE);
     size_t current_buffer_size = INITIAL_JSON_BUFFER_SIZE;
     size_t current_len = 0;
-    ULONG uReturn = 0;
+    ULONG uReturn = 0; // uReturn declared here
 
     if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for Network JSON buffer.\"}");
     strcpy(full_json_string, "{\"network_adapters\": [");
@@ -1280,16 +1274,33 @@ char* get_network_info_json() {
         return strdup("{\"error\": \"Failed to get network interface addresses (getifaddrs error).\"}");
     }
 
+    int first_adapter = 1;
+    char name[IF_NAMESIZE];
+    char mac_addr_str[18]; // XX:XX:XX:XX:XX:XX + null
+    char ip_v4_list_str[MAX_INFO_LEN];
+    char ip_v6_list_str[MAX_INFO_LEN];
+
     // Use a temporary structure to collect all IP addresses for each interface
-    NetworkAdapterInfo adapters[32]; // Support for up to 32 adapters
+    typedef struct {
+        char name[IF_NAMESIZE];
+        char mac_address[18];
+        char ipv4_addresses[MAX_INFO_LEN];
+        char ipv6_addresses[MAX_INFO_LEN];
+        int processed;
+    } NetAdapterInfo;
+
+    // Since we're not using dynamic data structures (like linked lists),
+    // we'll use a static array and keep track of the index.
+    // This isn't the most robust for a production application but works for the example.
+    NetAdapterInfo adapters[32]; // Support for up to 32 adapters
     int num_adapters = 0;
 
     // Initialize adapters array
     for (int i = 0; i < 32; i++) {
-        memset(adapters[i].name, 0, sizeof(adapters[i].name));
+        adapters[i].processed = 0;
         strcpy(adapters[i].mac_address, "N/A");
-        strcpy(adapters[i].ipv4_addresses, "["); // Start with empty JSON array
-        strcpy(adapters[i].ipv6_addresses, "["); // Start with empty JSON array
+        strcpy(adapters[i].ipv4_addresses, "[");
+        strcpy(adapters[i].ipv6_addresses, "[");
     }
 
     for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
@@ -1303,15 +1314,14 @@ char* get_network_info_json() {
             }
         }
 
-        if (found_adapter_idx == -1) {
-            if (num_adapters < 32) { // Add new adapter if space available
-                found_adapter_idx = num_adapters++;
-                strncpy(adapters[found_adapter_idx].name, ifa->ifa_name, IFNAMSIZ - 1);
-                adapters[found_adapter_idx].name[IFNAMSIZ - 1] = '\0';
-            } else {
-                // Adapter buffer overflow, skip this interface
-                continue;
-            }
+        if (found_adapter_idx == -1 && num_adapters < 32) {
+            // New interface
+            found_adapter_idx = num_adapters++;
+            strncpy(adapters[found_adapter_idx].name, ifa->ifa_name, IF_NAMESIZE - 1);
+            adapters[found_adapter_idx].name[IF_NAMESIZE - 1] = '\0';
+        } else if (found_adapter_idx == -1) {
+            // Adapter buffer overflow
+            continue;
         }
 
         if (ifa->ifa_addr->sa_family == AF_PACKET) {
@@ -1325,8 +1335,7 @@ char* get_network_info_json() {
         } else if (ifa->ifa_addr->sa_family == AF_INET) {
             char ip_str[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, &((struct sockaddr_in*)ifa->ifa_addr)->sin_addr, ip_str, sizeof(ip_str));
-            // Append IP to IPv4 list
-            if (strlen(adapters[found_adapter_idx].ipv4_addresses) > 1) { // If not just "["
+            if (strcmp(adapters[found_adapter_idx].ipv4_addresses, "[") != 0) { // Add comma if there are already IPs
                 strcat(adapters[found_adapter_idx].ipv4_addresses, ",");
             }
             strcat(adapters[found_adapter_idx].ipv4_addresses, "\"");
@@ -1335,8 +1344,7 @@ char* get_network_info_json() {
         } else if (ifa->ifa_addr->sa_family == AF_INET6) {
             char ip_str[INET6_ADDRSTRLEN];
             inet_ntop(AF_INET6, &((struct sockaddr_in6*)ifa->ifa_addr)->sin6_addr, ip_str, sizeof(ip_str));
-            // Append IP to IPv6 list
-            if (strlen(adapters[found_adapter_idx].ipv6_addresses) > 1) { // If not just "["
+            if (strcmp(adapters[found_adapter_idx].ipv6_addresses, "[") != 0) {
                 strcat(adapters[found_adapter_idx].ipv6_addresses, ",");
             }
             strcat(adapters[found_adapter_idx].ipv6_addresses, "\"");
@@ -1346,7 +1354,6 @@ char* get_network_info_json() {
     }
     freeifaddrs(ifaddr);
 
-    int first_adapter = 1;
     // Now construct the final JSON string from the collected information
     for (int i = 0; i < num_adapters; i++) {
         // Close IP address brackets
@@ -1365,7 +1372,7 @@ char* get_network_info_json() {
 
         if (current_net_json_part) {
             size_t part_len = strlen(current_net_json_part);
-            if (current_len + part_len + 3 >= current_buffer_size) { // +3 for "]}" and null terminator
+            if (current_len + part_len + 3 >= current_buffer_size) {
                 current_buffer_size += part_len + INITIAL_JSON_BUFFER_SIZE;
                 char* temp = (char*)realloc(full_json_string, current_buffer_size);
                 if (!temp) {
