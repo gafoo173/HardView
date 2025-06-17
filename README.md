@@ -159,4 +159,4 @@ Contributions are welcome! Please submit pull requests or open issues for featur
 ---
 
 *HardView - Your Window into Hardware Information*  
-*© 2023 Your Name/Organization*
+*© 2025 Gafoo
