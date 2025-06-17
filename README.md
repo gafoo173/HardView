@@ -25,9 +25,7 @@ pip install hardview
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/hardview.git
-cd hardview
-pip install .
+pip install hardview
 ```
 
 ## Usage
@@ -117,7 +115,6 @@ classDiagram
 
 ## Performance Benchmarks
 
-*(Example benchmark data - replace with actual measurements)*
 
 # Benchmark Results (Seconds)
 
