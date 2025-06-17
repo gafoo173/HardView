@@ -89,13 +89,21 @@ static char* _create_json_string(const char* format, ...) {
 
     if (len < 0) {
         // Encoding error or other internal vsnprintf error
-        return strdup("{\"error\": \"Failed to estimate JSON string size during formatting.\"}");
+        #ifdef _WIN32
+            return _strdup("{\"error\": \"Failed to estimate JSON string size during formatting.\"}");
+        #else
+            return strdup("{\"error\": \"Failed to estimate JSON string size during formatting.\"}");
+        #endif
     }
 
     json_str = (char*)malloc(len + 1); // +1 for null terminator
     if (json_str == NULL) {
         // Memory allocation failed
-        return strdup("{\"error\": \"Memory allocation failed for JSON string.\"}");
+        #ifdef _WIN32
+            return _strdup("{\"error\": \"Memory allocation failed for JSON string.\"}");
+        #else
+            return strdup("{\"error\": \"Memory allocation failed for JSON string.\"}");
+        #endif
     }
 
     // Second pass to actually format the string
@@ -171,24 +179,14 @@ static char* _read_proc_sys_value(const char* path, const char* key) {
             }
 
             while (*start == ' ' || *start == '\t') start++; // Skip leading spaces/tabs
-            size_t len_to_newline = strcspn(start, "\n"); // Find length to newline character
-            if (len_to_newline > 0) {
+            char* end_ptr = strcspn(start, "\n"); // Find newline character
+            if (end_ptr > 0) {
                 char temp[MAX_INFO_LEN];
-                // Ensure we don't copy more than MAX_INFO_LEN - 1 characters
-                size_t copy_len = len_to_newline < (MAX_INFO_LEN - 1) ? len_to_newline : (MAX_INFO_LEN - 1);
-                strncpy(temp, start, copy_len);
-                temp[copy_len] = '\0'; // Null-terminate the copied string
+                strncpy(temp, start, end_ptr);
+                temp[end_ptr] = '\0';
                 free(value);
                 value = strdup(temp);
                 break;
-            } else {
-                // If the line is just the key with no value, or empty after stripping.
-                // This might indicate an empty value, or just a newline.
-                // For simplicity, we consider it N/A if no content found before newline.
-                if (strlen(key) > 0 && strlen(start) == len_to_newline) {
-                    free(value);
-                    value = strdup("N/A");
-                }
             }
         }
     }
@@ -214,7 +212,7 @@ static char* _read_proc_sys_value(const char* path, const char* key) {
 static char* _get_wmi_string_property(IWbemClassObject* pclsObj, const WCHAR* name) {
     VARIANT vtProp;
     VariantInit(&vtProp);
-    char* result = strdup("N/A"); // Default value
+    char* result = _strdup("N/A"); // Default value
 
     HRESULT hr = pclsObj->lpVtbl->Get(pclsObj, name, 0, &vtProp, 0, 0);
     if (SUCCEEDED(hr) && (vtProp.vt == VT_BSTR)) {
@@ -314,7 +312,7 @@ static HRESULT _initialize_wmi(IWbemLocator **pLoc, IWbemServices **pSvc) {
     hr = CoInitializeSecurity(
         NULL, -1, NULL, NULL,
         RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE,
-        NULL, EOAC_NONE
+        NULL, EOAC_NONE, NULL
     );
     if (FAILED(hr) && hr != RPC_E_TOO_LATE && hr != HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)) {
         CoUninitialize(); // Only uninitialize if we initialized it and failed here
@@ -436,7 +434,7 @@ char* get_bios_info_json() {
                      release_date_wmi[4], release_date_wmi[5],
                      release_date_wmi[6], release_date_wmi[7]);
         } else {
-            strcpy(release_date, "N/A");
+            strcpy_s(release_date, sizeof(release_date), "N/A"); // Use strcpy_s
         }
 
         json_result = _create_json_string(
@@ -446,7 +444,7 @@ char* get_bios_info_json() {
 
         free(vendor); free(version); free(release_date_wmi);
     } else {
-        json_result = strdup("{\"error\": \"BIOS information not found in WMI.\"}");
+        json_result = _strdup("{\"error\": \"BIOS information not found in WMI.\"}"); // Use _strdup
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -521,7 +519,7 @@ char* get_system_info_json() {
         );
         free(manufacturer); free(product_name); free(uuid); free(serial_number);
     } else {
-        json_result = strdup("{\"error\": \"System information not found in WMI.\"}");
+        json_result = _strdup("{\"error\": \"System information not found in WMI.\"}"); // Use _strdup
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -597,7 +595,7 @@ char* get_baseboard_info_json() {
         );
         free(manufacturer); free(product); free(serial_number); free(version);
     } else {
-        json_result = strdup("{\"error\": \"Baseboard information not found in WMI.\"}");
+        json_result = _strdup("{\"error\": \"Baseboard information not found in WMI.\"}"); // Use _strdup
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -673,7 +671,7 @@ char* get_chassis_info_json() {
         );
         free(manufacturer); free(type); free(serial_number); free(version);
     } else {
-        json_result = strdup("{\"error\": \"Chassis information not found in WMI.\"}");
+        json_result = _strdup("{\"error\": \"Chassis information not found in WMI.\"}"); // Use _strdup
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -714,8 +712,8 @@ char* get_cpu_info_json() {
     size_t current_len = 0;
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for CPU JSON buffer.\"}");
-    strcpy(full_json_string, "{\"cpus\": [");
+    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for CPU JSON buffer.\"}"); // Use _strdup
+    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"cpus\": ["); // Use strcpy_s
     current_len = strlen(full_json_string);
 
     hr = _initialize_wmi(&pLoc, &pSvc);
@@ -773,18 +771,18 @@ char* get_cpu_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_cpu_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return strdup("{\"error\": \"Memory re-allocation failed for CPU JSON buffer.\"}");
+                    return _strdup("{\"error\": \"Memory re-allocation failed for CPU JSON buffer.\"}"); // Use _strdup
                 }
                 full_json_string = temp;
             }
-            strcat(full_json_string, current_cpu_json_part);
+            strcat_s(full_json_string, current_buffer_size, current_cpu_json_part); // Use strcat_s
             current_len += part_len;
             free(current_cpu_json_part);
             current_cpu_json_part = NULL;
         }
     }
 
-    strcat(full_json_string, "]}");
+    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -830,8 +828,8 @@ char* get_ram_info_json() {
     long long total_physical_memory_bytes = 0; // From Win32_ComputerSystem
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for RAM JSON buffer.\"}");
-    strcpy(full_json_string, "{\"total_physical_memory_bytes\": 0, \"memory_modules\": [");
+    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for RAM JSON buffer.\"}"); // Use _strdup
+    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"total_physical_memory_bytes\": 0, \"memory_modules\": ["); // Use strcpy_s
     current_len = strlen(full_json_string);
 
 
@@ -862,7 +860,7 @@ char* get_ram_info_json() {
     // Update total_physical_memory_bytes in the initial JSON string
     char temp_header[MAX_INFO_LEN];
     snprintf(temp_header, sizeof(temp_header), "{\"total_physical_memory_bytes\": %lld, \"memory_modules\": [", total_physical_memory_bytes);
-    strcpy(full_json_string, temp_header);
+    strcpy_s(full_json_string, current_buffer_size, temp_header); // Use strcpy_s
     current_len = strlen(full_json_string);
 
 
@@ -909,18 +907,18 @@ char* get_ram_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_ram_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return strdup("{\"error\": \"Memory re-allocation failed for RAM JSON buffer.\"}");
+                    return _strdup("{\"error\": \"Memory re-allocation failed for RAM JSON buffer.\"}"); // Use _strdup
                 }
                 full_json_string = temp;
             }
-            strcat(full_json_string, current_ram_json_part);
+            strcat_s(full_json_string, current_buffer_size, current_ram_json_part); // Use strcat_s
             current_len += part_len;
             free(current_ram_json_part);
             current_ram_json_part = NULL;
         }
     }
 
-    strcat(full_json_string, "]}");
+    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -965,8 +963,8 @@ char* get_disk_info_json() {
     size_t current_len = 0;
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for Disk JSON buffer.\"}");
-    strcpy(full_json_string, "{\"disk_drives\": [");
+    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for Disk JSON buffer.\"}"); // Use _strdup
+    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"disk_drives\": ["); // Use strcpy_s
     current_len = strlen(full_json_string);
 
     hr = _initialize_wmi(&pLoc, &pSvc);
@@ -1023,18 +1021,18 @@ char* get_disk_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_disk_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return strdup("{\"error\": \"Memory re-allocation failed for Disk JSON buffer.\"}");
+                    return _strdup("{\"error\": \"Memory re-allocation failed for Disk JSON buffer.\"}"); // Use _strdup
                 }
                 full_json_string = temp;
             }
-            strcat(full_json_string, current_disk_json_part);
+            strcat_s(full_json_string, current_buffer_size, current_disk_json_part); // Use strcat_s
             current_len += part_len;
             free(current_disk_json_part);
             current_disk_json_part = NULL;
         }
     }
 
-    strcat(full_json_string, "]}");
+    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -1065,15 +1063,9 @@ char* get_disk_info_json() {
 
         // Simple check: if the name contains a digit and is longer than 3 chars (like nvme0n1p1)
         // or ends with a digit. This isn't perfect but covers common cases.
-        // We only want whole disk devices, not partitions (e.g., sda, not sda1)
-        int is_partition = 0;
-        for (size_t i = 0; i < strlen(entry->d_name); i++) {
-            if (isdigit(entry->d_name[i]) && i > 0 && !isdigit(entry->d_name[i-1])) {
-                is_partition = 1;
-                break;
-            }
+        if (strlen(entry->d_name) > 3 && (isdigit(entry->d_name[strlen(entry->d_name)-1]) || strchr(entry->d_name, 'p'))) {
+            continue;
         }
-        if (is_partition) continue;
 
 
         char* model = strdup("N/A");
@@ -1154,8 +1146,8 @@ char* get_network_info_json() {
     size_t current_len = 0;
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for Network JSON buffer.\"}");
-    strcpy(full_json_string, "{\"network_adapters\": [");
+    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for Network JSON buffer.\"}"); // Use _strdup
+    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"network_adapters\": ["); // Use strcpy_s
     current_len = strlen(full_json_string);
 
     hr = _initialize_wmi(&pLoc, &pSvc);
@@ -1212,12 +1204,12 @@ char* get_network_info_json() {
                 size_t est_ip_list_len = (ubound - lbound + 1) * (INET6_ADDRSTRLEN + 4) + 2; // (IP length + quotes and commas) + brackets
                 char* ip_list_buffer = (char*)malloc(est_ip_list_len);
                 if (ip_list_buffer) {
-                    strcpy(ip_list_buffer, "[");
+                    strcpy_s(ip_list_buffer, est_ip_list_len, "["); // Use strcpy_s
                     size_t current_ip_list_len = strlen(ip_list_buffer);
 
                     for (long i = lbound; i <= ubound; i++) {
                         if (i > lbound) {
-                            strcat(ip_list_buffer, ",");
+                            strcat_s(ip_list_buffer, est_ip_list_len, ","); // Use strcat_s
                             current_ip_list_len += 1;
                         }
                         char* current_ip_str = NULL;
@@ -1229,16 +1221,16 @@ char* get_network_info_json() {
                                 WideCharToMultiByte(CP_UTF8, 0, bstr_array[i], -1, current_ip_str, current_ip_len, NULL, NULL);
 
                                 if (current_ip_list_len + strlen(current_ip_str) + 3 < est_ip_list_len) { // +3 for two quotes and null terminator
-                                    strcat(ip_list_buffer, "\"");
-                                    strcat(ip_list_buffer, current_ip_str);
-                                    strcat(ip_list_buffer, "\"");
+                                    strcat_s(ip_list_buffer, est_ip_list_len, "\""); // Use strcat_s
+                                    strcat_s(ip_list_buffer, est_ip_list_len, current_ip_str); // Use strcat_s
+                                    strcat_s(ip_list_buffer, est_ip_list_len, "\""); // Use strcat_s
                                     current_ip_list_len += strlen(current_ip_str) + 2;
                                 }
                                 free(current_ip_str);
                             }
                         }
                     }
-                    strcat(ip_list_buffer, "]");
+                    strcat_s(ip_list_buffer, est_ip_list_len, "]"); // Use strcat_s
                     // Convert char* (UTF-8) to WCHAR* (UTF-16) for SysAllocString
                     int wide_len = MultiByteToWideChar(CP_UTF8, 0, ip_list_buffer, -1, NULL, 0);
                     if (wide_len > 0) {
@@ -1277,18 +1269,18 @@ char* get_network_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_net_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return strdup("{\"error\": \"Memory re-allocation failed for Network JSON buffer.\"}");
+                    return _strdup("{\"error\": \"Memory re-allocation failed for Network JSON buffer.\"}"); // Use _strdup
                 }
                 full_json_string = temp;
             }
-            strcat(full_json_string, current_net_json_part);
+            strcat_s(full_json_string, current_buffer_size, current_net_json_part); // Use strcat_s
             current_len += part_len;
             free(current_net_json_part);
             current_net_json_part = NULL;
         }
     }
 
-    strcat(full_json_string, "]}");
+    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -1309,6 +1301,10 @@ char* get_network_info_json() {
     }
 
     int first_adapter = 1;
+    char name[IF_NAMESIZE];
+    char mac_addr_str[18]; // XX:XX:XX:XX:XX:XX + null
+    char ip_v4_list_str[MAX_INFO_LEN];
+    char ip_v6_list_str[MAX_INFO_LEN];
 
     // Use a temporary structure to collect all IP addresses for each interface
     typedef struct {
@@ -1316,6 +1312,7 @@ char* get_network_info_json() {
         char mac_address[18];
         char ipv4_addresses[MAX_INFO_LEN];
         char ipv6_addresses[MAX_INFO_LEN];
+        int processed;
     } NetAdapterInfo;
 
     // Since we're not using dynamic data structures (like linked lists),
@@ -1326,6 +1323,7 @@ char* get_network_info_json() {
 
     // Initialize adapters array
     for (int i = 0; i < 32; i++) {
+        adapters[i].processed = 0;
         strcpy(adapters[i].mac_address, "N/A");
         strcpy(adapters[i].ipv4_addresses, "[");
         strcpy(adapters[i].ipv6_addresses, "[");
@@ -1333,9 +1331,6 @@ char* get_network_info_json() {
 
     for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
         if (ifa->ifa_addr == NULL) continue;
-
-        // Skip loopback interface
-        if (ifa->ifa_flags & IFF_LOOPBACK) continue;
 
         int found_adapter_idx = -1;
         for (int i = 0; i < num_adapters; i++) {
@@ -1351,7 +1346,7 @@ char* get_network_info_json() {
             strncpy(adapters[found_adapter_idx].name, ifa->ifa_name, IF_NAMESIZE - 1);
             adapters[found_adapter_idx].name[IF_NAMESIZE - 1] = '\0';
         } else if (found_adapter_idx == -1) {
-            // Adapter buffer overflow, skip this interface
+            // Adapter buffer overflow
             continue;
         }
 
@@ -1408,6 +1403,7 @@ char* get_network_info_json() {
                 char* temp = (char*)realloc(full_json_string, current_buffer_size);
                 if (!temp) {
                     free(full_json_string); free(current_net_json_part);
+                    closedir(dir);
                     return strdup("{\"error\": \"Memory re-allocation failed for Network JSON buffer.\"}");
                 }
                 full_json_string = temp;
@@ -1418,6 +1414,7 @@ char* get_network_info_json() {
             current_net_json_part = NULL;
         }
     }
+    closedir(dir);
 
     strcat(full_json_string, "]}");
     return full_json_string;
