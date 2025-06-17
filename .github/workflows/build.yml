@@ -8,11 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Build on Windows
+    runs-on: windows-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        architecture: [x86, AMD64]
 
     steps:
       - name: Checkout code
@@ -29,10 +29,13 @@ jobs:
           pip install build cibuildwheel
 
       - name: Build wheels
+        env:
+          CIBW_ARCHS_WINDOWS: ${{ matrix.architecture }}
+          CIBW_SKIP: "*-win_arm64"
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: calco-wheels-${{ runner.os }}
+          name: calco-wheels-${{ matrix.architecture }}
           path: wheelhouse/
