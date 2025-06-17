@@ -1,0 +1,38 @@
+name: Build Python Wheels for All Platforms
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build_wheels:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: [3.8, 3.9, 3.10, 3.11]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel cibuildwheel
+
+    - name: Build wheels
+      run: cibuildwheel --output-dir wheelhouse
+
+    - name: Upload wheels as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-wheels-${{ matrix.os }}-${{ matrix.python-version }}
+        path: wheelhouse/*.whl
