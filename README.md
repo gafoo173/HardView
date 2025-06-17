@@ -117,11 +117,13 @@ classDiagram
 
 *(Example benchmark data - replace with actual measurements)*
 
-| Operation | Time (ms) |
-|-----------|----------|
-| Get CPU Info | 12.5 |
-| Get RAM Info | 8.2 |
-| Get All Info | 45.7 |
+Benchmark Results (Seconds):  |
+| CPU            : 0.010707 sec |
+| RAM            : 0.022965 sec |
+| BIOS           : 0.026767 sec |
+| Baseboard      : 0.009477 sec |
+| Disk Drives    : 0.012865 sec |
+| Network Adapters: 0.104378 sec|
 
 ## Development
 
