@@ -1,6 +1,6 @@
 # HardView - Python Hardware Information Module
 
-![HardView Logo](https://ibb.co/KpnbXbpP)
+![logo](https://i.ibb.co/HfZBVBfS/Chat-GPT-Image-17-2025-08-34-32.png)
 
 HardView is a cross-platform Python module that provides detailed hardware information in JSON format, compatible with both Windows and Linux systems.
 
