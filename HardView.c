@@ -6,22 +6,40 @@
 #ifdef _WIN32
 // CINTERFACE must be defined before including COM headers to make them C-compatible
 #define CINTERFACE
-#include <windows.h>  // For Windows API (already includes some basic headers like <objbase.h>)
-#include <objbase.h>  // For CoInitializeEx, CoUninitialize, CoCreateInstance, CoInitializeSecurity, IUnknown
-#include <oleauto.h>  // For BSTR, VARIANT, SysAllocString, VariantInit, VariantClear
-#include <wtypes.h>   // For basic COM types like BSTR, VARIANT_BOOL
-#include <Wbemcli.h>  // For WMI API (must be included after basic COM headers)
-#include <Wbemidl.h>  // This file contains COM interface definitions for WMI
-#include <ws2tcpip.h> // For INET6_ADDRSTRLEN and network related definitions
+
+// **CRUCIAL FIX:** Define _WINSOCKAPI_ to prevent the inclusion of the older winsock.h.
+// This must be defined *before* any Winsock-related headers (like winsock2.h or headers that might implicitly include winsock.h).
+#define _WINSOCKAPI_
+
+// Define this to suppress security warnings related to CRT functions in Visual Studio,
+// such as those for strcpy_s, strcat_s. It does not affect the core issue but improves developer experience.
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
+// Windows API and COM-related headers
+#include <windows.h>  // For general Windows API functions (might implicitly include winsock.h without _WINSOCKAPI_)
+#include <objbase.h>  // For COM initialization (CoInitializeEx, CoUninitialize), object creation (CoCreateInstance), security (CoInitializeSecurity), and base interface (IUnknown)
+#include <oleauto.h>  // For COM automation types (BSTR, VARIANT) and functions (SysAllocString, VariantInit, VariantClear)
+#include <wtypes.h>   // For basic Windows data types used in COM, like BSTR and VARIANT_BOOL
+
+// WMI-specific headers
+#include <Wbemcli.h>  // For WMI client API interfaces (must be included after basic COM headers)
+#include <Wbemidl.h>  // Contains WMI COM interface definitions
+
+// Network-related headers
+// **CRUCIAL FIX:** Include winsock2.h explicitly before ws2tcpip.h.
+// winsock2.h is the modern Winsock header and should be used instead of winsock.h.
+#include <winsock2.h> // Modern Winsock API for socket programming
+#include <ws2tcpip.h> // Extends Winsock2 with modern IP helper functions, IPv6 definitions, etc.
 
 // The following libraries must be linked when compiling on Windows:
 // - Wbemuuid.lib
 // - Ole32.lib
 // - Oleaut32.lib
-// Note: These links are now handled in setup.py for better MinGW support
-// #pragma comment(lib, "wbemuuid.lib")
-// #pragma comment(lib, "ole32.lib")
-// #pragma comment(lib, "oleaut32.lib")
+// - Ws2_32.lib (for Winsock2 and ws2tcpip functions)
+// Note: These library links are typically handled in your setup.py file
+// for Python C extensions.
 
 #else // Linux/Unix
 #include <unistd.h>     // For standard POSIX functions (e.g., access, getpid)
@@ -35,9 +53,6 @@
 #include <netinet/in.h> // For internet address structures (sockaddr_in, sockaddr_in6)
 #include <dirent.h>     // For opendir, readdir, closedir (to read directory contents)
 #include <ctype.h>      // For isdigit (to check for digits)
-#include <net/if.h>     // For IF_NAMESIZE (Linux specific)
-#include <linux/if_packet.h> // For struct sockaddr_ll (Linux specific)
-
 
 // Prefix path for DMI information files on Linux systems
 #define DMI_PATH_PREFIX "/sys/class/dmi/id/"
