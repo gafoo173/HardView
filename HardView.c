@@ -1125,9 +1125,7 @@ char* get_disk_info_json() {
             current_disk_json_part = NULL;
         }
     }
-    closedir(dir); // This line is causing the 'dir' undeclared error in the log if the line number is correct
-    // However, in the current code, 'dir' is declared at function scope.
-    // The previous error for 'dir' might have been a false positive or related to an older code version.
+    closedir(dir);
 
     strcat(full_json_string, "]}");
     return full_json_string;
@@ -1309,10 +1307,11 @@ char* get_network_info_json() {
     }
 
     int first_adapter = 1;
-    char name[IF_NAMESIZE];
-    char mac_addr_str[18]; // XX:XX:XX:XX:XX:XX + null
-    char ip_v4_list_str[MAX_INFO_LEN];
-    char ip_v6_list_str[MAX_INFO_LEN];
+    // Removed unused variables as per compilation warnings:
+    // char name[IF_NAMESIZE];
+    // char mac_addr_str[18]; // XX:XX:XX:XX:XX:XX + null
+    // char ip_v4_list_str[MAX_INFO_LEN];
+    // char ip_v6_list_str[MAX_INFO_LEN];
 
     // Use a temporary structure to collect all IP addresses for each interface
     typedef struct {
@@ -1411,7 +1410,8 @@ char* get_network_info_json() {
                 char* temp = (char*)realloc(full_json_string, current_buffer_size);
                 if (!temp) {
                     free(full_json_string); free(current_net_json_part);
-                    closedir(dir); // dir is from get_disk_info_json, this line is incorrect if in network info
+                    // This was the problematic line. 'dir' is not declared in this function.
+                    // closedir(dir);
                     return strdup("{\"error\": \"Memory re-allocation failed for Network JSON buffer.\"}");
                 }
                 full_json_string = temp;
@@ -1422,12 +1422,6 @@ char* get_network_info_json() {
             current_net_json_part = NULL;
         }
     }
-
-    // This line below might be what the log was referring to,
-    // if 'dir' was indeed undeclared in 'get_disk_info_json' at the time of the log capture.
-    // I am assuming the fix for that specific 'dir' error is not needed with the current code,
-    // as 'dir' is correctly scoped in get_disk_info_json.
-    // If it reappears, please confirm the exact location and scope of 'dir' where the error occurs.
 
     strcat(full_json_string, "]}");
     return full_json_string;
