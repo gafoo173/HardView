@@ -1,5 +1,4 @@
 
-```markdown
 # HardView - Python Hardware Information Module
 
 > A cross-platform Python module providing detailed hardware information in JSON format, compatible with Windows and Linux.
