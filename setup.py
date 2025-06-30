@@ -29,7 +29,7 @@ hardview_module = Extension(
 
 setup(
     name='HardView',
-    version='0.1.0',
+    version='1.1.0',
     description='A Python library for collecting hardware information (BIOS, System, CPU, RAM, Disk, Network).',
     long_description='A comprehensive Python library for querying low-level hardware information on Windows and Linux, including BIOS, system, CPU, RAM, disk drives, and network adapters. Data is returned in JSON format.',
     author='gafoo',
