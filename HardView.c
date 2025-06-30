@@ -4,15 +4,21 @@
 #include <stdarg.h>   // For variable arguments (va_list, va_start, va_end)
 
 #ifdef _WIN32
+// Disable warnings for POSIX functions like strdup, strcpy, etc.
+#define _CRT_SECURE_NO_WARNINGS
+
 // CINTERFACE must be defined before including COM headers to make them C-compatible
 #define CINTERFACE
-#include <windows.h>    // Windows API
-#include <objbase.h>    // COM
-#include <oleauto.h>    // BSTR, VARIANT, etc.
-#include <wtypes.h>     // Basic COM types
-#include <Wbemcli.h>    // WMI API
-#include <Wbemidl.h>    // WMI interfaces
-#include <ws2tcpip.h>   // INET6_ADDRSTRLEN, network definitions
+
+#include <winsock2.h>    // Must be included before windows.h to avoid conflicts with winsock.h
+#include <ws2tcpip.h>    // For INET6_ADDRSTRLEN, IPv6 support, etc.
+#include <windows.h>     // Windows API
+#include <objbase.h>     // COM
+#include <oleauto.h>     // BSTR, VARIANT, etc.
+#include <wtypes.h>      // Basic COM types
+#include <Wbemcli.h>     // WMI API
+#include <Wbemidl.h>     // WMI interfaces
+
 // The following libraries must be linked when compiling on Windows:
 // - Wbemuuid.lib
 // - Ole32.lib
@@ -21,7 +27,9 @@
 // #pragma comment(lib, "wbemuuid.lib")
 // #pragma comment(lib, "ole32.lib")
 // #pragma comment(lib, "oleaut32.lib")
+
 #else
+
 #include <unistd.h>         // POSIX functions
 #include <sys/types.h>      // size_t, ssize_t
 #include <sys/socket.h>     // sockets
@@ -35,11 +43,14 @@
 #include <netinet/in.h>     // sockaddr_in, sockaddr_in6
 #include <dirent.h>         // opendir, readdir, closedir
 #include <ctype.h>          // isdigit
+
 #define DMI_PATH_PREFIX "/sys/class/dmi/id/"
+
 #endif
 
 // Maximum buffer size for reading DMI info and JSON strings
 #define MAX_INFO_LEN 1024
+
 // Initial size for dynamic JSON buffer
 #define INITIAL_JSON_BUFFER_SIZE 2048
 
