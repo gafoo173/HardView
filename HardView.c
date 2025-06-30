@@ -31,8 +31,8 @@
 #include <ifaddrs.h>    // For getifaddrs and freeifaddrs (to get network interface information)
 #include <arpa/inet.h>  // For inet_ntop (to convert binary IP addresses to text)
 #include <net/if_arp.h> // For arpreq structure (MAC info)
-#include <net/if.h>     // لإسم الواجهة IF_NAMESIZE
-#include <linux/if_packet.h> // لهيكل sockaddr_ll
+#include <net/if.h>     // IF_NAMESIZE (Linux only)
+#include <linux/if_packet.h> // sockaddr_ll (Linux only)
 #include <sys/ioctl.h>  // For ioctl (for network interface operations)
 #include <netinet/in.h> // For internet address structures (sockaddr_in, sockaddr_in6)
 #include <dirent.h>     // For opendir, readdir, closedir (to read directory contents)
