@@ -6,40 +6,22 @@
 #ifdef _WIN32
 // CINTERFACE must be defined before including COM headers to make them C-compatible
 #define CINTERFACE
-
-// **CRUCIAL FIX:** Define _WINSOCKAPI_ to prevent the inclusion of the older winsock.h.
-// This must be defined *before* any Winsock-related headers (like winsock2.h or headers that might implicitly include winsock.h).
-#define _WINSOCKAPI_
-
-// Define this to suppress security warnings related to CRT functions in Visual Studio,
-// such as those for strcpy_s, strcat_s. It does not affect the core issue but improves developer experience.
-#ifndef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
-// Windows API and COM-related headers
-#include <windows.h>  // For general Windows API functions (might implicitly include winsock.h without _WINSOCKAPI_)
-#include <objbase.h>  // For COM initialization (CoInitializeEx, CoUninitialize), object creation (CoCreateInstance), security (CoInitializeSecurity), and base interface (IUnknown)
-#include <oleauto.h>  // For COM automation types (BSTR, VARIANT) and functions (SysAllocString, VariantInit, VariantClear)
-#include <wtypes.h>   // For basic Windows data types used in COM, like BSTR and VARIANT_BOOL
-
-// WMI-specific headers
-#include <Wbemcli.h>  // For WMI client API interfaces (must be included after basic COM headers)
-#include <Wbemidl.h>  // Contains WMI COM interface definitions
-
-// Network-related headers
-// **CRUCIAL FIX:** Include winsock2.h explicitly before ws2tcpip.h.
-// winsock2.h is the modern Winsock header and should be used instead of winsock.h.
-#include <winsock2.h> // Modern Winsock API for socket programming
-#include <ws2tcpip.h> // Extends Winsock2 with modern IP helper functions, IPv6 definitions, etc.
+#include <windows.h>  // For Windows API (already includes some basic headers like <objbase.h>)
+#include <objbase.h>  // For CoInitializeEx, CoUninitialize, CoCreateInstance, CoInitializeSecurity, IUnknown
+#include <oleauto.h>  // For BSTR, VARIANT, SysAllocString, VariantInit, VariantClear
+#include <wtypes.h>   // For basic COM types like BSTR, VARIANT_BOOL
+#include <Wbemcli.h>  // For WMI API (must be included after basic COM headers)
+#include <Wbemidl.h>  // This file contains COM interface definitions for WMI
+#include <ws2tcpip.h> // For INET6_ADDRSTRLEN and network related definitions
 
 // The following libraries must be linked when compiling on Windows:
 // - Wbemuuid.lib
 // - Ole32.lib
 // - Oleaut32.lib
-// - Ws2_32.lib (for Winsock2 and ws2tcpip functions)
-// Note: These library links are typically handled in your setup.py file
-// for Python C extensions.
+// Note: These links are now handled in setup.py for better MinGW support
+// #pragma comment(lib, "wbemuuid.lib")
+// #pragma comment(lib, "ole32.lib")
+// #pragma comment(lib, "oleaut32.lib")
 
 #else // Linux/Unix
 #include <unistd.h>     // For standard POSIX functions (e.g., access, getpid)
@@ -53,9 +35,6 @@
 #include <netinet/in.h> // For internet address structures (sockaddr_in, sockaddr_in6)
 #include <dirent.h>     // For opendir, readdir, closedir (to read directory contents)
 #include <ctype.h>      // For isdigit (to check for digits)
-// **FIX for Linux:** Add missing network headers
-#include <net/if.h>         // For IF_NAMESIZE
-#include <linux/if_packet.h> // For struct sockaddr_ll
 
 // Prefix path for DMI information files on Linux systems
 #define DMI_PATH_PREFIX "/sys/class/dmi/id/"
@@ -92,21 +71,13 @@ static char* _create_json_string(const char* format, ...) {
 
     if (len < 0) {
         // Encoding error or other internal vsnprintf error
-        #ifdef _WIN32
-            return _strdup("{\"error\": \"Failed to estimate JSON string size during formatting.\"}");
-        #else
-            return strdup("{\"error\": \"Failed to estimate JSON string size during formatting.\"}");
-        #endif
+        return strdup("{\"error\": \"Failed to estimate JSON string size during formatting.\"}");
     }
 
     json_str = (char*)malloc(len + 1); // +1 for null terminator
     if (json_str == NULL) {
         // Memory allocation failed
-        #ifdef _WIN32
-            return _strdup("{\"error\": \"Memory allocation failed for JSON string.\"}");
-        #else
-            return strdup("{\"error\": \"Memory allocation failed for JSON string.\"}");
-        #endif
+        return strdup("{\"error\": \"Memory allocation failed for JSON string.\"}");
     }
 
     // Second pass to actually format the string
@@ -182,14 +153,11 @@ static char* _read_proc_sys_value(const char* path, const char* key) {
             }
 
             while (*start == ' ' || *start == '\t') start++; // Skip leading spaces/tabs
-            // **FIX for Linux:** strcspn returns size_t, use correct type for index
-            size_t end_idx = strcspn(start, "\n"); // Find newline character
-            if (end_idx > 0) {
+            char* end_ptr = strcspn(start, "\n"); // Find newline character
+            if (end_ptr > 0) {
                 char temp[MAX_INFO_LEN];
-                // **FIX for Linux:** Pass size_t as the third argument
-                strncpy(temp, start, end_idx);
-                // **FIX for Linux:** Use size_t as array subscript
-                temp[end_idx] = '\0';
+                strncpy(temp, start, end_ptr);
+                temp[end_ptr] = '\0';
                 free(value);
                 value = strdup(temp);
                 break;
@@ -218,7 +186,7 @@ static char* _read_proc_sys_value(const char* path, const char* key) {
 static char* _get_wmi_string_property(IWbemClassObject* pclsObj, const WCHAR* name) {
     VARIANT vtProp;
     VariantInit(&vtProp);
-    char* result = _strdup("N/A"); // Default value
+    char* result = strdup("N/A"); // Default value
 
     HRESULT hr = pclsObj->lpVtbl->Get(pclsObj, name, 0, &vtProp, 0, 0);
     if (SUCCEEDED(hr) && (vtProp.vt == VT_BSTR)) {
@@ -440,7 +408,7 @@ char* get_bios_info_json() {
                      release_date_wmi[4], release_date_wmi[5],
                      release_date_wmi[6], release_date_wmi[7]);
         } else {
-            strcpy_s(release_date, sizeof(release_date), "N/A"); // Use strcpy_s
+            strcpy(release_date, "N/A");
         }
 
         json_result = _create_json_string(
@@ -450,7 +418,7 @@ char* get_bios_info_json() {
 
         free(vendor); free(version); free(release_date_wmi);
     } else {
-        json_result = _strdup("{\"error\": \"BIOS information not found in WMI.\"}"); // Use _strdup
+        json_result = strdup("{\"error\": \"BIOS information not found in WMI.\"}");
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -525,7 +493,7 @@ char* get_system_info_json() {
         );
         free(manufacturer); free(product_name); free(uuid); free(serial_number);
     } else {
-        json_result = _strdup("{\"error\": \"System information not found in WMI.\"}"); // Use _strdup
+        json_result = strdup("{\"error\": \"System information not found in WMI.\"}");
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -601,7 +569,7 @@ char* get_baseboard_info_json() {
         );
         free(manufacturer); free(product); free(serial_number); free(version);
     } else {
-        json_result = _strdup("{\"error\": \"Baseboard information not found in WMI.\"}"); // Use _strdup
+        json_result = strdup("{\"error\": \"Baseboard information not found in WMI.\"}");
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -677,7 +645,7 @@ char* get_chassis_info_json() {
         );
         free(manufacturer); free(type); free(serial_number); free(version);
     } else {
-        json_result = _strdup("{\"error\": \"Chassis information not found in WMI.\"}"); // Use _strdup
+        json_result = strdup("{\"error\": \"Chassis information not found in WMI.\"}");
     }
 
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
@@ -718,8 +686,8 @@ char* get_cpu_info_json() {
     size_t current_len = 0;
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for CPU JSON buffer.\"}"); // Use _strdup
-    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"cpus\": ["); // Use strcpy_s
+    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for CPU JSON buffer.\"}");
+    strcpy(full_json_string, "{\"cpus\": [");
     current_len = strlen(full_json_string);
 
     hr = _initialize_wmi(&pLoc, &pSvc);
@@ -777,18 +745,18 @@ char* get_cpu_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_cpu_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return _strdup("{\"error\": \"Memory re-allocation failed for CPU JSON buffer.\"}"); // Use _strdup
+                    return strdup("{\"error\": \"Memory re-allocation failed for CPU JSON buffer.\"}");
                 }
                 full_json_string = temp;
             }
-            strcat_s(full_json_string, current_buffer_size, current_cpu_json_part); // Use strcat_s
+            strcat(full_json_string, current_cpu_json_part);
             current_len += part_len;
             free(current_cpu_json_part);
             current_cpu_json_part = NULL;
         }
     }
 
-    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
+    strcat(full_json_string, "]}");
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -834,8 +802,8 @@ char* get_ram_info_json() {
     long long total_physical_memory_bytes = 0; // From Win32_ComputerSystem
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for RAM JSON buffer.\"}"); // Use _strdup
-    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"total_physical_memory_bytes\": 0, \"memory_modules\": ["); // Use strcpy_s
+    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for RAM JSON buffer.\"}");
+    strcpy(full_json_string, "{\"total_physical_memory_bytes\": 0, \"memory_modules\": [");
     current_len = strlen(full_json_string);
 
 
@@ -866,7 +834,7 @@ char* get_ram_info_json() {
     // Update total_physical_memory_bytes in the initial JSON string
     char temp_header[MAX_INFO_LEN];
     snprintf(temp_header, sizeof(temp_header), "{\"total_physical_memory_bytes\": %lld, \"memory_modules\": [", total_physical_memory_bytes);
-    strcpy_s(full_json_string, current_buffer_size, temp_header); // Use strcpy_s
+    strcpy(full_json_string, temp_header);
     current_len = strlen(full_json_string);
 
 
@@ -913,18 +881,18 @@ char* get_ram_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_ram_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return _strdup("{\"error\": \"Memory re-allocation failed for RAM JSON buffer.\"}"); // Use _strdup
+                    return strdup("{\"error\": \"Memory re-allocation failed for RAM JSON buffer.\"}");
                 }
                 full_json_string = temp;
             }
-            strcat_s(full_json_string, current_buffer_size, current_ram_json_part); // Use strcat_s
+            strcat(full_json_string, current_ram_json_part);
             current_len += part_len;
             free(current_ram_json_part);
             current_ram_json_part = NULL;
         }
     }
 
-    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
+    strcat(full_json_string, "]}");
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -969,8 +937,8 @@ char* get_disk_info_json() {
     size_t current_len = 0;
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for Disk JSON buffer.\"}"); // Use _strdup
-    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"disk_drives\": ["); // Use strcpy_s
+    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for Disk JSON buffer.\"}");
+    strcpy(full_json_string, "{\"disk_drives\": [");
     current_len = strlen(full_json_string);
 
     hr = _initialize_wmi(&pLoc, &pSvc);
@@ -1027,18 +995,18 @@ char* get_disk_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_disk_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return _strdup("{\"error\": \"Memory re-allocation failed for Disk JSON buffer.\"}"); // Use _strdup
+                    return strdup("{\"error\": \"Memory re-allocation failed for Disk JSON buffer.\"}");
                 }
                 full_json_string = temp;
             }
-            strcat_s(full_json_string, current_buffer_size, current_disk_json_part); // Use strcat_s
+            strcat(full_json_string, current_disk_json_part);
             current_len += part_len;
             free(current_disk_json_part);
             current_disk_json_part = NULL;
         }
     }
 
-    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
+    strcat(full_json_string, "]}");
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -1152,8 +1120,8 @@ char* get_network_info_json() {
     size_t current_len = 0;
     ULONG uReturn = 0; // uReturn declared here
 
-    if (!full_json_string) return _strdup("{\"error\": \"Memory allocation failed for Network JSON buffer.\"}"); // Use _strdup
-    strcpy_s(full_json_string, INITIAL_JSON_BUFFER_SIZE, "{\"network_adapters\": ["); // Use strcpy_s
+    if (!full_json_string) return strdup("{\"error\": \"Memory allocation failed for Network JSON buffer.\"}");
+    strcpy(full_json_string, "{\"network_adapters\": [");
     current_len = strlen(full_json_string);
 
     hr = _initialize_wmi(&pLoc, &pSvc);
@@ -1210,12 +1178,12 @@ char* get_network_info_json() {
                 size_t est_ip_list_len = (ubound - lbound + 1) * (INET6_ADDRSTRLEN + 4) + 2; // (IP length + quotes and commas) + brackets
                 char* ip_list_buffer = (char*)malloc(est_ip_list_len);
                 if (ip_list_buffer) {
-                    strcpy_s(ip_list_buffer, est_ip_list_len, "["); // Use strcpy_s
+                    strcpy(ip_list_buffer, "[");
                     size_t current_ip_list_len = strlen(ip_list_buffer);
 
                     for (long i = lbound; i <= ubound; i++) {
                         if (i > lbound) {
-                            strcat_s(ip_list_buffer, est_ip_list_len, ","); // Use strcat_s
+                            strcat(ip_list_buffer, ",");
                             current_ip_list_len += 1;
                         }
                         char* current_ip_str = NULL;
@@ -1227,16 +1195,16 @@ char* get_network_info_json() {
                                 WideCharToMultiByte(CP_UTF8, 0, bstr_array[i], -1, current_ip_str, current_ip_len, NULL, NULL);
 
                                 if (current_ip_list_len + strlen(current_ip_str) + 3 < est_ip_list_len) { // +3 for two quotes and null terminator
-                                    strcat_s(ip_list_buffer, est_ip_list_len, "\""); // Use strcat_s
-                                    strcat_s(ip_list_buffer, est_ip_list_len, current_ip_str); // Use strcat_s
-                                    strcat_s(ip_list_buffer, est_ip_list_len, "\""); // Use strcat_s
+                                    strcat(ip_list_buffer, "\"");
+                                    strcat(ip_list_buffer, current_ip_str);
+                                    strcat(ip_list_buffer, "\"");
                                     current_ip_list_len += strlen(current_ip_str) + 2;
                                 }
                                 free(current_ip_str);
                             }
                         }
                     }
-                    strcat_s(ip_list_buffer, est_ip_list_len, "]"); // Use strcat_s
+                    strcat(ip_list_buffer, "]");
                     // Convert char* (UTF-8) to WCHAR* (UTF-16) for SysAllocString
                     int wide_len = MultiByteToWideChar(CP_UTF8, 0, ip_list_buffer, -1, NULL, 0);
                     if (wide_len > 0) {
@@ -1275,18 +1243,18 @@ char* get_network_info_json() {
                 if (!temp) {
                     free(full_json_string); free(current_net_json_part);
                     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-                    return _strdup("{\"error\": \"Memory re-allocation failed for Network JSON buffer.\"}"); // Use _strdup
+                    return strdup("{\"error\": \"Memory re-allocation failed for Network JSON buffer.\"}");
                 }
                 full_json_string = temp;
             }
-            strcat_s(full_json_string, current_buffer_size, current_net_json_part); // Use strcat_s
+            strcat(full_json_string, current_net_json_part);
             current_len += part_len;
             free(current_net_json_part);
             current_net_json_part = NULL;
         }
     }
 
-    strcat_s(full_json_string, current_buffer_size, "]}"); // Use strcat_s
+    strcat(full_json_string, "]}");
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
 
@@ -1307,11 +1275,10 @@ char* get_network_info_json() {
     }
 
     int first_adapter = 1;
-    // Removed unused variables as per compilation warnings:
-    // char name[IF_NAMESIZE];
-    // char mac_addr_str[18]; // XX:XX:XX:XX:XX:XX + null
-    // char ip_v4_list_str[MAX_INFO_LEN];
-    // char ip_v6_list_str[MAX_INFO_LEN];
+    char name[IF_NAMESIZE];
+    char mac_addr_str[18]; // XX:XX:XX:XX:XX:XX + null
+    char ip_v4_list_str[MAX_INFO_LEN];
+    char ip_v6_list_str[MAX_INFO_LEN];
 
     // Use a temporary structure to collect all IP addresses for each interface
     typedef struct {
@@ -1362,8 +1329,8 @@ char* get_network_info_json() {
             if (s->sll_halen == 6) { // MAC address length
                 snprintf(adapters[found_adapter_idx].mac_address, sizeof(adapters[found_adapter_idx].mac_address),
                          "%02x:%02x:%02x:%02x:%02x:%02x",
-                         (unsigned char)s->sll_addr[0], (unsigned char)s->sll_addr[1], (unsigned char)s->sll_addr[2],
-                         (unsigned char)s->sll_addr[3], (unsigned char)s->sll_addr[4], (unsigned char)s->sll_addr[5]);
+                         s->sll_addr[0], s->sll_addr[1], s->sll_addr[2],
+                         s->sll_addr[3], s->sll_addr[4], s->sll_addr[5]);
             }
         } else if (ifa->ifa_addr->sa_family == AF_INET) {
             char ip_str[INET_ADDRSTRLEN];
@@ -1410,8 +1377,6 @@ char* get_network_info_json() {
                 char* temp = (char*)realloc(full_json_string, current_buffer_size);
                 if (!temp) {
                     free(full_json_string); free(current_net_json_part);
-                    // This was the problematic line. 'dir' is not declared in this function.
-                    // closedir(dir);
                     return strdup("{\"error\": \"Memory re-allocation failed for Network JSON buffer.\"}");
                 }
                 full_json_string = temp;
@@ -1433,88 +1398,113 @@ char* get_network_info_json() {
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
-// Helper to convert C char* to Python string and handle errors
-static PyObject* _c_str_to_py_str_and_free(char* c_str) {
-    if (c_str == NULL) {
-        Py_RETURN_NONE;
-    }
-    // String should be UTF-8 encoded
-    PyObject* py_str = PyUnicode_DecodeUTF8(c_str, strlen(c_str), "strict");
+static PyObject* py_get_bios_info_json(PyObject* self, PyObject* args) {
+    char* json_str = get_bios_info_json();
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
     if (!py_str) {
         PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
     }
-    free(c_str);
     return py_str;
 }
 
-// Python wrapper for get_bios_info_json
-static PyObject* hardview_get_bios_info(PyObject *self, PyObject *args) {
-    char* json_str = get_bios_info_json();
-    return _c_str_to_py_str_and_free(json_str);
-}
-
-// Python wrapper for get_system_info_json
-static PyObject* hardview_get_system_info(PyObject *self, PyObject *args) {
+static PyObject* py_get_system_info_json(PyObject* self, PyObject* args) {
     char* json_str = get_system_info_json();
-    return _c_str_to_py_str_and_free(json_str);
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
+    if (!py_str) {
+        PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
+    }
+    return py_str;
 }
 
-// Python wrapper for get_baseboard_info_json
-static PyObject* hardview_get_baseboard_info(PyObject *self, PyObject *args) {
+static PyObject* py_get_baseboard_info_json(PyObject* self, PyObject* args) {
     char* json_str = get_baseboard_info_json();
-    return _c_str_to_py_str_and_free(json_str);
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
+    if (!py_str) {
+        PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
+    }
+    return py_str;
 }
 
-// Python wrapper for get_chassis_info_json
-static PyObject* hardview_get_chassis_info(PyObject *self, PyObject *args) {
+static PyObject* py_get_chassis_info_json(PyObject* self, PyObject* args) {
     char* json_str = get_chassis_info_json();
-    return _c_str_to_py_str_and_free(json_str);
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
+    if (!py_str) {
+        PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
+    }
+    return py_str;
 }
 
-// Python wrapper for get_cpu_info_json
-static PyObject* hardview_get_cpu_info(PyObject *self, PyObject *args) {
+static PyObject* py_get_cpu_info_json(PyObject* self, PyObject* args) {
     char* json_str = get_cpu_info_json();
-    return _c_str_to_py_str_and_free(json_str);
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
+    if (!py_str) {
+        PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
+    }
+    return py_str;
 }
 
-// Python wrapper for get_ram_info_json
-static PyObject* hardview_get_ram_info(PyObject *self, PyObject *args) {
+static PyObject* py_get_ram_info_json(PyObject* self, PyObject* args) {
     char* json_str = get_ram_info_json();
-    return _c_str_to_py_str_and_free(json_str);
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
+    if (!py_str) {
+        PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
+    }
+    return py_str;
 }
 
-// Python wrapper for get_disk_info_json
-static PyObject* hardview_get_disk_info(PyObject *self, PyObject *args) {
+static PyObject* py_get_disk_info_json(PyObject* self, PyObject* args) {
     char* json_str = get_disk_info_json();
-    return _c_str_to_py_str_and_free(json_str);
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
+    if (!py_str) {
+        PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
+    }
+    return py_str;
 }
 
-// Python wrapper for get_network_info_json
-static PyObject* hardview_get_network_info(PyObject *self, PyObject *args) {
+static PyObject* py_get_network_info_json(PyObject* self, PyObject* args) {
     char* json_str = get_network_info_json();
-    return _c_str_to_py_str_and_free(json_str);
+    if (!json_str) Py_RETURN_NONE;
+    PyObject* py_str = PyUnicode_DecodeUTF8(json_str, strlen(json_str), "strict");
+    free(json_str);
+    if (!py_str) {
+        PyErr_SetString(PyExc_UnicodeDecodeError, "Failed to decode C string to Python Unicode (UTF-8).");
+        return NULL;
+    }
+    return py_str;
 }
-
 
 // Method definition table
 static PyMethodDef HardViewMethods[] = {
-    {"get_bios_info", hardview_get_bios_info, METH_NOARGS,
-     "Get BIOS information as a JSON string."},
-    {"get_system_info", hardview_get_system_info, METH_NOARGS,
-     "Get system information as a JSON string."},
-    {"get_baseboard_info", hardview_get_baseboard_info, METH_NOARGS,
-     "Get baseboard information as a JSON string."},
-    {"get_chassis_info", hardview_get_chassis_info, METH_NOARGS,
-     "Get chassis information as a JSON string."},
-    {"get_cpu_info", hardview_get_cpu_info, METH_NOARGS,
-     "Get CPU information as a JSON string."},
-    {"get_ram_info", hardview_get_ram_info, METH_NOARGS,
-     "Get RAM information as a JSON string."},
-    {"get_disk_info", hardview_get_disk_info, METH_NOARGS,
-     "Get disk information as a JSON string."},
-    {"get_network_info", hardview_get_network_info, METH_NOARGS,
-     "Get network adapter information as a JSON string."},
-    {NULL, NULL, 0, NULL} // Sentinel
+    {"get_bios_info", py_get_bios_info_json, METH_NOARGS, "Get BIOS information as a JSON string."},
+    {"get_system_info", py_get_system_info_json, METH_NOARGS, "Get system information as a JSON string."},
+    {"get_baseboard_info", py_get_baseboard_info_json, METH_NOARGS, "Get baseboard information as a JSON string."},
+    {"get_chassis_info", py_get_chassis_info_json, METH_NOARGS, "Get chassis information as a JSON string."},
+    {"get_cpu_info", py_get_cpu_info_json, METH_NOARGS, "Get CPU information as a JSON string."},
+    {"get_ram_info", py_get_ram_info_json, METH_NOARGS, "Get RAM information as a JSON string."},
+    {"get_disk_info", py_get_disk_info_json, METH_NOARGS, "Get disk information as a JSON string."},
+    {"get_network_info", py_get_network_info_json, METH_NOARGS, "Get network adapter information as a JSON string."},
+    {NULL, NULL, 0, NULL}
 };
 
 // Module definition
