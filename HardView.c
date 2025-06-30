@@ -6,14 +6,13 @@
 #ifdef _WIN32
 // CINTERFACE must be defined before including COM headers to make them C-compatible
 #define CINTERFACE
-#include <windows.h>  // For Windows API (already includes some basic headers like <objbase.h>)
-#include <objbase.h>  // For CoInitializeEx, CoUninitialize, CoCreateInstance, CoInitializeSecurity, IUnknown
-#include <oleauto.h>  // For BSTR, VARIANT, SysAllocString, VariantInit, VariantClear
-#include <wtypes.h>   // For basic COM types like BSTR, VARIANT_BOOL
-#include <Wbemcli.h>  // For WMI API (must be included after basic COM headers)
-#include <Wbemidl.h>  // This file contains COM interface definitions for WMI
-#include <ws2tcpip.h> // For INET6_ADDRSTRLEN and network related definitions
-
+#include <windows.h>    // Windows API
+#include <objbase.h>    // COM
+#include <oleauto.h>    // BSTR, VARIANT, etc.
+#include <wtypes.h>     // Basic COM types
+#include <Wbemcli.h>    // WMI API
+#include <Wbemidl.h>    // WMI interfaces
+#include <ws2tcpip.h>   // INET6_ADDRSTRLEN, network definitions
 // The following libraries must be linked when compiling on Windows:
 // - Wbemuuid.lib
 // - Ole32.lib
@@ -22,23 +21,20 @@
 // #pragma comment(lib, "wbemuuid.lib")
 // #pragma comment(lib, "ole32.lib")
 // #pragma comment(lib, "oleaut32.lib")
-
-#else // Linux/Unix
-#include <unistd.h>     // For standard POSIX functions (e.g., access, getpid)
-#include <sys/types.h>  // For data types like size_t, ssize_t
-#include <sys/socket.h> // For basic network functions
-#include <netdb.h>      // For network database functions (e.g., gethostbyname, getservbyport)
-#include <ifaddrs.h>    // For getifaddrs and freeifaddrs (to get network interface information)
-#include <arpa/inet.h>  // For inet_ntop (to convert binary IP addresses to text)
-#include <net/if_arp.h> // For arpreq structure (MAC info)
-#include <net/if.h>     // IF_NAMESIZE (Linux only)
-#include <linux/if_packet.h> // sockaddr_ll (Linux only)
-#include <sys/ioctl.h>  // For ioctl (for network interface operations)
-#include <netinet/in.h> // For internet address structures (sockaddr_in, sockaddr_in6)
-#include <dirent.h>     // For opendir, readdir, closedir (to read directory contents)
-#include <ctype.h>      // For isdigit (to check for digits)
-
-// Prefix path for DMI information files on Linux systems
+#else
+#include <unistd.h>         // POSIX functions
+#include <sys/types.h>      // size_t, ssize_t
+#include <sys/socket.h>     // sockets
+#include <netdb.h>          // gethostbyname, getservbyport
+#include <ifaddrs.h>        // getifaddrs, freeifaddrs
+#include <arpa/inet.h>      // inet_ntop
+#include <net/if_arp.h>     // arpreq structure
+#include <net/if.h>         // IF_NAMESIZE
+#include <linux/if_packet.h>// sockaddr_ll
+#include <sys/ioctl.h>      // ioctl
+#include <netinet/in.h>     // sockaddr_in, sockaddr_in6
+#include <dirent.h>         // opendir, readdir, closedir
+#include <ctype.h>          // isdigit
 #define DMI_PATH_PREFIX "/sys/class/dmi/id/"
 #endif
 
