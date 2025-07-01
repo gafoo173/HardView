@@ -3,7 +3,6 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <wbemidl.h>
-#include <comdef.h>
 #include "win_helpers.h"
 #else
 #include "linux_helpers.h"
