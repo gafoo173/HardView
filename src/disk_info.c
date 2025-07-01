@@ -4,12 +4,12 @@
 #include "win_helpers.h"
 #else
 #include "linux_helpers.h"
+#include <dirent.h>
+#include <ctype.h>
 #endif
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <dirent.h>
-#include <ctype.h>
 
 #define INITIAL_JSON_BUFFER_SIZE 2048
 #define MAX_INFO_LEN 1024
