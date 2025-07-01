@@ -6,6 +6,7 @@
 #include <wtypes.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #else
 #include "linux_helpers.h"
 #include <ifaddrs.h>
@@ -17,6 +18,7 @@
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #endif
 
 #define INITIAL_JSON_BUFFER_SIZE 2048
@@ -173,7 +175,6 @@ char* get_network_info_json() {
         return strdup("{\"error\": \"Failed to get network interface addresses (getifaddrs error).\"}");
     }
     int first_adapter = 1;
-    char name[IF_NAMESIZE];
     typedef struct {
         char name[IF_NAMESIZE];
         char mac_address[18];
