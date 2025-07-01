@@ -1,11 +1,16 @@
+#include "Smart_disk.h"
+#include "helpers.h"
+#ifdef _WIN32
 #include <windows.h>
-#include <Wbemidl.h>
-#include <oleauto.h>
+#include <wbemidl.h>
+#include <comdef.h>
+#include "win_helpers.h"
+#else
+#include "linux_helpers.h"
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "helpers.h"
-#include "win_helpers.h"
 
 // Function to escape strings for use in JSON
 char* escape_json_string(const char* input) {
