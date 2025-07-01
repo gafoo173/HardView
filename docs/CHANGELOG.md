@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [2.0.1] - Hotfix Release
+## [2.0.2] - Hotfix Release
 **Highlights:**
 - Fixed critical issue with `get_smart_info()`:
   - Resolved improper escaping of backslashes (`\`) when generating JSON strings for SMART disk data.
