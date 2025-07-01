@@ -37,7 +37,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: calco-linux-wheels-${{ matrix.architecture }}
+          name: hardview-linux-wheels-${{ matrix.architecture }}
           path: wheelhouse/
 
   build-windows:
@@ -69,5 +69,5 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: calco-windows-wheels-${{ matrix.architecture }}
+          name: hardview-windows-wheels-${{ matrix.architecture }}
           path: wheelhouse/
