@@ -100,15 +100,16 @@ To add support for a new OS/platform:
 
 ```mermaid
 graph TD;
-    Python-->HardView.c;
-    HardView.c-->[domain]_info.c;
-    [domain]_info.c-->win_helpers.c;
-    [domain]_info.c-->linux_helpers.c;
-    [domain]_info.c-->helpers.c;
-    win_helpers.c-->WMI/Win32;
-    linux_helpers.c-->proc/syscalls;
-    [domain]_info.c-->JSON;
-    JSON-->Python;
+    Python --> HardView_c;
+    HardView_c --> Domain_Info_C;
+    Domain_Info_C --> win_helpers_c;
+    Domain_Info_C --> linux_helpers_c;
+    Domain_Info_C --> helpers_c;
+    win_helpers_c --> WMI_Win32;
+    linux_helpers_c --> proc_syscalls;
+    Domain_Info_C --> JSON_Output;
+    JSON_Output --> Python;
+
 ```
 
 ---
