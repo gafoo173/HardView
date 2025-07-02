@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.2] - Hotfix Release
 **Highlights:**
+- Fixed a typographical error in the binary file name generated in version `2.0.1`.
+- The output binary is now properly named `HardView.pyd` or `HardView.so` with correct casing across all platforms.
+- No functional changes; this release only ensures consistent naming for better compatibility on case-sensitive systems.
+
+---
+
+## [2.0.1] - Hotfix Release
+**Highlights:**
 - Fixed critical issue with `get_smart_info()`:
   - Resolved improper escaping of backslashes (`\`) when generating JSON strings for SMART disk data.
   - The JSON output is now properly escaped and conforms to standard JSON formatting.
