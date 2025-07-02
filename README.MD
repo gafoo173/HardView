@@ -28,7 +28,7 @@ pip install hardview
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/hardview.git
+git clone https://github.com/gafoo173/hardview.git
 cd hardview
 pip install .
 ```
