@@ -47,7 +47,7 @@ This FAQ addresses common issues and questions about installing, using, and trou
   ```python
   import json
   import HardView
-  data = json.loads(HardView.get_cpu_info_json())
+  data = json.loads(HardView.get_cpu_info())
   print(data)
   ```
 - If you see `{ "error": ... }` in the output, check the error message for details.
