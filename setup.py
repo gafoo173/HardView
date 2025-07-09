@@ -46,10 +46,10 @@ hardview_module = Extension(
 
 setup(
     name='HardView',
-    version='2.0.0',
+    version='2.0.3',
     description='A comprehensive Python library for collecting hardware information and performance monitoring on Windows and Linux.',
     long_description='''
-HardView 2.0.0 - Advanced Hardware Information and Performance Monitoring Library
+HardView 2.0.3 - Advanced Hardware Information and Performance Monitoring Library
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance on Windows and Linux systems.
 
