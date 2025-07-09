@@ -43,13 +43,29 @@ LONGLONG _get_wmi_longlong_property(IWbemClassObject* pclsObj, const WCHAR* name
     VariantInit(&vtProp);
     LONGLONG result = 0;
     HRESULT hr = pclsObj->lpVtbl->Get(pclsObj, name, 0, &vtProp, 0, 0);
-    if (SUCCEEDED(hr) && (vtProp.vt == VT_UI8 || vtProp.vt == VT_BSTR)) {
-        if (vtProp.vt == VT_UI8) {
-            result = vtProp.ullVal;
-        } else if (vtProp.vt == VT_BSTR) {
-            result = _wtoi64(vtProp.bstrVal);
+
+    if (SUCCEEDED(hr)) {
+        switch (vtProp.vt) {
+            case VT_I1:    result = (LONGLONG)vtProp.cVal; break;
+            case VT_UI1:   result = (LONGLONG)vtProp.bVal; break;
+            case VT_I2:    result = (LONGLONG)vtProp.iVal; break;
+            case VT_UI2:   result = (LONGLONG)vtProp.uiVal; break;
+            case VT_I4:    result = (LONGLONG)vtProp.lVal; break;
+            case VT_UI4:   result = (LONGLONG)vtProp.ulVal; break;
+            case VT_I8:    result = vtProp.llVal; break;
+            case VT_UI8:   result = vtProp.ullVal; break;
+            case VT_INT:   result = (LONGLONG)vtProp.intVal; break;
+            case VT_UINT:  result = (LONGLONG)vtProp.uintVal; break;
+            case VT_BSTR:
+                if (vtProp.bstrVal)
+                    result = _wtoi64(vtProp.bstrVal);
+                break;
+            default:
+	printf("Error converting result from WMI. Reason: Unexpected type.\n");
+                break;
         }
     }
+
     VariantClear(&vtProp);
     return result;
 }

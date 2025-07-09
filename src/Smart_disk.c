@@ -146,20 +146,50 @@ char* get_smart_info_json() {
         if (SUCCEEDED(hr) && (vtProp.vt == VT_I4 || vtProp.vt == VT_UI4)) sectors_per_track = vtProp.uintVal;
         VariantClear(&vtProp);
         // TotalCylinders
-        hr = pclsObj->lpVtbl->Get(pclsObj, L"TotalCylinders", 0, &vtProp, 0, 0);
-        if (SUCCEEDED(hr) && (vtProp.vt == VT_I8 || vtProp.vt == VT_UI8)) total_cylinders = vtProp.ullVal;
-        VariantClear(&vtProp);
+hr = pclsObj->lpVtbl->Get(pclsObj, L"TotalCylinders", 0, &vtProp, 0, 0);
+if (SUCCEEDED(hr)) {
+    if (vtProp.vt == VT_BSTR && vtProp.bstrVal) {
+        char temp[64];
+        wcstombs(temp, vtProp.bstrVal, sizeof(temp));
+        total_cylinders = _strtoui64(temp, NULL, 10);
+    } else if (vtProp.vt == VT_I8 || vtProp.vt == VT_UI8) {
+        total_cylinders = vtProp.ullVal;
+    }
+}
+VariantClear(&vtProp);
+
         // TotalHeads
         hr = pclsObj->lpVtbl->Get(pclsObj, L"TotalHeads", 0, &vtProp, 0, 0);
         if (SUCCEEDED(hr) && (vtProp.vt == VT_I4 || vtProp.vt == VT_UI4)) total_heads = vtProp.uintVal;
         VariantClear(&vtProp);
         // TotalSectors
-        hr = pclsObj->lpVtbl->Get(pclsObj, L"TotalSectors", 0, &vtProp, 0, 0);
-        if (SUCCEEDED(hr) && (vtProp.vt == VT_I8 || vtProp.vt == VT_UI8)) total_sectors = vtProp.ullVal;
-        VariantClear(&vtProp);
-        // TotalTracks
-        hr = pclsObj->lpVtbl->Get(pclsObj, L"TotalTracks", 0, &vtProp, 0, 0);
-        if (SUCCEEDED(hr) && (vtProp.vt == VT_I8 || vtProp.vt == VT_UI8)) total_tracks = vtProp.ullVal;
+hr = pclsObj->lpVtbl->Get(pclsObj, L"TotalSectors", 0, &vtProp, 0, 0);
+if (SUCCEEDED(hr)) {
+    if (vtProp.vt == VT_BSTR && vtProp.bstrVal) {
+        char temp[64];
+        wcstombs(temp, vtProp.bstrVal, sizeof(temp));
+        total_sectors = _strtoui64(temp, NULL, 10);
+    } else if (vtProp.vt == VT_I8 || vtProp.vt == VT_UI8) {
+        total_sectors = vtProp.ullVal;
+    }
+}
+VariantClear(&vtProp);
+// TotalTracks
+hr = pclsObj->lpVtbl->Get(pclsObj, L"TotalTracks", 0, &vtProp, 0, 0);
+if (SUCCEEDED(hr)) {
+    if (vtProp.vt == VT_BSTR && vtProp.bstrVal) {
+        char temp[64];
+        wcstombs(temp, vtProp.bstrVal, sizeof(temp));
+        total_tracks = _strtoui64(temp, NULL, 10);
+    } else if (vtProp.vt == VT_I8 || vtProp.vt == VT_UI8) {
+        total_tracks = vtProp.ullVal;
+    }
+}
+VariantClear(&vtProp);
+
+        // TracksPerCylinder
+        hr = pclsObj->lpVtbl->Get(pclsObj, L"TracksPerCylinder", 0, &vtProp, 0, 0);
+        if (SUCCEEDED(hr) && (vtProp.vt == VT_I4 || vtProp.vt == VT_UI4)) tracks_per_cylinder = vtProp.uintVal;
         VariantClear(&vtProp);
         // TracksPerCylinder
         hr = pclsObj->lpVtbl->Get(pclsObj, L"TracksPerCylinder", 0, &vtProp, 0, 0);
