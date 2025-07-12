@@ -6,7 +6,7 @@ This repository contains two tools built on top of the [HardView](https://github
 
 ## 🖥️ HVapp
 
-**HVapp** is a graphical desktop application built using **PyQt**.  
+**HVapp** is a graphical desktop application built using **PySide6**.  
 It provides a clean and interactive GUI to display detailed hardware information retrieved from the HardView library.
 
 ### Features:
