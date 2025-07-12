@@ -4,14 +4,14 @@ import time
 import pprint
 import subprocess
 import multiprocessing # Import multiprocessing for running blocking operations in a separate process
-from PyQt5.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QTextEdit, QLabel, QTabWidget, QLineEdit, QProgressBar,
     QMessageBox, QScrollArea, QTreeWidget, QTreeWidgetItem, QSizePolicy,
-    QHeaderView, QAction
+    QHeaderView
 )
-from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
-from PyQt5.QtGui import QFont, QIntValidator, QIcon, QPixmap, QPainter, QColor, QClipboard
+from PySide6.QtCore import Qt, QThread, Signal, QTimer
+from PySide6.QtGui import QFont, QIntValidator, QIcon, QPixmap, QPainter, QColor, QClipboard, QAction # Moved QAction here
 
 # --- Function to install missing packages ---
 def install_package(package_name):
@@ -65,7 +65,7 @@ except ImportError:
     msg_box.setInformativeText("This application requires the 'HardView' library. Do you want to install it now?")
     msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
     msg_box.setDefaultButton(QMessageBox.Yes)
-    reply = msg_box.exec_()
+    reply = msg_box.exec()
 
     if reply == QMessageBox.Yes:
         if install_package("HardView"):
@@ -141,9 +141,9 @@ class HardViewWorker(QThread):
     A QThread subclass to manage HardView operations.
     For monitoring functions, it spawns a multiprocessing.Process to prevent UI freezing.
     """
-    result_signal = pyqtSignal(object, str) # (data, function_name)
-    error_signal = pyqtSignal(str, str)     # (error_message, function_name)
-    progress_signal = pyqtSignal(int, str)  # (percentage, message)
+    result_signal = Signal(object, str) # (data, function_name)
+    error_signal = Signal(str, str)     # (error_message, function_name)
+    progress_signal = Signal(int, str)  # (percentage, message)
 
     def __init__(self, func, *args, **kwargs):
         super().__init__()
@@ -217,7 +217,7 @@ class LivePerformanceWorker(QThread):
     A dedicated QThread subclass for fetching all live performance metrics.
     Emits a single signal with all results and errors when finished.
     """
-    finished_with_data = pyqtSignal(dict, dict) # (results_dict, errors_dict)
+    finished_with_data = Signal(dict, dict) # (results_dict, errors_dict)
 
     def __init__(self, performance_functions):
         super().__init__()
@@ -1018,4 +1018,4 @@ if __name__ == "__main__":
     window = HardViewApp()
     window.show()
     # Start the Qt event loop
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
