@@ -1,6 +1,6 @@
 #ifndef HARDVIEW_H
 #define HARDVIEW_H
-
+#include <stdbool.h>
 char* get_bios_info(bool Json);
 char* get_system_info(bool Json);
 char* get_baseboard_info(bool Json);
