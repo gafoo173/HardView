@@ -1,5 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-3.0.0-blue" alt="Version" height="30">
+  <img src="https://img.shields.io/badge/downloads-1.1K-blue" alt="Version" height="30">
   <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Supported Python versions" height="30">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
   <img src="https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey" alt="Platforms" height="30">
