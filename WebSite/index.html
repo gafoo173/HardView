@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HardView - Your Window into Hardware Information</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #4f46e5, #6366f1); /* Purple gradient */
+            color: white;
+            padding: 8rem 0;
+            text-align: center;
+        }
+        .section-heading {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: #1e293b; /* Dark slate */
+            position: relative;
+            display: inline-block;
+        }
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80%;
+            height: 4px;
+            background-color: #4f46e5; /* Purple accent */
+            border-radius: 2px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .code-block {
+            background-color: #1e293b; /* Dark slate */
+            color: #e2e8f0; /* Light gray text */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #6366f1;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #4f46e5;
+            padding: 0.75rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4f46e5;
+            margin-bottom: 1rem;
+        }
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            color: #475569;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .faq-question .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-question.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 256px; /* w-64 */
+            background-color: #1e293b; /* gray-800 */
+            color: white;
+            padding: 1rem; /* p-4 */
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .main-content {
+            margin-left: 256px; /* ml-64 */
+            padding: 2rem; /* p-8 */
+            width: calc(100% - 256px);
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: none;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar-toggle {
+                display: block;
+                padding: 1rem;
+                background-color: #334155;
+                text-align: center;
+                cursor: pointer;
+            }
+            .sidebar-nav {
+                display: none; /* Hidden by default on mobile */
+            }
+            .sidebar-nav.active {
+                display: block;
+            }
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease;
+        }
+        .sidebar a:hover {
+            background-color: #334155; /* gray-700 */
+        }
+        .sidebar a.active {
+            background-color: #4f46e5; /* purple-600 */
+            font-weight: 600;
+        }
+        .sidebar ul ul {
+            padding-left: 1rem;
+            border-left: 2px solid #475569; /* slate-600 */
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar ul ul a {
+            padding: 0.3rem 0.5rem;
+            font-size: 0.9rem;
+        }
+        .content-section h1 {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+        .content-section h2 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        .content-section h3 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #1e293b;
+        }
+        .content-section p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #475569;
+        }
+        .content-section ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        .content-section ol {
+            list-style-type: decimal;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        .content-section li {
+            margin-bottom: 0.5rem;
+        }
+        .content-section pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            margin-bottom: 1rem;
+        }
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        .content-section th, .content-section td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .content-section th {
+            background-color: #e2e8f0;
+            font-weight: 600;
+        }
+        .content-section blockquote {
+            border-left: 4px solid #4f46e5;
+            background-color: #eef2ff;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            color: #312e81;
+        }
+        .content-section code {
+            background-color: #e2e8f0;
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.9em;
+            color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <h2 class="text-3xl font-bold mb-8 text-center text-purple-300">HardView Docs</h2>
+        <div class="sidebar-toggle md:hidden">
+            <i class="fas fa-bars mr-2"></i> Toggle Menu
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" data-section="home" class="block py-2 px-4 rounded hover:bg-gray-700 active">Home</a></li>
+                <li><a href="#" data-section="features" class="block py-2 px-4 rounded hover:bg-gray-700">Key Features</a></li>
+                <li><a href="#" data-section="installation" class="block py-2 px-4 rounded hover:bg-gray-700">Installation</a></li>
+                <li><a href="#" data-section="usage" class="block py-2 px-4 rounded hover:bg-gray-700">Usage Examples</a></li>
+                <li><a href="#" data-section="hardware-checker" class="block py-2 px-4 rounded hover:bg-gray-700">Hardware Checker</a></li>
+
+                <li class="mt-4">
+                    <a href="#" data-section="api-reference" class="block py-2 px-4 rounded hover:bg-gray-700 flex justify-between items-center">
+                        API Reference <i class="fas fa-chevron-down text-xs ml-2"></i>
+                    </a>
+                    <ul class="ml-4 hidden" id="api-sub-menu">
+                        <li><a href="#" data-section="api-bios" class="block py-2 px-4 rounded hover:bg-gray-700">BIOS Info</a></li>
+                        <li><a href="#" data-section="api-system" class="block py-2 px-4 rounded hover:bg-gray-700">System Info</a></li>
+                        <li><a href="#" data-section="api-baseboard" class="block py-2 px-4 rounded hover:bg-gray-700">Baseboard Info</a></li>
+                        <li><a href="#" data-section="api-chassis" class="block py-2 px-4 rounded hover:bg-gray-700">Chassis Info</a></li>
+                        <li><a href="#" data-section="api-cpu" class="block py-2 px-4 rounded hover:bg-gray-700">CPU Info</a></li>
+                        <li><a href="#" data-section="api-ram" class="block py-2 px-4 rounded hover:bg-gray-700">RAM Info</a></li>
+                        <li><a href="#" data-section="api-disk" class="block py-2 px-4 rounded hover:bg-gray-700">Disk Drives Info</a></li>
+                        <li><a href="#" data-section="api-network" class="block py-2 px-4 rounded hover:bg-gray-700">Network Adapters Info</a></li>
+                        <li><a href="#" data-section="api-partitions" class="block py-2 px-4 rounded hover:bg-gray-700">Partitions Info</a></li>
+                        <li><a href="#" data-section="api-smart" class="block py-2 px-4 rounded hover:bg-gray-700">SMART/Disk Info</a></li>
+                        <li><a href="#" data-section="api-cpu-usage" class="block py-2 px-4 rounded hover:bg-gray-700">CPU Usage</a></li>
+                        <li><a href="#" data-section="api-ram-usage" class="block py-2 px-4 rounded hover:bg-gray-700">RAM Usage</a></li>
+                        <li><a href="#" data-section="api-system-performance" class="block py-2 px-4 rounded hover:bg-gray-700">System Performance</a></li>
+                        <li><a href="#" data-section="api-monitor-cpu" class="block py-2 px-4 rounded hover:bg-gray-700">Monitor CPU Usage</a></li>
+                        <li><a href="#" data-section="api-monitor-ram" class="block py-2 px-4 rounded hover:bg-gray-700">Monitor RAM Usage</a></li>
+                        <li><a href="#" data-section="api-monitor-system" class="block py-2 px-4 rounded hover:bg-gray-700">Monitor System Performance</a></li>
+                    </ul>
+                </li>
+
+                <li class="mt-4">
+                    <a href="#" data-section="documentation" class="block py-2 px-4 rounded hover:bg-gray-700 flex justify-between items-center">
+                        Documentation Files <i class="fas fa-chevron-down text-xs ml-2"></i>
+                    </a>
+                    <ul class="ml-4 hidden" id="docs-sub-menu">
+                        <li><a href="#" data-section="doc-readme" class="block py-2 px-4 rounded hover:bg-gray-700">README.MD</a></li>
+                        <li><a href="#" data-section="doc-architecture" class="block py-2 px-4 rounded hover:bg-gray-700">ARCHITECTURE.md</a></li>
+                        <li><a href="#" data-section="doc-benchmarks" class="block py-2 px-4 rounded hover:bg-gray-700">BENCHMARKS.md</a></li>
+                        <li><a href="#" data-section="doc-changelog" class="block py-2 px-4 rounded hover:bg-gray-700">CHANGELOG.md</a></li>
+                        <li><a href="#" data-section="doc-contributing" class="block py-2 px-4 rounded hover:bg-gray-700">CONTRIBUTING.md</a></li>
+                        <li><a href="#" data-section="doc-faq" class="block py-2 px-4 rounded hover:bg-gray-700">FAQ.md</a></li>
+                        <li><a href="#" data-section="doc-install" class="block py-2 px-4 rounded hover:bg-gray-700">INSTALL.md</a></li>
+                        <li><a href="#" data-section="doc-what" class="block py-2 px-4 rounded hover:bg-gray-700">What.md</a></li>
+                    </ul>
+                </li>
+
+                <li class="mt-4"><a href="#" data-section="when-to-use" class="block py-2 px-4 rounded hover:bg-gray-700">When to Use HardView?</a></li>
+                <li><a href="#" data-section="faq" class="block py-2 px-4 rounded hover:bg-gray-700">FAQ</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home-section" class="content-section">
+            <div class="hero-section rounded-xl shadow-lg">
+                <div class="container mx-auto px-4">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        HardView <br class="hidden md:block"> Your Window into Hardware Information
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90">
+                        A high-performance, cross-platform Python library providing detailed hardware and system information in JSON format.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="#" data-section="installation" id="installNowBtn" class="btn-primary inline-block">
+                            <i class="fas fa-download mr-2"></i> Install Now
+                        </a>
+                        <a href="#" data-section="usage" id="usageExamplesBtn" class="btn-secondary inline-block">
+                            <i class="fas fa-code mr-2"></i> Usage Examples
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section (Existing content) -->
+        <section id="features-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card">
+                    <div class="feature-icon"><i class="fas fa-server"></i></div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Comprehensive Hardware Data</h3>
+                    <p class="text-gray-600">Get detailed information about BIOS, System, Motherboard, CPU, RAM, Disks, and Network.</p>
+                </div>
+                <div class="card">
+                    <div class="feature-icon"><i class="fas fa-hdd"></i></div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Advanced Storage & SMART</h3>
+                    <p class="text-gray-600">Detailed disk, partition, and advanced SMART attributes.</p>
+                </div>
+                <div class="card">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Performance Monitoring</h3>
+                    <p class="text-gray-600">Monitor CPU, RAM, and system performance in real-time and over intervals.</p>
+                </div>
+                <div class="card">
+                    <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Cross-Platform</h3>
+                    <p class="text-gray-600">Works seamlessly on Windows (via WMI) and Linux (via sysfs/proc) systems.</p>
+                </div>
+                <div class="card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">C Implementation (Ultra-Fast)</h3>
+                    <p class="text-gray-600">Built in C to ensure the highest performance and minimal resource consumption.</p>
+                </div>
+                <div class="card">
+                    <div class="feature-icon"><i class="fas fa-file-code"></i></div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">Structured JSON Output</h3>
+                    <p class="text-gray-600">All results are returned as JSON strings for easy parsing and integration.</p>
+                </div>
+            </div>
+            <p class="text-lg text-gray-700 mt-12 max-w-2xl mx-auto">
+                HardView is significantly faster than other Python libraries due to its C implementation and direct system API access.
+            </p>
+        </section>
+
+        <!-- Installation Section (Existing content) -->
+        <section id="installation-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">Installation</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 text-left">
+                <div class="card">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800"><i class="fas fa-cube mr-2 text-purple-600"></i> Install from PyPI (Recommended)</h3>
+                    <p class="text-gray-700 mb-6">
+                        The easiest way to install HardView is via pip from the Python Package Index (PyPI):
+                    </p>
+                    <div class="code-block">
+                        <pre><code>pip install hardview</code></pre>
+                    </div>
+                    <p class="text-gray-600 mt-4 text-sm">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        HardView supports Windows (32/64-bit) and Linux (x86/x86_64) systems.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800"><i class="fas fa-code-branch mr-2 text-purple-600"></i> Install from Source</h3>
+                    <p class="text-gray-700 mb-6">
+                        If you want to build HardView yourself (for development or unsupported Python versions):
+                    </p>
+                    <div class="code-block mb-4">
+                        <pre><code>git clone https://github.com/gafoo173/hardview.git
+cd hardview
+pip install .</code></pre>
+                    </div>
+                    <p class="text-gray-600 mt-4 text-sm">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        For source installation on Windows, ensure you have a working C compiler (Visual Studio Build Tools recommended).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Example Section (Existing content) -->
+        <section id="usage-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">Usage Examples</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
+                HardView is incredibly easy to use. Here's a simple example showing how to get CPU information:
+            </p>
+            <div class="max-w-4xl mx-auto">
+                <div class="code-block text-left">
+                    <pre><code>import hardview
+import json
+import pprint # For pretty printing JSON output
+
+# Get CPU information
+cpu_info_json = hardview.get_cpu_info()
+
+# Parse the JSON string into a Python object
+cpu_info = json.loads(cpu_info_json)
+
+# Pretty print the information
+print("CPU Information:")
+pprint.pprint(cpu_info)
+
+# Another example: Get RAM information
+ram_info_json = hardview.get_ram_info()
+ram_info = json.loads(ram_info_json)
+print("\nRAM Information:")
+pprint.pprint(ram_info)
+
+# Example of monitoring CPU usage for 5 seconds with a 1-second interval
+print("\nStarting CPU usage monitoring for 5 seconds...")
+cpu_monitor_data = json.loads(hardview.monitor_cpu_usage(5, 1000))
+print("CPU Monitoring Data:")
+pprint.pprint(cpu_monitor_data)
+</code></pre>
+                </div>
+                <p class="text-gray-600 mt-6 text-sm text-left">
+                    <i class="fas fa-lightbulb mr-1"></i>
+                    Always remember to use <code>json.loads()</code> to parse the output from HardView, as it returns JSON strings.
+                </p>
+            </div>
+        </section>
+
+        <!-- Hardware Checker Section (New Game/Tool) -->
+        <section id="hardware-checker-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">Hardware Compatibility Checker</h2>
+            <div class="max-w-2xl mx-auto card text-left">
+                <p class="text-gray-700 mb-6">
+                    Enter a common computer hardware component (e.g., "CPU", "SSD", "Motherboard", "GPU") to check if it's a valid component and if HardView supports retrieving its information.
+                </p>
+                <div class="mb-4">
+                    <label for="componentInput" class="block text-gray-700 text-sm font-bold mb-2">Component Name:</label>
+                    <input type="text" id="componentInput" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="e.g., CPU, RAM, GPU">
+                </div>
+                <button id="checkComponentBtn" class="btn-primary w-full">
+                    <i class="fas fa-search mr-2"></i> Check Compatibility
+                </button>
+                <div id="checkerResult" class="mt-6 p-4 rounded-lg text-white font-semibold hidden"></div>
+            </div>
+        </section>
+
+        <!-- API Reference Section - Container for all API details -->
+        <section id="api-reference-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">API Reference</h2>
+            <p class="text-lg text-gray-700 mb-8">
+                HardView provides a comprehensive set of functions to retrieve various hardware and system information. Click on a function in the sidebar to view its details and usage.
+            </p>
+            <!-- Content for specific API functions will be loaded here -->
+            <div id="api-detail-content">
+                <!-- Default content or first API function details will appear here -->
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Select an API Function from the Sidebar</h3>
+                <p class="text-gray-600">Choose a function from the "API Reference" menu on the left to see its description and usage example.</p>
+            </div>
+        </section>
+
+        <!-- Documentation Files Section - Container for all doc files -->
+        <section id="documentation-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">Documentation Files</h2>
+            <p class="text-lg text-gray-700 mb-8">
+                Explore the full documentation of HardView, including its architecture, benchmarks, changelog, and more. Select a file from the "Documentation Files" menu on the left.
+            </p>
+            <div id="doc-file-content">
+                <!-- Default content or first doc file will appear here -->
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Select a Documentation File from the Sidebar</h3>
+                <p class="text-gray-600">Choose a document from the "Documentation Files" menu on the left to view its content.</p>
+            </div>
+        </section>
+
+        <!-- When to Use HardView Section (Existing content) -->
+        <section id="when-to-use-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">When to Use HardView?</h2>
+            <p class="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
+                HardView is the ideal choice when you need:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
+                <div class="flex items-start card p-6">
+                    <i class="fas fa-check-circle text-purple-600 text-2xl mr-4 mt-1"></i>
+                    <p class="text-gray-700">
+                        <strong class="text-gray-900">Detailed, accurate, and complete hardware information</strong> (including BIOS, baseboard, chassis, SMART, etc.).
+                    </p>
+                </div>
+                <div class="flex items-start card p-6">
+                    <i class="fas fa-check-circle text-purple-600 text-2xl mr-4 mt-1"></i>
+                    <p class="text-gray-700">
+                        <strong class="text-gray-900">Extremely fast queries</strong> (with native C execution speed).
+                    </p>
+                </div>
+                <div class="flex items-start card p-6">
+                    <i class="fas fa-check-circle text-purple-600 text-2xl mr-4 mt-1"></i>
+                    <p class="text-gray-700">
+                        <strong class="text-gray-900">Real-time or interval-based performance monitoring</strong>.
+                    </p>
+                </div>
+                <div class="flex items-start card p-6">
+                    <i class="fas fa-check-circle text-purple-600 text-2xl mr-4 mt-1"></i>
+                    <p class="text-gray-700">
+                        <strong class="text-gray-900">Consistent and structured JSON output</strong> for easy integration.
+                    </p>
+                </div>
+                <div class="flex items-start card p-6 col-span-1 md:col-span-2">
+                    <i class="fas fa-check-circle text-purple-600 text-2xl mr-4 mt-1"></i>
+                    <p class="text-gray-700">
+                        <strong class="text-gray-900">A single cross-platform solution</strong> for both Windows and Linux.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section (Existing content) -->
+        <section id="faq-section" class="content-section hidden py-20">
+            <h2 class="section-heading mb-16">Frequently Asked Questions</h2>
+            <div class="max-w-3xl mx-auto text-left">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p>Q1: pip install fails or cannot find a suitable wheel?</p>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A: Ensure you are using a supported platform (Windows 32/64-bit or Linux x86/x86_64) and a supported Python version. Upgrade pip to the latest version: <code>pip install --upgrade pip</code>. If no wheel is available, try building from source.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p>Q2: HardView does not work after installation or shows an ImportError?</p>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A: Ensure the library file in your <code>site-packages</code> directory is named <code>HardView.pyd</code> (or <code>HardView.so</code> on Linux) with correct casing. Make sure to import the library using <code>import HardView</code>. Reinstall if necessary.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p>Q3: Does HardView support Linux, macOS, or other platforms?</p>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A: HardView supports Windows (32/64-bit) and Linux (x86/x86_64) only. There is no support for Arch Linux, Android, or macOS.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p>Q4: Why is HardView faster than other Python libraries?</p>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A: HardView is written entirely in C and interacts directly with system APIs, minimizing overhead and maximizing speed.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <p>Q5: Is HardView thread-safe?</p>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>A: HardView is not inherently thread-safe. If you use it in multi-threaded code, ensure calls are serialized or protected by the Python GIL.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hidden Markdown Content - Raw content from your .md files -->
+        <script type="text/plain" id="markdown-content-README">
+# HardView - Python Hardware Information Module
+
+HardView is a high-performance, cross-platform Python module that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.
+
+## Key Features
+
+- 🖥️ **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network
+- 🏗️ **Advanced Storage & SMART**: Detailed disk, partition, and SMART attributes
+- 📊 **Performance Monitoring**: Real-time and interval-based CPU, RAM, and system performance (usage, monitoring)
+- 🏗️ **Cross-Platform**: Works on Windows (WMI) and Linux (sysfs/proc)
+- ⚡ **C Implementation**: High performance native code
+- 🐍 **Python Integration**: Easy-to-use Python API
+- 🧩 **Modular Design**: Extensible, well-documented, and easy to contribute to
+- 📝 **Structured JSON Output**: All results are returned as JSON strings for easy parsing
+
+## Installation
+
+See [`docs/INSTALL.md`](./INSTALL.md) for supported platforms and installation instructions.
+
+### From PyPI 
+
+```bash
+pip install hardview
+```
+
+### From Source
+
+```bash
+git clone [https://github.com/gafoo173/hardview.git](https://github.com/gafoo173/hardview.git)
+cd hardview
+pip install .
+```
+
+## Usage Example
+
+```python
+import hardview
+import json
+
+# Get all hardware information
+bios_info = json.loads(hardview.get_bios_info())
+system_info = json.loads(hardview.get_system_info())
+cpu_info = json.loads(hardview.get_cpu_info())
+ram_info = json.loads(hardview.get_ram_info())
+disk_info = json.loads(hardview.get_disk_info())
+network_info = json.loads(hardview.get_network_info())
+
+# Advanced features
+smart_info = json.loads(hardview.get_smart_info())
+partitions_info = json.loads(hardview.get_partitions_info())
+
+# Performance monitoring
+cpu_usage = json.loads(hardview.get_cpu_usage())
+ram_usage = json.loads(hardview.get_ram_usage())
+system_perf = json.loads(hardview.get_system_performance())
+
+# Monitor over time
+cpu_monitor = json.loads(hardview.monitor_cpu_usage(5, 1000))  # 5 seconds, 1s interval
+
+# Pretty print CPU information
+import pprint
+pprint.pprint(cpu_info)
+```
+
+## Documentation
+
+All documentation is in the `docs/` folder. Key files:
+
+- [`What.md`](./What.md): **API Reference & Output Examples** Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md): **Technical Architecture** Deep dive into the internal structure, data flow, and design of HardView for developers and contributors.
+- [`BENCHMARKS.md`](./BENCHMARKS.md): **Performance & Feature Comparisons** Real-world speed benchmarks and feature comparisons with other Python libraries.
+- [`INSTALL.md`](./INSTALL.md): **Installation Guide** Supported platforms, installation methods, and troubleshooting tips.
+- [`FAQ.md`](./FAQ.md): **Frequently Asked Questions** Solutions to common installation, usage, and troubleshooting issues.
+
+## API Reference (Summary)
+
+| Function | Description | Sample Output |
+|----------|-------------|---------------|
+| `get_bios_info()` | BIOS vendor, version, release date | `{...}` |
+| `get_system_info()` | System manufacturer, product name, UUID | `{...}` |
+| `get_baseboard_info()` | Motherboard information | `{...}` |
+| `get_chassis_info()` | Chassis/computer case info | `{...}` |
+| `get_cpu_info()` | Processor details | `{...}` |
+| `get_ram_info()` | Memory modules and totals | `{...}` |
+| `get_disk_info()` | Storage devices | `{...}` |
+| `get_network_info()` | Network adapters | `{...}` |
+| `get_partitions_info()` | Disk partitions (advanced) | `{...}` |
+| `get_smart_info()` | Full disk/SMART info (advanced) | `{...}` |
+| `get_cpu_usage()` | Current CPU usage | `{...}` |
+| `get_ram_usage()` | Current RAM usage | `{...}` |
+| `get_system_performance()` | Combined CPU/RAM usage | `{...}` |
+| `monitor_cpu_usage(duration, interval)` | Monitor CPU usage over time | `[ ... ]` |
+| `monitor_ram_usage(duration, interval)` | Monitor RAM usage over time | `[ ... ]` |
+| `monitor_system_performance(duration, interval)` | Monitor system performance over time | `[ ... ]` |
+
+See [`docs/What.md`](./What.md) for full details and output samples.
+
+## Data Structure Diagrams
+
+### CPU Information Structure
+```mermaid
+classDiagram
+    class CPUInfo {
+        +cpus: CPU[]
+    }
+    class CPU {
+        +name: str
+        +manufacturer: str
+        +cores: int
+        +logical_processors: int
+        +max_clock_speed_mhz: float
+        +processor_id: str
+    }
+    CPUInfo "1" *-- "*" CPU
+```
+
+### Memory Information Structure
+```mermaid
+classDiagram
+    class RAMInfo {
+        +total_physical_memory_bytes: int
+        +memory_modules: MemoryModule[]
+    }
+    class MemoryModule {
+        +capacity_bytes: int
+        +speed_mhz: int
+        +manufacturer: str
+        +serial_number: str
+        +part_number: str
+    }
+    RAMInfo "1" *-- "*" MemoryModule
+```
+
+## Platform Support
+
+| Feature | Windows | Linux |
+|---------|---------|-------|
+| BIOS Info | ✅ WMI | ✅ sysfs |
+| System Info | ✅ WMI | ✅ sysfs |
+| Baseboard | ✅ WMI | ✅ sysfs |
+| Chassis | ✅ WMI | ✅ sysfs |
+| CPU | ✅ WMI | ✅ /proc/cpuinfo |
+| RAM | ✅ WMI | ✅ /proc/meminfo |
+| Disks | ✅ WMI | ✅ /sys/block |
+| Network | ✅ WMI | ✅ getifaddrs |
+| Advanced Storage/SMART | ✅ WMI |  |
+| Performance Monitoring | ✅ | |
+
+## Performance Benchmarks
+
+See [`docs/BENCHMARKS.md`](./BENCHMARKS.md) for detailed speed and feature comparisons with other libraries.
+
+## Development
+
+### Build Instructions
+
+**Windows:**
+```bash
+python setup.py build_ext --inplace
+```
+
+**Linux:**
+```bash
+python setup.py build_ext --inplace
+```
+
+### Dependencies
+
+- Python 3.6+
+- On Windows: WMI libraries (automatically available)
+- On Linux: Standard system libraries (libc, etc.)
+
+## License
+
+MIT License - Free for commercial and personal use.
+
+## Contribution
+
+Contributions are welcome! Please submit pull requests or open issues for features/bugs.
+
+---
+
+*HardView - Your Window into Hardware Information* *See docs/ for full API, technical, and comparison documentation.*
+        </script>
+
+        <script type="text/plain" id="markdown-content-ARCHITECTURE">
+# HardView Library: Architecture & Internals
+
+This document provides a deep technical overview of the HardView library, including its internal structure, data flow, and design principles. It is intended for developers and contributors who want to understand, extend, or maintain the library.
+
+---
+
+## 1. High-Level Architecture
+
+HardView is a native C library with a Python extension interface. It is designed for:
+- **Performance:** Direct system calls, minimal overhead, native code
+- **Extensibility:** Modular codebase, easy to add new hardware domains or platforms
+- **Reliability:** Robust error handling, memory safety, and clear separation of concerns
+
+---
+
+## 2. Data Flow: From System to Python
+
+1. **Python Call:** User calls a function in the Python module (e.g., `get_cpu_info_json()`)
+2. **C Extension Entry Point:** The Python binding in `HardView.c` receives the call and dispatches to the appropriate C function
+3. **Platform Abstraction:**
+    - On Windows: Calls WMI/Win32 API via COM interfaces
+    - On Linux: Reads from `/proc`, `/sys`, or uses system calls
+4. **Data Collection:** The relevant module (e.g., `cpu_info.c`) queries the system, collects and parses the data
+5. **JSON Formatting:** Data is formatted into a JSON string using helpers (with proper escaping and memory management)
+6. **Return to Python:** The JSON string is returned to Python, where it can be parsed with `json.loads()`
+
+---
+
+## 3. Module Structure & Interaction
+
+- **helpers.c/h:**
+  - JSON string creation, string escaping, utility functions
+- **win_helpers.c/h:**
+  - WMI/COM initialization, cleanup, error translation (Windows only)
+- **linux_helpers.c/h:**
+  - Linux-specific helpers (planned/partial)
+- **[domain]_info.c/h:**
+  - One pair per hardware domain (bios, system, baseboard, chassis, cpu, ram, disk, network, etc.)
+  - Each implements data collection and JSON formatting for its domain
+- **performance_monitor.c/h:**
+  - Real-time and interval-based monitoring (CPU, RAM, system)
+- **advanced_storage_info.c/h, Smart_disk.c/h:**
+  - Advanced disk/partition/SMART info
+- **HardView.c/h:**
+  - Main entry point, Python C extension interface, function registration
+
+**Interaction:**
+- Each domain module is self-contained and only interacts with helpers and platform-specific helpers
+- The main entry point (HardView.c) exposes all public functions to Python
+
+---
+
+## 4. Error Handling & Propagation
+
+- All system/API calls are checked for errors (HRESULT, NULL pointers, etc.)
+- On error, a JSON string with an `"error"` field is returned (e.g., `{ "error": "Failed to initialize WMI" }`)
+- COM objects and system resources are always released, even on error
+- Errors propagate up to Python as JSON, so the user can handle them easily
+
+---
+
+## 5. Memory Management & Safety
+
+- All returned JSON strings are heap-allocated (`malloc`) and must be freed by the Python wrapper (handled automatically)
+- Internal buffers are sized conservatively and checked for overflows
+- Temporary allocations (e.g., for string escaping) are always freed after use
+- No global state is used, minimizing risk of memory leaks or corruption
+
+---
+
+## 6. Thread Safety
+
+- The library is **not inherently thread-safe** (as WMI/COM and some system APIs are not thread-safe by default)
+- If used in multi-threaded Python code, calls should be serialized or protected by the Python GIL (which is the default for CPython extensions)
+- No global mutable state is used
+
+---
+
+## 7. Adding New Platforms
+
+To add support for a new OS/platform:
+1. Create new platform-specific helpers (e.g., `mac_helpers.c/h`)
+2. Implement domain modules for the new platform (e.g., `cpu_info_mac.c`)
+3. Use preprocessor macros (`#ifdef __APPLE__`, etc.) to select the correct implementation
+4. Update the build system (e.g., `setup.py`) to include/exclude files as needed
+5. Add tests and documentation
+
+---
+
+## 8. Adding New Hardware Domains
+
+1. Create a new `[domain]_info.c/h` file pair
+2. Implement data collection and JSON formatting for the new domain
+3. Register the new function in `HardView.c/h` for Python exposure
+4. Update documentation and add usage examples
+
+---
+
+## 9. Data Flow Diagram
+
+```mermaid
+graph TD;
+    Python --> HardView_c;
+    HardView_c --> Domain_Info_C;
+    Domain_Info_C --> win_helpers_c;
+    Domain_Info_C --> linux_helpers_c;
+    Domain_Info_C --> helpers_c;
+    win_helpers_c --> WMI_Win32;
+    linux_helpers_c --> proc_syscalls;
+    Domain_Info_C --> JSON_Output;
+    JSON_Output --> Python;
+
+```
+
+---
+
+## 10. Example File Structure
+
+```
+src/
+  helpers.c/h
+  win_helpers.c/h
+  linux_helpers.c/h
+  bios_info.c/h
+  system_info.c/h
+  baseboard_info.c/h
+  chassis_info.c/h
+  cpu_info.c/h
+  ram_info.c/h
+  disk_info.c/h
+  network_info.c/h
+  performance_monitor.c/h
+  advanced_storage_info.c/h
+  Smart_disk.c/h
+  HardView.c/h
+```
+
+---
+
+## 11. References
+- [Microsoft WMI Documentation](https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page)
+- [Win32 API Reference](https://docs.microsoft.com/en-us/windows/win32/api/)
+- [CPython C API](https://docs.python.org/3/c-api/)
+
+---
+
+For further questions or contributions, see the main README or contact the maintainer.
+        </script>
+
+        <script type="text/plain" id="markdown-content-BENCHMARKS">
+# HardView Benchmarks & Comparisons
+
+This document presents feature comparisons and qualitative performance notes between HardView and other popular Python hardware/system info libraries.
+
+---
+
+## 1. Why is HardView Faster?
+- **HardView** is written entirely in C and interacts directly with system APIs (WMI/Win32 on Windows, sysfs/proc on Linux), minimizing overhead and maximizing speed.
+- Competing libraries (psutil, wmi, py-cpuinfo, etc.) are written in Python or are Python wrappers over system APIs, which adds significant overhead.
+- HardView is optimized for batch queries and returns all results as JSON, making it efficient for both single and repeated queries.
+- In practice, HardView is noticeably faster than pure Python solutions, especially for large or repeated hardware queries.
+
+---
+
+## 2. Feature Coverage Comparison
+
+| Feature / Library         | HardView | psutil | wmi (pywin32) | py-cpuinfo | platform | dmidecode (Linux) |
+|--------------------------|:--------:|:------:|:-------------:|:----------:|:--------:|:-----------------:|
+| BIOS Info                |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ✅         |
+| System Info              |   ✅     |   ❌   |      ✅       |     ❌     |   ✅     |       ✅         |
+| Baseboard Info           |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ✅         |
+| Chassis Info             |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ✅         |
+| CPU Info (detailed)      |   ✅     |   ✅   |      ✅       |     ✅     |   ✅     |       ✅         |
+| RAM Info (modules)       |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ✅         |
+| Disk Info (detailed)     |   ✅     |   ✅   |      ✅       |     ❌     |   ❌     |       ✅         |
+| Partitions Info          |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ✅         |
+| SMART/Advanced Storage   |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ❌         |
+| Network Info (detailed)  |   ✅     |   ✅   |      ✅       |     ❌     |   ❌     |       ❌         |
+| Real-time CPU Usage      |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ❌         |
+| Real-time RAM Usage      |   ✅     |   ✅   |      ❌       |     ❌   |   ❌     |       ❌         |
+| System Performance Mon.  |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ❌         |
+| JSON Output              |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ❌         |
+| Cross-Platform           |   ✅     |   ✅   |   Windows     |   All      |   All    |     Linux        |
+| Native C Speed           |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ❌         |
+
+---
+
+## 3. Qualitative Performance Notes
+- **HardView** is consistently faster than pure Python libraries due to its C implementation and direct system access.
+- **Most HardView operations complete in less than half a second, and sometimes in less than 1 millisecond**, depending on the query and system speed.
+- Only HardView and dmidecode provide full BIOS, baseboard, and chassis info on Linux; only HardView does so on Windows.
+- HardView is the only library to provide SMART/advanced disk info and real-time monitoring in a unified API.
+- All HardView outputs are JSON, making integration easy.
+- For most queries, HardView returns results in a fraction of the time required by Python-based solutions, especially for complex or repeated queries.
+
+---
+
+## 4. When to Use HardView?
+- You need **detailed, accurate, and complete hardware information** (including BIOS, baseboard, chassis, SMART, etc.)
+- You want **fast** queries (native C speed)
+- You need **real-time or interval-based performance monitoring**
+- You want **consistent, structured JSON output** for easy integration
+- You want a **single cross-platform solution** for both Windows and Linux
+
+---
+
+## 5. See Also
+- **[What.md](./What.md):** Full API and output examples
+- **[ARCHITECTURE.md](./ARCHITECTURE.md):** Technical/architecture documentation
+
+---
+
+*HardView: The fastest, most complete hardware info library for Python.*
+        </script>
+
+        <script type="text/plain" id="markdown-content-CHANGELOG">
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+---
+
+## [2.0.2] - Hotfix Release
+**Highlights:**
+- Fixed a typographical error in the binary file name generated in version `2.0.1`.
+- The output binary is now properly named `HardView.pyd` or `HardView.so` with correct casing across all platforms.
+- No functional changes; this release only ensures consistent naming for better compatibility on case-sensitive systems.
+
+---
+
+## [2.0.1] - Hotfix Release
+**Highlights:**
+- Fixed critical issue with `get_smart_info()`:
+  - Resolved improper escaping of backslashes (`\`) when generating JSON strings for SMART disk data.
+  - The JSON output is now properly escaped and conforms to standard JSON formatting.
+- No changes to functionality or APIs beyond the JSON serialization fix.
+
+---
+
+## [2.0.0] - Major Release
+**Highlights:**
+- Major refactor: Each function is now organized in its own source file for better maintainability and clarity.
+- Enhanced memory safety and leak prevention.
+- New advanced features:
+  - `get_partitions_info()`: Retrieve advanced disk partition information.
+  - `get_smart_info()`: Access full disk and SMART data.
+  - `get_cpu_usage()`: Get current CPU usage statistics.
+  - `get_ram_usage()`: Get current RAM usage statistics.
+  - `get_system_performance()`: Combined CPU and RAM usage overview.
+  - `monitor_cpu_usage(duration, interval)`: Monitor CPU usage over time.
+  - `monitor_ram_usage(duration, interval)`: Monitor RAM usage over time.
+  - `monitor_system_performance(duration, interval)`: Monitor system performance over time.
+
+---
+
+## [1.1.2]
+- Fixed several memory leak issues for improved stability.
+- Retained all previous features.
+
+---
+
+## [1.0.0] - First Stable Release
+- Initial stable release with all core features from 0.1.0.
+- Improved import experience: The library file is now named `HardView.pyd`/`HardView.so` (without architecture suffix) for easier integration.
+
+---
+
+## [0.1.0] - Initial Release
+- First public release with the following core features:
+  - `get_bios_info()`: BIOS vendor, version, and release date.
+  - `get_system_info()`: System manufacturer, product name, and UUID.
+  - `get_baseboard_info()`: Motherboard details.
+  - `get_chassis_info()`: Chassis/case information.
+  - `get_cpu_info()`: Processor details.
+  - `get_ram_info()`: Memory modules and totals.
+  - `get_disk_info()`: Storage device information.
+  - `get_network_info()`: Network adapter information.
+  - `get_partitions_info()`: Advanced disk partition information.
+        </script>
+
+        <script type="text/plain" id="markdown-content-CONTRIBUTING">
+# Contributing to HardView
+
+Thank you for your interest in contributing to HardView! Your help is valuable in making this library robust, fast, and reliable across all supported platforms.
+
+---
+
+## How You Can Contribute
+
+### 1. Test on Different Architectures & Environments
+- Try HardView on various systems (Windows 32/64-bit, Linux x86/x86_64, different Python versions).
+- Report any issues you encounter, especially those related to installation, import, or hardware detection.
+- Share your results and environment details (OS, Python version, hardware specs).
+
+### 2. Report Bugs & Issues
+- If you find a bug, please open an issue on GitHub.
+- Include:
+  - Clear description of the problem
+  - Steps to reproduce
+  - Your OS, Python version, and HardView version
+  - Any error messages or logs
+
+### 3. Suggest Features & Improvements
+- If you have an idea for a new feature or improvement, open an issue with the "enhancement" label.
+- Describe the use case and why it would be helpful.
+
+### 4. Code Contributions (Pull Requests)
+- Fork the repository and create a new branch for your changes.
+- Follow the existing code style (C99 for C code, PEP8 for Python code).
+- Add or update documentation and tests as needed.
+- Make sure your code builds and passes all tests on supported platforms.
+- Submit a pull request with a clear description of your changes.
+
+### 5. Share Benchmarks & Usage Examples
+- If you run performance tests or use HardView in a real project, share your results and scripts.
+- This helps others understand the library's capabilities and performance.
+
+### 6. Help with Documentation
+- Improve or expand the documentation (in `docs/`).
+- Add new examples, clarify existing sections, or translate docs to other languages.
+
+---
+
+## Code Style & Guidelines
+- **C code:** Use C99 standard, 4-space indentation, and clear, descriptive names.
+- **Python code:** Follow PEP8.
+- Write comments for complex logic and public functions.
+- Keep functions small and focused.
+
+---
+
+## Running Tests
+- (If available) Run the provided test scripts to verify your changes.
+- Test on as many platforms and Python versions as possible.
+
+---
+
+## Questions?
+- If you have questions about contributing, open an issue or start a discussion on GitHub.
+
+---
+
+Thank you for helping make HardView better!
+        </script>
+
+        <script type="text/plain" id="markdown-content-FAQ">
+# HardView Frequently Asked Questions (FAQ)
+
+This FAQ addresses common issues and questions about installing, using, and troubleshooting the HardView library.
+
+---
+
+### Q1: **pip install fails or cannot find a suitable wheel**
+**A:**
+- Ensure you are using a supported platform (Windows 32/64-bit or Linux x86/x86_64).
+- Make sure your Python version is supported (see PyPI for available wheels).
+- Upgrade pip to the latest version:
+  ```bash
+  pip install --upgrade pip
+  ```
+- If no wheel is available for your platform/Python version, try building from source (see INSTALL.md).
+
+---
+
+### Q2: **HardView does not work after installation**
+**A:**
+- Double-check your system architecture (32/64-bit) matches the installed wheel.
+- Make sure you are using the latest version of HardView.
+- If you are on an unsupported OS (Arch, Android, macOS), the library will not work.
+- Try uninstalling and reinstalling:
+  ```bash
+  pip uninstall hardview
+  pip install hardview
+  ```
+
+---
+
+### Q3: **ImportError or cannot import HardView**
+**A:**
+- Ensure the library file in your `site-packages` directory is named `HardView.pyd` (uppercase `H` and `V`, no architecture suffix).
+    - This issue was fixed in versions >= 0.1.0. If you have an older version, upgrade HardView.
+- In your Python script, import using the correct case:
+  ```python
+  import HardView
+  ```
+- Python imports are case-sensitive on Linux and sometimes on Windows.
+
+---
+
+### Q4: **Output data is missing or not displayed correctly**
+**A:**
+- HardView always returns data as a JSON string. Make sure you parse it correctly in Python:
+  ```python
+  import json
+  import HardView
+  data = json.loads(HardView.get_cpu_info_json())
+  print(data)
+  ```
+- If you see `{ "error": ... }` in the output, check the error message for details.
+
+---
+
+### Q5: **Does HardView support Linux, macOS, or other platforms?**
+**A:**
+- HardView supports Windows (32/64-bit) and Linux (x86/x86_64) only.
+- There is no support for Arch Linux, Android, or macOS (no native code for these platforms).
+
+---
+
+### Q6: **Which Python versions are supported?**
+**A:**
+- HardView provides wheels for multiple Python versions (see PyPI for details).
+- If your version is not supported, you can try building from source.
+
+---
+
+### Q7: **How do I get help or report a bug?**
+**A:**
+- Check the documentation in the `docs/` folder first.
+- If your issue is not covered, open an issue on the project's GitHub page with details about your OS, Python version, and error message.
+
+---
+
+### Q8: **Is HardView thread-safe?**
+**A:**
+- HardView is not inherently thread-safe. If you use it in multi-threaded code, ensure calls are serialized or protected by the Python GIL.
+
+---
+
+### Q9: **How can I contribute to HardView?**
+**A:**
+- See `CONTRIBUTING.md` (if available) or the main README for contribution guidelines. Pull requests and bug reports are welcome!
+
+---
+
+### Q10: **Why is HardView faster than other Python libraries?**
+**A:**
+- HardView is written entirely in C and interacts directly with the system APIs, minimizing overhead and maximizing speed.
+
+---
+
+### Q11: **How do I monitor hardware performance over time?**
+**A:**
+- Use the monitoring functions (e.g., `monitor_cpu_usage(duration, interval)`) to collect real-time data at specified intervals. See `docs/What.md` for examples.
+
+---
+
+### Q12: **Can I use HardView in a virtual environment?**
+**A:**
+- Yes, HardView works in any standard Python environment, including virtualenv and venv.
+
+---
+
+For more details, see the full documentation in the `docs/` folder or open an issue if your question is not answered here.
+        </script>
+
+        <script type="text/plain" id="markdown-content-INSTALL">
+# HardView Installation Guide
+
+This document explains how to install the HardView library on supported platforms.
+
+---
+
+## Supported Platforms
+
+- **Windows:**
+  - 32-bit and 64-bit (x86, x86_64)
+- **Linux:**
+  - 32-bit and 64-bit (x86, x86_64)
+
+> **Note:**
+> - Prebuilt wheels are provided for the above platforms and for multiple Python versions (see PyPI for details).
+> - **Not supported:** Arch Linux, Android, and macOS. There is no native code or wheel support for these systems, as HardView does not implement platform-specific code for them.
+
+---
+
+## Installation Methods
+
+### 1. Install from PyPI (Recommended)
+
+The easiest way to install HardView is via pip from the Python Package Index (PyPI):
+
+```bash
+pip install hardview
+```
+
+This will automatically download the correct prebuilt wheel for your platform and Python version (if available).
+
+### 2. Install from Source
+
+If you want to build HardView yourself (for development or unsupported Python versions):
+
+```bash
+git clone [https://github.com/yourusername/hardview.git](https://github.com/yourusername/hardview.git)
+cd hardview
+pip install .
+```
+
+This will build the extension from source using your system's compiler.
+
+---
+
+## Python Version Compatibility
+
+- HardView provides wheels for multiple Python versions (see PyPI for the list).
+- If your Python version is not supported by a prebuilt wheel, you can build from source as above.
+
+---
+
+## Other Distribution Channels
+
+- **Currently, HardView is only distributed via PyPI or from the official GitHub repository.**
+- No other download or package sources are supported.
+
+---
+
+## Troubleshooting
+
+- If you encounter issues during installation, please check your Python version and platform compatibility.
+- For Windows, ensure you have a working C compiler (Visual Studio Build Tools recommended for source builds).
+- For Linux, ensure you have Python development headers and a C compiler installed.
+
+---
+
+For more help, see the [FAQ](./FAQ.md) or open an issue on the project's GitHub page.
+        </script>
+
+        <script type="text/plain" id="markdown-content-WHAT">
+# HardView Library Functions Guide
+
+This document explains all functions in the HardView library, what they return, and how to use them from Python with real output examples.
+
+To see all functions working together in practice, refer to the `test.py` file included in the project.
+
+---
+
+## 1. BIOS Info
+
+* **C Function:** `get_bios_info_json()`
+* **Python Function:** `get_bios_info()`
+* **Description:** BIOS information such as vendor, version, release date
+  **Usage:**
+
+```python
+from HardView import get_bios_info
+import json
+bios = json.loads(get_bios_info())
+print(bios)
+```
+
+---
+
+## 2. System Info
+
+* **C Function:** `get_system_info_json()`
+* **Python Function:** `get_system_info()`
+
+```python
+system = json.loads(get_system_info())
+```
+
+---
+
+## 3. Baseboard Info
+
+* **C Function:** `get_baseboard_info_json()`
+* **Python Function:** `get_baseboard_info()`
+
+```python
+baseboard = json.loads(get_baseboard_info())
+```
+
+---
+
+## 4. Chassis Info
+
+* **C Function:** `get_chassis_info_json()`
+* **Python Function:** `get_chassis_info()`
+
+```python
+chassis = json.loads(get_chassis_info())
+```
+
+---
+
+## 5. CPU Info
+
+* **C Function:** `get_cpu_info_json()`
+* **Python Function:** `get_cpu_info()`
+
+```python
+cpu = json.loads(get_cpu_info())
+```
+
+---
+
+## 6. RAM Info
+
+* **C Function:** `get_ram_info_json()`
+* **Python Function:** `get_ram_info()`
+
+```python
+ram = json.loads(get_ram_info())
+```
+
+---
+
+## 7. Disk Drives Info
+
+* **C Function:** `get_disk_info_json()`
+* **Python Function:** `get_disk_info()`
+
+```python
+disks = json.loads(get_disk_info())
+```
+
+---
+
+## 8. Network Adapters Info
+
+* **C Function:** `get_network_info_json()`
+* **Python Function:** `get_network_info()`
+
+```python
+net = json.loads(get_network_info())
+```
+
+---
+
+## 9. Partitions Info (Advanced Storage)
+
+* **C Function:** `get_partitions_info_json()`
+* **Python Function:** `get_partitions_info()`
+
+```python
+parts = json.loads(get_partitions_info())
+```
+
+---
+
+## 10. SMART/Disk Info (Advanced)
+
+* **C Function:** `get_smart_info_json()`
+* **Python Function:** `get_smart_info()`
+
+```python
+smart = json.loads(get_smart_info())
+```
+
+---
+
+## 11. Current Performance
+
+### a. CPU Usage
+
+* **C Function:** `get_cpu_usage_json()`
+* **Python Function:** `get_cpu_usage()`
+
+```python
+cpu_usage = json.loads(get_cpu_usage())
+```
+
+### b. RAM Usage
+
+* **C Function:** `get_ram_usage_json()`
+* **Python Function:** `get_ram_usage()`
+
+```python
+ram_usage = json.loads(get_ram_usage())
+```
+
+### c. System Performance
+
+* **C Function:** `get_system_performance_json()`
+* **Python Function:** `get_system_performance()`
+
+```python
+perf = json.loads(get_system_performance())
+```
+
+---
+
+## 12. Performance Monitoring
+
+### a. CPU Monitoring
+
+* **C Function:** `monitor_cpu_usage_json(duration_sec, interval_ms)`
+* **Python Function:** `monitor_cpu_usage(duration_sec, interval_ms)`
+
+```python
+cpu_monitor = json.loads(monitor_cpu_usage(5, 1000))
+```
+
+### b. RAM Monitoring
+
+* **C Function:** `monitor_ram_usage_json(duration_sec, interval_ms)`
+* **Python Function:** `monitor_ram_usage(duration_sec, interval_ms)`
+
+```python
+ram_monitor = json.loads(monitor_ram_usage(3, 500))
+```
+
+### c. System Monitoring
+
+* **C Function:** `monitor_system_performance_json(duration_sec, interval_ms)`
+* **Python Function:** `monitor_system_performance(duration_sec, interval_ms)`
+
+```python
+system_monitor = json.loads(monitor_system_performance(2, 1000))
+```
+
+---
+
+## ⚠️ General Notes:
+
+* All functions return raw JSON strings that must be parsed using `json.loads`.
+* The `test.py` file contains complete examples demonstrating all functions.
+* Functions may return a JSON with `{ "error": "..." }` in case of failure; handle such cases accordingly.
+* Most functions execute in under 0.1 seconds for typical systems.
+
+---
+
+## ✅ Quick Test Tip:
+
+Run:
+
+```bash
+python test.py
+```
+
+To see all functions in action along with execution time measurement.
+
+---
+
+*For more technical details, refer to the documentation files inside the `docs/` folder.*
+        </script>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10 text-center main-content-footer">
+        <div class="container mx-auto px-4">
+            <p class="mb-4">
+                HardView - Your Window into Hardware Information
+            </p>
+            <p class="text-sm text-gray-400">
+                Licensed under the MIT License.
+            </p>
+            <p class="text-sm text-gray-400 mt-2">
+                <a href="https://github.com/gafoo173/hardview" target="_blank" class="text-purple-300 hover:text-purple-400 transition-colors duration-300">
+                    <i class="fab fa-github mr-1"></i> GitHub Repository
+                </a>
+            </p>
+            <p class="text-sm text-gray-400 mt-2">
+                Have questions or want to contribute? <a href="https://github.com/gafoo173/hardview/issues" target="_blank" class="text-purple-300 hover:text-purple-400 transition-colors duration-300">Open an issue</a> or see the <code>CONTRIBUTING.md</code> file.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Basic Markdown to HTML converter
+        function markdownToHtml(markdown) {
+            let html = markdown;
+
+            // Ensure consistent newlines
+            html = html.replace(/\r\n/g, '\n');
+
+            // Block-level elements first
+            // Headings (using 'g' and 'm' flags, which should be standard)
+            html = html.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+            html = html.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+            html = html.replace(/^# (.*)$/gm, '<h1>$1</h1>');
+
+            // Code blocks (using 'g' flag only, content is non-greedy match)
+            // Using [\\s\\S]*? to match any character including newlines, non-greedily
+            html = html.replace(/```python\n([\\s\\S]*?)```/g, '<pre><code class="language-python">$1</code></pre>');
+            html = html.replace(/```bash\n([\\s\\S]*?)```/g, '<pre><code class="language-bash">$1</code></pre>');
+            html = html.replace(/```mermaid\n([\\s\\S]*?)```/g, '<pre><code class="language-mermaid">$1</code></pre>');
+
+            // Blockquotes
+            html = html.replace(/^> (.*)$/gm, '<blockquote><p>$1</p></blockquote>');
+
+            // Horizontal Rules
+            html = html.replace(/^---\s*$/gm, '<hr>');
+
+            // Lists (unordered)
+            html = html.replace(/^- (.*)$/gm, '<li>$1</li>');
+            // Wrap consecutive list items in <ul>. This regex is standard.
+            html = html.replace(/((?:<li>.*?<\/li>\s*)+)/g, '<ul>$1</ul>');
+
+
+            // Tables - Simplified to display as preformatted text to avoid regex issues
+            // This approach avoids complex regex for table parsing.
+            let lines = html.split('\n');
+            let processedLines = [];
+            let inMarkdownTableBlock = false;
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                let trimmedLine = line.trim();
+
+                // Check for lines that look like part of a markdown table
+                if (trimmedLine.startsWith('|') && trimmedLine.endsWith('|')) {
+                    if (!inMarkdownTableBlock) {
+                        processedLines.push('<pre><code>'); // Start a preformatted block for the table
+                        inMarkdownTableBlock = true;
+                    }
+                    processedLines.push(line);
+                } else {
+                    if (inMarkdownTableBlock) {
+                        processedLines.push('</code></pre>'); // End the preformatted block
+                        inMarkdownLines = false; // Fix: change variable name to inMarkdownTableBlock
+                    }
+                    processedLines.push(line); // Add the line as is
+                }
+            }
+            html = processedLines.join('\n');
+            // Correct any accidental extra closing tags if the last line was a table line
+            if (inMarkdownTableBlock) {
+                html += '</code></pre>';
+            }
+
+
+            // Inline elements (after block elements are done)
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');    // Italic
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>'); // Inline code
+            html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="text-purple-600 hover:underline">$1</a>'); // Links
+
+            // Paragraphs: Split by double newline, then wrap each non-empty segment in <p>
+            let segments = html.split('\n\n');
+            let finalHtmlSegments = [];
+            segments.forEach(segment => {
+                let trimmedSegment = segment.trim();
+                if (trimmedSegment === '') {
+                    return;
+                }
+                // Check if the segment already starts with a block-level HTML tag
+                // This is a simple check; more robust would be to parse the DOM.
+                if (trimmedSegment.startsWith('<h') ||
+                    trimmedSegment.startsWith('<pre') ||
+                    trimmedSegment.startsWith('<ul') ||
+                    trimmedSegment.startsWith('<ol') ||
+                    trimmedSegment.startsWith('<blockq') ||
+                    trimmedSegment.startsWith('<hr>')) { // Removed table as it's now preformatted
+                    finalHtmlSegments.push(segment);
+                } else {
+                    // Replace single newlines within paragraphs with <br>
+                    finalHtmlSegments.push(`<p>${trimmedSegment.replace(/\n/g, '<br>')}</p>`);
+                }
+            });
+            html = finalHtmlSegments.join('\n\n');
+
+            // Final cleanup of extra paragraph tags around blocks
+            html = html.replace(/<p>(<h1>|<h2>|<h3>|<ul>|<ol>|<pre>|<blockquote>|<hr>)/g, '$1');
+            html = html.replace(/(<\/h1>|<\/h2>|<\/h3>|<\/ul>|<\/ol>|<\/pre>|<\/blockquote>|<hr>)<\/p>/g, '$1');
+
+            return html;
+        }
+
+        // XSS Sanitization function
+        function sanitizeInput(input) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(input));
+            return div.innerHTML;
+        }
+
+        const sections = {
+            'home': document.getElementById('home-section'),
+            'features': document.getElementById('features-section'),
+            'installation': document.getElementById('installation-section'),
+            'usage': document.getElementById('usage-section'),
+            'hardware-checker': document.getElementById('hardware-checker-section'),
+            'api-reference': document.getElementById('api-reference-section'),
+            'documentation': document.getElementById('documentation-section'),
+            'when-to-use': document.getElementById('when-to-use-section'),
+            'faq': document.getElementById('faq-section'),
+        };
+
+        const apiFunctions = {
+            'api-bios': {
+                title: 'BIOS Info',
+                content: `
+* **C Function:** \`get_bios_info_json()\`
+* **Python Function:** \`get_bios_info()\`
+* **Description:** BIOS information such as vendor, version, release date.
+* **Returned Keys:**
+    * \`vendor\` (string): BIOS vendor name.
+    * \`version\` (string): BIOS version.
+    * \`release_date\` (string): BIOS release date (e.g., "YYYY-MM-DD").
+                `
+            },
+            'api-system': {
+                title: 'System Info',
+                content: `
+* **C Function:** \`get_system_info_json()\`
+* **Python Function:** \`get_system_info()\`
+* **Description:** General system information.
+* **Returned Keys:**
+    * \`manufacturer\` (string): System manufacturer.
+    * \`product_name\` (string): System product name.
+    * \`uuid\` (string): Universal Unique Identifier of the system.
+    * \`serial_number\` (string): System serial number.
+                `
+            },
+            'api-baseboard': {
+                title: 'Baseboard Info',
+                content: `
+* **C Function:** \`get_baseboard_info_json()\`
+* **Python Function:** \`get_baseboard_info()\`
+* **Description:** Motherboard (baseboard) information.
+* **Returned Keys:**
+    * \`manufacturer\` (string): Baseboard manufacturer.
+    * \`product\` (string): Baseboard product name/model.
+    * \`serial_number\` (string): Baseboard serial number.
+    * \`version\` (string): Baseboard version.
+                `
+            },
+            'api-chassis': {
+                title: 'Chassis Info',
+                content: `
+* **C Function:** \`get_chassis_info_json()\`
+* **Python Function:** \`get_chassis_info()\`
+* **Description:** Chassis (computer case) information.
+* **Returned Keys:**
+    * \`manufacturer\` (string): Chassis manufacturer.
+    * \`type\` (string): Chassis type (e.g., "Unknown", "Desktop").
+    * \`serial_number\` (string): Chassis serial number.
+    * \`version\` (string): Chassis version.
+                `
+            },
+            'api-cpu': {
+                title: 'CPU Info',
+                content: `
+* **C Function:** \`get_cpu_info_json()\`
+* **Python Function:** \`get_cpu_info()\`
+* **Description:** Detailed processor information.
+* **Returned Keys:**
+    * \`cpus\` (array of objects): A list of CPU objects.
+        * Each CPU object contains:
+            * \`name\` (string): Full name of the CPU (e.g., "Intel(R) Core(TM) i5-4210M CPU @ 2.60GHz").
+            * \`manufacturer\` (string): CPU manufacturer (e.g., "GenuineIntel").
+            * \`cores\` (integer): Number of physical cores.
+            * \`logical_processors\` (integer): Number of logical processors (threads).
+            * \`max_clock_speed_mhz\` (float): Maximum clock speed in MHz.
+            * \`processor_id\` (string): Unique processor ID.
+                `
+            },
+            'api-ram': {
+                title: 'RAM Info',
+                content: `
+* **C Function:** \`get_ram_info_json()\`
+* **Python Function:** \`get_ram_info()\`
+* **Description:** Information about physical memory (RAM) and installed memory modules.
+* **Returned Keys:**
+    * \`total_physical_memory_bytes\` (integer): Total physical memory in bytes.
+    * \`memory_modules\` (array of objects): A list of installed RAM modules.
+        * Each MemoryModule object contains:
+            * \`capacity_bytes\` (integer): Capacity of the module in bytes.
+            * \`speed_mhz\` (integer): Speed of the module in MHz.
+            * \`manufacturer\` (string): Manufacturer of the RAM module.
+            * \`serial_number\` (string): Serial number of the RAM module.
+            * \`part_number\` (string): Part number of the RAM module.
+                `
+            },
+            'api-disk': {
+                title: 'Disk Drives Info',
+                content: `
+* **C Function:** \`get_disk_info_json()\`
+* **Python Function:** \`get_disk_info()\`
+* **Description:** Information about physical disk drives.
+* **Returned Keys:**
+    * \`disk_drives\` (array of objects): A list of disk drive objects.
+        * Each DiskDrive object contains:
+            * \`model\` (string): Disk drive model.
+            * \`serial_number\` (string): Disk drive serial number.
+            * \`size_bytes\` (integer): Total size of the disk in bytes.
+            * \`media_type\` (string): Type of media (e.g., "Fixed hard disk media").
+            * \`interface_type\` (string): Interface type (e.g., "IDE", "SCSI", "SATA").
+                `
+            },
+            'api-network': {
+                title: 'Network Adapters Info',
+                content: `
+* **C Function:** \`get_network_info_json()\`
+* **Python Function:** \`get_network_info()\`
+* **Description:** Information about network adapters.
+* **Returned Keys:**
+    * \`network_adapters\` (array of objects): A list of network adapter objects.
+        * Each NetworkAdapter object contains:
+            * \`description\` (string): Description of the network adapter.
+            * \`mac_address\` (string): MAC address.
+            * \`ip_addresses\` (array of strings): List of IP addresses (IPv4 and IPv6).
+            * \`dns_host_name\` (string): DNS host name.
+                `
+            },
+            'api-partitions': {
+                title: 'Partitions Info (Advanced Storage)',
+                content: `
+* **C Function:** \`get_partitions_info_json()\`
+* **Python Function:** \`get_partitions_info()\`
+* **Description:** Detailed information about disk partitions.
+* **Returned Keys:**
+    * \`partitions\` (array of objects): A list of partition objects.
+        * Each Partition object contains:
+            * \`disk_model\` (string): Model of the disk the partition belongs to.
+            * \`disk_serial\` (string): Serial number of the disk.
+            * \`disk_interface\` (string): Interface type of the disk.
+            * \`disk_size\` (integer): Total size of the disk in bytes.
+            * \`disk_media\` (string): Media type of the disk.
+            * \`partition_device_id\` (string): Device ID of the partition.
+            * \`partition_type\` (string): Type of the partition (e.g., "Installable File System").
+            * \`partition_size\` (integer): Size of the partition in bytes.
+            * \`partition_index\` (integer): Index of the partition on the disk.
+                `
+            },
+            'api-smart': {
+                title: 'SMART/Disk Info (Advanced)',
+                content: `
+* **C Function:** \`get_smart_info_json()\`
+* **Python Function:** \`get_smart_info()\`
+* **Description:** Advanced disk information, including SMART data (if available).
+* **Returned Keys:**
+    * \`disks\` (array of objects): A list of disk objects with SMART/advanced info.
+        * Each Disk object contains:
+            * \`model\` (string): Disk model.
+            * \`serial_number\` (string): Disk serial number.
+            * \`interface_type\` (string): Interface type.
+            * \`size\` (string): Total size of the disk.
+            * \`partitions\` (integer): Number of partitions.
+            * \`manufacturer\` (string): Disk manufacturer.
+            * \`media_type\` (string): Media type.
+            * \`status\` (string): Current status (e.g., "OK").
+            * \`device_id\` (string): Device ID.
+            * \`caption\` (string): Caption.
+            * \`firmware_revision\` (string): Firmware revision.
+            * \`pnp_device_id\` (string): Plug and Play Device ID.
+            * \`sectors_per_track\` (integer): Sectors per track.
+            * \`total_cylinders\` (integer): Total cylinders.
+            * \`total_heads\` (integer): Total heads.
+            * \`total_sectors\` (integer): Total sectors.
+            * \`total_tracks\` (integer): Total tracks.
+            * \`tracks_per_cylinder\` (integer): Tracks per cylinder.
+            * \`bytes_per_sector\` (integer): Bytes per sector.
+            * \`index\` (integer): Disk index.
+            * \`signature\` (integer): Disk signature.
+                `
+            },
+            'api-cpu-usage': {
+                title: 'Current CPU Usage',
+                content: `
+* **C Function:** \`get_cpu_usage_json()\`
+* **Python Function:** \`get_cpu_usage()\`
+* **Description:** Retrieves the current CPU load percentage.
+* **Returned Keys:**
+    * \`cpu_usage\` (array of objects): A list containing a single CPU usage object.
+        * The object contains:
+            * \`load_percentage\` (integer): Current CPU load as a percentage (0-100).
+                `
+            },
+            'api-ram-usage': {
+                title: 'Current RAM Usage',
+                content: `
+* **C Function:** \`get_ram_usage_json()\`
+* **Python Function:** \`get_ram_usage()\`
+* **Description:** Retrieves current RAM usage statistics.
+* **Returned Keys:**
+    * \`ram_usage\` (object): An object containing RAM usage details.
+        * \`total_memory_kb\` (integer): Total physical memory in kilobytes.
+        * \`free_memory_kb\` (integer): Free physical memory in kilobytes.
+        * \`used_memory_kb\` (integer): Used physical memory in kilobytes.
+        * \`usage_percent\` (float): RAM usage as a percentage.
+                `
+            },
+            'api-system-performance': {
+                title: 'System Performance',
+                content: `
+* **C Function:** \`get_system_performance_json()\`
+* **Python Function:** \`get_system_performance()\`
+* **Description:** Retrieves combined CPU and RAM usage overview.
+* **Returned Keys:**
+    * \`system_performance\` (object): An object containing combined performance data.
+        * \`cpu\` (object): CPU performance details.
+            * \`cpu_usage\` (array of objects): Same structure as \`get_cpu_usage()\`.
+        * \`ram\` (object): RAM performance details.
+            * \`ram_usage\` (object): Same structure as \`get_ram_usage()\`.
+                `
+            },
+            'api-monitor-cpu': {
+                title: 'Performance Monitoring - CPU',
+                content: `
+* **C Function:** \`monitor_cpu_usage_json(duration_sec, interval_ms)\`
+* **Python Function:** \`monitor_cpu_usage(duration_sec, interval_ms)\`
+* **Description:** Monitors CPU usage over a specified duration and interval, returning a list of readings.
+* **Returned Keys:**
+    * This function returns an **array** of CPU usage readings. Each element in the array is an object with the same structure as the output of \`get_cpu_usage()\`.
+    * Example: \`[{'cpu_usage': [{'load_percentage': 1}]}, {'cpu_usage': [{'load_percentage': 5}]}]\`
+                `
+            },
+            'api-monitor-ram': {
+                title: 'Performance Monitoring - RAM',
+                content: `
+* **C Function:** \`monitor_ram_usage_json(duration_sec, interval_ms)\`
+* **Python Function:** \`monitor_ram_usage(duration_sec, interval_ms)\`
+* **Description:** Monitors RAM usage over a specified duration and interval, returning a list of readings.
+* **Returned Keys:**
+    * This function returns an **array** of RAM usage readings. Each element in the array is an object with the same structure as the output of \`get_ram_usage()\`.
+    * Example: \`[{'ram_usage': {...}}, {'ram_usage': {...}}]\`
+                `
+            },
+            'api-monitor-system': {
+                title: 'Performance Monitoring - System',
+                content: `
+* **C Function:** \`monitor_system_performance_json(duration_sec, interval_ms)\`
+* **Python Function:** \`monitor_system_performance(duration_sec, interval_ms)\`
+* **Description:** Monitors combined system (CPU and RAM) performance over a specified duration and interval, returning a list of readings.
+* **Returned Keys:**
+    * This function returns an **array** of system performance readings. Each element in the array is an object with the same structure as the output of \`get_system_performance()\`.
+    * Example: \`[{'system_performance': {...}}, {'system_performance': {...}}]\`
+                `
+            },
+        };
+
+        const docFiles = {
+            'doc-readme': {
+                title: 'README.MD',
+                contentId: 'markdown-content-README'
+            },
+            'doc-architecture': {
+                title: 'ARCHITECTURE.md',
+                contentId: 'markdown-content-ARCHITECTURE'
+            },
+            'doc-benchmarks': {
+                title: 'BENCHMARKS.md',
+                contentId: 'markdown-content-BENCHMARKS'
+            },
+            'doc-changelog': {
+                title: 'CHANGELOG.md',
+                contentId: 'markdown-content-CHANGELOG'
+            },
+            'doc-contributing': {
+                title: 'CONTRIBUTING.md',
+                contentId: 'markdown-content-CONTRIBUTING'
+            },
+            'doc-faq': {
+                title: 'FAQ.md',
+                contentId: 'markdown-content-FAQ'
+            },
+            'doc-install': {
+                title: 'INSTALL.md',
+                contentId: 'markdown-content-INSTALL'
+            },
+            'doc-what': {
+                title: 'What.md',
+                contentId: 'markdown-content-WHAT'
+            }
+        };
+
+        // Hardware Checker Logic
+        const allHardwareComponents = [
+            "cpu", "ram", "motherboard", "gpu", "ssd", "hdd", "network card",
+            "power supply unit", "psu", "case", "monitor", "keyboard", "mouse",
+            "bios", "system", "partitions", "smart", "webcam", "microphone",
+            "speakers", "printer", "scanner", "router", "modem", "fan", "cooler",
+            "heat sink", "optical drive", "usb drive", "external hard drive"
+        ];
+
+        const hardviewSupportedComponents = [
+            "bios", "system", "baseboard", "chassis", "cpu", "ram", "disk",
+            "network", "partitions", "smart", "cpu usage", "ram usage",
+            "system performance", "motherboard", "ssd", "hdd", "network card",
+            "case"
+        ];
+
+        function checkHardwareCompatibility() {
+            const inputElement = document.getElementById('componentInput');
+            const resultElement = document.getElementById('checkerResult');
+            const rawInput = inputElement.value.trim();
+            const sanitizedInput = sanitizeInput(rawInput); // XSS protection
+            const normalizedInput = sanitizedInput.toLowerCase();
+
+            resultElement.classList.remove('hidden', 'bg-green-500', 'bg-red-500', 'bg-yellow-500');
+
+            if (normalizedInput === "") {
+                resultElement.textContent = "Please enter a hardware component.";
+                resultElement.classList.add('bg-yellow-500');
+                resultElement.classList.remove('hidden');
+                return;
+            }
+
+            const isComputerComponent = allHardwareComponents.includes(normalizedInput);
+            const isHardViewSupported = hardviewSupportedComponents.includes(normalizedInput);
+
+            if (!isComputerComponent) {
+                resultElement.textContent = `"${sanitizedInput}" does not appear to be a common computer hardware component.`;
+                resultElement.classList.add('bg-red-500');
+            } else if (isHardViewSupported) {
+                resultElement.textContent = `Yes, "${sanitizedInput}" is a valid computer component and HardView supports retrieving its information!`;
+                resultElement.classList.add('bg-green-500');
+            } else {
+                resultElement.textContent = `"${sanitizedInput}" is a valid computer component, but HardView does not currently support retrieving its specific information.`;
+                resultElement.classList.add('bg-yellow-500');
+            }
+            resultElement.classList.remove('hidden');
+        }
+
+
+        function showSection(sectionId) {
+            // Hide all sections
+            Object.values(sections).forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Remove active class from all sidebar links
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show the selected section
+            const targetSection = document.getElementById(sectionId + '-section');
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            // Add active class to the current sidebar link
+            const activeLink = document.querySelector(`.sidebar a[data-section="${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // Handle specific content rendering for API and Doc files
+            if (sectionId.startsWith('api-')) {
+                const apiDetailContent = document.getElementById('api-detail-content');
+                const apiData = apiFunctions[sectionId];
+                if (apiData) {
+                    apiDetailContent.innerHTML = `
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">${apiData.title}</h3>
+                        <div class="prose max-w-none">${markdownToHtml(apiData.content)}</div>
+                    `;
+                    sections['api-reference'].classList.remove('hidden'); // Ensure parent section is visible
+                    document.querySelector('.sidebar a[data-section="api-reference"]').classList.add('active');
+                }
+            } else if (sectionId.startsWith('doc-')) {
+                const docFileContent = document.getElementById('doc-file-content');
+                const docData = docFiles[sectionId];
+                if (docData) {
+                    const markdownRaw = document.getElementById(docData.contentId).textContent;
+                    docFileContent.innerHTML = `
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">${docData.title}</h3>
+                        <div class="prose max-w-none">${markdownToHtml(markdownRaw)}</div>
+                    `;
+                    sections['documentation'].classList.remove('hidden'); // Ensure parent section is visible
+                    document.querySelector('.sidebar a[data-section="documentation"]').classList.add('active');
+                }
+            }
+
+            // Scroll to top of main content
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        // Event listeners for all data-section links in the sidebar
+        document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                showSection(sectionId);
+            });
+        });
+
+        // Explicit event listeners for the "Install Now" and "Usage Examples" buttons in the hero section
+        const installNowBtn = document.getElementById('installNowBtn');
+        const usageExamplesBtn = document.getElementById('usageExamplesBtn');
+
+        if (installNowBtn) {
+            installNowBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('installation');
+            });
+        }
+
+        if (usageExamplesBtn) {
+            usageExamplesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('usage');
+            });
+        }
+
+
+        // Toggle sub-menus
+        document.querySelector('.sidebar a[data-section="api-reference"]').addEventListener('click', function() {
+            document.getElementById('api-sub-menu').classList.toggle('hidden');
+            this.querySelector('.toggle-icon').classList.toggle('fa-chevron-down');
+            this.querySelector('.toggle-icon').classList.toggle('fa-chevron-up');
+        });
+
+        document.querySelector('.sidebar a[data-section="documentation"]').addEventListener('click', function() {
+            document.getElementById('docs-sub-menu').classList.toggle('hidden');
+            this.querySelector('.toggle-icon').classList.toggle('fa-chevron-down');
+            this.querySelector('.toggle-icon').classList.toggle('fa-chevron-up');
+        });
+
+        // Mobile sidebar toggle
+        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar-nav').classList.toggle('active');
+        });
+
+
+        // Initial load: show home section
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+
+            // FAQ accordion functionality (re-initialize for dynamic content)
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const toggleIcon = question.querySelector('.toggle-icon');
+
+                    // Close other open FAQs
+                    document.querySelectorAll('.faq-question.active').forEach(activeQuestion => {
+                        if (activeQuestion !== question) {
+                            activeQuestion.classList.remove('active');
+                            activeQuestion.nextElementSibling.style.display = 'none';
+                            activeQuestion.querySelector('.toggle-icon').style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    // Toggle current FAQ
+                    question.classList.toggle('active');
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                        toggleIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        answer.style.display = 'block';
+                        toggleIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // Hardware Checker Button Event Listener
+            const checkBtn = document.getElementById('checkComponentBtn');
+            if (checkBtn) {
+                checkBtn.addEventListener('click', checkHardwareCompatibility);
+                document.getElementById('componentInput').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkHardwareCompatibility();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
