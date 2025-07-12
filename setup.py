@@ -1,32 +1,29 @@
-# setup.py
 import sys
 from setuptools import setup, Extension
 
-# Source files for the modular structure
 source_files = [
-    'src/HardView.c',           # Main Python bindings
-    'src/helpers.c',           # Shared helper functions
-    'src/bios_info.c',         # BIOS information
-    'src/system_info.c',       # System information
-    'src/baseboard_info.c',    # Baseboard information
-    'src/chassis_info.c',      # Chassis information
-    'src/cpu_info.c',          # CPU information
-    'src/ram_info.c',          # RAM information
-    'src/disk_info.c',         # Disk information
-    'src/gpu_info.c',          # GPU information
-    'src/network_info.c',      # Network information
-    'src/performance_monitor.c', # Performance monitoring
-    'src/advanced_storage_info.c', # Advanced storage info
-    'src/Smart_disk.c'         # SMART disk information
+    'src/HardView.c',
+    'src/helpers.c',
+    'src/bios_info.c',
+    'src/system_info.c',
+    'src/baseboard_info.c',
+    'src/chassis_info.c',
+    'src/cpu_info.c',
+    'src/ram_info.c',
+    'src/disk_info.c',
+    'src/gpu_info.c',
+    'src/network_info.c',
+    'src/performance_monitor.c',
+    'src/advanced_storage_info.c',
+    'src/Smart_disk.c'
 ]
 
-# Platform-specific source files
 if sys.platform.startswith('win'):
-    source_files.append('src/win_helpers.c')  # Windows-specific helpers
+    source_files.append('src/win_helpers.c')
     libraries = ['wbemuuid', 'ole32', 'oleaut32']
     extra_compile_args = []
 elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
-    source_files.append('src/linux_helpers.c')  # Linux-specific helpers
+    source_files.append('src/linux_helpers.c')
     libraries = []
     extra_compile_args = []
 else:
@@ -36,14 +33,14 @@ else:
 define_macros = [('BUILD_PYTHON_MODULE', '1')]
 library_dirs = []
 
-hardview_module = Extension( 
-    'HardView', 
+hardview_module = Extension(
+    'HardView',
     sources=source_files,
     define_macros=define_macros,
     extra_compile_args=extra_compile_args,
     libraries=libraries,
     library_dirs=library_dirs,
-    include_dirs=['src']  # Include src directory for header files
+    include_dirs=['src']
 )
 
 setup(
@@ -88,20 +85,16 @@ Usage Examples:
 ```python
 import HardView
 
-# JSON output (default)
 bios_json = HardView.get_bios_info()
 cpu_json = HardView.get_cpu_info()
 
-# Python objects output
-bios_objects = HardView.get_bios_info_objects(0)  # 0 for Python objects
+bios_objects = HardView.get_bios_info_objects(0)
 cpu_objects = HardView.get_cpu_info_objects(0)
 
-# Performance monitoring with objects
 cpu_usage = HardView.get_cpu_usage_objects(0)
 ram_usage = HardView.get_ram_usage_objects(0)
 
-# Duration monitoring with objects
-cpu_monitoring = HardView.monitor_cpu_usage_duration_objects(10, 500)  # 10 seconds, 500ms intervals
+cpu_monitoring = HardView.monitor_cpu_usage_duration_objects(10, 500)
 ```
 
 Cross-platform Support:
@@ -112,13 +105,12 @@ Cross-platform Support:
 
 All functions return structured data in both JSON format and native Python objects for maximum flexibility.
     ''',
+    long_description_content_type='text/markdown',
     author='gafoo',
     author_email='omarwaled3374@gmail.com',
     url='https://github.com/gafoo173/HardView',
-    ext_modules=[hardview_module], 
+    ext_modules=[hardview_module],
     classifiers=[
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
@@ -156,4 +148,4 @@ All functions return structured data in both JSON format and native Python objec
         'Documentation': 'https://github.com/gafoo173/HardView#readme',
         'Changelog': 'https://github.com/gafoo173/HardView/docs/CHANGELOG.md',
     },
-) 
+)
