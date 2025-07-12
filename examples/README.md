@@ -10,7 +10,7 @@ This repository contains two tools built on top of the [HardView](https://github
 It provides a clean and interactive GUI to display detailed hardware information retrieved from the HardView library.
 
 ### Features:
-- Modern PyQt interface
+- Modern PySide6 interface
 - Categorized hardware views (CPU, RAM, GPU, etc.)
 - Real-time performance statistics
 
