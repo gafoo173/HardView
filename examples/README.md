@@ -23,6 +23,6 @@ It leverages data from the HardView library to create IDs from specific componen
 
 ### Usage Examples:
 ```bash
-python hwid_cli.py --type cpu        # Generate ID from CPU info
-python hwid_cli.py --combined        # Generate a unified ID from all components
-python hwid_cli.py --all --dis       # Generate all IDs without showing the logo
+python HardID.py --type cpu        # Generate ID from CPU info
+python HardID.py --combined        # Generate a unified ID from all components
+python HardID.py --all --dis       # Generate all IDs without showing the logo
