@@ -374,9 +374,12 @@ char* get_network_info(bool Json) {
             current_net_json_part = NULL;
         }
     }
+    if (Json) {
     strcat(full_json_string, "]}");
+    _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
     return full_json_string;
-    } else {
+} else {
+
         // Python objects mode - return string representation of Python object
 #ifdef BUILD_PYTHON_MODULE
         PyObject* adapters_list = PyList_New(0);
