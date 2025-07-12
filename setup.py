@@ -45,14 +45,14 @@ hardview_module = Extension(
 
 setup(
     name='HardView',
-    version='3.0.0',
+    version='3.0.1',
     description='A comprehensive Python library for collecting hardware information and performance monitoring with dual JSON/Python object output support.',
     long_description='''
-HardView 3.0.0 - Advanced Hardware Information and Performance Monitoring Library
+HardView 3.0.1 - Advanced Hardware Information and Performance Monitoring Library
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance on Windows and Linux systems with enhanced dual output support.
 
-NEW FEATURES IN 3.0.0:
+NEW FEATURES IN 3.0.1:
 - Dual Output Support: All functions now support both JSON strings and Python objects
 - Enhanced GPU Information: Detailed GPU data including driver version, memory size, video processor
 - Advanced Network Information: IP address arrays, DNS hostnames, enhanced adapter details
