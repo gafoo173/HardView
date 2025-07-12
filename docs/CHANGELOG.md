@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Highlights:
 * Fixed packaging issues that caused PyPI upload failures in version `3.0.0`.
-* Fix RECORD file missing error in pypi wheels`.
+* Fix RECORD file missing error in pypi wheels.
 * **No changes to functionality or API.**
 
 ---
@@ -36,8 +36,8 @@ All notable changes to this project will be documented in this file.
 
     * `get_gpu_info()`: GPU info as JSON
     * `get_gpu_info_objects()`: GPU info as Python objects
- * **Warning: Version 3.0.0 is not downloadable via pip.**
-*  **You must download 3.0.1 when downloading via pip due to problems with the 3.0.0 wheels.**
+> ⚠️ **Warning:** Version `3.0.0` contains broken wheels that cause installation failure via pip.  
+> Please **avoid using version 3.0.0** and use version `3.0.1` or higher instead.
 ---
 
 ## \[2.0.3] - Hotfix Release
