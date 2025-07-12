@@ -1,3 +1,20 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/version-3.0.0-blue" alt="Version" height="30">
+  <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Supported Python versions" height="30">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
+  <img src="https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey" alt="Platforms" height="30">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Linux-100%2B%20info-brightgreen" alt="Linux Info" height="30">
+  <img src="https://img.shields.io/badge/Windows-120%2B%20info-blueviolet" alt="Windows Info" height="30">
+</p>
+
+
+<p align="center">
+  <img src="./logo.png" alt="HardView Logo" width="300"/>
+</p>
+
 # HardView - Python Hardware Information Module
 
 HardView is a high-performance, cross-platform Python module that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.
