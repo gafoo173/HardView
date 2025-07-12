@@ -1,5 +1,6 @@
 #ifndef RAM_INFO_H
 #define RAM_INFO_H
+#include <stdbool.h>
 
 #include <Python.h>
 
