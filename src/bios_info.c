@@ -9,7 +9,115 @@
 #include <string.h>
 #include <stdio.h>
 
-char* get_bios_info_json() {
+#ifdef BUILD_PYTHON_MODULE
+// Helper function to create Python BIOS object
+PyObject* create_bios_python_object(const char* manufacturer, const char* version, 
+                                   const char* release_date) {
+    PyObject* bios_dict = PyDict_New();
+    if (!bios_dict) return NULL;
+    
+    // Add all fields to the dictionary with proper error checking
+    PyObject* temp_obj;
+    
+    temp_obj = PyUnicode_FromString(manufacturer ? manufacturer : "");
+    if (temp_obj) {
+        PyDict_SetItemString(bios_dict, "manufacturer", temp_obj);
+        Py_DECREF(temp_obj);
+    }
+    
+    temp_obj = PyUnicode_FromString(version ? version : "");
+    if (temp_obj) {
+        PyDict_SetItemString(bios_dict, "version", temp_obj);
+        Py_DECREF(temp_obj);
+    }
+    
+    temp_obj = PyUnicode_FromString(release_date ? release_date : "");
+    if (temp_obj) {
+        PyDict_SetItemString(bios_dict, "release_date", temp_obj);
+        Py_DECREF(temp_obj);
+    }
+    
+    return bios_dict;
+}
+
+// Function that returns Python objects directly
+PyObject* get_bios_info_objects(bool Json) {
+    if (Json) {
+        // JSON mode - return string representation
+        char* json_str = get_bios_info(true);
+        if (!json_str) return Py_None;
+        
+        PyObject* py_str = PyUnicode_FromString(json_str);
+        free(json_str);
+        return py_str ? py_str : Py_None;
+    } else {
+        // Python objects mode - return object directly
+#ifdef _WIN32
+        IWbemLocator *pLoc = NULL;
+        IWbemServices *pSvc = NULL;
+        IEnumWbemClassObject *pEnumerator = NULL;
+        IWbemClassObject *pclsObj = NULL;
+        HRESULT hr;
+        ULONG uReturn = 0;
+
+        hr = _initialize_wmi(&pLoc, &pSvc);
+        if (FAILED(hr)) {
+            return Py_None;
+        }
+
+        BSTR query_lang = SysAllocString(L"WQL");
+        BSTR query = SysAllocString(L"SELECT Manufacturer, SMBIOSBIOSVersion, ReleaseDate FROM Win32_BIOS");
+        if (!query_lang || !query) {
+            SysFreeString(query_lang); SysFreeString(query);
+            _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+            return Py_None;
+        }
+
+        hr = pSvc->lpVtbl->ExecQuery(
+            pSvc, query_lang, query,
+            WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY,
+            NULL, &pEnumerator
+        );
+        SysFreeString(query_lang);
+        SysFreeString(query);
+
+        if (FAILED(hr)) {
+            _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+            return Py_None;
+        }
+
+        if (SUCCEEDED(pEnumerator->lpVtbl->Next(pEnumerator, WBEM_INFINITE, 1, &pclsObj, &uReturn)) && uReturn == 1) {
+            char* manufacturer = _get_wmi_string_property(pclsObj, L"Manufacturer");
+            char* version = _get_wmi_string_property(pclsObj, L"SMBIOSBIOSVersion");
+            char* release_date = _get_wmi_string_property(pclsObj, L"ReleaseDate");
+            
+            PyObject* bios_obj = create_bios_python_object(manufacturer, version, release_date);
+            
+            free(manufacturer); free(version); free(release_date);
+            
+            _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+            return bios_obj ? bios_obj : Py_None;
+        }
+        
+        _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+        return Py_None;
+#else
+        // Linux implementation
+        char* bios_vendor = _read_dmi_attribute_linux("bios_vendor");
+        char* bios_version = _read_dmi_attribute_linux("bios_version");
+        char* bios_date = _read_dmi_attribute_linux("bios_date");
+
+        PyObject* bios_obj = create_bios_python_object(bios_vendor, bios_version, bios_date);
+
+        free(bios_vendor); free(bios_version); free(bios_date);
+
+        return bios_obj ? bios_obj : Py_None;
+#endif
+    }
+}
+#endif
+
+char* get_bios_info(bool Json) {
 #ifdef _WIN32
     IWbemLocator *pLoc = NULL;
     IWbemServices *pSvc = NULL;
@@ -21,7 +129,11 @@ char* get_bios_info_json() {
 
     hr = _initialize_wmi(&pLoc, &pSvc);
     if (FAILED(hr)) {
-        return _create_json_string("{\"error\": \"Failed to initialize WMI for BIOS info: 0x%lx\"}", hr);
+        if (Json) {
+            return _create_json_string("{\"error\": \"Failed to initialize WMI for BIOS info: 0x%lx\"}", hr);
+        } else {
+            return NULL; // Return NULL for Python objects on error
+        }
     }
 
     BSTR query_lang = SysAllocString(L"WQL");
@@ -29,7 +141,11 @@ char* get_bios_info_json() {
     if (!query_lang || !query) {
         SysFreeString(query_lang); SysFreeString(query);
         _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-        return _create_json_string("{\"error\": \"Memory allocation failed for WMI query strings.\"}");
+        if (Json) {
+            return _create_json_string("{\"error\": \"Memory allocation failed for WMI query strings.\"}");
+        } else {
+            return NULL;
+        }
     }
 
     hr = pSvc->lpVtbl->ExecQuery(
@@ -42,48 +158,112 @@ char* get_bios_info_json() {
 
     if (FAILED(hr)) {
         _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-        return _create_json_string("{\"error\": \"Failed to execute WMI query for BIOS: 0x%lx\"}", hr);
+        if (Json) {
+            return _create_json_string("{\"error\": \"Failed to execute WMI query for BIOS: 0x%lx\"}", hr);
+        } else {
+            return NULL;
+        }
     }
 
-    if (SUCCEEDED(pEnumerator->lpVtbl->Next(pEnumerator, WBEM_INFINITE, 1, &pclsObj, &uReturn)) && uReturn == 1) {
-        char* vendor = _get_wmi_string_property(pclsObj, L"Manufacturer");
-        char* version = _get_wmi_string_property(pclsObj, L"SMBIOSBIOSVersion");
-        char* release_date_wmi = _get_wmi_string_property(pclsObj, L"ReleaseDate");
+    if (Json) {
+        // JSON mode - original implementation
+        if (SUCCEEDED(pEnumerator->lpVtbl->Next(pEnumerator, WBEM_INFINITE, 1, &pclsObj, &uReturn)) && uReturn == 1) {
+            char* manufacturer = _get_wmi_string_property(pclsObj, L"Manufacturer");
+            char* version = _get_wmi_string_property(pclsObj, L"SMBIOSBIOSVersion");
+            char* release_date = _get_wmi_string_property(pclsObj, L"ReleaseDate");
 
-        char release_date[11];
-        if (strlen(release_date_wmi) >= 8 && strcmp(release_date_wmi, "N/A") != 0) {
-            snprintf(release_date, sizeof(release_date), "%c%c%c%c-%c%c-%c%c",
-                     release_date_wmi[0], release_date_wmi[1], release_date_wmi[2], release_date_wmi[3],
-                     release_date_wmi[4], release_date_wmi[5],
-                     release_date_wmi[6], release_date_wmi[7]);
+            json_result = _create_json_string(
+                "{\"manufacturer\": \"%s\", \"version\": \"%s\", \"release_date\": \"%s\"}",
+                manufacturer, version, release_date
+            );
+            free(manufacturer); free(version); free(release_date);
         } else {
-            strcpy(release_date, "N/A");
+            json_result = strdup("{\"error\": \"BIOS information not found in WMI.\"}");
         }
 
-        json_result = _create_json_string(
-            "{\"vendor\": \"%s\", \"version\": \"%s\", \"release_date\": \"%s\"}",
-            vendor, version, release_date
-        );
-
-        free(vendor); free(version); free(release_date_wmi);
+        _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+        return json_result;
     } else {
-        json_result = strdup("{\"error\": \"BIOS information not found in WMI.\"}");
+        // Python objects mode - return string representation of Python object
+#ifdef BUILD_PYTHON_MODULE
+        if (SUCCEEDED(pEnumerator->lpVtbl->Next(pEnumerator, WBEM_INFINITE, 1, &pclsObj, &uReturn)) && uReturn == 1) {
+            char* manufacturer = _get_wmi_string_property(pclsObj, L"Manufacturer");
+            char* version = _get_wmi_string_property(pclsObj, L"SMBIOSBIOSVersion");
+            char* release_date = _get_wmi_string_property(pclsObj, L"ReleaseDate");
+            
+            PyObject* bios_obj = create_bios_python_object(manufacturer, version, release_date);
+            
+            free(manufacturer); free(version); free(release_date);
+            
+            if (bios_obj) {
+                PyObject* repr = PyObject_Repr(bios_obj);
+                if (!repr) {
+                    Py_DECREF(bios_obj);
+                    _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+                    return strdup("{}");
+                }
+                
+                const char* repr_str = PyUnicode_AsUTF8(repr);
+                char* result = strdup(repr_str ? repr_str : "{}");
+                Py_DECREF(repr);
+                Py_DECREF(bios_obj);
+                
+                _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+                return result;
+            }
+        }
+        
+        _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+        return strdup("{}");
+#else
+        _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+        return strdup("{}");
+#endif
     }
 
-    _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
-    return json_result;
-
 #else
-    char* vendor = _read_dmi_attribute_linux("bios_vendor");
-    char* version = _read_dmi_attribute_linux("bios_version");
-    char* release_date = _read_dmi_attribute_linux("bios_date");
+    // Linux implementation
+    if (Json) {
+        // JSON mode - original implementation
+        char* bios_vendor = _read_dmi_attribute_linux("bios_vendor");
+        char* bios_version = _read_dmi_attribute_linux("bios_version");
+        char* bios_date = _read_dmi_attribute_linux("bios_date");
 
-    char* json_str = _create_json_string(
-        "{\"vendor\": \"%s\", \"version\": \"%s\", \"release_date\": \"%s\"}",
-        vendor, version, release_date
-    );
+        char* json_str = _create_json_string(
+            "{\"manufacturer\": \"%s\", \"version\": \"%s\", \"release_date\": \"%s\"}",
+            bios_vendor, bios_version, bios_date
+        );
 
-    free(vendor); free(version); free(release_date);
-    return json_str;
+        free(bios_vendor); free(bios_version); free(bios_date);
+        return json_str;
+    } else {
+        // Python objects mode - return string representation of Python object
+#ifdef BUILD_PYTHON_MODULE
+        char* bios_vendor = _read_dmi_attribute_linux("bios_vendor");
+        char* bios_version = _read_dmi_attribute_linux("bios_version");
+        char* bios_date = _read_dmi_attribute_linux("bios_date");
+
+        PyObject* bios_obj = create_bios_python_object(bios_vendor, bios_version, bios_date);
+
+        free(bios_vendor); free(bios_version); free(bios_date);
+
+        if (bios_obj) {
+            PyObject* repr = PyObject_Repr(bios_obj);
+            if (!repr) {
+                Py_DECREF(bios_obj);
+                return strdup("{}");
+            }
+            
+            const char* repr_str = PyUnicode_AsUTF8(repr);
+            char* result = strdup(repr_str ? repr_str : "{}");
+            Py_DECREF(repr);
+            Py_DECREF(bios_obj);
+            return result;
+        }
+        return strdup("{}");
+#else
+        return strdup("{}");
+#endif
+    }
 #endif
 }

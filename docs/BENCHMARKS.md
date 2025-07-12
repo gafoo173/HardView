@@ -1,63 +1,67 @@
-# HardView Benchmarks & Comparisons
+# ⚡ HardView Benchmarks & Comparisons
 
-This document presents feature comparisons and qualitative performance notes between HardView and other popular Python hardware/system info libraries.
-
----
-
-## 1. Why is HardView Faster?
-- **HardView** is written entirely in C and interacts directly with system APIs (WMI/Win32 on Windows, sysfs/proc on Linux), minimizing overhead and maximizing speed.
-- Competing libraries (psutil, wmi, py-cpuinfo, etc.) are written in Python or are Python wrappers over system APIs, which adds significant overhead.
-- HardView is optimized for batch queries and returns all results as JSON, making it efficient for both single and repeated queries.
-- In practice, HardView is noticeably faster than pure Python solutions, especially for large or repeated hardware queries.
+This document presents feature comparisons and qualitative performance notes between **HardView** and other popular Python hardware/system info libraries.
 
 ---
 
-## 2. Feature Coverage Comparison
+## 1. 🚀 Why is HardView Faster?
 
-| Feature / Library         | HardView | psutil | wmi (pywin32) | py-cpuinfo | platform | dmidecode (Linux) |
-|--------------------------|:--------:|:------:|:-------------:|:----------:|:--------:|:-----------------:|
-| BIOS Info                |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ✅         |
-| System Info              |   ✅     |   ❌   |      ✅       |     ❌     |   ✅     |       ✅         |
-| Baseboard Info           |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ✅         |
-| Chassis Info             |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ✅         |
-| CPU Info (detailed)      |   ✅     |   ✅   |      ✅       |     ✅     |   ✅     |       ✅         |
-| RAM Info (modules)       |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ✅         |
-| Disk Info (detailed)     |   ✅     |   ✅   |      ✅       |     ❌     |   ❌     |       ✅         |
-| Partitions Info          |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ✅         |
-| SMART/Advanced Storage   |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ❌         |
-| Network Info (detailed)  |   ✅     |   ✅   |      ✅       |     ❌     |   ❌     |       ❌         |
-| Real-time CPU Usage      |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ❌         |
-| Real-time RAM Usage      |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ❌         |
-| System Performance Mon.  |   ✅     |   ✅   |      ❌       |     ❌     |   ❌     |       ❌         |
-| JSON Output              |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ❌         |
-| Cross-Platform           |   ✅     |   ✅   |   Windows     |   All      |   All    |     Linux        |
-| Native C Speed           |   ✅     |   ❌   |      ❌       |     ❌     |   ❌     |       ❌         |
+* Written entirely in **C** and interacts directly with system APIs (WMI/Win32 on Windows, sysfs/proc on Linux).
+* Competing libraries (e.g., `psutil`, `wmi`, `py-cpuinfo`) are Python-based or wrappers, adding overhead.
+* Optimized for batch queries and returns all results as **JSON strings** or **Python objects**.
+* Performs especially well with **large or repeated** hardware queries.
 
 ---
 
-## 3. Qualitative Performance Notes
-- **HardView** is consistently faster than pure Python libraries due to its C implementation and direct system access.
-- **Most HardView operations complete in less than half a second, and sometimes in less than 1 millisecond**, depending on the query and system speed.
-- Only HardView and dmidecode provide full BIOS, baseboard, and chassis info on Linux; only HardView does so on Windows.
-- HardView is the only library to provide SMART/advanced disk info and real-time monitoring in a unified API.
-- All HardView outputs are JSON, making integration easy.
-- For most queries, HardView returns results in a fraction of the time required by Python-based solutions, especially for complex or repeated queries.
+## 2. 📋 Feature Coverage Comparison
+
+| Feature / Library          | HardView | psutil | wmi (pywin32) | py-cpuinfo | platform | dmidecode (Linux) |
+| -------------------------- | -------- | ------ | ------------- | ---------- | -------- | ----------------- |
+| BIOS Info                  | ✅        | ❌      | ❌             | ❌          | ❌        | ✅                 |
+| System Info                | ✅        | ❌      | ✅             | ❌          | ✅        | ✅                 |
+| Baseboard Info             | ✅        | ❌      | ❌             | ❌          | ❌        | ✅                 |
+| Chassis Info               | ✅        | ❌      | ❌             | ❌          | ❌        | ✅                 |
+| CPU Info (detailed)        | ✅        | ✅      | ✅             | ✅          | ✅        | ✅                 |
+| GPU Info (detailed)        | ✅        | ❌      | ✅             | ❌          | ❌        | ❌                 |
+| RAM Info (modules)         | ✅        | ✅      | ❌             | ❌          | ❌        | ✅                 |
+| Disk Info (detailed)       | ✅        | ✅      | ✅             | ❌          | ❌        | ✅                 |
+| Partitions Info            | ✅        | ✅      | ❌             | ❌          | ❌        | ✅                 |
+| SMART/Advanced Storage     | ✅        | ❌      | ❌             | ❌          | ❌        | ❌                 |
+| Network Info (detailed)    | ✅        | ✅      | ✅             | ❌          | ❌        | ❌                 |
+| Real-time CPU Usage        | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
+| Real-time RAM Usage        | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
+| System Performance Monitor | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
+| JSON Output                | ✅        | ❌      | ❌             | ❌          | ❌        | ❌                 |
+| Python Object Output       | ✅        | ✅      | ✅             | ✅          | ✅        | ❌                 |
+| Cross-Platform             | ✅        | ✅      | Windows only  | All        | All      | Linux only        |
+| Native C Speed             | ✅        | ❌      | ❌             | ❌          | ❌        | ❌                 |
 
 ---
 
-## 4. When to Use HardView?
-- You need **detailed, accurate, and complete hardware information** (including BIOS, baseboard, chassis, SMART, etc.)
-- You want **fast** queries (native C speed)
-- You need **real-time or interval-based performance monitoring**
-- You want **consistent, structured JSON output** for easy integration
-- You want a **single cross-platform solution** for both Windows and Linux
+## 3. 📈 Qualitative Performance Notes
+
+* HardView is consistently faster due to its **C backend** and **direct system access**.
+* Most operations complete in **< 0.5s**, some even in **< 1 ms**.
+* HardView and dmidecode are the only tools providing full BIOS/baseboard/chassis info on Linux.
+* Only HardView offers **SMART data**, **detailed GPU info**, and **real-time monitoring** in one API.
+* Supports both **JSON** and **Python objects**, making it easy to integrate.
 
 ---
 
-## 5. See Also
-- **[What.md](./What.md):** Full API and output examples
-- **[ARCHITECTURE.md](./ARCHITECTURE.md):** Technical/architecture documentation
+## 4. ✅ When to Use HardView?
+
+Use HardView if:
+
+* You need **detailed and accurate** hardware info (BIOS, SMART, GPU, etc.).
+* You require **fast queries** and native C speed.
+* You want **real-time performance monitoring**.
+* You prefer structured **JSON or Python object** outputs.
+* You want **a single cross-platform solution** for both Windows and Linux.
 
 ---
 
-*HardView: The fastest, most complete hardware info library for Python.* 
+## 5. 📚 See Also
+
+* [`What.md`](./What.md): Full API and output examples
+
+> **HardView:** The fastest, most complete hardware info library for Python.
