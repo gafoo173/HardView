@@ -1,6 +1,6 @@
 #ifndef NETWORK_INFO_H
 #define NETWORK_INFO_H
-
+#include <stdbool.h>
 #ifdef BUILD_PYTHON_MODULE
 #include <Python.h>
 
