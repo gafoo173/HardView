@@ -1,5 +1,6 @@
 #ifndef SMART_DISK_H
 #define SMART_DISK_H
+#include <stdbool.h>
 
 #include <Python.h>
 
@@ -7,13 +8,13 @@
 extern "C" {
 #endif
 
-// دالة رئيسية لجلب معلومات SMART كـ JSON
+
 char* get_smart_info(bool Json);
 
 // Python object output functions
 PyObject* get_smart_info_objects(bool Json);
 
-// يمكن إضافة دوال مساعدة لاحقًا
+
 
 #ifdef __cplusplus
 }
