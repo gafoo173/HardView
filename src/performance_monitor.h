@@ -1,6 +1,6 @@
 #ifndef PERFORMANCE_MONITOR_H
 #define PERFORMANCE_MONITOR_H
-
+#include <stdbool.h>
 #include <Python.h>
 
 // JSON output functions
