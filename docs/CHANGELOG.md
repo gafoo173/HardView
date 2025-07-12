@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## \[3.0.1] - PyPI Wheels Fix
+## \[3.0.1] - Hotfix Release
 
 ### Highlights:
 * Fixed packaging issues that caused PyPI upload failures in version `3.0.0`.
