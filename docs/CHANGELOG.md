@@ -23,6 +23,19 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+
+## \[2.0.3] - Hotfix Release
+
+### Highlights:
+
+* **Fixed an issue in get_smart_info():**
+
+  *Fixed an issue in the get_smart_info() function:
+  *Occasionally, the function returned zero values for the number of sectors, cylinders, and tracks instead of the actual counts. This has been resolved, ensuring accurate and reliable retrieval of SMART disk    *information.
+* **No functional/API changes.**
+
+---
+
 ## \[2.0.2] - Hotfix Release
 
 ### Highlights:
