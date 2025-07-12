@@ -8,7 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#ifndef _WIN32
 #include <dirent.h>
+#endif
+
 #include <ctype.h>
 
 #ifdef BUILD_PYTHON_MODULE
