@@ -35,7 +35,7 @@ HardView is a high-performance, cross-platform Python module that provides detai
 
 ## Installation
 
-See [`docs/INSTALL.md`](./INSTALL.md) for supported platforms and installation instructions.
+See [`docs/INSTALL.md`](./docs/INSTALL.md) for supported platforms and installation instructions.
 
 ### From PyPI
 
@@ -86,15 +86,15 @@ pprint.pprint(cpu_info)
 
 All documentation is in the `docs/` folder. Key files:
 
-* [`What.md`](./What.md): **API Reference & Output Examples**
+* [`What.md`](./docs/What.md): **API Reference & Output Examples**
   Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
-* [`ARCHITECTURE.md`](./ARCHITECTURE.md): **Technical Architecture**
+* [`ARCHITECTURE.md`](./docs/ARCHITECTURE.md): **Technical Architecture**
   Deep dive into the internal structure, data flow, and design of HardView for developers and contributors.
-* [`BENCHMARKS.md`](./BENCHMARKS.md): **Performance & Feature Comparisons**
+* [`BENCHMARKS.md`](./docs/BENCHMARKS.md): **Performance & Feature Comparisons**
   Real-world speed benchmarks and feature comparisons with other Python libraries.
-* [`INSTALL.md`](./INSTALL.md): **Installation Guide**
+* [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**
   Supported platforms, installation methods, and troubleshooting tips.
-* [`FAQ.md`](./FAQ.md): **Frequently Asked Questions**
+* [`FAQ.md`](./docs/FAQ.md): **Frequently Asked Questions**
   Solutions to common installation, usage, and troubleshooting issues.
 
 ## API Reference (Summary)
@@ -175,7 +175,7 @@ classDiagram
 
 ## Performance Benchmarks
 
-See [`docs/BENCHMARKS.md`](./BENCHMARKS.md) for detailed speed and feature comparisons with other libraries.
+See [`docs/BENCHMARKS.md`](./docs/BENCHMARKS.md) for detailed speed and feature comparisons with other libraries.
 
 ## Development
 
