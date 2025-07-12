@@ -376,7 +376,9 @@ char* get_network_info(bool Json) {
     }
     if (Json) {
     strcat(full_json_string, "]}");
+#ifdef _WIN32
     _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
+#endif
     return full_json_string;
 } else {
 
