@@ -8,7 +8,7 @@
 #include <Python.h>
 #endif
 
-// هيكل يحمل معلومات كرت الشاشة
+
 typedef struct {
     char* name;
     char* driver_version;
@@ -22,7 +22,7 @@ char* get_gpu_info(bool Json);
 // Helper function to create GPU info structure (internal use)
 GPUInfo* _create_gpu_info();
 
-// دالة لتحرير الذاكرة المخصصة للهيكل
+
 void free_gpu_info(GPUInfo* info);
 
 #ifdef BUILD_PYTHON_MODULE
