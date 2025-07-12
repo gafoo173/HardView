@@ -186,18 +186,18 @@ classDiagram
 
 ## 🧪 Platform Support
 
-| Feature                  | Windows | Linux           |
-| ------------------------ | ------- | --------------- |
-| BIOS Info                | ✅ WMI   | ✅ sysfs         |
-| System Info              | ✅ WMI   | ✅ sysfs         |
-| Baseboard Info           | ✅ WMI   | ✅ sysfs         |
-| Chassis Info             | ✅ WMI   | ✅ sysfs         |
-| CPU Info                 | ✅ WMI   | ✅ /proc         |
-| RAM Info                 | ✅ WMI   | ✅ /proc/meminfo |
-| Disks                    | ✅ WMI   | ✅ /sys/block    |
-| Network                  | ✅ WMI   | ✅ getifaddrs    |
-| Advanced Storage / SMART | ✅ WMI   | 🚫              |
-| Performance Monitoring   | ✅       | ✅               |
+| Feature                  | Windows | Linux|           
+| ------------------------ | ------- | -----|
+| BIOS Info                | ✅    | ✅    |
+| System Info              | ✅    | ✅    |
+| Baseboard Info           | ✅    | ✅    |
+| Chassis Info             | ✅    | ✅    |
+| CPU Info                 | ✅    | ✅    |
+| RAM Info                 | ✅    | ✅    |
+| Disks                    | ✅    | ✅    |
+| Network                  | ✅    | ✅    |
+| Advanced Storage / SMART | ✅    | 🚫    |
+| Performance Monitoring   | ✅    | ✅    |
 
 ---
 
