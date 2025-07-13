@@ -1540,7 +1540,8 @@ This document explains all functions in the HardView library, what they return, 
 11. [GPU Info](#11-gpu-info)
 12. [Current Performance](#12-current-performance)
 13. [Performance Monitoring](#13-performance-monitoring)
-14. [General Notes](#-general-notes)
+14. [General Notes](#general-notes)
+15. [Quick Test](#quick-test)
 
 ---
 
@@ -1549,8 +1550,8 @@ This document explains all functions in the HardView library, what they return, 
 **C Function:** `get_bios_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_bios_info(True)`: Returns a JSON string
-- `HardView.get_bios_info_objects(False)`: Returns a Python object
+- `HardView.get_bios_info(Json=True)`: Returns a JSON string
+- `HardView.get_bios_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 BIOS information such as vendor, version, and release date.
@@ -1560,7 +1561,7 @@ BIOS information such as vendor, version, and release date.
 import HardView
 import json
 
-bios_json_str = HardView.get_bios_info(True)
+bios_json_str = HardView.get_bios_info(True)  # Or HardView.get_bios_info()
 bios_data = json.loads(bios_json_str)
 print(bios_data)
 ```
@@ -1578,7 +1579,7 @@ print(bios_data)
 ```python
 import HardView
 
-bios_obj = HardView.get_bios_info_objects(False)
+bios_obj = HardView.get_bios_info_objects(False)  # Or HardView.get_bios_info_objects()
 print(bios_obj)
 ```
 
@@ -1603,8 +1604,8 @@ print(bios_obj)
 **C Function:** `get_system_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_system_info(True)`: Returns a JSON string
-- `HardView.get_system_info_objects(False)`: Returns a Python object
+- `HardView.get_system_info(Json=True)`: Returns a JSON string
+- `HardView.get_system_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 System information such as manufacturer, product name, UUID, and serial number.
@@ -1614,7 +1615,7 @@ System information such as manufacturer, product name, UUID, and serial number.
 import HardView
 import json
 
-system_json_str = HardView.get_system_info(True)
+system_json_str = HardView.get_system_info(True)  # Or HardView.get_system_info()
 system_data = json.loads(system_json_str)
 print(system_data)
 ```
@@ -1633,7 +1634,7 @@ print(system_data)
 ```python
 import HardView
 
-system_obj = HardView.get_system_info_objects(False)
+system_obj = HardView.get_system_info_objects(False)  # Or HardView.get_system_info_objects()
 print(system_obj)
 ```
 
@@ -1660,8 +1661,8 @@ print(system_obj)
 **C Function:** `get_baseboard_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_baseboard_info(True)`: Returns a JSON string
-- `HardView.get_baseboard_info_objects(False)`: Returns a Python object
+- `HardView.get_baseboard_info(Json=True)`: Returns a JSON string
+- `HardView.get_baseboard_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Motherboard information such as manufacturer, product, serial number, and version.
@@ -1671,7 +1672,7 @@ Motherboard information such as manufacturer, product, serial number, and versio
 import HardView
 import json
 
-baseboard_json_str = HardView.get_baseboard_info(True)
+baseboard_json_str = HardView.get_baseboard_info(True)  # Or HardView.get_baseboard_info()
 baseboard_data = json.loads(baseboard_json_str)
 print(baseboard_data)
 ```
@@ -1690,7 +1691,7 @@ print(baseboard_data)
 ```python
 import HardView
 
-baseboard_obj = HardView.get_baseboard_info_objects(False)
+baseboard_obj = HardView.get_baseboard_info_objects(False)  # Or HardView.get_baseboard_info_objects()
 print(baseboard_obj)
 ```
 
@@ -1717,8 +1718,8 @@ print(baseboard_obj)
 **C Function:** `get_chassis_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_chassis_info(True)`: Returns a JSON string
-- `HardView.get_chassis_info_objects(False)`: Returns a Python object
+- `HardView.get_chassis_info(Json=True)`: Returns a JSON string
+- `HardView.get_chassis_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Computer chassis/case information such as manufacturer, model, serial number, and type.
@@ -1728,7 +1729,7 @@ Computer chassis/case information such as manufacturer, model, serial number, an
 import HardView
 import json
 
-chassis_json_str = HardView.get_chassis_info(True)
+chassis_json_str = HardView.get_chassis_info(True)  # Or HardView.get_chassis_info()
 chassis_data = json.loads(chassis_json_str)
 print(chassis_data)
 ```
@@ -1747,7 +1748,7 @@ print(chassis_data)
 ```python
 import HardView
 
-chassis_obj = HardView.get_chassis_info_objects(False)
+chassis_obj = HardView.get_chassis_info_objects(False)  # Or HardView.get_chassis_info_objects()
 print(chassis_obj)
 ```
 
@@ -1774,8 +1775,8 @@ print(chassis_obj)
 **C Function:** `get_cpu_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_cpu_info(True)`: Returns a JSON string
-- `HardView.get_cpu_info_objects(False)`: Returns a Python object
+- `HardView.get_cpu_info(Json=True)`: Returns a JSON string
+- `HardView.get_cpu_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Processor details such as name, manufacturer, architecture, number of cores, number of threads, max clock speed, and socket designation.
@@ -1785,7 +1786,7 @@ Processor details such as name, manufacturer, architecture, number of cores, num
 import HardView
 import json
 
-cpu_json_str = HardView.get_cpu_info(True)
+cpu_json_str = HardView.get_cpu_info(True)  # Or HardView.get_cpu_info()
 cpu_data = json.loads(cpu_json_str)
 print(cpu_data)
 ```
@@ -1795,7 +1796,7 @@ print(cpu_data)
 {
     "name": "Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz",
     "manufacturer": "GenuineIntel",
-    "architecture": "x64",
+    "architecture": "9", // 9 = ×64
     "cores": 8,
     "threads": 8,
     "max_clock_speed": 4900,
@@ -1807,7 +1808,7 @@ print(cpu_data)
 ```python
 import HardView
 
-cpu_obj = HardView.get_cpu_info_objects(False)
+cpu_obj = HardView.get_cpu_info_objects(False)  # Or HardView.get_cpu_info_objects()
 print(cpu_obj)
 ```
 
@@ -1816,7 +1817,7 @@ print(cpu_obj)
 {
     'name': 'Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz',
     'manufacturer': 'GenuineIntel',
-    'architecture': 'x64',
+    'architecture': '9',
     'cores': 8,
     'threads': 8,
     'max_clock_speed': 4900.0,
@@ -1840,8 +1841,8 @@ print(cpu_obj)
 **C Function:** `get_ram_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_ram_info(True)`: Returns a JSON string
-- `HardView.get_ram_info_objects(False)`: Returns a Python object
+- `HardView.get_ram_info(Json=True)`: Returns a JSON string
+- `HardView.get_ram_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Total physical memory and details of individual memory modules.
@@ -1851,7 +1852,7 @@ Total physical memory and details of individual memory modules.
 import HardView
 import json
 
-ram_json_str = HardView.get_ram_info(True)
+ram_json_str = HardView.get_ram_info(True)  # Or HardView.get_ram_info()
 ram_data = json.loads(ram_json_str)
 print(ram_data)
 ```
@@ -1883,7 +1884,7 @@ print(ram_data)
 ```python
 import HardView
 
-ram_obj = HardView.get_ram_info_objects(False)
+ram_obj = HardView.get_ram_info_objects(False)  # Or HardView.get_ram_info_objects()
 print(ram_obj)
 ```
 
@@ -1926,8 +1927,8 @@ print(ram_obj)
 **C Function:** `get_disk_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_disk_info(True)`: Returns a JSON string
-- `HardView.get_disk_info_objects(False)`: Returns a Python object
+- `HardView.get_disk_info(Json=True)`: Returns a JSON string
+- `HardView.get_disk_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Information about installed disk drives, including model, manufacturer, interface type, size, serial number, and media type.
@@ -1937,7 +1938,7 @@ Information about installed disk drives, including model, manufacturer, interfac
 import HardView
 import json
 
-disk_json_str = HardView.get_disk_info(True)
+disk_json_str = HardView.get_disk_info(True)  # Or HardView.get_disk_info()
 disk_data = json.loads(disk_json_str)
 print(disk_data)
 ```
@@ -1962,7 +1963,7 @@ print(disk_data)
 ```python
 import HardView
 
-disk_obj = HardView.get_disk_info_objects(False)
+disk_obj = HardView.get_disk_info_objects(False)  # Or HardView.get_disk_info_objects()
 print(disk_obj)
 ```
 
@@ -1995,8 +1996,8 @@ print(disk_obj)
 **C Function:** `get_network_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_network_info(True)`: Returns a JSON string
-- `HardView.get_network_info_objects(False)`: Returns a Python object
+- `HardView.get_network_info(Json=True)`: Returns a JSON string
+- `HardView.get_network_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Information about network adapters, including description, MAC address, IP addresses (IPv4 and IPv6), and DNS hostname.
@@ -2006,7 +2007,7 @@ Information about network adapters, including description, MAC address, IP addre
 import HardView
 import json
 
-net_json_str = HardView.get_network_info(True)
+net_json_str = HardView.get_network_info(True)  # Or HardView.get_network_info()
 net_data = json.loads(net_json_str)
 print(net_data)
 ```
@@ -2032,7 +2033,7 @@ print(net_data)
 ```python
 import HardView
 
-net_obj = HardView.get_network_info_objects(False)
+net_obj = HardView.get_network_info_objects(False)  # Or HardView.get_network_info_objects()
 print(net_obj)
 ```
 
@@ -2061,8 +2062,8 @@ print(net_obj)
 **C Function:** `get_partitions_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_partitions_info(True)`: Returns a JSON string
-- `HardView.get_partitions_info_objects(False)`: Returns a Python object
+- `HardView.get_partitions_info(Json=True)`: Returns a JSON string
+- `HardView.get_partitions_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Detailed information about disk partitions, including disk model, serial number, interface type, disk size, media type, partition device ID, partition type, partition size, and partition index.
@@ -2072,7 +2073,7 @@ Detailed information about disk partitions, including disk model, serial number,
 import HardView
 import json
 
-parts_json_str = HardView.get_partitions_info(True)
+parts_json_str = HardView.get_partitions_info(True)  # Or HardView.get_partitions_info()
 parts_data = json.loads(parts_json_str)
 print(parts_data)
 ```
@@ -2100,7 +2101,7 @@ print(parts_data)
 ```python
 import HardView
 
-parts_obj = HardView.get_partitions_info_objects(False)
+parts_obj = HardView.get_partitions_info_objects(False)  # Or HardView.get_partitions_info_objects()
 print(parts_obj)
 ```
 
@@ -2139,8 +2140,8 @@ print(parts_obj)
 **C Function:** `get_smart_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_smart_info(True)`: Returns a JSON string
-- `HardView.get_smart_info_objects(False)`: Returns a Python object
+- `HardView.get_smart_info(Json=True)`: Returns a JSON string
+- `HardView.get_smart_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 Detailed disk drive information, including SMART status, device IDs, firmware revision, and sector/track information.
@@ -2150,7 +2151,7 @@ Detailed disk drive information, including SMART status, device IDs, firmware re
 import HardView
 import json
 
-smart_json_str = HardView.get_smart_info(True)
+smart_json_str = HardView.get_smart_info(True)  # Or HardView.get_smart_info()
 smart_data = json.loads(smart_json_str)
 print(smart_data)
 ```
@@ -2190,7 +2191,7 @@ print(smart_data)
 ```python
 import HardView
 
-smart_obj = HardView.get_smart_info_objects(False)
+smart_obj = HardView.get_smart_info_objects(False)  # Or HardView.get_smart_info_objects()
 print(smart_obj)
 ```
 
@@ -2253,8 +2254,8 @@ print(smart_obj)
 **C Function:** `get_gpu_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_gpu_info(True)`: Returns a JSON string
-- `HardView.get_gpu_info_objects(False)`: Returns a Python object
+- `HardView.get_gpu_info(Json=True)`: Returns a JSON string
+- `HardView.get_gpu_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
 GPU details such as name, manufacturer, driver version, memory size, video processor, and video mode description.
@@ -2264,7 +2265,7 @@ GPU details such as name, manufacturer, driver version, memory size, video proce
 import HardView
 import json
 
-gpu_json_str = HardView.get_gpu_info(True)
+gpu_json_str = HardView.get_gpu_info(True)  # Or HardView.get_gpu_info()
 gpu_data = json.loads(gpu_json_str)
 print(gpu_data)
 ```
@@ -2289,7 +2290,7 @@ print(gpu_data)
 ```python
 import HardView
 
-gpu_obj = HardView.get_gpu_info_objects(False)
+gpu_obj = HardView.get_gpu_info_objects(False)  # Or HardView.get_gpu_info_objects()
 print(gpu_obj)
 ```
 
@@ -2324,8 +2325,8 @@ print(gpu_obj)
 **C Function:** `get_cpu_usage(bool Json)`
 
 #### Python Functions:
-- `HardView.get_cpu_usage(True)`: Returns a JSON string
-- `HardView.get_cpu_usage_objects(False)`: Returns a Python object
+- `HardView.get_cpu_usage(Json=True)`: Returns a JSON string
+- `HardView.get_cpu_usage_objects(Json=False)`: Returns a Python object
 
 #### Description:
 Current CPU usage percentage.
@@ -2335,7 +2336,7 @@ Current CPU usage percentage.
 import HardView
 import json
 
-cpu_usage_json_str = HardView.get_cpu_usage(True)
+cpu_usage_json_str = HardView.get_cpu_usage(True)  # Or HardView.get_cpu_usage()
 cpu_usage_data = json.loads(cpu_usage_json_str)
 print(cpu_usage_data)
 ```
@@ -2355,7 +2356,7 @@ print(cpu_usage_data)
 ```python
 import HardView
 
-cpu_usage_obj = HardView.get_cpu_usage_objects(False)
+cpu_usage_obj = HardView.get_cpu_usage_objects(False)  # Or HardView.get_cpu_usage_objects()
 print(cpu_usage_obj)
 ```
 
@@ -2379,8 +2380,8 @@ print(cpu_usage_obj)
 **C Function:** `get_ram_usage(bool Json)`
 
 #### Python Functions:
-- `HardView.get_ram_usage(True)`: Returns a JSON string
-- `HardView.get_ram_usage_objects(False)`: Returns a Python object
+- `HardView.get_ram_usage(Json=True)`: Returns a JSON string
+- `HardView.get_ram_usage_objects(Json=False)`: Returns a Python object
 
 #### Description:
 Current RAM usage statistics (total, available, used, usage percentage).
@@ -2390,7 +2391,7 @@ Current RAM usage statistics (total, available, used, usage percentage).
 import HardView
 import json
 
-ram_usage_json_str = HardView.get_ram_usage(True)
+ram_usage_json_str = HardView.get_ram_usage(True)  # Or HardView.get_ram_usage()
 ram_usage_data = json.loads(ram_usage_json_str)
 print(ram_usage_data)
 ```
@@ -2411,7 +2412,7 @@ print(ram_usage_data)
 ```python
 import HardView
 
-ram_usage_obj = HardView.get_ram_usage_objects(False)
+ram_usage_obj = HardView.get_ram_usage_objects(False)  # Or HardView.get_ram_usage_objects()
 print(ram_usage_obj)
 ```
 
@@ -2439,8 +2440,8 @@ print(ram_usage_obj)
 **C Function:** `get_system_performance(bool Json)`
 
 #### Python Functions:
-- `HardView.get_system_performance(True)`: Returns a JSON string
-- `HardView.get_system_performance_objects(False)`: Returns a Python object
+- `HardView.get_system_performance(Json=True)`: Returns a JSON string
+- `HardView.get_system_performance_objects(Json=False)`: Returns a Python object
 
 #### Description:
 Combined CPU and RAM usage.
@@ -2450,7 +2451,7 @@ Combined CPU and RAM usage.
 import HardView
 import json
 
-perf_json_str = HardView.get_system_performance(True)
+perf_json_str = HardView.get_system_performance(True)  # Or HardView.get_system_performance()
 perf_data = json.loads(perf_json_str)
 print(perf_data)
 ```
@@ -2500,7 +2501,7 @@ print(perf_data)
 
 #### Properties / JSON Keys:
 
-* **system_performance** (dict): Contains:
+* **system\_performance** (dict): Contains:
 
   * **cpu** (list): CPU usage info (same as in CPU Usage)
   * **ram** (dict): RAM usage info (same as in RAM Usage)
@@ -2560,11 +2561,11 @@ print(cpu_monitor_obj)
 
 #### Properties / JSON Keys:
 
-* **cpu_monitoring** (dict): Contains:
+* **cpu\_monitoring** (dict): Contains:
 
-  * **duration_seconds** (int)
-  * **interval_ms** (int)
-  * **readings** (list): List of CPU usage readings. Each reading is an object with a `cpu_usage` key, which is a list containing an object with `load_percentage`.
+  * **duration\_seconds** (int)
+  * **interval\_ms** (int)
+  * **readings** (list): List of CPU usage readings
 
 ### b. RAM Monitoring
 
@@ -2616,11 +2617,11 @@ print(ram_monitor_obj)
 
 #### Properties / JSON Keys:
 
-* **ram_monitoring** (dict): Contains:
+* **ram\_monitoring** (dict): Contains:
 
-  * **duration_seconds** (int)
-  * **interval_ms** (int)
-  * **readings** (list): List of RAM usage snapshots. Each reading is an object with a `ram_usage` key, which is an object containing `total_memory_kb`, `free_memory_kb`, `used_memory_kb`, and `usage_percent`.
+  * **duration\_seconds** (int)
+  * **interval\_ms** (int)
+  * **readings** (list): RAM usage snapshots
 
 ### c. System Performance Monitoring
 
@@ -2682,15 +2683,15 @@ print(system_monitor_obj)
 
 #### Properties / JSON Keys:
 
-* **system_performance_monitoring** (dict): Contains:
+* **system\_performance\_monitoring** (dict): Contains:
 
-  * **duration_seconds** (int)
-  * **interval_ms** (int)
-  * **readings** (list): CPU and RAM readings over time. Each reading is an object with a `system_performance` key, which contains `cpu` and `ram` objects (same structure as `get_system_performance()`).
+  * **duration\_seconds** (int)
+  * **interval\_ms** (int)
+  * **readings** (list): CPU and RAM readings over time
 
 ---
 
-## ⚠️ General Notes
+## General Notes
 
 * **Dual Output Mode:**
 
@@ -2706,9 +2707,17 @@ print(system_monitor_obj)
 
   * Most functions run under 0.1s on typical systems
 
----
+* **Warnings:**
 
-## ✅ Quick Test Tip
+  ### ⚠️ Known Issue in WMI Data Retrieval
+  There is an issue affecting the return values of some hardware properties due to unexpected **COM type inference** from **WMI queries**.
+
+  In certain cases, data might appear as `"N/A"` even though the value is **not actually empty**. This behavior was especially common in versions **prior to `2.0.3`**, and while **most of the issues have been resolved**, a known case still persists with the **CPU's `architecture` property**.
+
+  We are actively working on a fix and it will be addressed in an upcoming release.
+
+
+## Quick Test
 
 Run the following command to test all functions:
 
@@ -2720,7 +2729,6 @@ This will:
 
 * Call all HardView functions
 * Print execution times
-* Test memory leak stability
 
 For more details, refer to files inside the `docs/` folder.
         </script>
