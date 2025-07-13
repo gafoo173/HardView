@@ -616,7 +616,7 @@ pprint.pprint(ram_monitor_obj_data)
             </div>
         </section>
 
-        <!-- Hidden Markdown Content - Raw content from your .md files -->
+
         <script type="text/plain" id="markdown-content-README">
 # HardView - Python Hardware Information Module
 
@@ -1095,9 +1095,23 @@ Use HardView if:
         </script>
 
         <script type="text/plain" id="markdown-content-CHANGELOG">
+
+---
+
 # 📜 Changelog
 
 All notable changes to this project will be documented in this file.
+
+
+
+---
+
+## \[3.0.1] - Hotfix Release
+
+### Highlights:
+* Fixed packaging issues that caused PyPI upload failures in version `3.0.0`.
+* Fix RECORD file missing error in pypi wheels.
+* **No changes to functionality or API.**
 
 ---
 
@@ -1108,15 +1122,30 @@ All notable changes to this project will be documented in this file.
 * **Structural Change for Output:**
 
   * The library now supports returning data as native Python objects in addition to JSON strings.
+
 * **New `_objects` functions:**
 
   * For each JSON-returning function, a corresponding `_objects` version has been added (e.g., `get_bios_info_objects()`).
+
 * **GPU Information Support:**
 
   * New functions introduced:
 
     * `get_gpu_info()`: GPU info as JSON
     * `get_gpu_info_objects()`: GPU info as Python objects
+> ⚠️ **Warning:** Version `3.0.0` contains broken wheels that cause installation failure via pip.  
+> Please **avoid using version 3.0.0** and use version `3.0.1` or higher instead.
+---
+
+## \[2.0.3] - Hotfix Release
+
+### Highlights:
+
+* **Fixed `get_smart_info()` inconsistency:**
+
+  * Resolved an issue where the function occasionally returned zero for disk sectors, cylinders, and tracks.
+  * Ensured consistent and accurate SMART data retrieval.
+* **No functional/API changes.**
 
 ---
 
@@ -1126,7 +1155,7 @@ All notable changes to this project will be documented in this file.
 
 * **Fixed Typo in Output Binary Name:**
 
-  * Resolved an issue in version 2.0.1 where the output binary had incorrect casing.
+  * Resolved an issue where the output binary had inconsistent casing.
   * Output is now consistently named `HardView.pyd` or `HardView.so`.
 * **No functional/API changes.**
 
@@ -1138,8 +1167,8 @@ All notable changes to this project will be documented in this file.
 
 * **Critical JSON Serialization Fix:**
 
-  * Fixed improper escaping of backslashes (`\`) in SMART disk JSON data.
-  * JSON output is now compliant with standard formatting.
+  * Fixed improper escaping of backslashes (`\`) in SMART disk JSON output.
+  * Output is now fully JSON-compliant.
 * **No other functional or API changes.**
 
 ---
@@ -1150,8 +1179,9 @@ All notable changes to this project will be documented in this file.
 
 * **Refactor:**
 
-  * Each function moved to its own source file for better maintainability.
-  * Enhanced memory safety and leak prevention.
+  * Each function moved to a separate C source file.
+  * Improved memory safety and leak prevention.
+
 * **New Advanced Features:**
 
   * `get_partitions_info()`
@@ -1197,7 +1227,7 @@ All notable changes to this project will be documented in this file.
 * `get_network_info()`
 * `get_partitions_info()`
 
-}
+---
         </script>
 
         <script type="text/plain" id="markdown-content-CONTRIBUTING">
@@ -2830,7 +2860,7 @@ For more details, refer to files inside the `docs/` folder.
             return html;
         }
 
-        // XSS Sanitization function
+
         function sanitizeInput(input) {
             const div = document.createElement('div');
             div.appendChild(document.createTextNode(input));
