@@ -274,7 +274,7 @@ print(cpu_data)
 {
     "name": "Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz",
     "manufacturer": "GenuineIntel",
-    "architecture": "x64",
+    "architecture": "9", // 9 = ×64
     "cores": 8,
     "threads": 8,
     "max_clock_speed": 4900,
@@ -295,7 +295,7 @@ print(cpu_obj)
 {
     'name': 'Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz',
     'manufacturer': 'GenuineIntel',
-    'architecture': 'x64',
+    'architecture': '9',
     'cores': 8,
     'threads': 8,
     'max_clock_speed': 4900.0,
