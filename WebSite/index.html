@@ -12,6 +12,7 @@
       background: #181a1b;
       color: #f3f3f3;
       transition: background 0.3s, color 0.3s;
+      scroll-behavior: smooth; /* Smooth scrolling for navigation */
     }
     .container {
       display: flex;
@@ -25,7 +26,13 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      transition: width 0.3s ease-in-out; /* Smooth transition for sidebar width */
+      transition: width 0.3s ease-in-out, padding 0.3s ease-in-out; /* Smooth transition for sidebar width and padding */
+      position: fixed; /* Make sidebar fixed */
+      top: 0;
+      left: 0;
+      height: 100vh; /* Make sidebar take full viewport height */
+      overflow-y: auto; /* Allow scrolling within the sidebar if content overflows */
+      z-index: 100; /* Ensure sidebar is above other content */
     }
     /* Removed aside img as per request */
     aside nav a {
@@ -54,8 +61,9 @@
     }
     main {
       flex: 1;
-      /* Removed max-width and margin: auto from main to allow it to expand */
       min-height: 400px;
+      margin-left: 260px; /* Push main content to the right of the fixed sidebar */
+      transition: margin-left 0.3s ease-in-out; /* Smooth transition for main content margin */
     }
     .content-wrapper {
       max-width: 900px; /* Max width for content inside main */
@@ -63,8 +71,14 @@
       padding: 40px 32px 32px 32px; /* Padding for content */
       box-sizing: border-box; /* Include padding in element's total width */
     }
-    section { display: none; }
-    section.active { display: block; }
+    /* All sections are now always displayed */
+    section {
+        display: block;
+        margin-bottom: 40px; /* Add some spacing between sections */
+    }
+    section:last-child {
+        margin-bottom: 0; /* No margin after the last section */
+    }
 
     /* Dark mode styles */
     .dark-mode body {
@@ -87,13 +101,24 @@
     /* Responsive adjustments */
     @media (max-width: 800px) {
       .container { flex-direction: column; }
-      aside { width: 100%; flex-direction: row; gap: 0; padding: 8px; }
-      aside nav { flex: 1; display: flex; flex-direction: row; gap: 8px; }
-      aside nav a { margin-bottom: 0; font-size: 1em; }
+      aside {
+        position: static; /* Make sidebar static on small screens */
+        width: 100%;
+        height: auto; /* Auto height for static positioning */
+        flex-direction: row;
+        gap: 0;
+        padding: 8px;
+        box-shadow: 0 2px 8px #0002; /* Add shadow for top bar */
+      }
+      aside nav { flex: 1; display: flex; flex-direction: row; gap: 8px; overflow-x: auto; } /* Allow horizontal scrolling for nav links */
+      aside nav a { margin-bottom: 0; font-size: 1em; flex-shrink: 0; } /* Prevent links from shrinking too much */
+      .github-link { display: none; } /* Hide GitHub link on small screens to save space */
+      main { margin-left: 0; } /* No margin on small screens */
       .content-wrapper { padding: 16px; } /* Adjust padding for small screens */
       .main-controls {
         flex-direction: column;
         align-items: flex-end;
+        padding-right: 16px; /* Adjust padding for small screens */
       }
     }
 
@@ -248,16 +273,7 @@
         color: #fff;
     }
 
-    /* New styles for single page mode */
-    body.single-page-mode main section {
-      display: block; /* Show all sections */
-    }
-    body.single-page-mode aside nav a.active {
-        background: none; /* Remove active background in single page mode */
-        color: #f3f3f3; /* Keep text color normal */
-    }
-
-    /* New styles for sidebar toggle */
+    /* Styles for sidebar toggle */
     .container.sidebar-hidden aside {
       width: 0;
       padding: 0;
@@ -267,9 +283,11 @@
     .container.sidebar-hidden aside .github-link {
         display: none; /* Hide navigation and github link */
     }
-    /* No need to adjust main margin-left, as content-wrapper handles centering */
+    .container.sidebar-hidden main {
+      margin-left: 0; /* Main content takes full width when sidebar is hidden */
+    }
 
-    /* Styles for new control buttons */
+    /* Styles for control buttons */
     .main-controls {
       display: flex;
       justify-content: flex-end; /* Align to right */
@@ -301,13 +319,13 @@
     <aside id="sidebar">
       <!-- Removed img tag for logo -->
       <nav>
-        <a href="#" class="active" onclick="showSection(event, 'home')">Home</a>
-        <a href="#" onclick="showSection(event, 'installation')">Installation</a>
-        <a href="#" onclick="showSection(event, 'benchmarks')">Benchmarks</a>
-        <a href="#" onclick="showSection(event, 'faq')">FAQ</a>
-        <a href="#" onclick="showSection(event, 'changelog')">Changelog</a>
-        <a href="#" onclick="showSection(event, 'api')">API Guide</a>
-        <a href="#" onclick="showSection(event, 'project')">Project</a>
+        <a href="#home" class="active" onclick="showSection(event, 'home')">Home</a>
+        <a href="#installation" onclick="showSection(event, 'installation')">Installation</a>
+        <a href="#benchmarks" onclick="showSection(event, 'benchmarks')">Benchmarks</a>
+        <a href="#faq" onclick="showSection(event, 'faq')">FAQ</a>
+        <a href="#changelog" onclick="showSection(event, 'changelog')">Changelog</a>
+        <a href="#api" onclick="showSection(event, 'api')">API Guide</a>
+        <a href="#project" onclick="showSection(event, 'project')">Project</a>
       </nav>
       <div class="github-link">
         <a href="https://github.com/gafoo173/HardView/" target="_blank">GitHub</a>
@@ -316,10 +334,9 @@
     <main>
       <div class="main-controls">
         <button id="toggleSidebarBtn" onclick="toggleSidebar()">Hide Sidebar</button>
-        <button id="toggleSinglePageBtn" onclick="toggleSinglePageMode()">Single Page View</button>
       </div>
       <div class="content-wrapper">
-        <section id="home" class="active">
+        <section id="home">
           <!-- Removed image shields and main logo image -->
           <h1>HardView - Python Hardware Information Module</h1>
           <p>HardView is a high-performance, cross-platform Python module that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.</p>
@@ -1376,7 +1393,7 @@ print(net_obj)</code></pre>
           <h3>Example Python Object Output:</h3>
           <div class="code-block code-block--large">
             <button class="copy-btn" onclick="copyCode(this)" title="Copy">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M7 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V6h-2v10H7V6H5z"/></svg>
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M7 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H7zm0 2h6v10H7V4zm-2 2v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V6h-2v10H7V6H5z"/></svg>
             </button>
             <pre><code>[
     {
@@ -1713,7 +1730,7 @@ print(gpu_obj)</code></pre>
 
           <p><strong>C Function:</strong> <code>get_cpu_usage(bool Json)</code></p>
 
-          <h3>Python Functions:</h3>
+          <h4>Python Functions:</h4>
           <ul>
             <li><code>HardView.get_cpu_usage(Json=True)</code>: Returns a JSON string</li>
             <li><code>HardView.get_cpu_usage_objects(Json=False)</code>: Returns a Python object</li>
@@ -1787,7 +1804,7 @@ print(cpu_usage_obj)</code></pre>
 
           <p><strong>C Function:</strong> <code>get_ram_usage(bool Json)</code></p>
 
-          <h3>Python Functions:</h3>
+          <h4>Python Functions:</h4>
           <ul>
             <li><code>HardView.get_ram_usage(Json=True)</code>: Returns a JSON string</li>
             <li><code>HardView.get_ram_usage_objects(Json=False)</code>: Returns a Python object</li>
@@ -1866,7 +1883,7 @@ print(ram_usage_obj)</code></pre>
 
           <p><strong>C Function:</strong> <code>get_system_performance(bool Json)</code></p>
 
-          <h3>Python Functions:</h3>
+          <h4>Python Functions:</h4>
           <ul>
             <li><code>HardView.get_system_performance(Json=True)</code>: Returns a JSON string</li>
             <li><code>HardView.get_system_performance_objects(Json=False)</code>: Returns a Python object</li>
@@ -1981,7 +1998,7 @@ cpu_monitor_data = json.loads(cpu_monitor_json_str)
 print(cpu_monitor_data)</code></pre>
           </div>
 
-          <h3>Example JSON Output:</h3>
+          <h4>Example JSON Output:</h4>
 
           <div class="code-block code-block--large">
             <button class="copy-btn" onclick="copyCode(this)" title="Copy">
@@ -2000,7 +2017,7 @@ print(cpu_monitor_data)</code></pre>
 }</code></pre>
           </div>
 
-          <h3>Usage (Python Object):</h3>
+          <h4>Usage (Python Object):</h4>
 
           <div class="code-block code-block--large">
             <button class="copy-btn" onclick="copyCode(this)" title="Copy">
@@ -2009,7 +2026,9 @@ print(cpu_monitor_data)</code></pre>
             <pre><code>import HardView
 
 cpu_monitor_obj = HardView.monitor_cpu_usage_duration_objects(5, 1000)
-print(cpu_monitor_obj)</code></pre>
+print(cpu_monitor_obj)
+```
+</pre>
           </div>
 
           <h4>Properties / JSON Keys:</h4>
@@ -2053,7 +2072,7 @@ ram_monitor_data = json.loads(ram_monitor_json_str)
 print(ram_monitor_data)</code></pre>
           </div>
 
-          <h3>Example JSON Output:</h3>
+          <h4>Example JSON Output:</h4>
 
           <div class="code-block code-block--large">
             <button class="copy-btn" onclick="copyCode(this)" title="Copy">
@@ -2071,7 +2090,7 @@ print(ram_monitor_data)</code></pre>
 }</code></pre>
           </div>
 
-          <h3>Usage (Python Object):</h3>
+          <h4>Usage (Python Object):</h4>
 
           <div class="code-block code-block--large">
             <button class="copy-btn" onclick="copyCode(this)" title="Copy">
@@ -2080,7 +2099,9 @@ print(ram_monitor_data)</code></pre>
             <pre><code>import HardView
 
 ram_monitor_obj = HardView.monitor_ram_usage_duration_objects(5, 1000)
-print(ram_monitor_obj)</code></pre>
+print(ram_monitor_obj)
+```
+</pre>
           </div>
 
           <h4>Properties / JSON Keys:</h4>
@@ -2124,7 +2145,7 @@ system_monitor_data = json.loads(system_monitor_json_str)
 print(system_monitor_data)</code></pre>
           </div>
 
-          <h3>Example JSON Output:</h3>
+          <h4>Example JSON Output:</h4>
 
           <div class="code-block code-block--large">
             <button class="copy-btn" onclick="copyCode(this)" title="Copy">
@@ -2161,7 +2182,9 @@ print(system_monitor_data)</code></pre>
             <pre><code>import HardView
 
 system_monitor_obj = HardView.monitor_system_performance_duration_objects(5, 1000)
-print(system_monitor_obj)</code></pre>
+print(system_monitor_obj)
+```
+</pre>
           </div>
 
           <h4>Properties / JSON Keys:</h4>
@@ -2233,7 +2256,7 @@ print(system_monitor_obj)</code></pre>
           <!-- ========== START PROJECT SECTION ========== -->
           <h1>🚀 Project</h1>
           <p>
-            <b>GitHub Repository:</b> <a href="https://github.com/gafoo173/HardView/" target="_blank">https://github.com/gafoo173/HardView/</a>
+            <b>GitHub Repository:</b> <a href="[https://github.com/gafoo173/HardView/](https://github.com/gafoo173/HardView/)" target="_blank">[https://github.com/gafoo173/HardView/](https://github.com/gafoo173/HardView/)</a>
           </p>
           <!-- ========== START CONTRIBUTING.md ========== -->
           <h2>🤝 Contributing to HardView</h2>
@@ -2314,81 +2337,42 @@ print(system_monitor_obj)</code></pre>
     </main>
   </div>
   <script>
-    // Global variable to track single page mode
-    let isSinglePageMode = false;
+    // Global variable to track sidebar visibility
     let isSidebarHidden = false;
 
+    // Function to show/scroll to a section
     function showSection(event, sectionId) {
       if (event) {
         event.preventDefault();
       }
 
-      // If in single page mode, just scroll to the section
-      if (isSinglePageMode) {
-        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-        // Optionally, highlight the active link in the sidebar even in single-page mode
-        document.querySelectorAll('aside nav a').forEach(a => a.classList.remove('active'));
-        const activeLink = document.querySelector(`aside nav a[onclick*="${sectionId}"]`);
-        if (activeLink) {
-          activeLink.classList.add('active');
-        }
-        return;
-      }
+      // Scroll to the target section
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
 
-      // Hide all sections
-      document.querySelectorAll('main section').forEach(sec => sec.classList.remove('active'));
-      // Show the selected section
-      document.getElementById(sectionId).classList.add('active');
       // Update sidebar active link
       document.querySelectorAll('aside nav a').forEach(a => a.classList.remove('active'));
-      if (event && event.target) {
-        event.target.classList.add('active');
-      } else {
-        // This case handles initial load or programmatic calls
-        const activeLink = document.querySelector(`aside nav a[onclick*="${sectionId}"]`);
-        if (activeLink) {
-          activeLink.classList.add('active');
-        }
+      const activeLink = document.querySelector(`aside nav a[href="#${sectionId}"]`);
+      if (activeLink) {
+        activeLink.classList.add('active');
       }
     }
 
-    function toggleSinglePageMode() {
-      const body = document.body;
-      const sections = document.querySelectorAll('main section');
-      const navLinks = document.querySelectorAll('aside nav a');
-      const toggleSinglePageBtn = document.getElementById('toggleSinglePageBtn');
-
-      isSinglePageMode = !isSinglePageMode;
-
-      if (isSinglePageMode) {
-        body.classList.add('single-page-mode');
-        sections.forEach(sec => sec.style.display = 'block'); // Ensure all sections are visible
-        navLinks.forEach(a => a.classList.remove('active')); // Remove active class from all nav links
-        toggleSinglePageBtn.textContent = 'Tabbed View'; // Changed text
-      } else {
-        body.classList.remove('single-page-mode');
-        // Hide all sections except 'home'
-        sections.forEach(sec => sec.style.display = 'none');
-        document.getElementById('home').style.display = 'block';
-        // Set 'home' nav link as active
-        navLinks.forEach(a => a.classList.remove('active'));
-        document.querySelector('aside nav a[onclick*="home"]').classList.add('active');
-        toggleSinglePageBtn.textContent = 'Single Page View'; // Changed text
-      }
-    }
-
+    // Function to toggle sidebar visibility
     function toggleSidebar() {
       const container = document.querySelector('.container');
+      const mainElement = document.querySelector('main');
       const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
 
       isSidebarHidden = !isSidebarHidden;
 
       if (isSidebarHidden) {
         container.classList.add('sidebar-hidden');
-        toggleSidebarBtn.textContent = 'Show Sidebar'; // Changed text
+        toggleSidebarBtn.textContent = 'Show Sidebar';
+        // No need to explicitly set margin-left on main here, as .container.sidebar-hidden main handles it
       } else {
         container.classList.remove('sidebar-hidden');
-        toggleSidebarBtn.textContent = 'Hide Sidebar'; // Changed text
+        toggleSidebarBtn.textContent = 'Hide Sidebar';
+        // No need to explicitly set margin-left on main here, as it reverts due to CSS
       }
     }
 
@@ -2415,9 +2399,13 @@ print(system_monitor_obj)</code></pre>
       setTimeout(() => { btn.classList.remove('copied'); btn.style.color = ''; }, 1200);
     }
 
-    // Initialize the page to show the home section
+    // Initialize the page by setting the 'home' section as active and scrolling to it
     document.addEventListener('DOMContentLoaded', () => {
-      showSection(null, 'home'); // Pass null for event as it's not from a click
+      // Set the 'home' link as active on initial load
+      const homeLink = document.querySelector('aside nav a[href="#home"]');
+      if (homeLink) {
+        homeLink.classList.add('active');
+      }
     });
   </script>
 </body>
