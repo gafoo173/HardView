@@ -19,7 +19,8 @@ This document explains all functions in the HardView library, what they return, 
 11. [GPU Info](#11-gpu-info)
 12. [Current Performance](#12-current-performance)
 13. [Performance Monitoring](#13-performance-monitoring)
-14. [General Notes](#-general-notes)
+14. [General Notes](#general-notes)
+15. [Quick Test](#quick-test)
 
 ---
 
@@ -1169,7 +1170,7 @@ print(system_monitor_obj)
 
 ---
 
-## ⚠️ General Notes
+## General Notes
 
 * **Dual Output Mode:**
 
@@ -1185,9 +1186,17 @@ print(system_monitor_obj)
 
   * Most functions run under 0.1s on typical systems
 
----
+* **Warnings:**
 
-## ✅ Quick Test Tip
+  ### ⚠️ Known Issue in WMI Data Retrieval
+  There is an issue affecting the return values of some hardware properties due to unexpected **COM type inference** from **WMI queries**.
+
+  In certain cases, data might appear as `"N/A"` even though the value is **not actually empty**. This behavior was especially common in versions **prior to `2.0.3`**, and while **most of the issues have been resolved**, a known case still persists with the **CPU's `architecture` property**.
+
+  We are actively working on a fix and it will be addressed in an upcoming release.
+
+
+## Quick Test
 
 Run the following command to test all functions:
 
@@ -1199,6 +1208,5 @@ This will:
 
 * Call all HardView functions
 * Print execution times
-* Test memory leak stability
 
 For more details, refer to files inside the `docs/` folder.
