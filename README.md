@@ -111,6 +111,7 @@ All documentation is in the `docs/` folder:
 | `get_chassis_info()`                       | `get_chassis_info_objects()`                       | Chassis/computer case info              |
 | `get_cpu_info()`                           | `get_cpu_info_objects()`                           | Processor details                       |
 | `get_ram_info()`                           | `get_ram_info_objects()`                           | Memory modules and totals               |
+| `get_gpu_info`                             | `get_gpu_info_objects()`                           | GPU information                         |
 | `get_disk_info()`                          | `get_disk_info_objects()`                          | Storage devices                         |
 | `get_network_info()`                       | `get_network_info_objects()`                       | Network adapters                        |
 | `get_partitions_info()`                    | `get_partitions_info_objects()`                    | Disk partitions (advanced)              |
