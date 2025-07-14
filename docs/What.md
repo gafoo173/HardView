@@ -1,4 +1,9 @@
-# HardView Library Functions Guide
+# HardView API Guide
+
+<p align="center">
+  <img src="https://img.shields.io/badge/API_Version-3.0.0-informational" alt="API Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Package-3.0.1-blue" alt="PyPI Package Version" height="30">
+</p>
 
 This document explains all functions in the HardView library, what they return, and how to use them from Python with example outputs.
 
@@ -6,19 +11,25 @@ This document explains all functions in the HardView library, what they return, 
 
 ## Table of Contents
 
-1. [BIOS Info](#1-bios-info)
-2. [System Info](#2-system-info)
-3. [Baseboard Info](#3-baseboard-info)
-4. [Chassis Info](#4-chassis-info)
-5. [CPU Info](#5-cpu-info)
-6. [RAM Info](#6-ram-info)
-7. [Disk Drives Info](#7-disk-drives-info)
-8. [Network Adapters Info](#8-network-adapters-info)
-9. [Partitions Info](#9-partitions-info-advanced-storage)
+1.  [BIOS Info](#1-bios-info)
+2.  [System Info](#2-system-info)
+3.  [Baseboard Info](#3-baseboard-info)
+4.  [Chassis Info](#4-chassis-info)
+5.  [CPU Info](#5-cpu-info)
+6.  [RAM Info](#6-ram-info)
+7.  [Disk Drives Info](#7-disk-drives-info)
+8.  [Network Adapters Info](#8-network-adapters-info)
+9.  [Partitions Info](#9-partitions-info-advanced-storage)
 10. [SMART/Disk Info](#10-smartdisk-info-advanced)
 11. [GPU Info](#11-gpu-info)
 12. [Current Performance](#12-current-performance)
+    * [CPU Usage](#a-cpu-usage)
+    * [RAM Usage](#b-ram-usage)
+    * [System Performance](#c-system-performance)
 13. [Performance Monitoring](#13-performance-monitoring)
+    * [CPU Monitoring](#a-cpu-monitoring)
+    * [RAM Monitoring](#b-ram-monitoring)
+    * [System Performance Monitoring](#c-system-performance-monitoring)
 14. [General Notes](#general-notes)
 15. [Quick Test](#quick-test)
 
@@ -33,9 +44,10 @@ This document explains all functions in the HardView library, what they return, 
 - `HardView.get_bios_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-BIOS information such as vendor, version, and release date.
+Retrieves BIOS information such as vendor, version, and release date.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -46,6 +58,7 @@ print(bios_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "manufacturer": "ACME Corp.",
@@ -55,6 +68,7 @@ print(bios_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -63,6 +77,7 @@ print(bios_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 {
     'manufacturer': 'ACME Corp.',
@@ -72,24 +87,28 @@ print(bios_obj)
 ```
 
 ### Properties / JSON Keys:
-- **manufacturer** (string): The name of the BIOS manufacturer
-- **version** (string): The BIOS version
-- **release_date** (string): The BIOS release date
 
----
+  - **manufacturer** (string): The name of the BIOS manufacturer
+  - **version** (string): The BIOS version
+  - **release_date** (string): The BIOS release date
+
+-----
 
 ## 2. System Info
 
 **C Function:** `get_system_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_system_info(Json=True)`: Returns a JSON string
-- `HardView.get_system_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_system_info(Json=True)`: Returns a JSON string
+  - `HardView.get_system_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-System information such as manufacturer, product name, UUID, and serial number.
+
+Retrieves system information such as manufacturer, product name, UUID, and serial number.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -100,6 +119,7 @@ print(system_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "manufacturer": "ExampleTech",
@@ -110,6 +130,7 @@ print(system_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -118,6 +139,7 @@ print(system_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 {
     'manufacturer': 'ExampleTech',
@@ -128,25 +150,29 @@ print(system_obj)
 ```
 
 ### Properties / JSON Keys:
-- **manufacturer** (string): The system manufacturer's name
-- **product_name** (string): The system product name
-- **uuid** (string): The system's UUID
-- **serial_number** (string): The system's serial number
 
----
+  - **manufacturer** (string): The system manufacturer's name
+  - **product_name** (string): The system product name
+  - **uuid** (string): The system's UUID
+  - **serial_number** (string): The system's serial number
+
+-----
 
 ## 3. Baseboard Info
 
 **C Function:** `get_baseboard_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_baseboard_info(Json=True)`: Returns a JSON string
-- `HardView.get_baseboard_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_baseboard_info(Json=True)`: Returns a JSON string
+  - `HardView.get_baseboard_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Motherboard information such as manufacturer, product, serial number, and version.
+
+Retrieves motherboard information such as manufacturer, product, serial number, and version.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -157,6 +183,7 @@ print(baseboard_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "manufacturer": "MegaBoard Inc.",
@@ -167,6 +194,7 @@ print(baseboard_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -175,6 +203,7 @@ print(baseboard_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 {
     'manufacturer': 'MegaBoard Inc.',
@@ -185,25 +214,29 @@ print(baseboard_obj)
 ```
 
 ### Properties / JSON Keys:
-- **manufacturer** (string): The motherboard manufacturer's name
-- **product** (string): The motherboard product name
-- **serial_number** (string): The motherboard serial number
-- **version** (string): The motherboard version
 
----
+  - **manufacturer** (string): The motherboard manufacturer's name
+  - **product** (string): The motherboard product name
+  - **serial_number** (string): The motherboard serial number
+  - **version** (string): The motherboard version
+
+-----
 
 ## 4. Chassis Info
 
 **C Function:** `get_chassis_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_chassis_info(Json=True)`: Returns a JSON string
-- `HardView.get_chassis_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_chassis_info(Json=True)`: Returns a JSON string
+  - `HardView.get_chassis_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Computer chassis/case information such as manufacturer, model, serial number, and type.
+
+Retrieves computer chassis/case information such as manufacturer, model, serial number, and type.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -214,6 +247,7 @@ print(chassis_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "manufacturer": "CaseWorks",
@@ -224,6 +258,7 @@ print(chassis_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -232,6 +267,7 @@ print(chassis_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 {
     'manufacturer': 'CaseWorks',
@@ -242,25 +278,29 @@ print(chassis_obj)
 ```
 
 ### Properties / JSON Keys:
-- **manufacturer** (string): The chassis manufacturer's name
-- **model** (string): The chassis model
-- **serial_number** (string): The chassis serial number
-- **chassis_type** (string): The type of chassis (e.g., "Tower", "Laptop")
 
----
+  - **manufacturer** (string): The chassis manufacturer's name
+  - **model** (string): The chassis model
+  - **serial_number** (string): The chassis serial number
+  - **chassis_type** (string): The type of chassis (e.g., "Tower", "Laptop")
+
+-----
 
 ## 5. CPU Info
 
 **C Function:** `get_cpu_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_cpu_info(Json=True)`: Returns a JSON string
-- `HardView.get_cpu_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_cpu_info(Json=True)`: Returns a JSON string
+  - `HardView.get_cpu_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Processor details such as name, manufacturer, architecture, number of cores, number of threads, max clock speed, and socket designation.
+
+Retrieves processor details such as name, manufacturer, architecture, number of cores, number of threads, max clock speed, and socket designation.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -271,6 +311,7 @@ print(cpu_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "name": "Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz",
@@ -284,6 +325,7 @@ print(cpu_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -292,6 +334,7 @@ print(cpu_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 {
     'name': 'Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz',
@@ -305,28 +348,32 @@ print(cpu_obj)
 ```
 
 ### Properties / JSON Keys:
-- **name** (string): The CPU name
-- **manufacturer** (string): The CPU manufacturer
-- **architecture** (string): The CPU architecture
-- **cores** (integer): The number of physical cores
-- **threads** (integer): The number of logical threads
-- **max_clock_speed** (float): The maximum clock speed of the CPU in MHz
-- **socket_designation** (string): The CPU socket designation
 
----
+  - **name** (string): The CPU name
+  - **manufacturer** (string): The CPU manufacturer
+  - **architecture** (string): The CPU architecture
+  - **cores** (integer): The number of physical cores
+  - **threads** (integer): The number of logical threads
+  - **max_clock_speed** (float): The maximum clock speed of the CPU in MHz
+  - **socket_designation** (string): The CPU socket designation
+
+-----
 
 ## 6. RAM Info
 
 **C Function:** `get_ram_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_ram_info(Json=True)`: Returns a JSON string
-- `HardView.get_ram_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_ram_info(Json=True)`: Returns a JSON string
+  - `HardView.get_ram_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Total physical memory and details of individual memory modules.
+
+Retrieves total physical memory and details of individual memory modules.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -337,6 +384,7 @@ print(ram_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "total_physical_memory_bytes": 17179869184,
@@ -360,6 +408,7 @@ print(ram_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -368,6 +417,7 @@ print(ram_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 {
     'total_physical_memory_bytes': 17179869184,
@@ -391,28 +441,32 @@ print(ram_obj)
 ```
 
 ### Properties / JSON Keys:
-- **total_physical_memory_bytes** (integer): Total physical memory size in bytes
-- **memory_modules** (list): A list of individual memory modules, each containing:
-  - **capacity_bytes** (integer): Module capacity in bytes
-  - **speed_mhz** (integer): Module speed in MHz
-  - **manufacturer** (string): Module manufacturer
-  - **serial_number** (string): Module serial number
-  - **part_number** (string): Module part number
 
----
+  - **total_physical_memory_bytes** (integer): Total physical memory size in bytes
+  - **memory_modules** (list): A list of individual memory modules, each containing:
+      - **capacity_bytes** (integer): Module capacity in bytes
+      - **speed_mhz** (integer): Module speed in MHz
+      - **manufacturer** (string): Module manufacturer
+      - **serial_number** (string): Module serial number
+      - **part_number** (string): Module part number
+
+-----
 
 ## 7. Disk Drives Info
 
 **C Function:** `get_disk_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_disk_info(Json=True)`: Returns a JSON string
-- `HardView.get_disk_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_disk_info(Json=True)`: Returns a JSON string
+  - `HardView.get_disk_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Information about installed disk drives, including model, manufacturer, interface type, size, serial number, and media type.
+
+Retrieves information about installed disk drives, including model, manufacturer, interface type, size, serial number, and media type.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -423,6 +477,7 @@ print(disk_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "disks": [
@@ -439,6 +494,7 @@ print(disk_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -447,6 +503,7 @@ print(disk_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 [
     {
@@ -461,27 +518,31 @@ print(disk_obj)
 ```
 
 ### Properties / JSON Keys (for each disk):
-- **model** (string): The disk model
-- **manufacturer** (string): The disk manufacturer
-- **interface_type** (string): The disk interface type (e.g., "IDE", "SCSI", "SATA", "NVMe")
-- **size** (integer): The disk size in bytes
-- **serial_number** (string): The disk serial number
-- **media_type** (string): The disk media type (e.g., "Fixed hard disk media", "Solid State Drive")
 
----
+  - **model** (string): The disk model
+  - **manufacturer** (string): The disk manufacturer
+  - **interface_type** (string): The disk interface type (e.g., "IDE", "SCSI", "SATA", "NVMe")
+  - **size** (integer): The disk size in bytes
+  - **serial_number** (string): The disk serial number
+  - **media_type** (string): The disk media type (e.g., "Fixed hard disk media", "Solid State Drive")
+
+-----
 
 ## 8. Network Adapters Info
 
 **C Function:** `get_network_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_network_info(Json=True)`: Returns a JSON string
-- `HardView.get_network_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_network_info(Json=True)`: Returns a JSON string
+  - `HardView.get_network_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Information about network adapters, including description, MAC address, IP addresses (IPv4 and IPv6), and DNS hostname.
+
+Retrieves information about network adapters, including description, MAC address, IP addresses (IPv4 and IPv6), and DNS hostname.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -492,6 +553,7 @@ print(net_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "network_adapters": [
@@ -509,6 +571,7 @@ print(net_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -517,6 +580,7 @@ print(net_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 [
     {
@@ -529,25 +593,29 @@ print(net_obj)
 ```
 
 ### Properties / JSON Keys (for each adapter):
-- **description** (string): The adapter description
-- **mac_address** (string): The adapter's MAC address
-- **ip_addresses** (list): A list of IP addresses (IPv4 and IPv6) assigned to the adapter
-- **dns_host_name** (string): The DNS hostname associated with the adapter
 
----
+  - **description** (string): The adapter description
+  - **mac_address** (string): The adapter's MAC address
+  - **ip_addresses** (list): A list of IP addresses (IPv4 and IPv6) assigned to the adapter
+  - **dns_host_name** (string): The DNS hostname associated with the adapter
+
+-----
 
 ## 9. Partitions Info (Advanced Storage)
 
 **C Function:** `get_partitions_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_partitions_info(Json=True)`: Returns a JSON string
-- `HardView.get_partitions_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_partitions_info(Json=True)`: Returns a JSON string
+  - `HardView.get_partitions_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Detailed information about disk partitions, including disk model, serial number, interface type, disk size, media type, partition device ID, partition type, partition size, and partition index.
+
+Retrieves detailed information about disk partitions, including disk model, serial number, interface type, disk size, media type, partition device ID, partition type, partition size, and partition index.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -558,6 +626,7 @@ print(parts_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "partitions": [
@@ -577,6 +646,7 @@ print(parts_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -585,6 +655,7 @@ print(parts_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 [
     {
@@ -602,30 +673,34 @@ print(parts_obj)
 ```
 
 ### Properties / JSON Keys (for each partition):
-- **disk_model** (string): The model of the disk the partition belongs to
-- **disk_serial** (string): The serial number of the disk the partition belongs to
-- **disk_interface** (string): The interface type of the disk
-- **disk_size** (integer): The total size of the disk in bytes
-- **disk_media** (string): The media type of the disk
-- **partition_device_id** (string): The device ID of the partition
-- **partition_type** (string): The file system type of the partition
-- **partition_size** (integer): The size of the partition in bytes
-- **partition_index** (integer): The index of the partition on the disk
 
----
+  - **disk_model** (string): The model of the disk the partition belongs to
+  - **disk_serial** (string): The serial number of the disk the partition belongs to
+  - **disk_interface** (string): The interface type of the disk
+  - **disk_size** (integer): The total size of the disk in bytes
+  - **disk_media** (string): The media type of the disk
+  - **partition_device_id** (string): The device ID of the partition
+  - **partition_type** (string): The file system type of the partition
+  - **partition_size** (integer): The size of the partition in bytes
+  - **partition_index** (integer): The index of the partition on the disk
+
+-----
 
 ## 10. SMART/Disk Info (Advanced)
 
 **C Function:** `get_smart_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_smart_info(Json=True)`: Returns a JSON string
-- `HardView.get_smart_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_smart_info(Json=True)`: Returns a JSON string
+  - `HardView.get_smart_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-Detailed disk drive information, including SMART status, device IDs, firmware revision, and sector/track information.
+
+Retrieves detailed disk drive information, including SMART status, device IDs, firmware revision, and sector/track information.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -636,6 +711,7 @@ print(smart_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "disks": [
@@ -648,7 +724,7 @@ print(smart_data)
             "manufacturer": "SSDCorp",
             "media_type": "Solid State Drive",
             "status": "OK",
-            "device_id": "\\\\.\\PHYSICALDRIVE0",
+            "device_id": "\\.\PHYSICALDRIVE0",
             "caption": "NVMe SSD 1TB",
             "firmware_revision": "FW1.0",
             "pnp_device_id": "NVME\\SSD&VEN_1234&PROD_5678\\1&234567&0&000000",
@@ -667,6 +743,7 @@ print(smart_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -675,6 +752,7 @@ print(smart_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 [
     {
@@ -686,7 +764,7 @@ print(smart_obj)
         'manufacturer': 'SSDCorp',
         'media_type': 'Solid State Drive',
         'status': 'OK',
-        'device_id': '\\\\.\\PHYSICALDRIVE0',
+        'device_id': '\\. 0HYSICALDRIVE0',
         'caption': 'NVMe SSD 1TB',
         'firmware_revision': 'FW1.0',
         'pnp_device_id': 'NVME\\SSD&VEN_1234&PROD_5678\\1&234567&0&000000',
@@ -704,42 +782,46 @@ print(smart_obj)
 ```
 
 ### Properties / JSON Keys (for each disk):
-- **model** (string): The disk model
-- **serial_number** (string): The disk serial number
-- **interface_type** (string): The disk interface type
-- **size** (string): The disk size in bytes
-- **partitions** (integer): The number of partitions on the disk
-- **manufacturer** (string): The disk manufacturer
-- **media_type** (string): The disk media type
-- **status** (string): The disk status (e.g., "OK")
-- **device_id** (string): The device ID of the disk
-- **caption** (string): A description of the disk
-- **firmware_revision** (string): The firmware revision of the disk
-- **pnp_device_id** (string): The PnP device ID
-- **sectors_per_track** (integer): The number of sectors per track
-- **total_cylinders** (integer): The total number of cylinders
-- **total_heads** (integer): The total number of heads
-- **total_sectors** (integer): The total number of sectors
-- **total_tracks** (integer): The total number of tracks
-- **tracks_per_cylinder** (integer): The number of tracks per cylinder
-- **bytes_per_sector** (integer): The number of bytes per sector
-- **index** (integer): The disk index
-- **signature** (integer): The disk signature
 
----
+  - **model** (string): The disk model
+  - **serial_number** (string): The disk serial number
+  - **interface_type** (string): The disk interface type
+  - **size** (string): The disk size in bytes
+  - **partitions** (integer): The number of partitions on the disk
+  - **manufacturer** (string): The disk manufacturer
+  - **media_type** (string): The disk media type
+  - **status** (string): The disk status (e.g., "OK")
+  - **device_id** (string): The device ID of the disk
+  - **caption** (string): A description of the disk
+  - **firmware_revision** (string): The firmware revision of the disk
+  - **pnp_device_id** (string): The PnP device ID
+  - **sectors_per_track** (integer): The number of sectors per track
+  - **total_cylinders** (integer): The total number of cylinders
+  - **total_heads** (integer): The total number of heads
+  - **total_sectors** (integer): The total number of sectors
+  - **total_tracks** (integer): The total number of tracks
+  - **tracks_per_cylinder** (integer): The number of tracks per cylinder
+  - **bytes_per_sector** (integer): The number of bytes per sector
+  - **index** (integer): The disk index
+  - **signature** (integer): The disk signature
+
+-----
 
 ## 11. GPU Info
 
 **C Function:** `get_gpu_info(bool Json)`
 
 ### Python Functions:
-- `HardView.get_gpu_info(Json=True)`: Returns a JSON string
-- `HardView.get_gpu_info_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_gpu_info(Json=True)`: Returns a JSON string
+  - `HardView.get_gpu_info_objects(Json=False)`: Returns a Python object
 
 ### Description:
-GPU details such as name, manufacturer, driver version, memory size, video processor, and video mode description.
+
+Retrieves GPU details such as name, manufacturer, driver version, memory size, video processor, and video mode description.
 
 ### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -750,6 +832,7 @@ print(gpu_data)
 ```
 
 ### Example JSON Output:
+
 ```json
 {
     "gpus": [
@@ -766,6 +849,7 @@ print(gpu_data)
 ```
 
 ### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -774,6 +858,7 @@ print(gpu_obj)
 ```
 
 ### Example Python Object Output:
+
 ```python
 [
     {
@@ -788,14 +873,15 @@ print(gpu_obj)
 ```
 
 ### Properties / JSON Keys (for each GPU):
-- **name** (string): The GPU name
-- **manufacturer** (string): The GPU manufacturer
-- **driver_version** (string): The GPU driver version
-- **memory_size** (integer): The GPU memory size in bytes
-- **video_processor** (string): The video processor
-- **video_mode_description** (string): The current video mode description
 
----
+  - **name** (string): The GPU name
+  - **manufacturer** (string): The GPU manufacturer
+  - **driver_version** (string): The GPU driver version
+  - **memory_size** (integer): The GPU memory size in bytes
+  - **video_processor** (string): The video processor
+  - **video_mode_description** (string): The current video mode description
+
+-----
 
 ## 12. Current Performance
 
@@ -804,13 +890,16 @@ print(gpu_obj)
 **C Function:** `get_cpu_usage(bool Json)`
 
 #### Python Functions:
-- `HardView.get_cpu_usage(Json=True)`: Returns a JSON string
-- `HardView.get_cpu_usage_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_cpu_usage(Json=True)`: Returns a JSON string
+  - `HardView.get_cpu_usage_objects(Json=False)`: Returns a Python object
 
 #### Description:
-Current CPU usage percentage.
+
+Retrieves current CPU usage percentage.
 
 #### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -821,6 +910,7 @@ print(cpu_usage_data)
 ```
 
 #### Example JSON Output:
+
 ```json
 {
     "cpu_usage": [
@@ -832,6 +922,7 @@ print(cpu_usage_data)
 ```
 
 #### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -840,6 +931,7 @@ print(cpu_usage_obj)
 ```
 
 #### Example Python Object Output:
+
 ```python
 {
     'cpu_usage': [
@@ -851,21 +943,25 @@ print(cpu_usage_obj)
 ```
 
 #### Properties / JSON Keys:
-- **cpu_usage** (list): Contains:
-  - **load_percentage** (integer): The CPU load percentage
+
+  - **cpu_usage** (list): Contains:
+      - **load_percentage** (integer): The CPU load percentage
 
 ### b. RAM Usage
 
 **C Function:** `get_ram_usage(bool Json)`
 
 #### Python Functions:
-- `HardView.get_ram_usage(Json=True)`: Returns a JSON string
-- `HardView.get_ram_usage_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_ram_usage(Json=True)`: Returns a JSON string
+  - `HardView.get_ram_usage_objects(Json=False)`: Returns a Python object
 
 #### Description:
-Current RAM usage statistics (total, available, used, usage percentage).
+
+Retrieves current RAM usage statistics (total, available, used, usage percentage).
 
 #### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -876,6 +972,7 @@ print(ram_usage_data)
 ```
 
 #### Example JSON Output:
+
 ```json
 {
     "ram_usage": {
@@ -888,6 +985,7 @@ print(ram_usage_data)
 ```
 
 #### Usage (Python Object):
+
 ```python
 import HardView
 
@@ -896,6 +994,7 @@ print(ram_usage_obj)
 ```
 
 #### Example Python Object Output:
+
 ```python
 {
     'ram_usage': {
@@ -908,24 +1007,28 @@ print(ram_usage_obj)
 ```
 
 #### Properties / JSON Keys:
-- **ram_usage** (dict): Contains:
-  - **total_memory_kb** (integer): Total memory in KB
-  - **free_memory_kb** (integer): Free memory in KB
-  - **used_memory_kb** (integer): Used memory in KB
-  - **usage_percent** (float): Memory usage percentage
+
+  - **ram_usage** (dict): Contains:
+      - **total_memory_kb** (integer): Total memory in KB
+      - **free_memory_kb** (integer): Free memory in KB
+      - **used_memory_kb** (integer): Used memory in KB
+      - **usage_percent** (float): Memory usage percentage
 
 ### c. System Performance
 
 **C Function:** `get_system_performance(bool Json)`
 
 #### Python Functions:
-- `HardView.get_system_performance(Json=True)`: Returns a JSON string
-- `HardView.get_system_performance_objects(Json=False)`: Returns a Python object
+
+  - `HardView.get_system_performance(Json=True)`: Returns a JSON string
+  - `HardView.get_system_performance_objects(Json=False)`: Returns a Python object
 
 #### Description:
-Combined CPU and RAM usage.
+
+Retrieves combined CPU and RAM usage.
 
 #### Usage (JSON):
+
 ```python
 import HardView
 import json
@@ -936,6 +1039,7 @@ print(perf_data)
 ```
 
 #### Example JSON Output:
+
 ```json
 {
     "system_performance": {
@@ -980,12 +1084,12 @@ print(perf_data)
 
 #### Properties / JSON Keys:
 
-* **system\_performance** (dict): Contains:
+  * **system_performance** (dict): Contains:
 
-  * **cpu** (list): CPU usage info (same as in CPU Usage)
-  * **ram** (dict): RAM usage info (same as in RAM Usage)
+      * **cpu** (list): CPU usage info (same as in CPU Usage)
+      * **ram** (dict): RAM usage info (same as in RAM Usage)
 
----
+-----
 
 ## 13. Performance Monitoring
 
@@ -995,8 +1099,8 @@ print(perf_data)
 
 #### Python Functions:
 
-* `HardView.monitor_cpu_usage_duration(duration_sec, interval_ms)`: Returns a JSON string
-* `HardView.monitor_cpu_usage_duration_objects(duration_sec, interval_ms)`: Returns a Python object
+  * `HardView.monitor_cpu_usage_duration(duration_sec, interval_ms)`: Returns a JSON string
+  * `HardView.monitor_cpu_usage_duration_objects(duration_sec, interval_ms)`: Returns a Python object
 
 #### Description:
 
@@ -1040,11 +1144,11 @@ print(cpu_monitor_obj)
 
 #### Properties / JSON Keys:
 
-* **cpu\_monitoring** (dict): Contains:
+  * **cpu_monitoring** (dict): Contains:
 
-  * **duration\_seconds** (int)
-  * **interval\_ms** (int)
-  * **readings** (list): List of CPU usage readings
+      * **duration_seconds** (int)
+      * **interval_ms** (int)
+      * **readings** (list): List of CPU usage readings
 
 ### b. RAM Monitoring
 
@@ -1052,8 +1156,8 @@ print(cpu_monitor_obj)
 
 #### Python Functions:
 
-* `HardView.monitor_ram_usage_duration(duration_sec, interval_ms)`: Returns a JSON string
-* `HardView.monitor_ram_usage_duration_objects(duration_sec, interval_ms)`: Returns a Python object
+  * `HardView.monitor_ram_usage_duration(duration_sec, interval_ms)`: Returns a JSON string
+  * `HardView.monitor_ram_usage_duration_objects(duration_sec, interval_ms)`: Returns a Python object
 
 #### Description:
 
@@ -1096,11 +1200,11 @@ print(ram_monitor_obj)
 
 #### Properties / JSON Keys:
 
-* **ram\_monitoring** (dict): Contains:
+  * **ram_monitoring** (dict): Contains:
 
-  * **duration\_seconds** (int)
-  * **interval\_ms** (int)
-  * **readings** (list): RAM usage snapshots
+      * **duration_seconds** (int)
+      * **interval_ms** (int)
+      * **readings** (list): RAM usage snapshots
 
 ### c. System Performance Monitoring
 
@@ -1108,8 +1212,8 @@ print(ram_monitor_obj)
 
 #### Python Functions:
 
-* `HardView.monitor_system_performance_duration(duration_sec, interval_ms)`: Returns a JSON string
-* `HardView.monitor_system_performance_duration_objects(duration_sec, interval_ms)`: Returns a Python object
+  * `HardView.monitor_system_performance_duration(duration_sec, interval_ms)`: Returns a JSON string
+  * `HardView.monitor_system_performance_duration_objects(duration_sec, interval_ms)`: Returns a Python object
 
 #### Description:
 
@@ -1162,39 +1266,39 @@ print(system_monitor_obj)
 
 #### Properties / JSON Keys:
 
-* **system\_performance\_monitoring** (dict): Contains:
+  * **system_performance_monitoring** (dict): Contains:
 
-  * **duration\_seconds** (int)
-  * **interval\_ms** (int)
-  * **readings** (list): CPU and RAM readings over time
+      * **duration_seconds** (int)
+      * **interval_ms** (int)
+      * **readings** (list): CPU and RAM readings over time
 
----
+-----
 
 ## General Notes
 
-* **Dual Output Mode:**
+  * **Dual Output Mode:**
 
-  * Functions can return JSON strings or Python objects
-  * JSON mode: `HardView.func(True)`
-  * Object mode: `HardView.func_objects(False)`
+      * Functions can return JSON strings or Python objects
+      * JSON mode: `HardView.func(True)`
+      * Object mode: `HardView.func_objects(False)`
 
-* **Errors:**
+  * **Errors:**
 
-  * In case of failure, functions may return: `{ "error": "..." }`
+      * In case of failure, functions may return: `{ "error": "..." }`
 
-* **Performance:**
+  * **Performance:**
 
-  * Most functions run under 0.1s on typical systems
+      * Most functions run under 0.1s on typical systems
 
-* **Warnings:**
+  * **Warnings:**
 
-  ### ⚠️ Known Issue in WMI Data Retrieval
-  There is an issue affecting the return values of some hardware properties due to unexpected **COM type inference** from **WMI queries**.
+    ### ⚠️ Known Issue in WMI Data Retrieval
 
-  In certain cases, data might appear as `"N/A"` even though the value is **not actually empty**. This behavior was especially common in versions **prior to `2.0.3`**, and while **most of the issues have been resolved**, a known case still persists with the **CPU's `architecture` property**.
+    There is an issue affecting the return values of some hardware properties due to unexpected **COM type inference** from **WMI queries**.
 
-  We are actively working on a fix and it will be addressed in an upcoming release.
+    In certain cases, data might appear as `"N/A"` even though the value is **not actually empty**. This behavior was especially common in versions **prior to `2.0.3`**, and while **most of the issues have been resolved**, a known case still persists with the **CPU's `architecture` property**.
 
+    We are actively working on a fix and it will be addressed in an upcoming release.
 
 ## Quick Test
 
@@ -1206,7 +1310,7 @@ python test.py
 
 This will:
 
-* Call all HardView functions
-* Print execution times
+  * Call all HardView functions
+  * Print execution times
 
 For more details, refer to files inside the `docs/` folder.
