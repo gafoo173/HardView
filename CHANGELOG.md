@@ -9,6 +9,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## \[3.0.2] - Hotfix Release
+
+### Highlights:
+* Fixed an issue where the CPU architecture property was returning `N/A`.
+* Fixed a bug in GPU information retrieval on Linux that caused it to always appear empty.
+* **API Update 3.0.1**
+
+---
+
 ## \[3.0.1] - Hotfix Release
 
 ### Highlights:
