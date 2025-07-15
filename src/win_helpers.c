@@ -9,17 +9,82 @@ char* _get_wmi_string_property(IWbemClassObject* pclsObj, const WCHAR* name) {
     VariantInit(&vtProp);
     char* result = strdup("N/A");
     HRESULT hr = pclsObj->lpVtbl->Get(pclsObj, name, 0, &vtProp, 0, 0);
-    if (SUCCEEDED(hr) && (vtProp.vt == VT_BSTR)) {
-        int len = WideCharToMultiByte(CP_UTF8, 0, vtProp.bstrVal, -1, NULL, 0, NULL, NULL);
-        if (len > 0) {
-            char* temp = (char*)malloc(len);
-            if (temp) {
-                WideCharToMultiByte(CP_UTF8, 0, vtProp.bstrVal, -1, temp, len, NULL, NULL);
+    
+    if (SUCCEEDED(hr)) {
+        switch (vtProp.vt) {
+            case VT_BSTR:
+                if (vtProp.bstrVal) {
+                    int len = WideCharToMultiByte(CP_UTF8, 0, vtProp.bstrVal, -1, NULL, 0, NULL, NULL);
+                    if (len > 0) {
+                        char* temp = (char*)malloc(len);
+                        if (temp) {
+                            WideCharToMultiByte(CP_UTF8, 0, vtProp.bstrVal, -1, temp, len, NULL, NULL);
+                            free(result);
+                            result = temp;
+                        }
+                    }
+                }
+                break;
+            case VT_I1:
                 free(result);
-                result = temp;
-            }
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%d", vtProp.cVal);
+                break;
+            case VT_UI1:
+                free(result);
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%u", vtProp.bVal);
+                break;
+            case VT_I2:
+                free(result);
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%d", vtProp.iVal);
+                break;
+            case VT_UI2:
+                free(result);
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%u", vtProp.uiVal);
+                break;
+            case VT_I4:
+                free(result);
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%ld", vtProp.lVal);
+                break;
+            case VT_UI4:
+                free(result);
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%lu", vtProp.ulVal);
+                break;
+            case VT_I8:
+                free(result);
+                result = (char*)malloc(64);
+                if (result) sprintf(result, "%lld", vtProp.llVal);
+                break;
+            case VT_UI8:
+                free(result);
+                result = (char*)malloc(64);
+                if (result) sprintf(result, "%llu", vtProp.ullVal);
+                break;
+            case VT_INT:
+                free(result);
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%d", vtProp.intVal);
+                break;
+            case VT_UINT:
+                free(result);
+                result = (char*)malloc(32);
+                if (result) sprintf(result, "%u", vtProp.uintVal);
+                break;
+            case VT_BOOL:
+                free(result);
+                result = strdup(vtProp.boolVal == VARIANT_TRUE ? "True" : "False");
+                break;
+            default:
+                // Return empty string for unsupported types
+                break;
         }
     }
+    
     VariantClear(&vtProp);
     return result;
 }
@@ -29,11 +94,32 @@ ULONG _get_wmi_ulong_property(IWbemClassObject* pclsObj, const WCHAR* name) {
     VariantInit(&vtProp);
     ULONG result = 0;
     HRESULT hr = pclsObj->lpVtbl->Get(pclsObj, name, 0, &vtProp, 0, 0);
-    if (SUCCEEDED(hr) && (vtProp.vt == VT_UI4 || vtProp.vt == VT_I4)) {
-        result = vtProp.ulVal;
-    } else if (SUCCEEDED(hr) && vtProp.vt == VT_BSTR) {
-        result = (ULONG)_wtoi(vtProp.bstrVal);
+    
+    if (SUCCEEDED(hr)) {
+        switch (vtProp.vt) {
+            case VT_I1:    result = (ULONG)vtProp.cVal; break;
+            case VT_UI1:   result = (ULONG)vtProp.bVal; break;
+            case VT_I2:    result = (ULONG)vtProp.iVal; break;
+            case VT_UI2:   result = (ULONG)vtProp.uiVal; break;
+            case VT_I4:    result = (ULONG)vtProp.lVal; break;
+            case VT_UI4:   result = vtProp.ulVal; break;
+            case VT_I8:    result = (ULONG)vtProp.llVal; break;
+            case VT_UI8:   result = (ULONG)vtProp.ullVal; break;
+            case VT_INT:   result = (ULONG)vtProp.intVal; break;
+            case VT_UINT:  result = (ULONG)vtProp.uintVal; break;
+            case VT_BSTR:
+                if (vtProp.bstrVal)
+                    result = (ULONG)_wtoi(vtProp.bstrVal);
+                break;
+            case VT_BOOL:
+                result = (vtProp.boolVal == VARIANT_TRUE) ? 1 : 0;
+                break;
+            default:
+                // Return 0 for unsupported types
+                break;
+        }
     }
+    
     VariantClear(&vtProp);
     return result;
 }
@@ -60,8 +146,11 @@ LONGLONG _get_wmi_longlong_property(IWbemClassObject* pclsObj, const WCHAR* name
                 if (vtProp.bstrVal)
                     result = _wtoi64(vtProp.bstrVal);
                 break;
+            case VT_BOOL:
+                result = (vtProp.boolVal == VARIANT_TRUE) ? 1 : 0;
+                break;
             default:
-	printf("Error converting result from WMI. Reason: Unexpected type.\n");
+                // Return 0 for unsupported types
                 break;
         }
     }
@@ -75,9 +164,35 @@ int _get_wmi_bool_property(IWbemClassObject* pclsObj, const WCHAR* name) {
     VariantInit(&vtProp);
     int result = 0;
     HRESULT hr = pclsObj->lpVtbl->Get(pclsObj, name, 0, &vtProp, 0, 0);
-    if (SUCCEEDED(hr) && vtProp.vt == VT_BOOL) {
-        result = (vtProp.boolVal == VARIANT_TRUE);
+    
+    if (SUCCEEDED(hr)) {
+        switch (vtProp.vt) {
+            case VT_BOOL:
+                result = (vtProp.boolVal == VARIANT_TRUE) ? 1 : 0;
+                break;
+            case VT_I1:    result = (vtProp.cVal != 0) ? 1 : 0; break;
+            case VT_UI1:   result = (vtProp.bVal != 0) ? 1 : 0; break;
+            case VT_I2:    result = (vtProp.iVal != 0) ? 1 : 0; break;
+            case VT_UI2:   result = (vtProp.uiVal != 0) ? 1 : 0; break;
+            case VT_I4:    result = (vtProp.lVal != 0) ? 1 : 0; break;
+            case VT_UI4:   result = (vtProp.ulVal != 0) ? 1 : 0; break;
+            case VT_I8:    result = (vtProp.llVal != 0) ? 1 : 0; break;
+            case VT_UI8:   result = (vtProp.ullVal != 0) ? 1 : 0; break;
+            case VT_INT:   result = (vtProp.intVal != 0) ? 1 : 0; break;
+            case VT_UINT:  result = (vtProp.uintVal != 0) ? 1 : 0; break;
+            case VT_BSTR:
+                if (vtProp.bstrVal) {
+                    if (wcscmp(vtProp.bstrVal, L"True") == 0 || wcscmp(vtProp.bstrVal, L"true") == 0 || wcscmp(vtProp.bstrVal, L"1") == 0) {
+                        result = 1;
+                    }
+                }
+                break;
+            default:
+                // Return 0 for unsupported types
+                break;
+        }
     }
+    
     VariantClear(&vtProp);
     return result;
 }
