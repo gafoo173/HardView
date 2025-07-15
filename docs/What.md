@@ -1,8 +1,8 @@
 # HardView API Guide
 
 <p align="center">
-  <img src="https://img.shields.io/badge/API_Version-3.0.0-informational" alt="API Version" height="30">
-  <img src="https://img.shields.io/badge/PyPI_Package-3.0.1-blue" alt="PyPI Package Version" height="30">
+  <img src="https://img.shields.io/badge/API_Version-3.0.1-informational" alt="API Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Package-3.0.2-blue" alt="PyPI Package Version" height="30">
 </p>
 
 This document explains all functions in the HardView library, what they return, and how to use them from Python with example outputs.
@@ -1290,15 +1290,6 @@ print(system_monitor_obj)
 
       * Most functions run under 0.1s on typical systems
 
-  * **Warnings:**
-
-    ### ⚠️ Known Issue in WMI Data Retrieval
-
-    There is an issue affecting the return values of some hardware properties due to unexpected **COM type inference** from **WMI queries**.
-
-    In certain cases, data might appear as `"N/A"` even though the value is **not actually empty**. This behavior was especially common in versions **prior to `2.0.3`**, and while **most of the issues have been resolved**, a known case still persists with the **CPU's `architecture` property**.
-
-    We are actively working on a fix and it will be addressed in an upcoming release.
 
 ## Quick Test
 
