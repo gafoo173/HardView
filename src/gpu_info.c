@@ -8,10 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#ifndef _WIN32
 #include <dirent.h>
-#endif
-
 #include <ctype.h>
 
 #ifdef BUILD_PYTHON_MODULE
@@ -368,12 +365,13 @@ char* get_gpu_info(bool Json) {
     // Linux implementation
     if (Json) {
         // JSON mode - original implementation
-        char* gpu_name = _read_dmi_attribute_linux("gpu_name");
-        char* gpu_vendor = _read_dmi_attribute_linux("gpu_vendor");
-        char* gpu_driver = _read_dmi_attribute_linux("gpu_driver");
-        char* gpu_memory = _read_dmi_attribute_linux("gpu_memory");
-        char* gpu_processor = _read_dmi_attribute_linux("gpu_processor");
-        char* gpu_mode = _read_dmi_attribute_linux("gpu_mode");
+char* gpu_name        = _read_proc_sys_value("/sys/class/drm/card0/device/device", "");        
+char* gpu_vendor      = _read_proc_sys_value("/sys/class/drm/card0/device/vendor", "");        
+char* gpu_driver      = _read_proc_sys_value("/sys/class/drm/card0/device/uevent", "DRIVER");  
+char* gpu_memory      = _read_proc_sys_value("/sys/class/drm/card0/device/mem_info_vram_total", "");
+char* gpu_processor   = _read_proc_sys_value("/sys/class/drm/card0/device/uevent", "PCI_ID");  
+char* gpu_mode        = _read_proc_sys_value("/sys/class/drm/card0/modes", "");                
+
 
         char* json_str = _create_json_string(
             "{\"gpus\": [{\"name\": \"%s\", \"manufacturer\": \"%s\", \"driver_version\": \"%s\", \"memory_size\": %s, \"video_processor\": \"%s\", \"video_mode_description\": \"%s\"}]}",
@@ -386,13 +384,12 @@ char* get_gpu_info(bool Json) {
     } else {
         // Python objects mode - return string representation of Python object
 #ifdef BUILD_PYTHON_MODULE
-        char* gpu_name = _read_dmi_attribute_linux("gpu_name");
-        char* gpu_vendor = _read_dmi_attribute_linux("gpu_vendor");
-        char* gpu_driver = _read_dmi_attribute_linux("gpu_driver");
-        char* gpu_memory = _read_dmi_attribute_linux("gpu_memory");
-        char* gpu_processor = _read_dmi_attribute_linux("gpu_processor");
-        char* gpu_mode = _read_dmi_attribute_linux("gpu_mode");
-
+char* gpu_name        = _read_proc_sys_value("/sys/class/drm/card0/device/device", "");        
+char* gpu_vendor      = _read_proc_sys_value("/sys/class/drm/card0/device/vendor", "");        
+char* gpu_driver      = _read_proc_sys_value("/sys/class/drm/card0/device/uevent", "DRIVER");  
+char* gpu_memory      = _read_proc_sys_value("/sys/class/drm/card0/device/mem_info_vram_total", "");
+char* gpu_processor   = _read_proc_sys_value("/sys/class/drm/card0/device/uevent", "PCI_ID");
+char* gpu_mode        = _read_proc_sys_value("/sys/class/drm/card0/modes", "");                
         // Convert string values to appropriate types
         long long memory_size = gpu_memory ? atoll(gpu_memory) : 0;
 
