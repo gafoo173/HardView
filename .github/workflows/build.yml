@@ -2,9 +2,10 @@ name: Build Wheels
 
 on:
   push:
-    branches: [main]
+    branches: [main, Test-LiveView]
   pull_request:
-    branches: [main]
+    branches: [main, Test-LiveView]
+
 
 jobs:
   build-linux:
