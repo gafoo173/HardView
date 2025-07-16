@@ -98,7 +98,7 @@ The `LiveView` extension provides a simple, object-oriented interface for live r
 
 ### **Usage Example:**
 ```python
-from HardView import LiveView
+import LiveView
 
 # Create a CPU monitoring object
 cpu_monitor = LiveView.CPU()
