@@ -34,7 +34,7 @@ This document presents feature comparisons and qualitative performance notes bet
 | JSON Output                | ✅        | ❌      | ❌             | ❌          | ❌        | ❌                 |
 | Python Object Output       | ✅        | ✅      | ✅             | ✅          | ✅        | ❌                 |
 | Cross-Platform             | ✅        | ✅      | Windows only  | All        | All      | Linux only        |
-| Native C Speed             | ✅        | ❌      | ❌             | ❌          | ❌        | ❌                 |
+| Native C Speed             | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
 
 ---
 
