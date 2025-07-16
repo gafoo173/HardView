@@ -3,7 +3,7 @@ from setuptools import setup, Extension
 import pybind11
 
 # =================================================================
-# ==                  HardView Main Extension (C)                ==
+# ==           HardView Main Extension (C)                 ==
 # =================================================================
 
 hardview_source_files = [
@@ -44,7 +44,7 @@ hardview_module = Extension(
 )
 
 # =================================================================
-# ==               LiveView Extension (C++)                      ==
+# ==           LiveView Extension (C++)                  ==
 # =================================================================
 
 liveview_libraries = []
@@ -75,7 +75,7 @@ liveview_module = Extension(
 )
 
 # =================================================================
-# ==                       Setup Function                        ==
+# ==                     Setup Function                      ==
 # =================================================================
 
 setup(
@@ -98,7 +98,7 @@ The `LiveView` extension provides a simple, object-oriented interface for live r
 
 ### **Usage Example:**
 ```python
-import LiveView
+from HardView import LiveView
 
 # Create a CPU monitoring object
 cpu_monitor = LiveView.CPU()
@@ -150,6 +150,9 @@ print(f"RAM Usage: {ram_usage_percent:.2f}%")
     author='gafoo',
     author_email='omarwaled3374@gmail.com',
     url='https://github.com/gafoo173/HardView',
+    # Tell setuptools to find the Python package in the 'src/py' directory
+    packages=['HardView'],
+    package_dir={'HardView': 'src/py'},
     ext_modules=[hardview_module, liveview_module],
     classifiers=[
         'Programming Language :: Python :: 3.8',
