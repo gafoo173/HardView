@@ -1,3 +1,5 @@
+
+
 # HardView Tools
 
 This repository contains two tools built on top of the [HardView](https://github.com/gafoo173/hardview) hardware inspection library:
@@ -5,7 +7,7 @@ This repository contains two tools built on top of the [HardView](https://github
 ---
 
 ## 🖥️ HVapp
-
+<img src="https://img.shields.io/badge/HVapp-1.0.1-informational" alt="HVapp" height="30">
 **HVapp** is a graphical desktop application built using **PySide6**.  
 It provides a clean and interactive GUI to display detailed hardware information retrieved from the HardView library.
 
@@ -19,7 +21,7 @@ It provides a clean and interactive GUI to display detailed hardware information
 ---
 
 ## 🔐 HardID (Experimental)
-
+<img src="https://img.shields.io/badge/HardID-2.4.0-blueviolet" alt="HardID" height="30">
 **HardID** is a powerful command-line tool for generating unique hardware-based identifiers using **SHA-256 hashing**.
 It uses data from the **HardView** library to collect detailed hardware info and generate consistent IDs.
 
