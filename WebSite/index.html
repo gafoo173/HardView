@@ -597,7 +597,7 @@ print(data_obj)
           <h2>Q8: Is HardView thread-safe?</h2>
           <p><b>A:</b></p>
           <ul>
-            <li>No. If used in multi-threaded code, ensure calls are serialized or GIL-protected.</li>
+            <li>HardView is not thread-safe unless you use a mutex or call it from a single thread.</li>
           </ul>
           <hr>
           <h2>Q9: How can I contribute to HardView?</h2>
