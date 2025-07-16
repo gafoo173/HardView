@@ -284,7 +284,7 @@ public:
 
 
 // ==== PYBIND11 MODULE ====
-PYBIND11_MODULE(sysmon, m) {
+PYBIND11_MODULE(LiveView, m) {
     m.doc() = "Cross-platform system monitoring module (CPU, RAM, Disk, GPU)";
 
     py::class_<PyLiveCPU>(m, "PyLiveCPU")
