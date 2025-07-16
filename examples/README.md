@@ -38,6 +38,7 @@ python HardID.py -enc secret.txt -ns        # Encrypt using non-static method
 python HardID.py -enc -static secret.txt    # Encrypt using static hardware hash
 python HardID.py -enc -c cpu secret.txt     # Encrypt using CPU info only
 python HardID.py -enc -static secret.txt -2 # Encrypt using static level 2
+python HardID.py -enc -static secret.txt -2 -key # Encrypt using static level 2 And Save The Key
 python HardID.py -dec -auto secret.txt.encrypted  # Auto-decrypt using hardware
 python HardID.py -dec secret.txt.encrypted        # Decrypt with saved key
 
