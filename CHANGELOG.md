@@ -45,6 +45,7 @@ All notable changes to this project will be documented in this file.
 
     * `get_gpu_info()`: GPU info as JSON
     * `get_gpu_info_objects()`: GPU info as Python objects
+* **API Update 3.0.0**
 > ⚠️ **Warning:** Version `3.0.0` contains broken wheels that cause installation failure via pip.  
 > Please **avoid using version 3.0.0** and use version `3.0.1` or higher instead.
 ---
@@ -57,7 +58,7 @@ All notable changes to this project will be documented in this file.
 
   * Resolved an issue where the function occasionally returned zero for disk sectors, cylinders, and tracks.
   * Ensured consistent and accurate SMART data retrieval.
-* **No functional/API changes.**
+* **API Update 2.0.2**
 
 ---
 
@@ -81,7 +82,7 @@ All notable changes to this project will be documented in this file.
 
   * Fixed improper escaping of backslashes (`\`) in SMART disk JSON output.
   * Output is now fully JSON-compliant.
-* **No other functional or API changes.**
+* **API Update 2.0.1**
 
 ---
 
@@ -92,8 +93,7 @@ All notable changes to this project will be documented in this file.
 * **Refactor:**
 
   * Each function moved to a separate C source file.
-  * Improved memory safety and leak prevention.
-
+  * Improved memory safety and leak prevention.1
 * **New Advanced Features:**
 
   * `get_partitions_info()`
@@ -104,6 +104,7 @@ All notable changes to this project will be documented in this file.
   * `monitor_cpu_usage(duration, interval)`
   * `monitor_ram_usage(duration, interval)`
   * `monitor_system_performance(duration, interval)`
+ * **API Update 2.0.0**
 
 ---
 
