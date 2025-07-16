@@ -79,4 +79,10 @@ python HardID.py --type ram -qr         # Generate RAM ID and QR code
 
 * 📁 **Not suitable for large file encryption**
   Files are loaded fully into memory. Avoid encrypting large files (e.g., over 100MB) to prevent memory issues.
+
+> ⚠️ **Warning:**  
+> The versions of the libraries used during encryption — especially **HardView** — **must match** the versions used during decryption.  
+> Additionally, the **tool version** used to encrypt **must be the same** as the version used to decrypt.  
+> Mismatched versions may lead to incorrect results or failure to decrypt the data properly.
+
 ---
