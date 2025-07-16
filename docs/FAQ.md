@@ -104,7 +104,11 @@ This FAQ addresses common issues and questions about installing, using, and trou
 
 **A:**
 
-* No. If used in multi-threaded code, ensure calls are serialized or GIL-protected.
+ **HardView is not thread-safe.**  
+ This is due to internal use of **WMI** and **COM interfaces**.  
+ If using it in multi-threaded environments, **you must protect calls using a mutex or run all calls from a single thread.**  
+ The Python **GIL** may reduce risk, but **does not guarantee safety**.
+
 
 ---
 
