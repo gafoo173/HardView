@@ -362,6 +362,20 @@ print(cpu_obj)
   - **threads** (integer): The number of logical threads
   - **max_clock_speed** (float): The maximum clock speed of the CPU in MHz
   - **socket_designation** (string): The CPU socket designation
+  ### Architecture Property Return Values Table
+
+This table lists the possible return values of the `Architecture` property from the WMI class `Win32_Processor` and their corresponding processor architecture types.
+
+| Value | Architecture Type          |
+|-------|-----------------------------|
+| 0     | x86 (32-bit)                |
+| 1     | MIPS                        |
+| 2     | Alpha                       |
+| 3     | PowerPC                     |
+| 5     | ARM                         |
+| 6     | Itanium                     |
+| 9     | x64 (64-bit)                |
+| 12    | ARM64                       |
 
 -----
 
