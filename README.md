@@ -66,7 +66,9 @@ bios_json = HardView.get_bios_info()
 cpu_json = HardView.get_cpu_info()
 
 # Python objects output
-bios_objects = HardView.get_bios_info_objects()
+#You must pass the parameter `false` in versions prior to 3.0.3, e.g. `HardView.get_bios_info_objects(false)`.
+
+bios_objects = HardView.get_bios_info_objects() 
 cpu_objects = HardView.get_cpu_info_objects()
 
 # Performance monitoring
