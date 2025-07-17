@@ -1,7 +1,7 @@
 <p align="center">
 <p align="center">
-  <img src="https://img.shields.io/badge/API_Version-3.0.1-informational" alt="API Version" height="30">
-  <img src="https://img.shields.io/badge/PyPI_Package-3.0.2-blue" alt="PyPI Package Version" height="30">
+  <img src="https://img.shields.io/badge/API_Version-3.0.2-informational" alt="API Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Package-3.0.3-blue" alt="PyPI Package Version" height="30">
   <img src="https://img.shields.io/badge/downloads-6.5K-blue" alt="Version" height="30">
   <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Supported Python versions" height="30">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
