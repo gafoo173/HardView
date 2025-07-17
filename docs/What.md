@@ -1,13 +1,19 @@
 # HardView API Guide
 
 <p align="center">
-  <img src="https://img.shields.io/badge/API_Version-3.0.1-informational" alt="API Version" height="30">
-  <img src="https://img.shields.io/badge/PyPI_Package-3.0.2-blue" alt="PyPI Package Version" height="30">
+  <img src="https://img.shields.io/badge/API_Version-3.0.2-informational" alt="API Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Package-3.0.3-blue" alt="PyPI Package Version" height="30">
 </p>
 
 This document explains all functions in the HardView library, what they return, and how to use them from Python with example outputs.
 
 > **Note:** To see all functions working together in practice, refer to the `test.py` file included in the project.
+
+> ⚠️ **Important Notice**  
+> In versions **prior to 3.0.3** of the **PyPI package**, functions ending with `_objects` require explicitly passing the parameter `False` to return Python `dict` objects.  
+> This is because, by default, those functions return JSON strings when the parameter is omitted (i.e., default is `True`).  
+>  
+> This behavior has been **fixed starting from version 3.0.3** of the PyPI package and API version 3.0.2, where the default behavior now correctly returns `dict` objects unless otherwise specified.
 
 ## Table of Contents
 
