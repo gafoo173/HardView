@@ -5,7 +5,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## \[3.0.3] - Hotfix Release
 
+### Highlights:
+* Fixed the default value error in the objects functions that was causing them to return JSON when false was not explicitly specified.
+* **API Update 3.0.2**
 
 ---
 
