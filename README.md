@@ -93,8 +93,6 @@ All documentation is in the `docs/` folder:
 
 * [`What.md`](./docs/What.md): **API Reference & Output Examples**
   Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
-* [`ARCHITECTURE.md`](./docs/ARCHITECTURE.md): **Technical Architecture**
-  Deep dive into the internal structure, data flow, and design of HardView for developers and contributors.
 * [`BENCHMARKS.md`](./docs/BENCHMARKS.md): **Performance & Feature Comparisons**
   Real-world speed benchmarks and feature comparisons with other Python libraries.
 * [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**
