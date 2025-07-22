@@ -8,8 +8,9 @@ This repository contains two tools built on top of the [HardView](https://github
 
 ## 🖥️ HVapp
 <img src="https://img.shields.io/badge/HVapp-1.0.1-informational" alt="HVapp" height="30">
-**HVapp** is a graphical desktop application built using **PySide6**.  
-It provides a clean and interactive GUI to display detailed hardware information retrieved from the HardView library.
+
+**HVapp** is a graphical desktop application built using **[PySide6](https://doc.qt.io/qtforpython/)**, which is licensed under the [GNU Lesser General Public License v3 (LGPL-3.0)](https://www.gnu.org/licenses/lgpl-3.0.html).  
+This repository includes a copy of the license in [`licenses/LICENSE.LGPL.txt`](licenses/LICENSE.LGPL.txt).
 
 ### Features:
 - Modern PySide6 interface
