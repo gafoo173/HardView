@@ -23,8 +23,15 @@ This repository includes a copy of the license in [`licenses/LICENSE.LGPL.txt`](
 
 ## 🔐 HardID (Experimental)
 <img src="https://img.shields.io/badge/HardID-2.4.0-blueviolet" alt="HardID" height="30">
+
 **HardID** is a powerful command-line tool for generating unique hardware-based identifiers using **SHA-256 hashing**.
-It uses data from the **HardView** library to collect detailed hardware info and generate consistent IDs.
+
+It leverages the [**HardView**](https://github.com/gafoo173/HardView) library to collect detailed and consistent hardware information across devices.
+
+Additionally, it uses the [**Cryptography**](https://github.com/pyca/cryptography) library to provide secure encryption features
+
+📄 **License** for the Cryptography library: [Apache License 2.0](https://github.com/gafoo173/HardView/blob/main/licenses/LICENSE-Apache-2.0.txt)
+
 
 ---
 
