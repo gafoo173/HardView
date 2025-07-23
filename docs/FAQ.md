@@ -40,7 +40,7 @@ This FAQ addresses common issues and questions about installing, using, and trou
 **A:**
 
 * Verify that the binary file is named exactly `HardView.pyd` or `HardView.so` (uppercase H and V).
-* Upgrade to HardView >= 0.1.0 to fix import issues.
+* Upgrade to HardView > 0.1.0 to fix import issues.
 * Use correct casing in your import statement:
 
   ```python
