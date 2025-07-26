@@ -1313,7 +1313,7 @@ print(system_monitor_obj)
 
 
 
-## 🧪 Quick Test
+## Quick Test
 
 To test all **HardView** functions, you can use one of the following options:
 
