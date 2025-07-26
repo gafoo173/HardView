@@ -1311,17 +1311,44 @@ print(system_monitor_obj)
       * Most functions run under 0.1s on typical systems
 
 
-## Quick Test
 
-Run the following command to test all functions:
+
+## 🧪 Quick Test
+
+To test all **HardView** functions, you can use one of the following options:
+
+### 🔹 Option 1: Full Test
 
 ```bash
-python test.py
+python TestAll.py
 ```
 
-This will:
+This command will:
 
-  * Call all HardView functions
-  * Print execution times
+* Call **all HardView functions**
+* Print **execution times** for each function
+
+---
+
+### 🔸 Option 2: Quick & Colorful Test
+
+```bash
+python Test.py
+```
+
+This script uses the **[rich](https://github.com/Textualize/rich)** library to display a visually appealing and colorful output in the console.
+
+---
+
+💡 **Note:** Make sure the `rich` library is installed:
+
+```bash
+pip install rich
+```
+📁 **Scripts location:**
+
+[TestALL.py](https://github.com/gafoo173/HardView/blob/main/tests/TestALL)
+
+[test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
 
 For more details, refer to files inside the `docs/` folder.
