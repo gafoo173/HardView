@@ -7,7 +7,7 @@
 
 This document explains all functions in the HardView library, what they return, and how to use them from Python with example outputs.
 
-> **Note:** To see all functions working together in practice, refer to the `test.py` file included in the project.
+> **Note:** To see all functions working together in practice, refer to the `TestAll.py` file included in the project.
 
 > ⚠️ **Important Notice**  
 > In versions **prior to 3.0.3** of the **PyPI package**, functions ending with `_objects` require explicitly passing the parameter `False` to return Python `dict` objects.  
