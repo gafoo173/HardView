@@ -1,3 +1,18 @@
+/*
+================================================================================
+ MIT License
+
+ Copyright (c) 2025 gafoo
+
+ This file is part of the HardView project:
+ https://github.com/gafoo173/HardView
+
+ Licensed under the MIT License.
+ See the LICENSE file in the project root for more details.
+================================================================================
+*/
+
+
 #include "Smart_disk.h"
 #include "helpers.h"
 #ifdef _WIN32
