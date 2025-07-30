@@ -15,7 +15,7 @@
 
 
 <p align="center">
-  <img src="./logo.png" alt="HardView Logo" width="300"/>
+  <img src="resources/logo.png" alt="HardView Logo" width="300"/>
 </p>
 
 # HardView - Python Hardware Information Module
