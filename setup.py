@@ -1,9 +1,11 @@
 import sys
+import os
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext as _build_ext
 import pybind11
 
 # =================================================================
-# ==           HardView Main Extension (C)                 ==
+# ==           HardView Main Extension (C)                     ==
 # =================================================================
 
 hardview_source_files = [
@@ -44,7 +46,7 @@ hardview_module = Extension(
 )
 
 # =================================================================
-# ==           LiveView Extension (C++)                  ==
+# ==           LiveView Extension (C++)                        ==
 # =================================================================
 
 liveview_libraries = []
@@ -75,7 +77,50 @@ liveview_module = Extension(
 )
 
 # =================================================================
-# ==                     Setup Function                      ==
+# ==           Package Configuration                           ==
+# =================================================================
+
+# Base packages and package directories
+packages = ['HardView']
+package_dir = {'HardView': 'src/py'}
+package_data = {}
+# =================================================================
+# ==           Custom Build for Extensions                     ==
+# =================================================================
+
+
+# This custom class overrides the build_ext command to change the output filenames.
+class build_ext(_build_ext):
+    """
+    Custom build_ext command to remove platform-specific tags from the
+    compiled extension filename.
+    """
+    def get_ext_filename(self, ext_name):
+        # Get the original filename from the superclass to ensure the correct suffix
+        original_filename = super().get_ext_filename(ext_name)
+        
+
+        # Extract the file suffix (e.g., .pyd or .so)
+        _, ext_suffix = os.path.splitext(original_filename)
+        
+
+        # Split the full extension name (e.g., 'HardView.LiveView')
+        ext_path = ext_name.split('.')
+        
+
+        # The desired filename is the last part of the name + suffix (e.g., 'LiveView.pyd')
+        filename = ext_path[-1] + ext_suffix
+        
+
+        # The directory path is the initial part of the name (e.g., 'HardView')
+        path_parts = ext_path[:-1]
+        
+
+        # Join the path and filename
+        return os.path.join(*path_parts, filename)
+
+# =================================================================
+# ==                         Setup Function                      ==
 # =================================================================
 
 setup(
@@ -150,17 +195,23 @@ print(f"RAM Usage: {ram_usage_percent:.2f}%")
     author='gafoo',
     author_email='omarwaled3374@gmail.com',
     url='https://github.com/gafoo173/HardView',
-    # Tell setuptools to find the Python package in the 'src/py' directory
-    packages=['HardView'],
-    package_dir={'HardView': 'src/py'},
+    license="MIT", # Recommended way to specify the license
+    # Use the dynamically configured package lists
+    packages=packages,
+    package_dir=package_dir,
+    # Include non-python files specified in package_data
+    package_data=package_data,
+    include_package_data=True,
     ext_modules=[hardview_module, liveview_module],
+    # استخدام أمر البناء المخصص
+    # Use the custom build command
+    cmdclass={'build_ext': build_ext},
     classifiers=[
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
-        'License :: OSI Approved :: MIT License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
         'Topic :: System :: Hardware',
