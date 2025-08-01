@@ -1,0 +1,3163 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://gafoo173.github.io/HardView/What/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../INSTALL/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>API Guide - HardView Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hardview-api-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="HardView Documentation" class="md-header__button md-logo" aria-label="HardView Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            HardView Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/gafoo173/HardView" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gafoo173/HardView
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../INSTALL/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../FAQ/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../BENCHMARKS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Benchmarks & Performance
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../CONTRIBUTING/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributing
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../CHANGELOG/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="HardView Documentation" class="md-nav__button md-logo" aria-label="HardView Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    HardView Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/gafoo173/HardView" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gafoo173/HardView
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    API Guide
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Guide
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-bios-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. BIOS Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. BIOS Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-system-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. System Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. System Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-baseboard-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Baseboard Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Baseboard Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-chassis-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Chassis Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Chassis Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cpu-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. CPU Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. CPU Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-ram-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. RAM Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. RAM Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-disk-drives-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Disk Drives Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Disk Drives Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys-for-each-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys (for each disk):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-network-adapters-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Network Adapters Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Network Adapters Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys-for-each-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys (for each adapter):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-partitions-info-advanced-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Partitions Info (Advanced Storage)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Partitions Info (Advanced Storage)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys-for-each-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys (for each partition):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-smartdisk-info-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. SMART/Disk Info (Advanced)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. SMART/Disk Info (Advanced)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys-for-each-disk_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys (for each disk):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-gpu-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. GPU Info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. GPU Info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys-for-each-gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys (for each GPU):
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-current-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Current Performance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Current Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-cpu-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. CPU Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="a. CPU Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-ram-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. RAM Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. RAM Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-system-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. System Performance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="c. System Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-python-object-output_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Python Object Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-performance-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Performance Monitoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Performance Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-cpu-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. CPU Monitoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="a. CPU Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-ram-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. RAM Monitoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. RAM Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-system-performance-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. System Performance Monitoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="c. System Performance Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-functions_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Functions:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Description:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-json_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (JSON):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-json-output_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example JSON Output:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-python-object_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage (Python Object):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-json-keys_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties / JSON Keys:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Notes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Test
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-full-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔹 Option 1: Full Test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-quick-colorful-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔸 Option 2: Quick &amp; Colorful Test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INSTALL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BENCHMARKS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Benchmarks & Performance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="hardview-api-guide">HardView API Guide</h1>
+<p align="center">
+  <img src="https://img.shields.io/badge/API_Version-3.0.2-informational" alt="API Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Package-3.0.3-blue" alt="PyPI Package Version" height="30">
+</p>
+
+<p>This document explains all functions in the HardView library, what they return, and how to use them from Python with example outputs.</p>
+<blockquote>
+<p><strong>Note:</strong> To see all functions working together in practice, refer to the <code>TestAll.py</code> file included in the project.</p>
+<p>⚠️ <strong>Important Notice</strong><br />
+In versions <strong>prior to 3.0.3</strong> of the <strong>PyPI package</strong>, functions ending with <code>_objects</code> require explicitly passing the parameter <code>False</code> to return Python <code>dict</code> objects.<br />
+This is because, by default, those functions return JSON strings when the parameter is omitted (i.e., default is <code>True</code>).  </p>
+<p>This behavior has been <strong>fixed starting from version 3.0.3</strong> of the PyPI package and API version 3.0.2, where the default behavior now correctly returns <code>dict</code> objects unless otherwise specified.</p>
+</blockquote>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-bios-info">BIOS Info</a></li>
+<li><a href="#2-system-info">System Info</a></li>
+<li><a href="#3-baseboard-info">Baseboard Info</a></li>
+<li><a href="#4-chassis-info">Chassis Info</a></li>
+<li><a href="#5-cpu-info">CPU Info</a></li>
+<li><a href="#6-ram-info">RAM Info</a></li>
+<li><a href="#7-disk-drives-info">Disk Drives Info</a></li>
+<li><a href="#8-network-adapters-info">Network Adapters Info</a></li>
+<li><a href="#9-partitions-info-advanced-storage">Partitions Info</a></li>
+<li><a href="#10-smartdisk-info-advanced">SMART/Disk Info</a></li>
+<li><a href="#11-gpu-info">GPU Info</a></li>
+<li><a href="#12-current-performance">Current Performance</a><ul>
+<li><a href="#a-cpu-usage">CPU Usage</a></li>
+<li><a href="#b-ram-usage">RAM Usage</a></li>
+<li><a href="#c-system-performance">System Performance</a></li>
+</ul>
+</li>
+<li><a href="#13-performance-monitoring">Performance Monitoring</a><ul>
+<li><a href="#a-cpu-monitoring">CPU Monitoring</a></li>
+<li><a href="#b-ram-monitoring">RAM Monitoring</a></li>
+<li><a href="#c-system-performance-monitoring">System Performance Monitoring</a></li>
+</ul>
+</li>
+<li><a href="#general-notes">General Notes</a></li>
+<li><a href="#quick-test">Quick Test</a></li>
+</ol>
+<hr />
+<h2 id="1-bios-info">1. BIOS Info</h2>
+<p><strong>C Function:</strong> <code>get_bios_info(bool Json)</code></p>
+<h3 id="python-functions">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_bios_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_bios_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description">Description:</h3>
+<p>Retrieves BIOS information such as vendor, version, and release date.</p>
+<h3 id="usage-json">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">bios_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_bios_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_bios_info()</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">bios_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">bios_json_str</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">bios_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ACME Corp.&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0.1&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">&quot;release_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;20230101000000.000000+000&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">bios_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_bios_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_bios_info_objects()</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">bios_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;ACME Corp.&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;1.0.0.1&#39;</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="s1">&#39;release_date&#39;</span><span class="p">:</span> <span class="s1">&#39;20230101000000.000000+000&#39;</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="properties-json-keys">Properties / JSON Keys:</h3>
+<ul>
+<li><strong>manufacturer</strong> (string): The name of the BIOS manufacturer</li>
+<li><strong>version</strong> (string): The BIOS version</li>
+<li><strong>release_date</strong> (string): The BIOS release date</li>
+</ul>
+<hr />
+<h2 id="2-system-info">2. System Info</h2>
+<p><strong>C Function:</strong> <code>get_system_info(bool Json)</code></p>
+<h3 id="python-functions_1">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_system_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_system_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_1">Description:</h3>
+<p>Retrieves system information such as manufacturer, product name, UUID, and serial number.</p>
+<h3 id="usage-json_1">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">system_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_system_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_system_info()</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">system_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">system_json_str</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">system_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_1">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ExampleTech&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">&quot;product_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ProSystem X1&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">&quot;uuid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A1B2C3D4-E5F6-7890-1234-567890ABCDEF&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">&quot;serial_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SN1234567890&quot;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_1">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">system_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_system_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_system_info_objects()</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">system_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_1">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;ExampleTech&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="s1">&#39;product_name&#39;</span><span class="p">:</span> <span class="s1">&#39;ProSystem X1&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="s1">&#39;A1B2C3D4-E5F6-7890-1234-567890ABCDEF&#39;</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="s1">&#39;serial_number&#39;</span><span class="p">:</span> <span class="s1">&#39;SN1234567890&#39;</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="properties-json-keys_1">Properties / JSON Keys:</h3>
+<ul>
+<li><strong>manufacturer</strong> (string): The system manufacturer's name</li>
+<li><strong>product_name</strong> (string): The system product name</li>
+<li><strong>uuid</strong> (string): The system's UUID</li>
+<li><strong>serial_number</strong> (string): The system's serial number</li>
+</ul>
+<hr />
+<h2 id="3-baseboard-info">3. Baseboard Info</h2>
+<p><strong>C Function:</strong> <code>get_baseboard_info(bool Json)</code></p>
+<h3 id="python-functions_2">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_baseboard_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_baseboard_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_2">Description:</h3>
+<p>Retrieves motherboard information such as manufacturer, product, serial number, and version.</p>
+<h3 id="usage-json_2">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">baseboard_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_baseboard_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_baseboard_info()</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">baseboard_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">baseboard_json_str</span><span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">baseboard_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_2">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MegaBoard Inc.&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">&quot;product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MB-Z999&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">&quot;serial_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MB1234567890XYZ&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_2">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">baseboard_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_baseboard_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_baseboard_info_objects()</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">baseboard_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_2">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;MegaBoard Inc.&#39;</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;MB-Z999&#39;</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="s1">&#39;serial_number&#39;</span><span class="p">:</span> <span class="s1">&#39;MB1234567890XYZ&#39;</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;1.0&#39;</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="properties-json-keys_2">Properties / JSON Keys:</h3>
+<ul>
+<li><strong>manufacturer</strong> (string): The motherboard manufacturer's name</li>
+<li><strong>product</strong> (string): The motherboard product name</li>
+<li><strong>serial_number</strong> (string): The motherboard serial number</li>
+<li><strong>version</strong> (string): The motherboard version</li>
+</ul>
+<hr />
+<h2 id="4-chassis-info">4. Chassis Info</h2>
+<p><strong>C Function:</strong> <code>get_chassis_info(bool Json)</code></p>
+<h3 id="python-functions_3">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_chassis_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_chassis_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_3">Description:</h3>
+<p>Retrieves computer chassis/case information such as manufacturer, model, serial number, and type.</p>
+<h3 id="usage-json_3">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">chassis_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_chassis_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_chassis_info()</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">chassis_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">chassis_json_str</span><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">chassis_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_3">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CaseWorks&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TowerMax 5000&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">&quot;serial_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CHAS987654321&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nt">&quot;chassis_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tower&quot;</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_3">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">chassis_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_chassis_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_chassis_info_objects()</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">chassis_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_3">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;CaseWorks&#39;</span><span class="p">,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;TowerMax 5000&#39;</span><span class="p">,</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="s1">&#39;serial_number&#39;</span><span class="p">:</span> <span class="s1">&#39;CHAS987654321&#39;</span><span class="p">,</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="s1">&#39;chassis_type&#39;</span><span class="p">:</span> <span class="s1">&#39;Tower&#39;</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="properties-json-keys_3">Properties / JSON Keys:</h3>
+<ul>
+<li><strong>manufacturer</strong> (string): The chassis manufacturer's name</li>
+<li><strong>model</strong> (string): The chassis model</li>
+<li><strong>serial_number</strong> (string): The chassis serial number</li>
+<li><strong>chassis_type</strong> (string): The type of chassis (e.g., "Tower", "Laptop")</li>
+</ul>
+<hr />
+<h2 id="5-cpu-info">5. CPU Info</h2>
+<p><strong>C Function:</strong> <code>get_cpu_info(bool Json)</code></p>
+<h3 id="python-functions_4">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_cpu_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_cpu_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_4">Description:</h3>
+<p>Retrieves processor details such as name, manufacturer, architecture, number of cores, number of threads, max clock speed, and socket designation.</p>
+<h3 id="usage-json_4">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">cpu_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_cpu_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_cpu_info()</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">cpu_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cpu_json_str</span><span class="p">)</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">cpu_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_4">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GenuineIntel&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="nt">&quot;architecture&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 9 = ×64</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="nt">&quot;cores&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="nt">&quot;threads&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="nt">&quot;max_clock_speed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4900</span><span class="p">,</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="nt">&quot;socket_designation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LGA1151&quot;</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_4">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="n">cpu_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_cpu_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_cpu_info_objects()</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">cpu_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_4">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz&#39;</span><span class="p">,</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;GenuineIntel&#39;</span><span class="p">,</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="s1">&#39;architecture&#39;</span><span class="p">:</span> <span class="s1">&#39;9&#39;</span><span class="p">,</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="s1">&#39;cores&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="s1">&#39;threads&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="s1">&#39;max_clock_speed&#39;</span><span class="p">:</span> <span class="mf">4900.0</span><span class="p">,</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="s1">&#39;socket_designation&#39;</span><span class="p">:</span> <span class="s1">&#39;LGA1151&#39;</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="properties-json-keys_4">Properties / JSON Keys:</h3>
+<ul>
+<li><strong>name</strong> (string): The CPU name</li>
+<li><strong>manufacturer</strong> (string): The CPU manufacturer</li>
+<li><strong>architecture</strong> (string): The CPU architecture</li>
+<li><strong>cores</strong> (integer): The number of physical cores</li>
+<li><strong>threads</strong> (integer): The number of logical threads</li>
+<li><strong>max_clock_speed</strong> (float): The maximum clock speed of the CPU in MHz</li>
+<li><strong>socket_designation</strong> (string): The CPU socket designation
+  ### Architecture Property Return Values Table</li>
+</ul>
+<p>This table lists the possible return values of the <code>Architecture</code> property from the WMI class <code>Win32_Processor</code> and their corresponding processor architecture types.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Architecture Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>x86 (32-bit)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>MIPS</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Alpha</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PowerPC</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ARM</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Itanium</td>
+</tr>
+<tr>
+<td>9</td>
+<td>x64 (64-bit)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>ARM64</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-ram-info">6. RAM Info</h2>
+<p><strong>C Function:</strong> <code>get_ram_info(bool Json)</code></p>
+<h3 id="python-functions_5">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_ram_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_ram_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_5">Description:</h3>
+<p>Retrieves total physical memory and details of individual memory modules.</p>
+<h3 id="usage-json_5">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">ram_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_ram_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_ram_info()</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">ram_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ram_json_str</span><span class="p">)</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">ram_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_5">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span><span class="nt">&quot;total_physical_memory_bytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">17179869184</span><span class="p">,</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="nt">&quot;memory_modules&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">            </span><span class="nt">&quot;capacity_bytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8589934592</span><span class="p">,</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">            </span><span class="nt">&quot;speed_mhz&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">            </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kingston&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">            </span><span class="nt">&quot;serial_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ABCDEF12&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">            </span><span class="nt">&quot;part_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;KF432C16BB/8&quot;</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">            </span><span class="nt">&quot;capacity_bytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8589934592</span><span class="p">,</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">            </span><span class="nt">&quot;speed_mhz&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="w">            </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kingston&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="w">            </span><span class="nt">&quot;serial_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GHIJKL34&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="w">            </span><span class="nt">&quot;part_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;KF432C16BB/8&quot;</span>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_5">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">ram_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_ram_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_ram_info_objects()</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">ram_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_5">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="s1">&#39;total_physical_memory_bytes&#39;</span><span class="p">:</span> <span class="mi">17179869184</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="s1">&#39;memory_modules&#39;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>        <span class="p">{</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>            <span class="s1">&#39;capacity_bytes&#39;</span><span class="p">:</span> <span class="mi">8589934592</span><span class="p">,</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>            <span class="s1">&#39;speed_mhz&#39;</span><span class="p">:</span> <span class="mi">3200</span><span class="p">,</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>            <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;Kingston&#39;</span><span class="p">,</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>            <span class="s1">&#39;serial_number&#39;</span><span class="p">:</span> <span class="s1">&#39;ABCDEF12&#39;</span><span class="p">,</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>            <span class="s1">&#39;part_number&#39;</span><span class="p">:</span> <span class="s1">&#39;KF432C16BB/8&#39;</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>        <span class="p">},</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>        <span class="p">{</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>            <span class="s1">&#39;capacity_bytes&#39;</span><span class="p">:</span> <span class="mi">8589934592</span><span class="p">,</span>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>            <span class="s1">&#39;speed_mhz&#39;</span><span class="p">:</span> <span class="mi">3200</span><span class="p">,</span>
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>            <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;Kingston&#39;</span><span class="p">,</span>
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a>            <span class="s1">&#39;serial_number&#39;</span><span class="p">:</span> <span class="s1">&#39;GHIJKL34&#39;</span><span class="p">,</span>
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>            <span class="s1">&#39;part_number&#39;</span><span class="p">:</span> <span class="s1">&#39;KF432C16BB/8&#39;</span>
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a>        <span class="p">}</span>
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a>    <span class="p">]</span>
+<a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="properties-json-keys_5">Properties / JSON Keys:</h3>
+<ul>
+<li><strong>total_physical_memory_bytes</strong> (integer): Total physical memory size in bytes</li>
+<li><strong>memory_modules</strong> (list): A list of individual memory modules, each containing:<ul>
+<li><strong>capacity_bytes</strong> (integer): Module capacity in bytes</li>
+<li><strong>speed_mhz</strong> (integer): Module speed in MHz</li>
+<li><strong>manufacturer</strong> (string): Module manufacturer</li>
+<li><strong>serial_number</strong> (string): Module serial number</li>
+<li><strong>part_number</strong> (string): Module part number</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="7-disk-drives-info">7. Disk Drives Info</h2>
+<p><strong>C Function:</strong> <code>get_disk_info(bool Json)</code></p>
+<h3 id="python-functions_6">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_disk_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_disk_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_6">Description:</h3>
+<p>Retrieves information about installed disk drives, including model, manufacturer, interface type, size, serial number, and media type.</p>
+<h3 id="usage-json_6">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">disk_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_disk_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_disk_info()</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="n">disk_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">disk_json_str</span><span class="p">)</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">disk_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_6">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">{</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">    </span><span class="nt">&quot;disks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">            </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVMe SSD 1TB&quot;</span><span class="p">,</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">            </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SSDCorp&quot;</span><span class="p">,</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">            </span><span class="nt">&quot;interface_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVMe&quot;</span><span class="p">,</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="w">            </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000204886016</span><span class="p">,</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="w">            </span><span class="nt">&quot;serial_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SSD123456789&quot;</span><span class="p">,</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="w">            </span><span class="nt">&quot;media_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Solid State Drive&quot;</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_6">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="n">disk_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_disk_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_disk_info_objects()</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">disk_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_6">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">[</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="p">{</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;NVMe SSD 1TB&#39;</span><span class="p">,</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>        <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;SSDCorp&#39;</span><span class="p">,</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>        <span class="s1">&#39;interface_type&#39;</span><span class="p">:</span> <span class="s1">&#39;NVMe&#39;</span><span class="p">,</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">1000204886016</span><span class="p">,</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>        <span class="s1">&#39;serial_number&#39;</span><span class="p">:</span> <span class="s1">&#39;SSD123456789&#39;</span><span class="p">,</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>        <span class="s1">&#39;media_type&#39;</span><span class="p">:</span> <span class="s1">&#39;Solid State Drive&#39;</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>    <span class="p">}</span>
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="p">]</span>
+</code></pre></div>
+<h3 id="properties-json-keys-for-each-disk">Properties / JSON Keys (for each disk):</h3>
+<ul>
+<li><strong>model</strong> (string): The disk model</li>
+<li><strong>manufacturer</strong> (string): The disk manufacturer</li>
+<li><strong>interface_type</strong> (string): The disk interface type (e.g., "IDE", "SCSI", "SATA", "NVMe")</li>
+<li><strong>size</strong> (integer): The disk size in bytes</li>
+<li><strong>serial_number</strong> (string): The disk serial number</li>
+<li><strong>media_type</strong> (string): The disk media type (e.g., "Fixed hard disk media", "Solid State Drive")</li>
+</ul>
+<hr />
+<h2 id="8-network-adapters-info">8. Network Adapters Info</h2>
+<p><strong>C Function:</strong> <code>get_network_info(bool Json)</code></p>
+<h3 id="python-functions_7">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_network_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_network_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_7">Description:</h3>
+<p>Retrieves information about network adapters, including description, MAC address, IP addresses (IPv4 and IPv6), and DNS hostname.</p>
+<h3 id="usage-json_7">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="n">net_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_network_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_network_info()</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="n">net_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">net_json_str</span><span class="p">)</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">net_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_7">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="p">{</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">    </span><span class="nt">&quot;network_adapters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Gigabit Ethernet Adapter&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">            </span><span class="nt">&quot;mac_address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;00:1A:2B:3C:4D:5E&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">            </span><span class="nt">&quot;ip_addresses&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">                </span><span class="s2">&quot;192.168.1.100&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">                </span><span class="s2">&quot;fe80::1234:5678:9abc:def0&quot;</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="w">            </span><span class="p">],</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">            </span><span class="nt">&quot;dns_host_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MY-PC-NAME&quot;</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_7">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="n">net_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_network_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_network_info_objects()</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">net_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_7">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">[</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    <span class="p">{</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>        <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Gigabit Ethernet Adapter&#39;</span><span class="p">,</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>        <span class="s1">&#39;mac_address&#39;</span><span class="p">:</span> <span class="s1">&#39;00:1A:2B:3C:4D:5E&#39;</span><span class="p">,</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>        <span class="s1">&#39;ip_addresses&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;192.168.1.100&#39;</span><span class="p">,</span> <span class="s1">&#39;fe80::1234:5678:9abc:def0&#39;</span><span class="p">],</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>        <span class="s1">&#39;dns_host_name&#39;</span><span class="p">:</span> <span class="s1">&#39;MY-PC-NAME&#39;</span>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>    <span class="p">}</span>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="p">]</span>
+</code></pre></div>
+<h3 id="properties-json-keys-for-each-adapter">Properties / JSON Keys (for each adapter):</h3>
+<ul>
+<li><strong>description</strong> (string): The adapter description</li>
+<li><strong>mac_address</strong> (string): The adapter's MAC address</li>
+<li><strong>ip_addresses</strong> (list): A list of IP addresses (IPv4 and IPv6) assigned to the adapter</li>
+<li><strong>dns_host_name</strong> (string): The DNS hostname associated with the adapter</li>
+</ul>
+<hr />
+<h2 id="9-partitions-info-advanced-storage">9. Partitions Info (Advanced Storage)</h2>
+<p><strong>C Function:</strong> <code>get_partitions_info(bool Json)</code></p>
+<h3 id="python-functions_8">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_partitions_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_partitions_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_8">Description:</h3>
+<p>Retrieves detailed information about disk partitions, including disk model, serial number, interface type, disk size, media type, partition device ID, partition type, partition size, and partition index.</p>
+<h3 id="usage-json_8">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="n">parts_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_partitions_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_partitions_info()</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="n">parts_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">parts_json_str</span><span class="p">)</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">parts_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_8">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">{</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">    </span><span class="nt">&quot;partitions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">            </span><span class="nt">&quot;disk_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVMe SSD 1TB&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="w">            </span><span class="nt">&quot;disk_serial&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SSD123456789&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="w">            </span><span class="nt">&quot;disk_interface&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVMe&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="w">            </span><span class="nt">&quot;disk_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000204886016</span><span class="p">,</span>
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w">            </span><span class="nt">&quot;disk_media&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Solid State Drive&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="w">            </span><span class="nt">&quot;partition_device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Disk #0, Partition #0&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="w">            </span><span class="nt">&quot;partition_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NTFS&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="w">            </span><span class="nt">&quot;partition_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500000000000</span><span class="p">,</span>
+<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="w">            </span><span class="nt">&quot;partition_index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_8">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="n">parts_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_partitions_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_partitions_info_objects()</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">parts_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_8">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">[</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>    <span class="p">{</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>        <span class="s1">&#39;disk_model&#39;</span><span class="p">:</span> <span class="s1">&#39;NVMe SSD 1TB&#39;</span><span class="p">,</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>        <span class="s1">&#39;disk_serial&#39;</span><span class="p">:</span> <span class="s1">&#39;SSD123456789&#39;</span><span class="p">,</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>        <span class="s1">&#39;disk_interface&#39;</span><span class="p">:</span> <span class="s1">&#39;NVMe&#39;</span><span class="p">,</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>        <span class="s1">&#39;disk_size&#39;</span><span class="p">:</span> <span class="mi">1000204886016</span><span class="p">,</span>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>        <span class="s1">&#39;disk_media&#39;</span><span class="p">:</span> <span class="s1">&#39;Solid State Drive&#39;</span><span class="p">,</span>
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>        <span class="s1">&#39;partition_device_id&#39;</span><span class="p">:</span> <span class="s1">&#39;Disk #0, Partition #0&#39;</span><span class="p">,</span>
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>        <span class="s1">&#39;partition_type&#39;</span><span class="p">:</span> <span class="s1">&#39;NTFS&#39;</span><span class="p">,</span>
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>        <span class="s1">&#39;partition_size&#39;</span><span class="p">:</span> <span class="mi">500000000000</span><span class="p">,</span>
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>        <span class="s1">&#39;partition_index&#39;</span><span class="p">:</span> <span class="mi">0</span>
+<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>    <span class="p">}</span>
+<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a><span class="p">]</span>
+</code></pre></div>
+<h3 id="properties-json-keys-for-each-partition">Properties / JSON Keys (for each partition):</h3>
+<ul>
+<li><strong>disk_model</strong> (string): The model of the disk the partition belongs to</li>
+<li><strong>disk_serial</strong> (string): The serial number of the disk the partition belongs to</li>
+<li><strong>disk_interface</strong> (string): The interface type of the disk</li>
+<li><strong>disk_size</strong> (integer): The total size of the disk in bytes</li>
+<li><strong>disk_media</strong> (string): The media type of the disk</li>
+<li><strong>partition_device_id</strong> (string): The device ID of the partition</li>
+<li><strong>partition_type</strong> (string): The file system type of the partition</li>
+<li><strong>partition_size</strong> (integer): The size of the partition in bytes</li>
+<li><strong>partition_index</strong> (integer): The index of the partition on the disk</li>
+</ul>
+<hr />
+<h2 id="10-smartdisk-info-advanced">10. SMART/Disk Info (Advanced)</h2>
+<p><strong>C Function:</strong> <code>get_smart_info(bool Json)</code></p>
+<h3 id="python-functions_9">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_smart_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_smart_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_9">Description:</h3>
+<p>Retrieves detailed disk drive information, including SMART status, device IDs, firmware revision, and sector/track information.</p>
+<h3 id="usage-json_9">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="n">smart_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_smart_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_smart_info()</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="n">smart_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">smart_json_str</span><span class="p">)</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">smart_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_9">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="p">{</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">    </span><span class="nt">&quot;disks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">            </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVMe SSD 1TB&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">            </span><span class="nt">&quot;serial_number&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SSD123456789&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">            </span><span class="nt">&quot;interface_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVMe&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">            </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1000204886016&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">            </span><span class="nt">&quot;partitions&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="w">            </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SSDCorp&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">            </span><span class="nt">&quot;media_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Solid State Drive&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="w">            </span><span class="nt">&quot;device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\\.\PHYSICALDRIVE0&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="w">            </span><span class="nt">&quot;caption&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVMe SSD 1TB&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="w">            </span><span class="nt">&quot;firmware_revision&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FW1.0&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="w">            </span><span class="nt">&quot;pnp_device_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVME\\SSD&amp;VEN_1234&amp;PROD_5678\\1&amp;234567&amp;0&amp;000000&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a><span class="w">            </span><span class="nt">&quot;sectors_per_track&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">63</span><span class="p">,</span>
+<a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="w">            </span><span class="nt">&quot;total_cylinders&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="w">            </span><span class="nt">&quot;total_heads&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span>
+<a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a><span class="w">            </span><span class="nt">&quot;total_sectors&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a><span class="w">            </span><span class="nt">&quot;total_tracks&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a><span class="w">            </span><span class="nt">&quot;tracks_per_cylinder&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span>
+<a id="__codelineno-37-22" name="__codelineno-37-22" href="#__codelineno-37-22"></a><span class="w">            </span><span class="nt">&quot;bytes_per_sector&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span>
+<a id="__codelineno-37-23" name="__codelineno-37-23" href="#__codelineno-37-23"></a><span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-37-24" name="__codelineno-37-24" href="#__codelineno-37-24"></a><span class="w">            </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567890</span>
+<a id="__codelineno-37-25" name="__codelineno-37-25" href="#__codelineno-37-25"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-37-26" name="__codelineno-37-26" href="#__codelineno-37-26"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-37-27" name="__codelineno-37-27" href="#__codelineno-37-27"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_9">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="n">smart_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_smart_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_smart_info_objects()</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">smart_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_9">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="p">[</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>    <span class="p">{</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;NVMe SSD 1TB&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>        <span class="s1">&#39;serial_number&#39;</span><span class="p">:</span> <span class="s1">&#39;SSD123456789&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>        <span class="s1">&#39;interface_type&#39;</span><span class="p">:</span> <span class="s1">&#39;NVMe&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="s1">&#39;1000204886016&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>        <span class="s1">&#39;partitions&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>        <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;SSDCorp&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>        <span class="s1">&#39;media_type&#39;</span><span class="p">:</span> <span class="s1">&#39;Solid State Drive&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a>        <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;OK&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a>        <span class="s1">&#39;device_id&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">. 0HYSICALDRIVE0&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a>        <span class="s1">&#39;caption&#39;</span><span class="p">:</span> <span class="s1">&#39;NVMe SSD 1TB&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a>        <span class="s1">&#39;firmware_revision&#39;</span><span class="p">:</span> <span class="s1">&#39;FW1.0&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a>        <span class="s1">&#39;pnp_device_id&#39;</span><span class="p">:</span> <span class="s1">&#39;NVME</span><span class="se">\\</span><span class="s1">SSD&amp;VEN_1234&amp;PROD_5678</span><span class="se">\\</span><span class="s1">1&amp;234567&amp;0&amp;000000&#39;</span><span class="p">,</span>
+<a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a>        <span class="s1">&#39;sectors_per_track&#39;</span><span class="p">:</span> <span class="mi">63</span><span class="p">,</span>
+<a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a>        <span class="s1">&#39;total_cylinders&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a>        <span class="s1">&#39;total_heads&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
+<a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a>        <span class="s1">&#39;total_sectors&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-39-19" name="__codelineno-39-19" href="#__codelineno-39-19"></a>        <span class="s1">&#39;total_tracks&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-39-20" name="__codelineno-39-20" href="#__codelineno-39-20"></a>        <span class="s1">&#39;tracks_per_cylinder&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
+<a id="__codelineno-39-21" name="__codelineno-39-21" href="#__codelineno-39-21"></a>        <span class="s1">&#39;bytes_per_sector&#39;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+<a id="__codelineno-39-22" name="__codelineno-39-22" href="#__codelineno-39-22"></a>        <span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-39-23" name="__codelineno-39-23" href="#__codelineno-39-23"></a>        <span class="s1">&#39;signature&#39;</span><span class="p">:</span> <span class="mi">1234567890</span>
+<a id="__codelineno-39-24" name="__codelineno-39-24" href="#__codelineno-39-24"></a>    <span class="p">}</span>
+<a id="__codelineno-39-25" name="__codelineno-39-25" href="#__codelineno-39-25"></a><span class="p">]</span>
+</code></pre></div>
+<h3 id="properties-json-keys-for-each-disk_1">Properties / JSON Keys (for each disk):</h3>
+<ul>
+<li><strong>model</strong> (string): The disk model</li>
+<li><strong>serial_number</strong> (string): The disk serial number</li>
+<li><strong>interface_type</strong> (string): The disk interface type</li>
+<li><strong>size</strong> (string): The disk size in bytes</li>
+<li><strong>partitions</strong> (integer): The number of partitions on the disk</li>
+<li><strong>manufacturer</strong> (string): The disk manufacturer</li>
+<li><strong>media_type</strong> (string): The disk media type</li>
+<li><strong>status</strong> (string): The disk status (e.g., "OK")</li>
+<li><strong>device_id</strong> (string): The device ID of the disk</li>
+<li><strong>caption</strong> (string): A description of the disk</li>
+<li><strong>firmware_revision</strong> (string): The firmware revision of the disk</li>
+<li><strong>pnp_device_id</strong> (string): The PnP device ID</li>
+<li><strong>sectors_per_track</strong> (integer): The number of sectors per track</li>
+<li><strong>total_cylinders</strong> (integer): The total number of cylinders</li>
+<li><strong>total_heads</strong> (integer): The total number of heads</li>
+<li><strong>total_sectors</strong> (integer): The total number of sectors</li>
+<li><strong>total_tracks</strong> (integer): The total number of tracks</li>
+<li><strong>tracks_per_cylinder</strong> (integer): The number of tracks per cylinder</li>
+<li><strong>bytes_per_sector</strong> (integer): The number of bytes per sector</li>
+<li><strong>index</strong> (integer): The disk index</li>
+<li><strong>signature</strong> (integer): The disk signature</li>
+</ul>
+<hr />
+<h2 id="11-gpu-info">11. GPU Info</h2>
+<p><strong>C Function:</strong> <code>get_gpu_info(bool Json)</code></p>
+<h3 id="python-functions_10">Python Functions:</h3>
+<ul>
+<li><code>HardView.get_gpu_info(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_gpu_info_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h3 id="description_10">Description:</h3>
+<p>Retrieves GPU details such as name, manufacturer, driver version, memory size, video processor, and video mode description.</p>
+<h3 id="usage-json_10">Usage (JSON):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="n">gpu_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_gpu_info</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_gpu_info()</span>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="n">gpu_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">gpu_json_str</span><span class="p">)</span>
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">gpu_data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-json-output_10">Example JSON Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="p">{</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">    </span><span class="nt">&quot;gpus&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA GeForce RTX 3080&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">            </span><span class="nt">&quot;manufacturer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">            </span><span class="nt">&quot;driver_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;536.99&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">            </span><span class="nt">&quot;memory_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10737418240</span><span class="p">,</span>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">            </span><span class="nt">&quot;video_processor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GeForce RTX 3080&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">            </span><span class="nt">&quot;video_mode_description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2560 x 1440 x 16777216 colors&quot;</span>
+<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="usage-python-object_10">Usage (Python Object):</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="n">gpu_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_gpu_info_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_gpu_info_objects()</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">gpu_obj</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-python-object-output_10">Example Python Object Output:</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p">[</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>    <span class="p">{</span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;NVIDIA GeForce RTX 3080&#39;</span><span class="p">,</span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>        <span class="s1">&#39;manufacturer&#39;</span><span class="p">:</span> <span class="s1">&#39;NVIDIA&#39;</span><span class="p">,</span>
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>        <span class="s1">&#39;driver_version&#39;</span><span class="p">:</span> <span class="s1">&#39;536.99&#39;</span><span class="p">,</span>
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>        <span class="s1">&#39;memory_size&#39;</span><span class="p">:</span> <span class="mi">10737418240</span><span class="p">,</span>
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a>        <span class="s1">&#39;video_processor&#39;</span><span class="p">:</span> <span class="s1">&#39;GeForce RTX 3080&#39;</span><span class="p">,</span>
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a>        <span class="s1">&#39;video_mode_description&#39;</span><span class="p">:</span> <span class="s1">&#39;2560 x 1440 x 16777216 colors&#39;</span>
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a>    <span class="p">}</span>
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="p">]</span>
+</code></pre></div>
+<h3 id="properties-json-keys-for-each-gpu">Properties / JSON Keys (for each GPU):</h3>
+<ul>
+<li><strong>name</strong> (string): The GPU name</li>
+<li><strong>manufacturer</strong> (string): The GPU manufacturer</li>
+<li><strong>driver_version</strong> (string): The GPU driver version</li>
+<li><strong>memory_size</strong> (integer): The GPU memory size in bytes</li>
+<li><strong>video_processor</strong> (string): The video processor</li>
+<li><strong>video_mode_description</strong> (string): The current video mode description</li>
+</ul>
+<hr />
+<h2 id="12-current-performance">12. Current Performance</h2>
+<h3 id="a-cpu-usage">a. CPU Usage</h3>
+<p><strong>C Function:</strong> <code>get_cpu_usage(bool Json)</code></p>
+<h4 id="python-functions_11">Python Functions:</h4>
+<ul>
+<li><code>HardView.get_cpu_usage(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_cpu_usage_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h4 id="description_11">Description:</h4>
+<p>Retrieves current CPU usage percentage.</p>
+<h4 id="usage-json_11">Usage (JSON):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="n">cpu_usage_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_cpu_usage</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_cpu_usage()</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="n">cpu_usage_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cpu_usage_json_str</span><span class="p">)</span>
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">cpu_usage_data</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-json-output_11">Example JSON Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="p">{</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">    </span><span class="nt">&quot;cpu_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">            </span><span class="nt">&quot;load_percentage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="usage-python-object_11">Usage (Python Object):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="n">cpu_usage_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_cpu_usage_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_cpu_usage_objects()</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">cpu_usage_obj</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-python-object-output_11">Example Python Object Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="p">{</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>    <span class="s1">&#39;cpu_usage&#39;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>        <span class="p">{</span>
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>            <span class="s1">&#39;load_percentage&#39;</span><span class="p">:</span> <span class="mi">15</span>
+<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>        <span class="p">}</span>
+<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>    <span class="p">]</span>
+<a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="properties-json-keys_6">Properties / JSON Keys:</h4>
+<ul>
+<li><strong>cpu_usage</strong> (list): Contains:<ul>
+<li><strong>load_percentage</strong> (integer): The CPU load percentage</li>
+</ul>
+</li>
+</ul>
+<h3 id="b-ram-usage">b. RAM Usage</h3>
+<p><strong>C Function:</strong> <code>get_ram_usage(bool Json)</code></p>
+<h4 id="python-functions_12">Python Functions:</h4>
+<ul>
+<li><code>HardView.get_ram_usage(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_ram_usage_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h4 id="description_12">Description:</h4>
+<p>Retrieves current RAM usage statistics (total, available, used, usage percentage).</p>
+<h4 id="usage-json_12">Usage (JSON):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="n">ram_usage_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_ram_usage</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_ram_usage()</span>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="n">ram_usage_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ram_usage_json_str</span><span class="p">)</span>
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">ram_usage_data</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-json-output_12">Example JSON Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">{</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">    </span><span class="nt">&quot;ram_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="w">        </span><span class="nt">&quot;total_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="w">        </span><span class="nt">&quot;free_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8388608</span><span class="p">,</span>
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="w">        </span><span class="nt">&quot;used_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8388608</span><span class="p">,</span>
+<a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="w">        </span><span class="nt">&quot;usage_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">50.0</span>
+<a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="usage-python-object_12">Usage (Python Object):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="n">ram_usage_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_ram_usage_objects</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Or HardView.get_ram_usage_objects()</span>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">ram_usage_obj</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-python-object-output_12">Example Python Object Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="p">{</span>
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>    <span class="s1">&#39;ram_usage&#39;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>        <span class="s1">&#39;total_memory_kb&#39;</span><span class="p">:</span> <span class="mi">16777216</span><span class="p">,</span>
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a>        <span class="s1">&#39;free_memory_kb&#39;</span><span class="p">:</span> <span class="mi">8388608</span><span class="p">,</span>
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a>        <span class="s1">&#39;used_memory_kb&#39;</span><span class="p">:</span> <span class="mi">8388608</span><span class="p">,</span>
+<a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a>        <span class="s1">&#39;usage_percent&#39;</span><span class="p">:</span> <span class="mf">50.0</span>
+<a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a>    <span class="p">}</span>
+<a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="properties-json-keys_7">Properties / JSON Keys:</h4>
+<ul>
+<li><strong>ram_usage</strong> (dict): Contains:<ul>
+<li><strong>total_memory_kb</strong> (integer): Total memory in KB</li>
+<li><strong>free_memory_kb</strong> (integer): Free memory in KB</li>
+<li><strong>used_memory_kb</strong> (integer): Used memory in KB</li>
+<li><strong>usage_percent</strong> (float): Memory usage percentage</li>
+</ul>
+</li>
+</ul>
+<h3 id="c-system-performance">c. System Performance</h3>
+<p><strong>C Function:</strong> <code>get_system_performance(bool Json)</code></p>
+<h4 id="python-functions_13">Python Functions:</h4>
+<ul>
+<li><code>HardView.get_system_performance(Json=True)</code>: Returns a JSON string</li>
+<li><code>HardView.get_system_performance_objects(Json=False)</code>: Returns a Python object</li>
+</ul>
+<h4 id="description_13">Description:</h4>
+<p>Retrieves combined CPU and RAM usage.</p>
+<h4 id="usage-json_13">Usage (JSON):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a>
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="n">perf_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">get_system_performance</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Or HardView.get_system_performance()</span>
+<a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="n">perf_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">perf_json_str</span><span class="p">)</span>
+<a id="__codelineno-52-6" name="__codelineno-52-6" href="#__codelineno-52-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">perf_data</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-json-output_13">Example JSON Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="p">{</span>
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="w">    </span><span class="nt">&quot;system_performance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="w">        </span><span class="nt">&quot;cpu&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="w">            </span><span class="nt">&quot;cpu_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a><span class="w">                </span><span class="p">{</span>
+<a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a><span class="w">                    </span><span class="nt">&quot;load_percentage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-53-8" name="__codelineno-53-8" href="#__codelineno-53-8"></a><span class="w">            </span><span class="p">]</span>
+<a id="__codelineno-53-9" name="__codelineno-53-9" href="#__codelineno-53-9"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-53-10" name="__codelineno-53-10" href="#__codelineno-53-10"></a><span class="w">        </span><span class="nt">&quot;ram&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-53-11" name="__codelineno-53-11" href="#__codelineno-53-11"></a><span class="w">            </span><span class="nt">&quot;ram_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-53-12" name="__codelineno-53-12" href="#__codelineno-53-12"></a><span class="w">                </span><span class="nt">&quot;total_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span>
+<a id="__codelineno-53-13" name="__codelineno-53-13" href="#__codelineno-53-13"></a><span class="w">                </span><span class="nt">&quot;free_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8000000</span><span class="p">,</span>
+<a id="__codelineno-53-14" name="__codelineno-53-14" href="#__codelineno-53-14"></a><span class="w">                </span><span class="nt">&quot;used_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8777216</span><span class="p">,</span>
+<a id="__codelineno-53-15" name="__codelineno-53-15" href="#__codelineno-53-15"></a><span class="w">                </span><span class="nt">&quot;usage_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">52.31</span>
+<a id="__codelineno-53-16" name="__codelineno-53-16" href="#__codelineno-53-16"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-53-17" name="__codelineno-53-17" href="#__codelineno-53-17"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-53-18" name="__codelineno-53-18" href="#__codelineno-53-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-53-19" name="__codelineno-53-19" href="#__codelineno-53-19"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="example-python-object-output_13">Example Python Object Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="p">{</span>
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>    <span class="s1">&#39;system_performance&#39;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>        <span class="s1">&#39;cpu&#39;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>            <span class="p">{</span>
+<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>                <span class="s1">&#39;load_percentage&#39;</span><span class="p">:</span> <span class="mi">20</span>
+<a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a>            <span class="p">}</span>
+<a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a>        <span class="p">],</span>
+<a id="__codelineno-54-8" name="__codelineno-54-8" href="#__codelineno-54-8"></a>        <span class="s1">&#39;ram&#39;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-54-9" name="__codelineno-54-9" href="#__codelineno-54-9"></a>            <span class="s1">&#39;total_memory_kb&#39;</span><span class="p">:</span> <span class="mi">16777216</span><span class="p">,</span>
+<a id="__codelineno-54-10" name="__codelineno-54-10" href="#__codelineno-54-10"></a>            <span class="s1">&#39;free_memory_kb&#39;</span><span class="p">:</span> <span class="mi">8000000</span><span class="p">,</span>
+<a id="__codelineno-54-11" name="__codelineno-54-11" href="#__codelineno-54-11"></a>            <span class="s1">&#39;used_memory_kb&#39;</span><span class="p">:</span> <span class="mi">8777216</span><span class="p">,</span>
+<a id="__codelineno-54-12" name="__codelineno-54-12" href="#__codelineno-54-12"></a>            <span class="s1">&#39;usage_percent&#39;</span><span class="p">:</span> <span class="mf">52.31</span>
+<a id="__codelineno-54-13" name="__codelineno-54-13" href="#__codelineno-54-13"></a>        <span class="p">}</span>
+<a id="__codelineno-54-14" name="__codelineno-54-14" href="#__codelineno-54-14"></a>    <span class="p">}</span>
+<a id="__codelineno-54-15" name="__codelineno-54-15" href="#__codelineno-54-15"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="properties-json-keys_8">Properties / JSON Keys:</h4>
+<ul>
+<li>
+<p><strong>system_performance</strong> (dict): Contains:</p>
+<ul>
+<li><strong>cpu</strong> (list): CPU usage info (same as in CPU Usage)</li>
+<li><strong>ram</strong> (dict): RAM usage info (same as in RAM Usage)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="13-performance-monitoring">13. Performance Monitoring</h2>
+<h3 id="a-cpu-monitoring">a. CPU Monitoring</h3>
+<p><strong>C Function:</strong> <code>monitor_cpu_usage_duration(int duration_seconds, int interval_ms)</code></p>
+<h4 id="python-functions_14">Python Functions:</h4>
+<ul>
+<li><code>HardView.monitor_cpu_usage_duration(duration_sec, interval_ms)</code>: Returns a JSON string</li>
+<li><code>HardView.monitor_cpu_usage_duration_objects(duration_sec, interval_ms)</code>: Returns a Python object</li>
+</ul>
+<h4 id="description_14">Description:</h4>
+<p>Monitors CPU usage over a specified time period.</p>
+<h4 id="usage-json_14">Usage (JSON):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>
+<a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a><span class="n">cpu_monitor_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">monitor_cpu_usage_duration</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a><span class="n">cpu_monitor_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cpu_monitor_json_str</span><span class="p">)</span>
+<a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">cpu_monitor_data</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-json-output_14">Example JSON Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="p">{</span>
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">    </span><span class="nt">&quot;cpu_monitoring&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="w">        </span><span class="nt">&quot;duration_seconds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="w">        </span><span class="nt">&quot;interval_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="w">        </span><span class="nt">&quot;readings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a><span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cpu_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;load_percentage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a><span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cpu_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;load_percentage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-56-8" name="__codelineno-56-8" href="#__codelineno-56-8"></a><span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cpu_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;load_percentage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-56-9" name="__codelineno-56-9" href="#__codelineno-56-9"></a><span class="w">        </span><span class="p">]</span>
+<a id="__codelineno-56-10" name="__codelineno-56-10" href="#__codelineno-56-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-56-11" name="__codelineno-56-11" href="#__codelineno-56-11"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="usage-python-object_13">Usage (Python Object):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="n">cpu_monitor_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">monitor_cpu_usage_duration_objects</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">cpu_monitor_obj</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="properties-json-keys_9">Properties / JSON Keys:</h4>
+<ul>
+<li>
+<p><strong>cpu_monitoring</strong> (dict): Contains:</p>
+<ul>
+<li><strong>duration_seconds</strong> (int)</li>
+<li><strong>interval_ms</strong> (int)</li>
+<li><strong>readings</strong> (list): List of CPU usage readings</li>
+</ul>
+</li>
+</ul>
+<h3 id="b-ram-monitoring">b. RAM Monitoring</h3>
+<p><strong>C Function:</strong> <code>monitor_ram_usage_duration(int duration_seconds, int interval_ms)</code></p>
+<h4 id="python-functions_15">Python Functions:</h4>
+<ul>
+<li><code>HardView.monitor_ram_usage_duration(duration_sec, interval_ms)</code>: Returns a JSON string</li>
+<li><code>HardView.monitor_ram_usage_duration_objects(duration_sec, interval_ms)</code>: Returns a Python object</li>
+</ul>
+<h4 id="description_15">Description:</h4>
+<p>Monitors RAM usage over a specified time period.</p>
+<h4 id="usage-json_15">Usage (JSON):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>
+<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="n">ram_monitor_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">monitor_ram_usage_duration</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="n">ram_monitor_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ram_monitor_json_str</span><span class="p">)</span>
+<a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">ram_monitor_data</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-json-output_15">Example JSON Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="p">{</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="w">    </span><span class="nt">&quot;ram_monitoring&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="w">        </span><span class="nt">&quot;duration_seconds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="w">        </span><span class="nt">&quot;interval_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a><span class="w">        </span><span class="nt">&quot;readings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a><span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ram_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;total_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;free_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8300000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;used_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8477216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;usage_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">50.53</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a><span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ram_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;total_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;free_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8250000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;used_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8527216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;usage_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">50.82</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-59-8" name="__codelineno-59-8" href="#__codelineno-59-8"></a><span class="w">        </span><span class="p">]</span>
+<a id="__codelineno-59-9" name="__codelineno-59-9" href="#__codelineno-59-9"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-59-10" name="__codelineno-59-10" href="#__codelineno-59-10"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="usage-python-object_14">Usage (Python Object):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>
+<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="n">ram_monitor_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">monitor_ram_usage_duration_objects</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">ram_monitor_obj</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="properties-json-keys_10">Properties / JSON Keys:</h4>
+<ul>
+<li>
+<p><strong>ram_monitoring</strong> (dict): Contains:</p>
+<ul>
+<li><strong>duration_seconds</strong> (int)</li>
+<li><strong>interval_ms</strong> (int)</li>
+<li><strong>readings</strong> (list): RAM usage snapshots</li>
+</ul>
+</li>
+</ul>
+<h3 id="c-system-performance-monitoring">c. System Performance Monitoring</h3>
+<p><strong>C Function:</strong> <code>monitor_system_performance_duration(int duration_seconds, int interval_ms)</code></p>
+<h4 id="python-functions_16">Python Functions:</h4>
+<ul>
+<li><code>HardView.monitor_system_performance_duration(duration_sec, interval_ms)</code>: Returns a JSON string</li>
+<li><code>HardView.monitor_system_performance_duration_objects(duration_sec, interval_ms)</code>: Returns a Python object</li>
+</ul>
+<h4 id="description_16">Description:</h4>
+<p>Monitors CPU and RAM usage together over a given duration.</p>
+<h4 id="usage-json_16">Usage (JSON):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>
+<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="n">system_monitor_json_str</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">monitor_system_performance_duration</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a><span class="n">system_monitor_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">system_monitor_json_str</span><span class="p">)</span>
+<a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">system_monitor_data</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="example-json-output_16">Example JSON Output:</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="p">{</span>
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a><span class="w">    </span><span class="nt">&quot;system_performance_monitoring&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a><span class="w">        </span><span class="nt">&quot;duration_seconds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="w">        </span><span class="nt">&quot;interval_ms&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a><span class="w">        </span><span class="nt">&quot;readings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a><span class="w">            </span><span class="p">{</span>
+<a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a><span class="w">                </span><span class="nt">&quot;system_performance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a><span class="w">                    </span><span class="nt">&quot;cpu&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cpu_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;load_percentage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-62-9" name="__codelineno-62-9" href="#__codelineno-62-9"></a><span class="w">                    </span><span class="nt">&quot;ram&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ram_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;total_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;free_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8100000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;used_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8677216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;usage_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">51.72</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-62-10" name="__codelineno-62-10" href="#__codelineno-62-10"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-62-11" name="__codelineno-62-11" href="#__codelineno-62-11"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-62-12" name="__codelineno-62-12" href="#__codelineno-62-12"></a><span class="w">            </span><span class="p">{</span>
+<a id="__codelineno-62-13" name="__codelineno-62-13" href="#__codelineno-62-13"></a><span class="w">                </span><span class="nt">&quot;system_performance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-62-14" name="__codelineno-62-14" href="#__codelineno-62-14"></a><span class="w">                    </span><span class="nt">&quot;cpu&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cpu_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;load_percentage&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-62-15" name="__codelineno-62-15" href="#__codelineno-62-15"></a><span class="w">                    </span><span class="nt">&quot;ram&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ram_usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;total_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;free_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8050000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;used_memory_kb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8727216</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;usage_percent&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">52.02</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-62-16" name="__codelineno-62-16" href="#__codelineno-62-16"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-62-17" name="__codelineno-62-17" href="#__codelineno-62-17"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-62-18" name="__codelineno-62-18" href="#__codelineno-62-18"></a><span class="w">        </span><span class="p">]</span>
+<a id="__codelineno-62-19" name="__codelineno-62-19" href="#__codelineno-62-19"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-62-20" name="__codelineno-62-20" href="#__codelineno-62-20"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="usage-python-object_15">Usage (Python Object):</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">HardView</span>
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="n">system_monitor_obj</span> <span class="o">=</span> <span class="n">HardView</span><span class="o">.</span><span class="n">monitor_system_performance_duration_objects</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">system_monitor_obj</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="properties-json-keys_11">Properties / JSON Keys:</h4>
+<ul>
+<li>
+<p><strong>system_performance_monitoring</strong> (dict): Contains:</p>
+<ul>
+<li><strong>duration_seconds</strong> (int)</li>
+<li><strong>interval_ms</strong> (int)</li>
+<li><strong>readings</strong> (list): CPU and RAM readings over time</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="general-notes">General Notes</h2>
+<ul>
+<li>
+<p><strong>Dual Output Mode:</strong></p>
+<ul>
+<li>Functions can return JSON strings or Python objects</li>
+<li>JSON mode: <code>HardView.func(True)</code></li>
+<li>Object mode: <code>HardView.func_objects(False)</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Errors:</strong></p>
+<ul>
+<li>In case of failure, functions may return: <code>{ "error": "..." }</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Performance:</strong></p>
+<ul>
+<li>Most functions run under 0.1s on typical systems</li>
+</ul>
+</li>
+</ul>
+<h2 id="quick-test">Quick Test</h2>
+<p>To test all <strong>HardView</strong> functions, you can use one of the following options:</p>
+<h3 id="option-1-full-test">🔹 Option 1: Full Test</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>python<span class="w"> </span>TestAll.py
+</code></pre></div>
+<p>This command will:</p>
+<ul>
+<li>Call <strong>all HardView functions</strong></li>
+<li>Print <strong>execution times</strong> for each function</li>
+</ul>
+<hr />
+<h3 id="option-2-quick-colorful-test">🔸 Option 2: Quick &amp; Colorful Test</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>python<span class="w"> </span>Test.py
+</code></pre></div>
+<p>This script uses the <strong><a href="https://github.com/Textualize/rich">rich</a></strong> library to display a visually appealing and colorful output in the console.</p>
+<hr />
+<p>💡 <strong>Note:</strong> Make sure the <code>rich</code> library is installed:</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>pip<span class="w"> </span>install<span class="w"> </span>rich
+</code></pre></div>
+📁 <strong>Scripts location:</strong></p>
+<p><a href="https://github.com/gafoo173/HardView/blob/main/tests/TestALL">TestALL.py</a></p>
+<p><a href="https://github.com/gafoo173/HardView/blob/main/tests/test.py">test.py</a></p>
+<p>For more details, refer to files inside the <code>docs/</code> folder.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>
