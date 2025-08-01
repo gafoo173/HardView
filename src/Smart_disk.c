@@ -66,12 +66,12 @@ char* get_smart_info(bool Json) {
     IWbemClassObject *pclsObj = NULL;
     HRESULT hr;
     ULONG uReturn = 0;
-    // 1. تهيئة WMI
+
     hr = _initialize_wmi(&pLoc, &pSvc);
     if (FAILED(hr)) {
         return strdup("{\"error\": \"Failed to initialize WMI for disk info\"}");
     }
-    // 2. تنفيذ استعلام WMI لجلب معلومات الأقراص
+
     BSTR query_lang = SysAllocString(L"WQL");
     BSTR query = SysAllocString(L"SELECT * FROM Win32_DiskDrive");
     hr = pSvc->lpVtbl->ExecQuery(
@@ -85,7 +85,7 @@ char* get_smart_info(bool Json) {
         _cleanup_wmi(pLoc, pSvc, pEnumerator, pclsObj);
         return strdup("{\"error\": \"Failed to execute WMI query for disk info\"}");
     }
-    // 3. تكرار النتائج واستخراج الخصائص
+
     size_t bufsize = 8192;
     size_t used = 0;
     char* json = (char*)malloc(bufsize);
@@ -97,7 +97,7 @@ char* get_smart_info(bool Json) {
     used = strlen(json);
     int first = 1;
     while (SUCCEEDED(pEnumerator->lpVtbl->Next(pEnumerator, WBEM_INFINITE, 1, &pclsObj, &uReturn)) && uReturn == 1) {
-        // استخراج الخصائص
+
         VARIANT vtProp;
         char model[256] = "", serial[256] = "", interface_type[64] = "", size[64] = "", manufacturer[128] = "", media_type[128] = "", status[64] = "", device_id[256] = "", caption[256] = "", firmware[128] = "", pnp_id[256] = "";
         unsigned long long total_cylinders = 0, total_sectors = 0, total_tracks = 0;
