@@ -125,7 +125,7 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.1.0',
+    version='3.2.0b0',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
 # HardView 3.1.0 - Advanced Hardware & Real-time Monitoring
