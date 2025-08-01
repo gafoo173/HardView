@@ -88,6 +88,10 @@ pprint.pprint(json.loads(cpu_json))
 
 ## 📚 Documentation
 
+Full documentation is available on the GitHub Pages website:
+
+➡️ [https://gafoo173.github.io/HardView/](https://gafoo173.github.io/HardView/)
+
 All documentation is in the `docs/` folder:
 
 
