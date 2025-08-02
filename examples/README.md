@@ -28,9 +28,7 @@ This repository includes a copy of the license in [`licenses/LICENSE.LGPL.txt`](
 
 It leverages the [**HardView**](https://github.com/gafoo173/HardView) library to collect detailed and consistent hardware information across devices.
 
-Additionally, it uses the [**Cryptography**](https://github.com/pyca/cryptography) library to provide secure encryption features
-
-📄 **License** for the Cryptography library: [Apache License 2.0](https://github.com/gafoo173/HardView/blob/main/licenses/LICENSE-Apache-2.0.txt)
+Additionally, it uses the [**Cryptography**](https://github.com/pyca/cryptography) library to provide secure encryption features license [Apache License 2.0](https://github.com/gafoo173/HardView/blob/main/licenses/LICENSE-Apache-2.0.txt)
 
 
 ---
