@@ -15,27 +15,26 @@ This document presents feature comparisons and qualitative performance notes bet
 
 ## 2. 📋 Feature Coverage Comparison
 
-| Feature / Library          | HardView | psutil | wmi (pywin32) | py-cpuinfo | platform | dmidecode (Linux) |
-| -------------------------- | -------- | ------ | ------------- | ---------- | -------- | ----------------- |
-| BIOS Info                  | ✅        | ❌      | ❌             | ❌          | ❌        | ✅                 |
-| System Info                | ✅        | ❌      | ✅             | ❌          | ✅        | ✅                 |
-| Baseboard Info             | ✅        | ❌      | ❌             | ❌          | ❌        | ✅                 |
-| Chassis Info               | ✅        | ❌      | ❌             | ❌          | ❌        | ✅                 |
-| CPU Info (detailed)        | ✅        | ✅      | ✅             | ✅          | ✅        | ✅                 |
-| GPU Info (detailed)        | ✅        | ❌      | ✅             | ❌          | ❌        | ❌                 |
-| RAM Info (modules)         | ✅        | ✅      | ❌             | ❌          | ❌        | ✅                 |
-| Disk Info (detailed)       | ✅        | ✅      | ✅             | ❌          | ❌        | ✅                 |
-| Partitions Info            | ✅        | ✅      | ❌             | ❌          | ❌        | ✅                 |
-| SMART/Advanced Storage     | ✅        | ❌      | ❌             | ❌          | ❌        | ❌                 |
-| Network Info (detailed)    | ✅        | ✅      | ✅             | ❌          | ❌        | ❌                 |
-| Real-time CPU Usage        | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
-| Real-time RAM Usage        | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
-| System Performance Monitor | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
-| JSON Output                | ✅        | ❌      | ❌             | ❌          | ❌        | ❌                 |
-| Python Object Output       | ✅        | ✅      | ✅             | ✅          | ✅        | ❌                 |
-| Cross-Platform             | ✅        | ✅      | Windows only  | All        | All      | Linux only        |
-| Native C Speed             | ✅        | ✅      | ❌             | ❌          | ❌        | ❌                 |
-
+| Feature / Library          | HardView | psutil | py-cpuinfo | platform | dmidecode (Linux) |
+| -------------------------- | -------- | ------ | ---------- | -------- | ----------------- |
+| BIOS Info                  | ✅        | ❌      | ❌          | ❌        | ✅                 |
+| System Info                | ✅        | ❌      | ❌          | ✅        | ✅                 |
+| Baseboard Info             | ✅        | ❌      | ❌          | ❌        | ✅                 |
+| Chassis Info               | ✅        | ❌      | ❌          | ❌        | ✅                 |
+| CPU Info (detailed)        | ✅        | ✅      | ✅          | ✅        | ✅                 |
+| GPU Info (detailed)        | ✅        | ❌      | ❌          | ❌        | ❌                 |
+| RAM Info (modules)         | ✅        | ✅      | ❌          | ❌        | ✅                 |
+| Disk Info (detailed)       | ✅        | ✅      | ❌          | ❌        | ✅                 |
+| Partitions Info            | ✅        | ✅      | ❌          | ❌        | ✅                 |
+| SMART/Advanced Storage     | ✅        | ❌      | ❌          | ❌        | ❌                 |
+| Network Info (detailed)    | ✅        | ✅      | ❌          | ❌        | ❌                 |
+| Real-time CPU Usage        | ✅        | ✅      | ❌          | ❌        | ❌                 |
+| Real-time RAM Usage        | ✅        | ✅      | ❌          | ❌        | ❌                 |
+| System Performance Monitor | ✅        | ✅      | ❌          | ❌        | ❌                 |
+| JSON Output                | ✅        | ❌      | ❌          | ❌        | ❌                 |
+| Python Object Output       | ✅        | ✅      | ✅          | ✅        | ❌                 |
+| Cross-Platform             | ✅        | ✅      | All        | All      | Linux only        |
+| Native C Speed             | ✅        | ✅      | ❌          | ❌        | ❌                 |
 ---
 
 ## 3. 📈 Qualitative Performance Notes
@@ -65,3 +64,4 @@ Use HardView if:
 * [`What.md`](./What.md): Full API and output examples
 
 > **HardView:** The fastest, most complete hardware info library for Python.
+
