@@ -1,0 +1,109 @@
+name: HardView Issue Report
+description: Report any problem related to HardView (bugs, performance, installation, build, or import issues).
+title: "[HardView Issue]: "
+labels:
+  - bug
+body:
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Type of Issue
+      description: Select the category that best matches your problem.
+      options:
+        - bug
+        - performance
+        - install
+        - build
+        - import
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Pre-Submission Checklist
+      description: Please confirm all of the following before submitting.
+      options:
+        - label: "I am using version higher than 1.1.2."
+          required: true
+        - label: "I am on a supported platform (Windows or Linux x64/x86)."
+          required: true
+        - label: "I am NOT trying to install version 3.0.0 (this release has corrupted wheels)."
+          required: true
+        - label: "I am importing the library with correct capitalization (HardView)."
+          required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      placeholder: "Example: 3.11.4"
+    validations:
+      required: true
+
+  - type: input
+    id: library-version
+    attributes:
+      label: HardView Version
+      placeholder: "Example: 3.0.3"
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: Operating System / Distribution
+      placeholder: "Example: Windows 11 x64 or Ubuntu 22.04"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: Installation / Build Method
+      options:
+        - pip
+        - source
+    validations:
+      required: true
+
+  - type: input
+    id: compiler-version
+    attributes:
+      label: Compiler Version (if building from source)
+      placeholder: "Example: GCC 13.2.0 or MSVC 19.38"
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: "List the exact steps to reproduce the issue."
+      placeholder: |
+        1. Install HardView using pip
+        2. Import the library
+        3. Run specific code
+        4. Observe the error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: "Describe what you expected to happen."
+      placeholder: "The library should install, import, and run without errors."
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: "Describe what actually happened, including error messages."
+      placeholder: "Include full error logs or stack traces here."
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: "Add any other details, screenshots, or logs that may help."
