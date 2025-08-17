@@ -172,9 +172,9 @@ All documentation is in the `docs/` folder:
 | **`PySensor.getAllFanRPMs()`** *(Windows)*                 | `get_all_fan_rpms()`           | List all fan RPM readings.                                        |
 | **`PySensor.update()`**                                    | ---                            | Refresh sensors & fans data.                                      |
 | **`PySensor.reget()`**                                     | `re_get()`                     | Re-fetch sensors & fans data.                                     |
-| **`PyMangeTemp.Init()`** *(Windows)*                       | `init()`                       | Initialize temperature monitoring.                                |
-| **`PyMangeTemp.Close()`** *(Windows)*                      | `close()`                      | Shutdown temperature monitoring.                                  |
-| **`PyMangeTemp.Update()`** *(Windows)*                     | `update()`                     | Update all temperature data.                                      |
+| **`PyManageTemp.Init()`** *(Windows)*                       | `init()`                       | Initialize temperature monitoring.                                |
+| **`PyManageTemp.Close()`** *(Windows)*                      | `close()`                      | Shutdown temperature monitoring.                                  |
+| **`PyManageTemp.Update()`** *(Windows)*                     | `update()`                     | Update all temperature data.                                      |
 | **`PyRawInfo.RSMB()`** *(Windows)*                         | `rsmb()`                       | Get raw SMBIOS table bytes.                                       |
 | **`PyLinuxSensor.getCpuTemp()`** *(Linux)*                 | `get_cpu_temp()`               | Get CPU temperature.                                              |
 | **`PyLinuxSensor.getChipsetTemp()`** *(Linux)*             | `get_chipset_temp()`           | Get chipset temperature.                                          |
@@ -325,6 +325,7 @@ Contributions are welcome!
 **HardView — Your Window into Hardware Information**
 
 See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+
 
 
 
