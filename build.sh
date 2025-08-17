@@ -19,9 +19,12 @@ UNAME=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
     echo "--- Detected Windows ---"
 
-    for f in $SRC/*.c; do
+    # Windows-specific source files
+    WIN_SRCS="Smart_disk.c advanced_storage_info.c baseboard_info.c bios_info.c chassis_info.c cpu_info.c disk_info.c gpu_info.c helpers.c network_info.c ram_info.c system_info.c win_helpers.c"
+
+    for f in $WIN_SRCS; do
         echo "Compiling $f..."
-        cl /c "/Fo${OBJS}\\" "$f"
+        cl /c "/Fo${OBJS}\\" "$SRC/$f"
     done
 
     if [[ ! -f "$DEF" ]]; then
@@ -44,18 +47,19 @@ if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
 else
     echo "--- Detected Linux ---"
 
-    for f in $SRC/*.c; do
+    # Linux-specific source files
+    LNX_SRCS="advanced_storage_info.c baseboard_info.c bios_info.c chassis_info.c cpu_info.c disk_info.c gpu_info.c helpers.c linux_helpers.c network_info.c ram_info.c system_info.c"
+
+    for f in $LNX_SRCS; do
         echo "Compiling $f..."
-        gcc -c -fPIC "$f" -o "$OBJS/$(basename "$f" .c).o"
+        gcc -c -fPIC "$SRC/$f" -o "$OBJS/$(basename "$f" .c).o"
     done
 
     echo "--- Linking shared library ---"
-    # Removed Windows-specific libraries. The || true is also removed so the script will
-    # fail if a genuine linking error occurs.
     gcc -shared $OBJS/*.o -o $OUT_LNX_SO
 
     echo "--- Creating static library ---"
-    ar rcs $OBJS/*.o -o $OUT_LNX_STATIC
+    ar rcs $OUT_LNX_STATIC $OBJS/*.o
 
     echo "=== Build complete (Linux) ==="
     echo "- $OUT_LNX_SO"
