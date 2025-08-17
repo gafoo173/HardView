@@ -21,7 +21,7 @@ if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
 
     for f in $SRC/*.c; do
         echo "Compiling $f..."
-        cl /c /Fo"$OBJS/" $f
+        cl /c "/Fo${OBJS}\\" "$f"
     done
 
     if [[ ! -f "$DEF" ]]; then
@@ -46,7 +46,7 @@ else
 
     for f in $SRC/*.c; do
         echo "Compiling $f..."
-        gcc -c -fPIC $f -o "$OBJS/$(basename "$f" .c).o"
+        gcc -c -fPIC "$f" -o "$OBJS/$(basename "$f" .c).o"
     done
 
     echo "--- Linking shared library ---"
