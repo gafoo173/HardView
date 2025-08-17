@@ -1,7 +1,7 @@
 <p align="center">
 <p align="center">
-  <img src="https://img.shields.io/badge/API_Version-3.0.2-informational" alt="API Version" height="30">
-  <img src="https://img.shields.io/badge/PyPI_Package-3.0.3-blue" alt="PyPI Package Version" height="30">
+  <img src="https://img.shields.io/badge/API_Version-3.1.0Beta-informational" alt="API Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Package-3.1.0b1-blue" alt="PyPI Package Version" height="30">
   <img src="https://img.shields.io/badge/downloads-7.7K-blue" alt="Version" height="30">
   <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Supported Python versions" height="30">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
@@ -24,14 +24,18 @@ HardView is a high-performance, cross-platform Python module that provides detai
 
 ## 🔑 Key Features
 
-* 🖥️ **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network.
+* 🖥️ **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network,GPU.
 * 🏗️ **Advanced Storage & SMART**: Detailed disk, partition, and SMART attributes.
 * 📊 **Performance Monitoring**: Real-time and interval-based CPU, RAM, and system performance.
 * 🖥️ **Cross-Platform**: Works on Windows (WMI) and Linux (sysfs/proc).
 * ⚡ **C Implementation**: High performance native code.
 * 🐍 **Python Integration**: Easy-to-use Python API.
 * 🧩 **Modular Design**: Extensible and well-documented.
-* 📝 **Structured Output**: All results are returned as JSON strings or Python objects.
+* 📝 **Structured Output**: All results are returned as JSON strings or Python objects in (3.0,1+).
+* 🌡️ **Temperature & Sensors Monitoring**:(3.1.0+) Retrieve real-time temperature, voltage, and fan speed readings from system sensors.  
+  * **Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for comprehensive sensor data via native integration.  
+  * **Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) and the `/sys/class/hwmon` interface for direct hardware monitoring.  
+  * **Licenses**: LibreHardwareMonitor — **MPL-2.0** ([`licenses/LICENSE.MPL-2.txt`](licenses/LICENSE.MPL-2.txt)), lm-sensors — **LGPL-2.1-or-later** ([`licenses/LICENSE.LGPL-2.1.txt`](licenses/LICENSE.LGPL-2,1.txt))
 
 ---
 
@@ -107,25 +111,79 @@ All documentation is in the `docs/` folder:
 
 ## 📖 API Reference (Summary)
 
-| Function (JSON)                            | Function (Python Object)                           | Description                             |
-| ------------------------------------------ | -------------------------------------------------- | --------------------------------------- |
-| `get_bios_info()`                          | `get_bios_info_objects()`                          | BIOS vendor, version, release date      |
+| Function (JSON) / Class.Method             | Function (Python Object)                           | Description |
+| ------------------------------------------ | -------------------------------------------------- | ----------- |
+| `get_bios_info()`                          | `get_bios_info_objects()`                          | BIOS vendor, version, release date |
 | `get_system_info()`                        | `get_system_info_objects()`                        | System manufacturer, product name, UUID |
-| `get_baseboard_info()`                     | `get_baseboard_info_objects()`                     | Motherboard info                        |
-| `get_chassis_info()`                       | `get_chassis_info_objects()`                       | Chassis/computer case info              |
-| `get_cpu_info()`                           | `get_cpu_info_objects()`                           | Processor details                       |
-| `get_ram_info()`                           | `get_ram_info_objects()`                           | Memory modules and totals               |
-| `get_gpu_info`                             | `get_gpu_info_objects()`                           | GPU information                         |
-| `get_disk_info()`                          | `get_disk_info_objects()`                          | Storage devices                         |
-| `get_network_info()`                       | `get_network_info_objects()`                       | Network adapters                        |
-| `get_partitions_info()`                    | `get_partitions_info_objects()`                    | Disk partitions (advanced)              |
-| `get_smart_info()`                         | `get_smart_info_objects()`                         | Full disk/SMART info (advanced)         |
-| `get_cpu_usage()`                          | `get_cpu_usage_objects()`                          | Current CPU usage                       |
-| `get_ram_usage()`                          | `get_ram_usage_objects()`                          | Current RAM usage                       |
-| `get_system_performance()`                 | `get_system_performance_objects()`                 | Combined CPU/RAM usage                  |
-| `monitor_cpu_usage_duration(d, i)`         | `monitor_cpu_usage_duration_objects(d,i)`          | Monitor CPU usage over time             |
-| `monitor_ram_usage_duration(d, i)`         | `monitor_ram_usage_duration_objects(d,i)`          | Monitor RAM usage over time             |
-| `monitor_system_performance_duration(d,i)` | `monitor_system_performance_duration_objects(d,i)` | Monitor system performance over time    |
+| `get_baseboard_info()`                     | `get_baseboard_info_objects()`                     | Motherboard info |
+| `get_chassis_info()`                       | `get_chassis_info_objects()`                       | Chassis/computer case info |
+| `get_cpu_info()`                           | `get_cpu_info_objects()`                           | Processor details |
+| `get_ram_info()`                           | `get_ram_info_objects()`                           | Memory modules and totals |
+| `get_gpu_info`                             | `get_gpu_info_objects()`                           | GPU information |
+| `get_disk_info()`                          | `get_disk_info_objects()`                          | Storage devices |
+| `get_network_info()`                       | `get_network_info_objects()`                       | Network adapters |
+| `get_partitions_info()`                    | `get_partitions_info_objects()`                    | Disk partitions (advanced) |
+| `get_smart_info()`                         | `get_smart_info_objects()`                         | Full disk/SMART info (advanced) |
+| `get_cpu_usage()`                          | `get_cpu_usage_objects()`                          | Current CPU usage |
+| `get_ram_usage()`                          | `get_ram_usage_objects()`                          | Current RAM usage |
+| `get_system_performance()`                 | `get_system_performance_objects()`                 | Combined CPU/RAM usage |
+| `monitor_cpu_usage_duration(d, i)`         | `monitor_cpu_usage_duration_objects(d,i)`          | Monitor CPU usage over time |
+| `monitor_ram_usage_duration(d, i)`         | `monitor_ram_usage_duration_objects(d,i)`          | Monitor RAM usage over time |
+| `monitor_system_performance_duration(d,i)` | `monitor_system_performance_duration_objects(d,i)` | Monitor system performance over time |
+
+## 🖥️ LiveView Classes & Methods
+
+## API Reference
+
+| Class.Method                                               | Aliases                        | Description                                                       |
+| ---------------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------- |
+| **`PyLiveCPU.get_usage(interval_ms)`**                     | ---                            | Get total CPU usage % over a given interval.                      |
+| **`PyLiveCPU.cpuid()`**                                    | `cpu_id()`                     | Get CPU details via CPUID instruction.                            |
+| **`PyLiveCPU.CpuSnapShot(...)`** *(Windows)*               | `cpu_snapshot(...)`            | Get raw CPU time counters for a specific core or number of cores. |
+| **`PyLiveRam.get_usage(Raw=False)`**                       | ---                            | Get total RAM usage % or raw `[used_bytes, total_bytes]`.         |
+| **`PyLiveDisk(mode)`**                                     | ---                            | Create disk monitor (mode=0 % usage \[Windows], mode=1 R/W MB/s). |
+| **`PyLiveDisk.get_usage(interval)`**                       | ---                            | Get disk usage as % or `{Read MB/s, Write MB/s}`.                 |
+| **`PyLiveDisk.HighDiskUsage(...)`**                        | `high_disk_usage(...)`         | Check if disk R/W exceeds threshold.                              |
+| **`PyLiveNetwork.get_usage(interval, mode=0)`**            | ---                            | Get total MB/s (mode 0) or per-interface MB/s (mode 1).           |
+| **`PyLiveNetwork.getHighCard()`**                          | `get_high_card()`              | Get name of network adapter with highest usage.                   |
+| **`PyLiveGpu.get_usage(interval_ms)`** *(Windows)*         | ---                            | Get total GPU usage %.                                            |
+| **`PyLiveGpu.get_average_usage(interval_ms)`** *(Windows)* | ---                            | Get average GPU usage %.                                          |
+| **`PyLiveGpu.get_max_usage(interval_ms)`** *(Windows)*     | ---                            | Get maximum GPU usage %.                                          |
+| **`PyLiveGpu.get_counter_count()`** *(Windows)*            | ---                            | Get number of GPU counters monitored.                             |
+| **`PyTempCpu.get_temp()`** *(Windows)*                     | ---                            | Get current CPU temperature.                                      |
+| **`PyTempCpu.get_max_temp()`** *(Windows)*                 | ---                            | Get max CPU core temperature.                                     |
+| **`PyTempCpu.get_avg_temp()`** *(Windows)*                 | ---                            | Get average CPU core temperature.                                 |
+| **`PyTempCpu.get_fan_rpm()`** *(Windows)*                  | ---                            | Get CPU fan RPM.                                                  |
+| **`PyTempCpu.update()`**                                   | ---                            | Refresh CPU temperature & fan RPM.                                |
+| **`PyTempCpu.reget()`**                                    | `re_get()`                     | Re-read CPU temperature & fan RPM.                                |
+| **`PyTempGpu.get_temp()`** *(Windows)*                     | ---                            | Get current GPU temperature.                                      |
+| **`PyTempGpu.get_fan_rpm()`** *(Windows)*                  | ---                            | Get GPU fan RPM.                                                  |
+| **`PyTempGpu.update()`**                                   | ---                            | Refresh GPU temperature and fan RPM.                              |
+| **`PyTempGpu.reget()`**                                    | `re_get()`                     | Re-read GPU temperature and fan RPM.                              |
+| **`PyTempOther.get_mb_temp()`** *(Windows)*                | ---                            | Get motherboard temperature.                                      |
+| **`PyTempOther.get_Storage_temp()`** *(Windows)*           | `get_storage_temp()`           | Get storage temperature.                                          |
+| **`PyTempOther.update()`**                                 | ---                            | Refresh other temperatures.                                       |
+| **`PyTempOther.reget()`**                                  | `re_get()`                     | Re-read other temperatures.                                       |
+| **`PySensor.GetData(init=False)`** *(Windows)*             | `get_data(init=False)`         | Fetch sensors & fan data.                                         |
+| **`PySensor.GetValueByName(name)`** *(Windows)*            | `get_value_by_name(name)`      | Get sensor value by name.                                         |
+| **`PySensor.getAllSensors()`** *(Windows)*                 | `get_all_sensors()`            | List all sensor names.                                            |
+| **`PySensor.getAllFanRPMs()`** *(Windows)*                 | `get_all_fan_rpms()`           | List all fan RPM readings.                                        |
+| **`PySensor.update()`**                                    | ---                            | Refresh sensors & fans data.                                      |
+| **`PySensor.reget()`**                                     | `re_get()`                     | Re-fetch sensors & fans data.                                     |
+| **`PyMangeTemp.Init()`** *(Windows)*                       | `init()`                       | Initialize temperature monitoring.                                |
+| **`PyMangeTemp.Close()`** *(Windows)*                      | `close()`                      | Shutdown temperature monitoring.                                  |
+| **`PyMangeTemp.Update()`** *(Windows)*                     | `update()`                     | Update all temperature data.                                      |
+| **`PyRawInfo.RSMB()`** *(Windows)*                         | `rsmb()`                       | Get raw SMBIOS table bytes.                                       |
+| **`PyLinuxSensor.getCpuTemp()`** *(Linux)*                 | `get_cpu_temp()`               | Get CPU temperature.                                              |
+| **`PyLinuxSensor.getChipsetTemp()`** *(Linux)*             | `get_chipset_temp()`           | Get chipset temperature.                                          |
+| **`PyLinuxSensor.getMotherboardTemp()`** *(Linux)*         | `get_motherboard_temp()`       | Get motherboard temperature.                                      |
+| **`PyLinuxSensor.getVRMTemp()`** *(Linux)*                 | `get_vrm_temp()`               | Get VRM/memory temperature.                                       |
+| **`PyLinuxSensor.getDriveTemp()`** *(Linux)*               | `get_drive_temp()`             | Get storage temperature.                                          |
+| **`PyLinuxSensor.getAllSensorNames()`** *(Linux)*          | `get_all_sensor_names()`       | List all sensor names.                                            |
+| **`PyLinuxSensor.findSensorName(name)`** *(Linux)*         | `find_sensor_name(name)`       | Search for a sensor name.                                         |
+| **`PyLinuxSensor.GetSensorTemp(name, Match)`** *(Linux)*   | `get_sensor_temp(name, Match)` | Get sensor temperature by name.                                   |
+| **`PyLinuxSensor.GetSensorsWithTemp()`** *(Linux)*         | `get_sensors_with_temp()`      | Get all sensors with their temperatures.                          |
+| **`PyLinuxSensor.update(names=False)`** *(Linux)*          | ---                            | Refresh sensor readings.                                          |
 
 ---
 
