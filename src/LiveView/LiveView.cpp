@@ -60,6 +60,7 @@
 #include <numeric>
 #include <sstream>
 #include <unistd.h>
+#include <sensors/sensors.h>
 #endif
 
 namespace py = pybind11;
@@ -1563,3 +1564,4 @@ PYBIND11_MODULE(LiveView, m) {
              "Update sensor data, optionally update names");
 #endif
 }
+
