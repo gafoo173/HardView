@@ -50,10 +50,12 @@ else
     done
 
     echo "--- Linking shared library ---"
-    gcc -shared $OBJS/*.o -o $OUT_LNX_SO -lole32 -loleaut32 -lwbemuuid || true
+    # Removed Windows-specific libraries. The || true is also removed so the script will
+    # fail if a genuine linking error occurs.
+    gcc -shared $OBJS/*.o -o $OUT_LNX_SO
 
     echo "--- Creating static library ---"
-    ar rcs $OUT_LNX_STATIC $OBJS/*.o
+    ar rcs $OBJS/*.o -o $OUT_LNX_STATIC
 
     echo "=== Build complete (Linux) ==="
     echo "- $OUT_LNX_SO"
