@@ -19,16 +19,6 @@ UNAME=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
     echo "--- Detected Windows ---"
 
-    # Detect architecture via compiler (cl.exe)
-    CL_OUT=$(cl 2>&1 || true)
-    if echo "$CL_OUT" | grep -qi "x64"; then
-        echo "Building for x64 (MSVC)..."
-        ARCH_FLAG="/favor:AMD64"
-    else
-        echo "Building for x86 (MSVC)..."
-        ARCH_FLAG="/arch:IA32"
-    fi
-
     for f in $SRC/*.c; do
         echo "Compiling $f..."
         cl /c /Fo"$OBJS/" $f
@@ -40,7 +30,7 @@ if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
     fi
 
     echo "--- Linking DLL ---"
-    link /DLL /OUT:$OUT_WIN_DLL /DEF:$DEF /IMPLIB:$OUT_WIN_LIB $OBJS/*.obj ole32.lib oleaut32.lib wbemuuid.lib $ARCH_FLAG
+    link /DLL /OUT:$OUT_WIN_DLL /DEF:$DEF /IMPLIB:$OUT_WIN_LIB $OBJS/*.obj ole32.lib oleaut32.lib wbemuuid.lib
 
     echo "--- Creating static library ---"
     lib /OUT:$OUT_WIN_STATIC $OBJS/*.obj
@@ -54,18 +44,9 @@ if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
 else
     echo "--- Detected Linux ---"
 
-    ARCH=$(uname -m)
-    if [[ "$ARCH" == "x86_64" ]]; then
-        echo "Building for x64 (gcc)..."
-        CFLAGS="-fPIC -m64"
-    else
-        echo "Building for x86 (gcc)..."
-        CFLAGS="-fPIC -m32"
-    fi
-
     for f in $SRC/*.c; do
         echo "Compiling $f..."
-        gcc -c $CFLAGS $f -o "$OBJS/$(basename "$f" .c).o"
+        gcc -c -fPIC $f -o "$OBJS/$(basename "$f" .c).o"
     done
 
     echo "--- Linking shared library ---"
