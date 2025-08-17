@@ -29,11 +29,18 @@ jobs:
         if: runner.os == 'Linux' && matrix.arch == 'x86'
         run: sudo apt-get update && sudo apt-get install -y gcc-multilib g++-multilib
 
-      - name: Run build script
+      # --- تشغيل السكربت المناسب لكل نظام ---
+      - name: Run build script (Linux)
+        if: runner.os == 'Linux'
         shell: bash
         run: |
           chmod +x build.sh
           ./build.sh
+
+      - name: Run build script (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: call build.bat
 
       # ===== Windows artifacts =====
       - name: Upload Windows Dynamic (DLL + import lib + DEF)
@@ -51,8 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: hardview-windows-${{ matrix.arch }}-static
-          path: |
-            HardView_static.lib
+          path: HardView_static.lib
 
       # ===== Linux artifacts =====
       - name: Upload Linux Dynamic (.so)
@@ -60,13 +66,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: hardview-linux-${{ matrix.arch }}-dynamic
-          path: |
-            libHardView.so
+          path: libHardView.so
 
       - name: Upload Linux Static (.a)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
           name: hardview-linux-${{ matrix.arch }}-static
-          path: |
-            libHardView.a
+          path: libHardView.a
