@@ -1160,7 +1160,7 @@ public:
 /**
  *
  */
-class PyMangeTemp {
+class PyManageTemp {
 public:
   void Init() {
     if (InitHardwareTempMonitor() != 0) {
@@ -1503,14 +1503,14 @@ PYBIND11_MODULE(LiveView, m) {
         .def("re_get", &PySensor::ReGet, "ReGet sensor and fan data.");
 
     // --- PyMangeTemp Binding --
-    py::class_<PyMangeTemp>(m, "PyMangeTemp")
+    py::class_<PyManageTemp>(m, "PyManageTemp")
         .def(py::init<>())  // Constructor
-        .def("Init", &PyMangeTemp::Init)
-        .def("init", &PyMangeTemp::Init)
-        .def("Close", &PyMangeTemp::Close)
-        .def("close", &PyMangeTemp::Close)
-        .def("Update", &PyMangeTemp::Update)
-        .def("update", &PyMangeTemp::Update);
+        .def("Init", &PyManageTemp::Init)
+        .def("init", &PyManageTemp::Init)
+        .def("Close", &PyManageTemp::Close)
+        .def("close", &PyManageTemp::Close)
+        .def("Update", &PyManageTemp::Update)
+        .def("update", &PyManageTemp::Update);
 
     // --- PyRawInfo Binding ---
     py::class_<PyRawInfo>(m, "PyRawInfo")
@@ -1564,4 +1564,5 @@ PYBIND11_MODULE(LiveView, m) {
              "Update sensor data, optionally update names");
 #endif
 }
+
 
