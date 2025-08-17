@@ -12,7 +12,7 @@
 ================================================================================
 */
 
-
+#include <stdio.h>
 #include "advanced_storage_info.h"
 #include "helpers.h"
 #ifdef _WIN32
@@ -22,8 +22,6 @@
 #endif
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-
 // Function to escape backslashes - moved to top to avoid implicit declaration
 char* escape_backslashes(const char* input) {
     if (!input) return NULL;
@@ -553,4 +551,5 @@ char* get_partitions_info(bool Json) {
     }
 #endif
 }
+
 
