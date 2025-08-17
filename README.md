@@ -11,6 +11,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Linux-100%2B%20info-brightgreen" alt="Linux Info" height="30">
   <img src="https://img.shields.io/badge/Windows-120%2B%20info-blueviolet" alt="Windows Info" height="30">
+<img src="https://img.shields.io/badge/🌡_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="30">
+
 </p>
 
 
@@ -323,3 +325,4 @@ Contributions are welcome!
 **HardView — Your Window into Hardware Information**
 
 See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+
