@@ -2,9 +2,9 @@ name: Build Wheels
 
 on:
   push:
-    branches: [main]
+    branches: [Test-3.1.0]
   pull_request:
-    branches: [main]
+    branches: [Test-3.1.0]
 
 jobs:
   build-linux:
@@ -32,6 +32,7 @@ jobs:
         env:
           CIBW_ARCHS_LINUX: ${{ matrix.architecture }}
           CIBW_SKIP: "*-musllinux_*"
+          CIBW_BEFORE_BUILD_LINUX: "yum install -y lm_sensors-devel"
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - name: Upload wheels
