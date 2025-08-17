@@ -182,6 +182,7 @@ HardView 3.1.0 now includes **cross-platform temperature monitoring**:
 > This means you do **not** need to manually download or place it alongside your script — unless you encounter specific import or loading issues.
 
 The included `LibreHardwareMonitorLib.dll` is the **original, unmodified build** of LibreHardwareMonitor, licensed under **MPL-2.0**, with full source code available in their [official repository](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor).
+The included `libsensors` library is the original, unmodified build of lm-sensors, licensed under LGPL-2.1-or-later, with full source code available in their [official repository](https://github.com/lm-sensors/lm-sensors).**
 
 ---
 
@@ -279,4 +280,5 @@ print(f"RAM Usage: {ram_usage_percent:.2f}%")
         'Source': 'https://github.com/gafoo173/HardView',
     },
 )
+
 
