@@ -36,7 +36,7 @@ HardView is a high-performance, cross-platform Python module that provides detai
 * 📝 **Structured Output**: All results are returned as JSON strings or Python objects in (3.0,1+).
 * 🌡️ **Temperature & Sensors Monitoring**:(3.1.0+) Retrieve real-time temperature, voltage, and fan speed readings from system sensors.  
   * **Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for comprehensive sensor data via native integration.  
-  * **Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) and the `/sys/class/hwmon` interface for direct hardware monitoring.  
+  * **Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors)  for direct hardware monitoring.  
   * **Licenses**: LibreHardwareMonitor — **MPL-2.0** ([`licenses/LICENSE.MPL-2.txt`](licenses/LICENSE.MPL-2.txt)), lm-sensors — **LGPL-2.1-or-later** ([`licenses/LICENSE.LGPL-2.1.txt`](licenses/LICENSE.LGPL-2.1.txt))
 
 ---
@@ -325,6 +325,7 @@ Contributions are welcome!
 **HardView — Your Window into Hardware Information**
 
 See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+
 
 
 
