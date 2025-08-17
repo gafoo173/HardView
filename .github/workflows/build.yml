@@ -2,9 +2,9 @@ name: Build HardView
 
 on:
   push:
-    branches: [ "HardView-C-build" ]
+    branches: [ "HardView-C-Build" ]
   pull_request:
-    branches: [ "HardView-C-build" ]
+    branches: [ "HardView-C-Build" ]
 
 jobs:
   build:
