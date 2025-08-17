@@ -19,8 +19,9 @@ UNAME=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
     echo "--- Detected Windows ---"
 
-    # Use PROCESSOR_ARCHITECTURE instead of wmic/findstr
-    if [[ "$PROCESSOR_ARCHITECTURE" == *"64"* ]]; then
+    # Detect architecture via compiler (cl.exe)
+    CL_OUT=$(cl 2>&1 || true)
+    if echo "$CL_OUT" | grep -qi "x64"; then
         echo "Building for x64 (MSVC)..."
         ARCH_FLAG="/favor:AMD64"
     else
