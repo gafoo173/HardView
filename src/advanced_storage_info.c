@@ -22,6 +22,7 @@
 #endif
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 // Function to escape backslashes - moved to top to avoid implicit declaration
 char* escape_backslashes(const char* input) {
@@ -552,3 +553,4 @@ char* get_partitions_info(bool Json) {
     }
 #endif
 }
+
