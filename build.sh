@@ -1,91 +1,72 @@
-#!/bin/bash
-set -e
+name: Build HardView
 
-SRC="src"
-OBJS="objs"
-OUT_WIN_DLL="HardView.dll"
-OUT_WIN_LIB="HardView.lib"
-OUT_WIN_STATIC="HardView_static.lib"
-OUT_LNX_SO="libHardView.so"
-OUT_LNX_STATIC="libHardView.a"
-DEF="HardView.def"
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
-echo "=== Building HardView library ==="
+jobs:
+  build:
+    name: Build (${{ matrix.os }} - ${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        arch: [x86, x64]
 
-# Create object directory
-mkdir -p "$OBJS"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-# Detect platform
-UNAME=$(uname | tr '[:upper:]' '[:lower:]')
+      - name: Set up MSVC (Windows only)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{ matrix.arch }}
 
-if [[ "$UNAME" == *"mingw"* || "$OS" == "Windows_NT" ]]; then
-    echo "--- Detected Windows ---"
+      - name: Install 32-bit gcc (Linux only, x86)
+        if: runner.os == 'Linux' && matrix.arch == 'x86'
+        run: sudo apt-get update && sudo apt-get install -y gcc-multilib g++-multilib
 
-    # Detect architecture (x86 / x64)
-    ARCH=$(wmic os get osarchitecture 2>nul | findstr /i "64")
-    if [[ -n "$ARCH" ]]; then
-        echo "Building for x64 (MSVC)..."
-        ARCH_FLAG="/favor:AMD64"
-    else
-        echo "Building for x86 (MSVC)..."
-        ARCH_FLAG="/arch:IA32"
-    fi
+      - name: Run build script
+        shell: bash
+        run: |
+          chmod +x build.sh
+          ./build.sh
 
-    # Compile sources
-    for f in $SRC/*.c; do
-        echo "Compiling $f..."
-        cl /c /Fo"$OBJS/" $f
-    done
+      # ===== Windows artifacts =====
+      - name: Upload Windows Dynamic (DLL + import lib + DEF)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardview-windows-${{ matrix.arch }}-dynamic
+          path: |
+            HardView.dll
+            HardView.lib
+            HardView.def
 
-    # Create DEF file if not exists
-    if [[ ! -f "$DEF" ]]; then
-        echo "LIBRARY $OUT_WIN_DLL" > "$DEF"
-        echo "EXPORTS" >> "$DEF"
-        echo "Please fill $DEF manually with exported functions."
-    fi
+      - name: Upload Windows Static (LIB)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardview-windows-${{ matrix.arch }}-static
+          path: |
+            HardView_static.lib
 
-    # Link DLL
-    echo "--- Linking DLL ---"
-    link /DLL /OUT:$OUT_WIN_DLL /DEF:$DEF /IMPLIB:$OUT_WIN_LIB $OBJS/*.obj ole32.lib oleaut32.lib wbemuuid.lib $ARCH_FLAG
+      # ===== Linux artifacts =====
+      - name: Upload Linux Dynamic (.so)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardview-linux-${{ matrix.arch }}-dynamic
+          path: |
+            libHardView.so
 
-    # Create static library
-    echo "--- Creating static library ---"
-    lib /OUT:$OUT_WIN_STATIC $OBJS/*.obj
-
-    echo "=== Build complete (Windows) ==="
-    echo "- $OUT_WIN_DLL"
-    echo "- $OUT_WIN_LIB"
-    echo "- $OUT_WIN_STATIC"
-    echo "- $DEF"
-
-else
-    echo "--- Detected Linux ---"
-
-    # Detect architecture
-    ARCH=$(uname -m)
-    if [[ "$ARCH" == "x86_64" ]]; then
-        echo "Building for x64 (gcc)..."
-        CFLAGS="-fPIC -m64"
-    else
-        echo "Building for x86 (gcc)..."
-        CFLAGS="-fPIC -m32"
-    fi
-
-    # Compile sources
-    for f in $SRC/*.c; do
-        echo "Compiling $f..."
-        gcc -c $CFLAGS $f -o "$OBJS/$(basename "$f" .c).o"
-    done
-
-    # Link shared library (.so)
-    echo "--- Linking shared library ---"
-    gcc -shared $OBJS/*.o -o $OUT_LNX_SO -lole32 -loleaut32 -lwbemuuid || true
-
-    # Create static library (.a)
-    echo "--- Creating static library ---"
-    ar rcs $OUT_LNX_STATIC $OBJS/*.o
-
-    echo "=== Build complete (Linux) ==="
-    echo "- $OUT_LNX_SO"
-    echo "- $OUT_LNX_STATIC"
-fi
+      - name: Upload Linux Static (.a)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardview-linux-${{ matrix.arch }}-static
+          path: |
+            libHardView.a
