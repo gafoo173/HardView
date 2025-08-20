@@ -258,6 +258,26 @@
   
   
   
+    
+    
+      <li class="md-tabs__item">
+        <a href="LiveViewAPI/" class="md-tabs__link">
+          
+  
+  
+  LiveView
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
     <li class="md-tabs__item">
       <a href="INSTALL/" class="md-tabs__link">
         
@@ -503,6 +523,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-reference-summary" class="md-nav__link">
     <span class="md-ellipsis">
       📖 API Reference (Summary)
@@ -512,9 +541,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#platform-support" class="md-nav__link">
+  <a href="#liveview-classes-methods" class="md-nav__link">
     <span class="md-ellipsis">
-      🧪 Platform Support
+      🖥️ LiveView Classes &amp; Methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Reference
     </span>
   </a>
   
@@ -546,6 +584,102 @@
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    LiveView
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            LiveView
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LiveViewAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="LiveViewErrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Errors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -680,14 +814,18 @@
 <p>HardView is a high-performance, cross-platform Python module that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.</p>
 <h2 id="key-features">🔑 Key Features</h2>
 <ul>
-<li>🖥️ <strong>Comprehensive Hardware Data</strong>: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network.</li>
+<li>🖥️ <strong>Comprehensive Hardware Data</strong>: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network,GPU.</li>
 <li>🏗️ <strong>Advanced Storage &amp; SMART</strong>: Detailed disk, partition, and SMART attributes.</li>
 <li>📊 <strong>Performance Monitoring</strong>: Real-time and interval-based CPU, RAM, and system performance.</li>
 <li>🖥️ <strong>Cross-Platform</strong>: Works on Windows (WMI) and Linux (sysfs/proc).</li>
 <li>⚡ <strong>C Implementation</strong>: High performance native code.</li>
 <li>🐍 <strong>Python Integration</strong>: Easy-to-use Python API.</li>
 <li>🧩 <strong>Modular Design</strong>: Extensible and well-documented.</li>
-<li>📝 <strong>Structured Output</strong>: All results are returned as JSON strings or Python objects.</li>
+<li>📝 <strong>Structured Output</strong>: All results are returned as JSON strings or Python objects in (3.0,1+).</li>
+<li>🌡️ <strong>Temperature &amp; Sensors Monitoring</strong>:(3.1.0+) Retrieve real-time temperature, voltage, and fan speed readings from system sensors.  </li>
+<li><strong>Windows</strong>: Uses <a href="https://github.com/LibreHardwareMonitor/LibreHardwareMonitor">LibreHardwareMonitor</a> for comprehensive sensor data via native integration.  </li>
+<li><strong>Linux</strong>: Uses <a href="https://github.com/lm-sensors/lm-sensors"><code>lm-sensors</code></a>  for direct hardware monitoring.  </li>
+<li><strong>Licenses</strong>: LibreHardwareMonitor — <strong>MPL-2.0</strong> (<a href="licenses/LICENSE.MPL-2.txt"><code>licenses/LICENSE.MPL-2.txt</code></a>), lm-sensors — <strong>LGPL-2.1-or-later</strong> (<a href="licenses/LICENSE.LGPL-2.1.txt"><code>licenses/LICENSE.LGPL-2.1.txt</code></a>)</li>
 </ul>
 <hr />
 <h2 id="installation">📦 Installation</h2>
@@ -728,11 +866,30 @@
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cpu_json</span><span class="p">))</span>
 </code></pre></div>
 <hr />
+<h2 id="documentation">📚 Documentation</h2>
+<p>Full documentation is available on the GitHub Pages website:</p>
+<p>➡️ <a href="https://gafoo173.github.io/HardView/">https://gafoo173.github.io/HardView/</a></p>
+<p>All documentation is in the <code>docs/</code> folder:</p>
+<ul>
+<li><a href="./docs/What.md"><code>What.md</code></a>: <strong>API Reference &amp; Output Examples</strong><br />
+  Full explanation of every function, what info it returns, how to use it from Python, and real output samples.</li>
+<li><a href="./docs/BENCHMARKS.md"><code>BENCHMARKS.md</code></a>: <strong>Performance &amp; Feature Comparisons</strong><br />
+  Real-world speed benchmarks and feature comparisons with other Python libraries.</li>
+<li><a href="./docs/INSTALL.md"><code>INSTALL.md</code></a>: <strong>Installation Guide</strong><br />
+  Supported platforms, installation methods, and troubleshooting tips.</li>
+<li><a href="./docs/FAQ.md"><code>FAQ.md</code></a>: <strong>Frequently Asked Questions</strong><br />
+  Solutions to common installation, usage, and troubleshooting issues.</li>
+<li><a href="./docs/LiveViewAPI.md"><code>LiveViewAPI.md</code></a>: <strong>LiveView API Reference</strong><br />
+  Detailed explanation of the LiveView module API, including functions, usage, and examples.</li>
+<li><a href="./docs/LiveViewErrors.md"><code>LiveViewErrors.md</code></a>: <strong>LiveView Errors &amp; Exceptions</strong><br />
+  Guides and examples for handling errors and exceptions in the LiveView module.</li>
+</ul>
+<hr />
 <h2 id="api-reference-summary">📖 API Reference (Summary)</h2>
 <table>
 <thead>
 <tr>
-<th>Function (JSON)</th>
+<th>Function (JSON) / Class.Method</th>
 <th>Function (Python Object)</th>
 <th>Description</th>
 </tr>
@@ -825,66 +982,251 @@
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="platform-support">🧪 Platform Support</h2>
+<h2 id="liveview-classes-methods">🖥️ LiveView Classes &amp; Methods</h2>
+<h2 id="api-reference">API Reference</h2>
 <table>
 <thead>
 <tr>
-<th>Feature</th>
-<th>Windows</th>
-<th>Linux</th>
+<th>Class.Method</th>
+<th>Aliases</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>BIOS Info</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveCPU.get_usage(interval_ms)</code></strong></td>
+<td>---</td>
+<td>Get total CPU usage % over a given interval.</td>
 </tr>
 <tr>
-<td>System Info</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveCPU.cpuid()</code></strong></td>
+<td><code>cpu_id()</code></td>
+<td>Get CPU details via CPUID instruction.</td>
 </tr>
 <tr>
-<td>Baseboard Info</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveCPU.CpuSnapShot(...)</code></strong> <em>(Windows)</em></td>
+<td><code>cpu_snapshot(...)</code></td>
+<td>Get raw CPU time counters for a specific core or number of cores.</td>
 </tr>
 <tr>
-<td>Chassis Info</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveRam.get_usage(Raw=False)</code></strong></td>
+<td>---</td>
+<td>Get total RAM usage % or raw <code>[used_bytes, total_bytes]</code>.</td>
 </tr>
 <tr>
-<td>CPU Info</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveDisk(mode)</code></strong></td>
+<td>---</td>
+<td>Create disk monitor (mode=0 % usage [Windows], mode=1 R/W MB/s).</td>
 </tr>
 <tr>
-<td>RAM Info</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveDisk.get_usage(interval)</code></strong></td>
+<td>---</td>
+<td>Get disk usage as % or <code>{Read MB/s, Write MB/s}</code>.</td>
 </tr>
 <tr>
-<td>Disks</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveDisk.HighDiskUsage(...)</code></strong></td>
+<td><code>high_disk_usage(...)</code></td>
+<td>Check if disk R/W exceeds threshold.</td>
 </tr>
 <tr>
-<td>Network</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveNetwork.get_usage(interval, mode=0)</code></strong></td>
+<td>---</td>
+<td>Get total MB/s (mode 0) or per-interface MB/s (mode 1).</td>
 </tr>
 <tr>
-<td>Advanced Storage / SMART</td>
-<td>✅</td>
-<td>🚫</td>
+<td><strong><code>PyLiveNetwork.getHighCard()</code></strong></td>
+<td><code>get_high_card()</code></td>
+<td>Get name of network adapter with highest usage.</td>
 </tr>
 <tr>
-<td>Performance Monitoring</td>
-<td>✅</td>
-<td>✅</td>
+<td><strong><code>PyLiveGpu.get_usage(interval_ms)</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get total GPU usage %.</td>
+</tr>
+<tr>
+<td><strong><code>PyLiveGpu.get_average_usage(interval_ms)</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get average GPU usage %.</td>
+</tr>
+<tr>
+<td><strong><code>PyLiveGpu.get_max_usage(interval_ms)</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get maximum GPU usage %.</td>
+</tr>
+<tr>
+<td><strong><code>PyLiveGpu.get_counter_count()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get number of GPU counters monitored.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempCpu.get_temp()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get current CPU temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempCpu.get_max_temp()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get max CPU core temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempCpu.get_avg_temp()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get average CPU core temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempCpu.get_fan_rpm()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get CPU fan RPM.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempCpu.update()</code></strong></td>
+<td>---</td>
+<td>Refresh CPU temperature &amp; fan RPM.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempCpu.reget()</code></strong></td>
+<td><code>re_get()</code></td>
+<td>Re-read CPU temperature &amp; fan RPM.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempGpu.get_temp()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get current GPU temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempGpu.get_fan_rpm()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get GPU fan RPM.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempGpu.update()</code></strong></td>
+<td>---</td>
+<td>Refresh GPU temperature and fan RPM.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempGpu.reget()</code></strong></td>
+<td><code>re_get()</code></td>
+<td>Re-read GPU temperature and fan RPM.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempOther.get_mb_temp()</code></strong> <em>(Windows)</em></td>
+<td>---</td>
+<td>Get motherboard temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempOther.get_Storage_temp()</code></strong> <em>(Windows)</em></td>
+<td><code>get_storage_temp()</code></td>
+<td>Get storage temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempOther.update()</code></strong></td>
+<td>---</td>
+<td>Refresh other temperatures.</td>
+</tr>
+<tr>
+<td><strong><code>PyTempOther.reget()</code></strong></td>
+<td><code>re_get()</code></td>
+<td>Re-read other temperatures.</td>
+</tr>
+<tr>
+<td><strong><code>PySensor.GetData(init=False)</code></strong> <em>(Windows)</em></td>
+<td><code>get_data(init=False)</code></td>
+<td>Fetch sensors &amp; fan data.</td>
+</tr>
+<tr>
+<td><strong><code>PySensor.GetValueByName(name)</code></strong> <em>(Windows)</em></td>
+<td><code>get_value_by_name(name)</code></td>
+<td>Get sensor value by name.</td>
+</tr>
+<tr>
+<td><strong><code>PySensor.getAllSensors()</code></strong> <em>(Windows)</em></td>
+<td><code>get_all_sensors()</code></td>
+<td>List all sensor names.</td>
+</tr>
+<tr>
+<td><strong><code>PySensor.getAllFanRPMs()</code></strong> <em>(Windows)</em></td>
+<td><code>get_all_fan_rpms()</code></td>
+<td>List all fan RPM readings.</td>
+</tr>
+<tr>
+<td><strong><code>PySensor.update()</code></strong></td>
+<td>---</td>
+<td>Refresh sensors &amp; fans data.</td>
+</tr>
+<tr>
+<td><strong><code>PySensor.reget()</code></strong></td>
+<td><code>re_get()</code></td>
+<td>Re-fetch sensors &amp; fans data.</td>
+</tr>
+<tr>
+<td><strong><code>PyManageTemp.Init()</code></strong> <em>(Windows)</em></td>
+<td><code>init()</code></td>
+<td>Initialize temperature monitoring.</td>
+</tr>
+<tr>
+<td><strong><code>PyManageTemp.Close()</code></strong> <em>(Windows)</em></td>
+<td><code>close()</code></td>
+<td>Shutdown temperature monitoring.</td>
+</tr>
+<tr>
+<td><strong><code>PyManageTemp.Update()</code></strong> <em>(Windows)</em></td>
+<td><code>update()</code></td>
+<td>Update all temperature data.</td>
+</tr>
+<tr>
+<td><strong><code>PyRawInfo.RSMB()</code></strong> <em>(Windows)</em></td>
+<td><code>rsmb()</code></td>
+<td>Get raw SMBIOS table bytes.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.getCpuTemp()</code></strong> <em>(Linux)</em></td>
+<td><code>get_cpu_temp()</code></td>
+<td>Get CPU temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.getChipsetTemp()</code></strong> <em>(Linux)</em></td>
+<td><code>get_chipset_temp()</code></td>
+<td>Get chipset temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.getMotherboardTemp()</code></strong> <em>(Linux)</em></td>
+<td><code>get_motherboard_temp()</code></td>
+<td>Get motherboard temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.getVRMTemp()</code></strong> <em>(Linux)</em></td>
+<td><code>get_vrm_temp()</code></td>
+<td>Get VRM/memory temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.getDriveTemp()</code></strong> <em>(Linux)</em></td>
+<td><code>get_drive_temp()</code></td>
+<td>Get storage temperature.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.getAllSensorNames()</code></strong> <em>(Linux)</em></td>
+<td><code>get_all_sensor_names()</code></td>
+<td>List all sensor names.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.findSensorName(name)</code></strong> <em>(Linux)</em></td>
+<td><code>find_sensor_name(name)</code></td>
+<td>Search for a sensor name.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.GetSensorTemp(name, Match)</code></strong> <em>(Linux)</em></td>
+<td><code>get_sensor_temp(name, Match)</code></td>
+<td>Get sensor temperature by name.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.GetSensorsWithTemp()</code></strong> <em>(Linux)</em></td>
+<td><code>get_sensors_with_temp()</code></td>
+<td>Get all sensors with their temperatures.</td>
+</tr>
+<tr>
+<td><strong><code>PyLinuxSensor.update(names=False)</code></strong> <em>(Linux)</em></td>
+<td>---</td>
+<td>Refresh sensor readings.</td>
 </tr>
 </tbody>
 </table>
