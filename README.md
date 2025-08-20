@@ -1,7 +1,9 @@
 <p align="center">
 <p align="center">
-  <img src="https://img.shields.io/badge/API_Version-3.1.0Beta-informational" alt="API Version" height="30">
-  <img src="https://img.shields.io/badge/PyPI_Package-3.1.0b1-blue" alt="PyPI Package Version" height="30">
+
+  <img src="https://img.shields.io/badge/API_Version-3.1.0Beta-orange" alt="API Version (Beta)" height="30"> 
+  <img src="https://img.shields.io/badge/PyPI_Stable-3.1.0-blue" alt="PyPI Stable Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Beta-3.1.0b1-purple" alt="PyPI Beta Version" height="30">
   <img src="https://img.shields.io/badge/downloads-7.7K-blue" alt="Version" height="30">
   <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Supported Python versions" height="30">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
@@ -325,6 +327,7 @@ Contributions are welcome!
 **HardView — Your Window into Hardware Information**
 
 See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+
 
 
 
