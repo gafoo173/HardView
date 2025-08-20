@@ -9,7 +9,7 @@
 
  License Notice:
  This file is licensed under the HardView Tools License (HVTL-1.0),
- located in the "Tools/LICENSE" file at the project root.
+ located in the "LICENSE.HVTL.txt" file at the project root.
 
  Note:
  While the main HardView project is licensed under the MIT License,
