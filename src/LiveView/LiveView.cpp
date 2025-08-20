@@ -36,7 +36,8 @@
 #include <pybind11/stl.h>
 
 // --- Custom Headers ---
-#include "include/cpuid.inl"
+#include "../../cpuid/cpuid.hpp"
+#include "../../cpuid/cpuidHelpers.hpp"
 #ifdef _WIN32
 #include "include/HardwareTemp.h" //For Hardware temperature
 
@@ -59,8 +60,8 @@
 #include <map>
 #include <numeric>
 #include <sstream>
-#include <unistd.h>
 #include <sensors/sensors.h>
+#include <unistd.h>
 #endif
 
 namespace py = pybind11;
@@ -439,9 +440,16 @@ public:
 
   /**
    * @brief Retrieves detailed CPU information using the CPUID instruction.
-   * @return A vector of strings containing CPU details.
+   * @return A vector pair of strings containing CPU details.
    */
-  std::vector<std::string> cpuid() { return cpuid::cpuid(); }
+  inline std::vector<std::pair<std::string,std::string>> cpuid() { 
+    auto res = cpuid::helpers::Smart_cpuid();
+    std::vector<std::pair<std::string,std::string>> result;
+    for (auto& r : res) {
+        result.push_back({ std::get<0>(r), std::get<1>(r) });
+    }
+    return result;
+   }
 
 #ifdef _WIN32
   /**
@@ -1160,7 +1168,7 @@ public:
 /**
  *
  */
-class PyManageTemp {
+class PyMangeTemp {
 public:
   void Init() {
     if (InitHardwareTempMonitor() != 0) {
@@ -1503,14 +1511,14 @@ PYBIND11_MODULE(LiveView, m) {
         .def("re_get", &PySensor::ReGet, "ReGet sensor and fan data.");
 
     // --- PyMangeTemp Binding --
-    py::class_<PyManageTemp>(m, "PyManageTemp")
+    py::class_<PyMangeTemp>(m, "PyMangeTemp")
         .def(py::init<>())  // Constructor
-        .def("Init", &PyManageTemp::Init)
-        .def("init", &PyManageTemp::Init)
-        .def("Close", &PyManageTemp::Close)
-        .def("close", &PyManageTemp::Close)
-        .def("Update", &PyManageTemp::Update)
-        .def("update", &PyManageTemp::Update);
+        .def("Init", &PyMangeTemp::Init)
+        .def("init", &PyMangeTemp::Init)
+        .def("Close", &PyMangeTemp::Close)
+        .def("close", &PyMangeTemp::Close)
+        .def("Update", &PyMangeTemp::Update)
+        .def("update", &PyMangeTemp::Update);
 
     // --- PyRawInfo Binding ---
     py::class_<PyRawInfo>(m, "PyRawInfo")
@@ -1564,5 +1572,3 @@ PYBIND11_MODULE(LiveView, m) {
              "Update sensor data, optionally update names");
 #endif
 }
-
-
