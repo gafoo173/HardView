@@ -20,25 +20,14 @@ This license applies **only** to the tools of the HardView Project. It does **no
 
 ---
 
-## 3. Distribution
-
-* Pure **copy-paste distribution** of original HVTL files (e.g., `.exe`, `.py`, or any other tool) is **prohibited**.
-* Distribution is only allowed if:
-
-  * The code or file has been **modified** (features added, changes made), or
-  * The code is **integrated** into another project, tool, or application.
-* In all allowed cases, this license text must remain attached, and all HVTL-1.0 conditions must be followed.
-
----
-
-## 4. License Integrity
+## 3. License Integrity
 
 * Files licensed under HVTL-1.0 must **always** remain under HVTL-1.0.
 * Changing or re-licensing HVTL-licensed files under any other license is strictly prohibited, even in cases of major modifications.
 
 ---
 
-## 5. No Warranty
+## 4. No Warranty
 
 THIS SOFTWARE IS PROVIDED **"AS IS"**, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
 
@@ -46,7 +35,7 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 
 ---
 
-## 6. Use of Name
+## 5. Use of Name
 
 The names of the authors or contributors may not be used in advertising or promotional materials without prior written permission.
 
