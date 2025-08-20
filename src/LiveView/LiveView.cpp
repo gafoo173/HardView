@@ -1375,200 +1375,206 @@ public:
 // PYBIND11 MODULE DEFINITION
 // ===================================================================================
 PYBIND11_MODULE(LiveView, m) {
-    m.doc() = "Cross-platform system monitoring module (CPU, RAM, Disk, Network, "
-              "GPU) And Temperature for Windows";
+  m.doc() = "Cross-platform system monitoring module (CPU, RAM, Disk, Network, "
+            "GPU) And Temperature for Windows";
 
-    // --- PyLiveCPU Class Binding ---
-    auto cpu_class =
-        py::class_<PyLiveCPU>(m, "PyLiveCPU")
-            .def(py::init<>())
-            .def("get_usage", &PyLiveCPU::get_usage,
-                 "Returns total CPU usage percentage.", py::arg("interval_ms"))
-            .def("cpuid", &PyLiveCPU::cpuid,
-                 "Returns CPU information using CPUID instruction.")
-            .def("cpu_id", &PyLiveCPU::cpuid,
-                 "Returns CPU information using CPUID instruction.");
+  // --- PyLiveCPU Class Binding ---
+  auto cpu_class =
+      py::class_<PyLiveCPU>(m, "PyLiveCPU")
+          .def(py::init<>())
+          .def("get_usage", &PyLiveCPU::get_usage,
+               "Returns total CPU usage percentage.", py::arg("interval_ms"))
+          .def("cpuid", &PyLiveCPU::cpuid,
+               "Returns CPU information using CPUID instruction.")
+          .def("cpu_id", &PyLiveCPU::cpuid,
+               "Returns CPU information using CPUID instruction.");
 
 #ifdef _WIN32
-    cpu_class.def("CpuSnapShot", &PyLiveCPU::CpuSnapShot,
-                  "CPU snapshot for a given core.", py::arg("core"),
-                  py::arg("coreNumbers") = false, py::arg("Kernel") = true,
-                  py::arg("User") = true, py::arg("Idle") = true,
-                  py::arg("PureKernalTime") = false)
-             .def("cpu_snapshot", &PyLiveCPU::CpuSnapShot,
-                  "CPU snapshot for a given core.", py::arg("core"),
-                  py::arg("coreNumbers") = false, py::arg("Kernel") = true,
-                  py::arg("User") = true, py::arg("Idle") = true,
-                  py::arg("PureKernalTime") = false);
+  cpu_class
+      .def("CpuSnapShot", &PyLiveCPU::CpuSnapShot,
+           "CPU snapshot for a given core.", py::arg("core"),
+           py::arg("coreNumbers") = false, py::arg("Kernel") = true,
+           py::arg("User") = true, py::arg("Idle") = true,
+           py::arg("PureKernalTime") = false)
+      .def("cpu_snapshot", &PyLiveCPU::CpuSnapShot,
+           "CPU snapshot for a given core.", py::arg("core"),
+           py::arg("coreNumbers") = false, py::arg("Kernel") = true,
+           py::arg("User") = true, py::arg("Idle") = true,
+           py::arg("PureKernalTime") = false);
 #endif
 
-    // --- PyLiveRam Class Binding ---
-    py::class_<PyLiveRam>(m, "PyLiveRam")
-        .def(py::init<>())
-        .def("get_usage", &PyLiveRam::get_usage,
-             "Returns total RAM usage percentage.", py::arg("Raw") = false);
+  // --- PyLiveRam Class Binding ---
+  py::class_<PyLiveRam>(m, "PyLiveRam")
+      .def(py::init<>())
+      .def("get_usage", &PyLiveRam::get_usage,
+           "Returns total RAM usage percentage.", py::arg("Raw") = false);
 
-    // --- PyLiveDisk Class Binding ---
-    py::class_<PyLiveDisk>(m, "PyLiveDisk")
-        .def(py::init<int>(),
-             "mode=0 for % usage (Windows-only), mode=1 for R/W speed (MB/s).",
-             py::arg("mode"))
-        .def("get_usage", &PyLiveDisk::get_usage, "Returns disk usage info.",
-             py::arg("interval") = 1000)
-        .def("HighDiskUsage", &PyLiveDisk::HighDiskUsage,
-             "Checks if R/W speed exceeds a threshold (MB/s).",
-             py::arg("threshold_mbps") = 80.0)
-        .def("high_disk_usage", &PyLiveDisk::HighDiskUsage,
-             "Checks if R/W speed exceeds a threshold (MB/s).",
-             py::arg("threshold_mbps") = 80.0);
+  // --- PyLiveDisk Class Binding ---
+  py::class_<PyLiveDisk>(m, "PyLiveDisk")
+      .def(py::init<int>(),
+           "mode=0 for % usage (Windows-only), mode=1 for R/W speed (MB/s).",
+           py::arg("mode"))
+      .def("get_usage", &PyLiveDisk::get_usage, "Returns disk usage info.",
+           py::arg("interval") = 1000)
+      .def("HighDiskUsage", &PyLiveDisk::HighDiskUsage,
+           "Checks if R/W speed exceeds a threshold (MB/s).",
+           py::arg("threshold_mbps") = 80.0)
+      .def("high_disk_usage", &PyLiveDisk::HighDiskUsage,
+           "Checks if R/W speed exceeds a threshold (MB/s).",
+           py::arg("threshold_mbps") = 80.0);
 
-    // --- PyLiveNetwork Class Binding ---
-    py::class_<PyLiveNetwork>(m, "PyLiveNetwork")
-        .def(py::init<>())
-        .def("get_usage", &PyLiveNetwork::get_usage,
-             "mode=0 for total MB/s, mode=1 for per-interface MB/s.",
-             py::arg("interval") = 1000, py::arg("mode") = 0)
-        .def("getHighCard", &PyLiveNetwork::getHighCard,
-             "Returns the network interface with the highest usage.")
-        .def("get_high_card", &PyLiveNetwork::getHighCard,
-             "Returns the network interface with the highest usage.");
+  // --- PyLiveNetwork Class Binding ---
+  py::class_<PyLiveNetwork>(m, "PyLiveNetwork")
+      .def(py::init<>())
+      .def("get_usage", &PyLiveNetwork::get_usage,
+           "mode=0 for total MB/s, mode=1 for per-interface MB/s.",
+           py::arg("interval") = 1000, py::arg("mode") = 0)
+      .def("getHighCard", &PyLiveNetwork::getHighCard,
+           "Returns the network interface with the highest usage.")
+      .def("get_high_card", &PyLiveNetwork::getHighCard,
+           "Returns the network interface with the highest usage.");
 
 #ifdef _WIN32
-    // --- PyLiveGpu Binding ---
-    py::class_<PyLiveGpu>(m, "PyLiveGpu")
-        .def(py::init<>())
-        .def("get_usage", &PyLiveGpu::get_usage, py::arg("interval_ms") = 1000,
-             "Get total GPU usage percentage.")
-        .def("get_average_usage", &PyLiveGpu::get_average_usage,
-             py::arg("interval_ms") = 1000, "Get average GPU usage percentage.")
-        .def("get_max_usage", &PyLiveGpu::get_max_usage,
-             py::arg("interval_ms") = 1000, "Get max GPU usage percentage.")
-        .def("get_counter_count", &PyLiveGpu::get_counter_count,
-             "Get number of GPU counters monitored.");
+  // --- PyLiveGpu Binding ---
+  py::class_<PyLiveGpu>(m, "PyLiveGpu")
+      .def(py::init<>())
+      .def("get_usage", &PyLiveGpu::get_usage, py::arg("interval_ms") = 1000,
+           "Get total GPU usage percentage.")
+      .def("get_average_usage", &PyLiveGpu::get_average_usage,
+           py::arg("interval_ms") = 1000, "Get average GPU usage percentage.")
+      .def("get_max_usage", &PyLiveGpu::get_max_usage,
+           py::arg("interval_ms") = 1000, "Get max GPU usage percentage.")
+      .def("get_counter_count", &PyLiveGpu::get_counter_count,
+           "Get number of GPU counters monitored.");
 
-    // --- PyTempCpu Binding ---
-    py::class_<PyTempCpu>(m, "PyTempCpu")
-        .def(py::init<>())
-        .def("get_temp", &PyTempCpu::get_temp, "Get current CPU temperature.")
-        .def("get_max_temp", &PyTempCpu::get_max_temp,
-             "Get max CPU core temperature.")
-        .def("get_avg_temp", &PyTempCpu::get_avg_temp,
-             "Get average CPU core temperature.")
-        .def("get_fan_rpm", &PyTempCpu::get_fan_rpm, "Get CPU fan RPM.")
-        .def("update", &PyTempCpu::update,
-             "Update CPU temperature and fan RPM data.")
-        .def("reget", &PyTempCpu::ReGet,
-             "ReGet CPU temperature and fan RPM data.")
-        .def("re_get", &PyTempCpu::ReGet,
-             "ReGet CPU temperature and fan RPM data.");
+  // --- PyTempCpu Binding ---
+  py::class_<PyTempCpu>(m, "PyTempCpu")
+      .def(py::init<>())
+      .def(py::init<bool>(), py::arg("init") = true)
+      .def("get_temp", &PyTempCpu::get_temp, "Get current CPU temperature.")
+      .def("get_max_temp", &PyTempCpu::get_max_temp,
+           "Get max CPU core temperature.")
+      .def("get_avg_temp", &PyTempCpu::get_avg_temp,
+           "Get average CPU core temperature.")
+      .def("get_fan_rpm", &PyTempCpu::get_fan_rpm, "Get CPU fan RPM.")
+      .def("update", &PyTempCpu::update,
+           "Update CPU temperature and fan RPM data.")
+      .def("reget", &PyTempCpu::ReGet,
+           "ReGet CPU temperature and fan RPM data.")
+      .def("re_get", &PyTempCpu::ReGet,
+           "ReGet CPU temperature and fan RPM data.");
 
-    // --- PyTempGpu Binding ---
-    py::class_<PyTempGpu>(m, "PyTempGpu")
-        .def(py::init<>())
-        .def("get_temp", &PyTempGpu::get_temp, "Get current GPU temperature.")
-        .def("get_fan_rpm", &PyTempGpu::get_fan_rpm, "Get GPU fan RPM.")
-        .def("update", &PyTempGpu::update,
-             "Update GPU temperature and fan RPM data.")
-        .def("reget", &PyTempGpu::ReGet,
-             "ReGet GPU temperature and fan RPM data.")
-        .def("re_get", &PyTempGpu::ReGet,
-             "ReGet GPU temperature and fan RPM data.");
+  // --- PyTempGpu Binding ---
+  py::class_<PyTempGpu>(m, "PyTempGpu")
+      .def(py::init<>())
+      .def(py::init<bool>(), py::arg("init") = true)
+      .def("get_temp", &PyTempGpu::get_temp, "Get current GPU temperature.")
+      .def("get_fan_rpm", &PyTempGpu::get_fan_rpm, "Get GPU fan RPM.")
+      .def("update", &PyTempGpu::update,
+           "Update GPU temperature and fan RPM data.")
+      .def("reget", &PyTempGpu::ReGet,
+           "ReGet GPU temperature and fan RPM data.")
+      .def("re_get", &PyTempGpu::ReGet,
+           "ReGet GPU temperature and fan RPM data.");
 
-    // --- PyTempOther Binding ---
-    py::class_<PyTempOther>(m, "PyTempOther")
-        .def(py::init<>())
-        .def("get_mb_temp", &PyTempOther::get_mb_temp,
-             "Get motherboard temperature.")
-        .def("get_Storage_temp", &PyTempOther::get_Storage_temp,
-             "Get storage device temperature.")
-        .def("get_storage_temp", &PyTempOther::get_Storage_temp,
-             "Get storage device temperature.")
-        .def("update", &PyTempOther::update, "Update temperature data.")
-        .def("reget", &PyTempOther::ReGet, "ReGet temperature data.")
-        .def("re_get", &PyTempOther::ReGet, "ReGet temperature data.");
+  // --- PyTempOther Binding ---
+  py::class_<PyTempOther>(m, "PyTempOther")
+      .def(py::init<>())
+      .def(py::init<bool>(), py::arg("init") = true)
+      .def("get_mb_temp", &PyTempOther::get_mb_temp,
+           "Get motherboard temperature.")
+      .def("get_Storage_temp", &PyTempOther::get_Storage_temp,
+           "Get storage device temperature.")
+      .def("get_storage_temp", &PyTempOther::get_Storage_temp,
+           "Get storage device temperature.")
+      .def("update", &PyTempOther::update, "Update temperature data.")
+      .def("reget", &PyTempOther::ReGet, "ReGet temperature data.")
+      .def("re_get", &PyTempOther::ReGet, "ReGet temperature data.");
 
-    // --- PySensor Binding ---
-    py::class_<PySensor>(m, "PySensor")
-        .def(py::init<>())
-        .def("GetData", &PySensor::GetData,
-             "Fetch sensors and fans data from hardware.")
-        .def("get_data", &PySensor::GetData,
-             "Fetch sensors and fans data from hardware.")
-        .def("GetValueByName", &PySensor::GetValueByName, py::arg("name"),
-             "Get sensor value by name.")
-        .def("get_value_by_name", &PySensor::GetValueByName, py::arg("name"),
-             "Get sensor value by name.")
-        .def("getAllSensors", &PySensor::getAllSensors,
-             "Get list of all sensor names.")
-        .def("get_all_sensors", &PySensor::getAllSensors,
-             "Get list of all sensor names.")
-        .def("getAllFanRPMs", &PySensor::getAllFanRPMs,
-             "Get list of fan RPM pairs (name, rpm).")
-        .def("get_all_fan_rpms", &PySensor::getAllFanRPMs,
-             "Get list of fan RPM pairs (name, rpm).")
-        .def("update", &PySensor::Update, "Update sensor and fan data.")
-        .def("reget", &PySensor::ReGet, "ReGet sensor and fan data.")
-        .def("re_get", &PySensor::ReGet, "ReGet sensor and fan data.");
+  // --- PySensor Binding ---
+  py::class_<PySensor>(m, "PySensor")
+      .def(py::init<>())
+      .def(py::init<bool>(), py::arg("init") = true)
+      .def("GetData", &PySensor::GetData,
+           "Fetch sensors and fans data from hardware.")
+      .def("get_data", &PySensor::GetData,
+           "Fetch sensors and fans data from hardware.")
+      .def("GetValueByName", &PySensor::GetValueByName, py::arg("name"),
+           "Get sensor value by name.")
+      .def("get_value_by_name", &PySensor::GetValueByName, py::arg("name"),
+           "Get sensor value by name.")
+      .def("getAllSensors", &PySensor::getAllSensors,
+           "Get list of all sensor names.")
+      .def("get_all_sensors", &PySensor::getAllSensors,
+           "Get list of all sensor names.")
+      .def("getAllFanRPMs", &PySensor::getAllFanRPMs,
+           "Get list of fan RPM pairs (name, rpm).")
+      .def("get_all_fan_rpms", &PySensor::getAllFanRPMs,
+           "Get list of fan RPM pairs (name, rpm).")
+      .def("update", &PySensor::Update, "Update sensor and fan data.")
+      .def("reget", &PySensor::ReGet, "ReGet sensor and fan data.")
+      .def("re_get", &PySensor::ReGet, "ReGet sensor and fan data.");
 
-    // --- PyManageTemp Binding --
-    py::class_<PyManageTemp>(m, "PyManageTemp")
-        .def(py::init<>())  // Constructor
-        .def("Init", &PyManageTemp::Init)
-        .def("init", &PyManageTemp::Init)
-        .def("Close", &PyManageTemp::Close)
-        .def("close", &PyManageTemp::Close)
-        .def("Update", &PyManageTemp::Update)
-        .def("update", &PyManageTemp::Update);
+  // --- PyManageTemp Binding --
+  py::class_<PyManageTemp>(m, "PyManageTemp")
+      .def(py::init<>())
+      .def("Init", &PyManageTemp::Init)
+      .def("init", &PyManageTemp::Init)
+      .def("Close", &PyManageTemp::Close)
+      .def("close", &PyManageTemp::Close)
+      .def("Update", &PyManageTemp::Update)
+      .def("update", &PyManageTemp::Update);
 
-    // --- PyRawInfo Binding ---
-    py::class_<PyRawInfo>(m, "PyRawInfo")
-        .def_static("RSMB", &PyRawInfo::RSMB,
-                    "Get raw SMBIOS firmware table bytes.")
-        .def_static("rsmb", &PyRawInfo::RSMB,
-                    "Get raw SMBIOS firmware table bytes.");
+  // --- PyRawInfo Binding ---
+  py::class_<PyRawInfo>(m, "PyRawInfo")
+      .def_static("RSMB", &PyRawInfo::RSMB,
+                  "Get raw SMBIOS firmware table bytes.")
+      .def_static("rsmb", &PyRawInfo::RSMB,
+                  "Get raw SMBIOS firmware table bytes.");
 #endif
 
 #ifdef __linux__
-    // --- PyLinuxSensor Binding ---
-    py::class_<PyLinuxSensor>(m, "PyLinuxSensor")
-        .def(py::init<>())
-        .def("getCpuTemp", &PyLinuxSensor::getCpuTemp, "Get CPU temperature")
-        .def("get_cpu_temp", &PyLinuxSensor::getCpuTemp, "Get CPU temperature")
-        .def("getChipsetTemp", &PyLinuxSensor::getChipsetTemp,
-             "Get chipset temperature")
-        .def("get_chipset_temp", &PyLinuxSensor::getChipsetTemp,
-             "Get chipset temperature")
-        .def("getMotherboardTemp", &PyLinuxSensor::getMotherboardTemp,
-             "Get motherboard temperature")
-        .def("get_motherboard_temp", &PyLinuxSensor::getMotherboardTemp,
-             "Get motherboard temperature")
-        .def("getVRMTemp", &PyLinuxSensor::getVRMTemp,
-             "Get VRM (memory) temperature")
-        .def("get_vrm_temp", &PyLinuxSensor::getVRMTemp,
-             "Get VRM (memory) temperature")
-        .def("getDriveTemp", &PyLinuxSensor::getDriveTemp,
-             "Get storage device temperature")
-        .def("get_drive_temp", &PyLinuxSensor::getDriveTemp,
-             "Get storage device temperature")
-        .def("getAllSensorNames", &PyLinuxSensor::getAllSensorNames,
-             "Get all sensor names")
-        .def("get_all_sensor_names", &PyLinuxSensor::getAllSensorNames,
-             "Get all sensor names")
-        .def("findSensorName", &PyLinuxSensor::findSensorName, py::arg("name"),
-             "Find sensor name occurrences")
-        .def("find_sensor_name", &PyLinuxSensor::findSensorName, py::arg("name"),
-             "Find sensor name occurrences")
-        .def("GetSensorTemp", &PyLinuxSensor::GetSensorTemp, py::arg("name"),
-             py::arg("Match"),
-             "Get sensor temperature by name with optional match")
-        .def("get_sensor_temp", &PyLinuxSensor::GetSensorTemp, py::arg("name"),
-             py::arg("Match"),
-             "Get sensor temperature by name with optional match")
-        .def("GetSensorsWithTemp", &PyLinuxSensor::GetSensorsWithTemp,
-             "Get all sensors with their temperature values")
-        .def("get_sensors_with_temp", &PyLinuxSensor::GetSensorsWithTemp,
-             "Get all sensors with their temperature values")
-        .def("update", &PyLinuxSensor::update, py::arg("names") = false,
-             "Update sensor data, optionally update names");
+  // --- PyLinuxSensor Binding ---
+  py::class_<PyLinuxSensor>(m, "PyLinuxSensor")
+      .def(py::init<>())
+      .def("getCpuTemp", &PyLinuxSensor::getCpuTemp, "Get CPU temperature")
+      .def("get_cpu_temp", &PyLinuxSensor::getCpuTemp, "Get CPU temperature")
+      .def("getChipsetTemp", &PyLinuxSensor::getChipsetTemp,
+           "Get chipset temperature")
+      .def("get_chipset_temp", &PyLinuxSensor::getChipsetTemp,
+           "Get chipset temperature")
+      .def("getMotherboardTemp", &PyLinuxSensor::getMotherboardTemp,
+           "Get motherboard temperature")
+      .def("get_motherboard_temp", &PyLinuxSensor::getMotherboardTemp,
+           "Get motherboard temperature")
+      .def("getVRMTemp", &PyLinuxSensor::getVRMTemp,
+           "Get VRM (memory) temperature")
+      .def("get_vrm_temp", &PyLinuxSensor::getVRMTemp,
+           "Get VRM (memory) temperature")
+      .def("getDriveTemp", &PyLinuxSensor::getDriveTemp,
+           "Get storage device temperature")
+      .def("get_drive_temp", &PyLinuxSensor::getDriveTemp,
+           "Get storage device temperature")
+      .def("getAllSensorNames", &PyLinuxSensor::getAllSensorNames,
+           "Get all sensor names")
+      .def("get_all_sensor_names", &PyLinuxSensor::getAllSensorNames,
+           "Get all sensor names")
+      .def("findSensorName", &PyLinuxSensor::findSensorName, py::arg("name"),
+           "Find sensor name occurrences")
+      .def("find_sensor_name", &PyLinuxSensor::findSensorName, py::arg("name"),
+           "Find sensor name occurrences")
+      .def("GetSensorTemp", &PyLinuxSensor::GetSensorTemp, py::arg("name"),
+           py::arg("Match"),
+           "Get sensor temperature by name with optional match")
+      .def("get_sensor_temp", &PyLinuxSensor::GetSensorTemp, py::arg("name"),
+           py::arg("Match"),
+           "Get sensor temperature by name with optional match")
+      .def("GetSensorsWithTemp", &PyLinuxSensor::GetSensorsWithTemp,
+           "Get all sensors with their temperature values")
+      .def("get_sensors_with_temp", &PyLinuxSensor::GetSensorsWithTemp,
+           "Get all sensors with their temperature values")
+      .def("update", &PyLinuxSensor::update, py::arg("names") = false,
+           "Update sensor data, optionally update names");
 #endif
 }
+
