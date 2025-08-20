@@ -102,17 +102,19 @@ Full documentation is available on the GitHub Pages website:
 
 All documentation is in the `docs/` folder:
 
-
-* [`What.md`](./docs/What.md): **API Reference & Output Examples**
+* [`What.md`](./docs/What.md): **API Reference & Output Examples**  
   Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
-* [`BENCHMARKS.md`](./docs/BENCHMARKS.md): **Performance & Feature Comparisons**
+* [`BENCHMARKS.md`](./docs/BENCHMARKS.md): **Performance & Feature Comparisons**  
   Real-world speed benchmarks and feature comparisons with other Python libraries.
-* [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**
+* [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**  
   Supported platforms, installation methods, and troubleshooting tips.
-* [`FAQ.md`](./docs/FAQ.md): **Frequently Asked Questions**
+* [`FAQ.md`](./docs/FAQ.md): **Frequently Asked Questions**  
   Solutions to common installation, usage, and troubleshooting issues.
+* [`LiveViewAPI.md`](./docs/LiveViewAPI.md): **LiveView API Reference**  
+  Detailed explanation of the LiveView module API, including functions, usage, and examples.
+* [`LiveViewErrors.md`](./docs/LiveViewErrors.md): **LiveView Errors & Exceptions**  
+  Guides and examples for handling errors and exceptions in the LiveView module.
 ---
-
 ## 📖 API Reference (Summary)
 
 | Function (JSON) / Class.Method             | Function (Python Object)                           | Description |
