@@ -2,8 +2,7 @@
 
 **Copyright (c) 2025 [gafoo / HardView Project]**
 
-This license applies **only** to the tools of the HardView Project. It does **not** apply to libraries or external components.
-
+This license applies **only** to the tools of the HardView Project. It does **not** apply to HardView libraries
 ---
 
 ## 1. Permissions
