@@ -303,13 +303,14 @@ python setup.py build_ext --inplace
 
 ## 📄 License
 
-Core Project (HardView)
-All core project files, including project-specific libraries and header files (*.h, *.cpp), are licensed under the **MIT License**. They are free for both personal and commercial use.
+### Core Project (HardView)
+All core project files, including project-specific libraries and header files are licensed under the **MIT License**. They are free for both personal and commercial use.
 
-Tools Folder
+### **Tools Folder**  
 All tools in the **Tools** folder are licensed under a custom project license: **HardView Tool License (HVTL-1.0)**.  
 You can read the full license terms in the file: [LICENSE.HVTL.txt](./LICENSE.HVTL.txt).  
 Users must comply with its terms when using or distributing these tools.
+
 ---
 ## 🚀 Quick Start
 
@@ -332,6 +333,7 @@ Contributions are welcome!
 **HardView — Your Window into Hardware Information**
 
 See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+
 
 
 
