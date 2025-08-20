@@ -1,15 +1,20 @@
 """
-================================================================================
- MIT License
+==============================================================================
+ HardView Tools License (HVTL-1.0)
 
  Copyright (c) 2025 gafoo
 
  This file is part of the HardView project:
  https://github.com/gafoo173/HardView
 
- Licensed under the MIT License.
- See the LICENSE file in the project root for more details.
-================================================================================
+ License Notice:
+ This file is licensed under the HardView Tools License (HVTL-1.0),
+ located in the "Tools/LICENSE" file at the project root.
+
+ Note:
+ While the main HardView project is licensed under the MIT License,
+ all tool-related files under the "Tools" directory are governed by HVTL-1.0.
+==============================================================================
 """
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-

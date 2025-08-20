@@ -1,0 +1,54 @@
+# HardView Tools License HVTL-1.0
+
+**Copyright (c) 2025 [gafoo / HardView Project]**
+
+This license applies **only** to the tools of the HardView Project. It does **not** apply to libraries or external components.
+
+---
+
+## 1. Permissions
+
+* You may use the licensed code and tools for **personal** or **commercial** purposes.
+* You may modify the source code, provided that any modified code or derived project is released under this same license **HVTL-1.0**.
+* You may integrate the code into other projects, provided that this license text is included and all terms of HVTL-1.0 are respected.
+
+---
+
+## 2. Source Code Requirement
+
+* Any project or product that uses, modifies, or distributes the licensed code must make its **full source code** publicly available under HVTL-1.0.
+* The license applies recursively: every file originally licensed under HVTL-1.0 must remain under HVTL-1.0, regardless of modifications or derivative work.
+
+---
+
+## 3. Distribution
+
+* Pure **copy-paste distribution** of original HVTL files (e.g., `.exe`, `.py`, or any other tool) is **prohibited**.
+* Distribution is only allowed if:
+
+  * The code or file has been **modified** (features added, changes made), or
+  * The code is **integrated** into another project, tool, or application.
+* In all allowed cases, this license text must remain attached, and all HVTL-1.0 conditions must be followed.
+
+---
+
+## 4. License Integrity
+
+* Files licensed under HVTL-1.0 must **always** remain under HVTL-1.0.
+* Changing or re-licensing HVTL-licensed files under any other license is strictly prohibited, even in cases of major modifications.
+
+---
+
+## 5. No Warranty
+
+THIS SOFTWARE IS PROVIDED **"AS IS"**, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+## 6. Use of Name
+
+The names of the authors or contributors may not be used in advertising or promotional materials without prior written permission.
+
+
