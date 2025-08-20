@@ -15,9 +15,11 @@ This license applies **only** to the tools of the HardView Project. It does **no
 
 ## 2. Source Code Requirement
 
-* Any project or product that uses, modifies, or distributes the licensed code must make its **full source code** publicly available under HVTL-1.0.
-* The license applies recursively: every file originally licensed under HVTL-1.0 must remain under HVTL-1.0, regardless of modifications or derivative work.
+Any project or product that uses, modifies, or distributes the licensed code must make its dependent source code publicly available under HVTL-1.0.
 
+Dependent source code means any source file, module, or component that directly or indirectly relies on, integrates with, or is derived from HVTL-licensed tools.
+
+Independent and unrelated parts of a larger project that do not rely on HVTL tools are not required to be licensed under HVTL-1.0.
 ---
 
 ## 3. License Integrity
