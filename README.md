@@ -7,6 +7,7 @@
   <img src="https://img.shields.io/badge/downloads-7.7K-blue" alt="Version" height="30">
   <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Supported Python versions" height="30">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
+  <img src="https://img.shields.io/badge/Tools license-GPL3-red" alt="License" height="30">
   <img src="https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey" alt="Platforms" height="30">
 </p>
 
@@ -334,6 +335,7 @@ Contributions are welcome!
 **HardView — Your Window into Hardware Information**
 
 See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+
 
 
 
