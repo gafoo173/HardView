@@ -15,6 +15,18 @@ This document explains all functions in the HardView library, what they return, 
 >  
 > This behavior has been **fixed starting from version 3.0.3** of the PyPI package and API version 3.0.2, where the default behavior now correctly returns `dict` objects unless otherwise specified.
 
+
+> ⚠️ **Warning:**  
+> Functions that return JSON are strongly discouraged in versions **3.0.1+**.  
+> It is recommended to replace them with `_objects` functions.  
+> Reason: Using these JSON-returning functions may cause issues when building JSON on many devices, especially **Linux**.  
+> **Support and fixes for these functions have been permanently discontinued**, including critical bug fixes.
+
+
+> 📝 **Note:**  
+> All output examples here are for **Windows**.  
+> If you need Linux output examples, see the file [LinuxOutput.md](./LinuxOutbut.md).
+
 ## Table of Contents
 
 1.  [BIOS Info](#1-bios-info)
@@ -1352,3 +1364,4 @@ pip install rich
 [test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
 
 For more details, refer to files inside the `docs/` folder.
+
