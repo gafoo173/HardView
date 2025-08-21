@@ -94,5 +94,5 @@ python HardID.py --type ram -qr         # Generate RAM ID and QR code
 ---
 # License Notice
 
-All files in this folder are licensed under the **HardView Tools License (HVTL-1.0)**.  
-The full text of the license can be found in the `LICENSE.HVTL.txt` file located in the root of this repository.
+All files in this folder are licensed under the **GPL-3**.  
+The full text of the license can be found in the `LICENSE.GPL3` file located in the root of this repository.

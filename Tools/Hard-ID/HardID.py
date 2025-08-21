@@ -1,6 +1,6 @@
 """
 ==============================================================================
- HardView Tools License (HVTL-1.0)
+ GNU GENERAL PUBLIC LICENSE (GPL-3)
 
  Copyright (c) 2025 gafoo
 
@@ -8,12 +8,12 @@
  https://github.com/gafoo173/HardView
 
  License Notice:
- This file is licensed under the HardView Tools License (HVTL-1.0),
- located in the "LICENSE.HVTL.txt" file at the project root.
+ This file is licensed under the  (GPL-3),
+ located in the "LICENSE.GPL3" file at the project root.
 
  Note:
  While the main HardView project is licensed under the MIT License,
- all tool-related files under the "Tools" directory are governed by HVTL-1.0.
+ all tool-related files under the "Tools" directory are licensed under GPL-3.
 ==============================================================================
 """
 #!/usr/bin/env python

@@ -309,9 +309,8 @@ python setup.py build_ext --inplace
 All core project files, including project-specific libraries and header files are licensed under the **MIT License**. They are free for both personal and commercial use.
 
 ### **Tools Folder**  
-All tools in the **Tools** folder are licensed under a custom project license: **HardView Tool License (HVTL-1.0)**.  
-You can read the full license terms in the file: [LICENSE.HVTL.txt](./LICENSE.HVTL.txt).  
-Users must comply with its terms when using or distributing these tools.
+All tools in the **Tools** folder are licensed under: GNU GENERAL PUBLIC LICENSE **(GPL-3)**.  
+You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).  
 
 ---
 ## 🚀 Quick Start
