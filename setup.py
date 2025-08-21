@@ -11,30 +11,30 @@ import pybind11
 # =================================================================
 
 hardview_source_files = [
-    'src/HardView.c',
-    'src/helpers.c',
-    'src/bios_info.c',
-    'src/system_info.c',
-    'src/baseboard_info.c',
-    'src/chassis_info.c',
-    'src/cpu_info.c',
-    'src/ram_info.c',
-    'src/disk_info.c',
-    'src/gpu_info.c',
-    'src/network_info.c',
-    'src/performance_monitor.c',
-    'src/advanced_storage_info.c',
-    'src/Smart_disk.c'
+    'HardView/HardView.c',
+    'HardView/helpers.c',
+    'HardView/bios_info.c',
+    'HardView/system_info.c',
+    'HardView/baseboard_info.c',
+    'HardView/chassis_info.c',
+    'HardView/cpu_info.c',
+    'HardView/ram_info.c',
+    'HardView/disk_info.c',
+    'HardView/gpu_info.c',
+    'HardView/network_info.c',
+    'HardView/performance_monitor.c',
+    'HardView/advanced_storage_info.c',
+    'HardView/Smart_disk.c'
 ]
 
 hardview_libraries = []
 hardview_extra_compile_args = []
 
 if sys.platform.startswith('win'):
-    hardview_source_files.append('src/win_helpers.c')
+    hardview_source_files.append('HardView/win_helpers.c')
     hardview_libraries.extend(['wbemuuid', 'ole32', 'oleaut32'])
 elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
-    hardview_source_files.append('src/linux_helpers.c')
+    hardview_source_files.append('HardView/linux_helpers.c')
 
 # Define the main C extension as a submodule of HardView
 hardview_module = Extension(
@@ -44,7 +44,7 @@ hardview_module = Extension(
     extra_compile_args=hardview_extra_compile_args,
     libraries=hardview_libraries,
     library_dirs=[],
-    include_dirs=['src']
+    include_dirs=['HardView']
 )
 
 # =================================================================
@@ -54,7 +54,7 @@ hardview_module = Extension(
 liveview_libraries = []
 liveview_extra_compile_args = []
 liveview_extra_link_args = [] # Added for static linking on MinGW/GCC
-liveview_include_dirs = ['src/LiveView', pybind11.get_include()]
+liveview_include_dirs = ['HardView/LiveView', pybind11.get_include()]
 
 if sys.platform.startswith('win'):
     liveview_libraries.extend(['pdh', 'ntdll'])
@@ -70,7 +70,7 @@ elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
 # Define the new C++ extension as a submodule of HardView
 liveview_module = Extension(
     'HardView.LiveView',
-    sources=['src/LiveView/LiveView.cpp'],
+    sources=['HardView/LiveView/LiveView.cpp'],
     include_dirs=liveview_include_dirs,
     libraries=liveview_libraries,
     extra_compile_args=liveview_extra_compile_args,
@@ -84,7 +84,7 @@ liveview_module = Extension(
 
 # Base packages and package directories
 packages = ['HardView']
-package_dir = {'HardView': 'src/py'}
+package_dir = {'HardView': 'HardView/py'}
 package_data = {}
 
 # =================================================================
@@ -107,10 +107,10 @@ class build_ext(_build_ext):
             # Determine the DLL source directory based on architecture
             if sys.maxsize > 2**32:
                 # 64-bit Windows
-                dll_source_dir = 'src/LiveView/64'
+                dll_source_dir = 'HardView/LiveView/64'
             else:
                 # 32-bit Windows
-                dll_source_dir = 'src/LiveView/32'
+                dll_source_dir = 'HardView/LiveView/32'
 
             dll_source_path = os.path.join(dll_source_dir, '*.dll')
 
