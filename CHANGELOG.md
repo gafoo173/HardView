@@ -1,9 +1,34 @@
 
----
-
 # 📜 Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [3.1.0b1] - Beta Release
+
+### Highlights:
+
+* **New LiveView Module**  
+  * Introduced a powerful **real-time monitoring module** `LiveView`.  
+  * Provides **classes and functions** for instant access to system metrics such as:  
+    - CPU usage & per-core stats  
+    - RAM usage & availability  
+    - Disk activity (read/write speed, usage)  
+    - Network activity (send/receive throughput)  
+    - GPU usage (with temperature support)  
+
+* **Temperature Monitoring Support**  
+  * Added initial temperature readings for Hardware Sensors
+
+* **New API Namespace**  
+  * Functions are now also accessible under `HardView.LiveView` for cleaner integration.  
+
+* **Performance Optimizations**  
+  * Faster data retrieval in `LiveView` 
+  * Lower memory footprint compared to older monitoring approaches.  
+
+> **Note:** This version is experimental (`beta`). Expect breaking changes in the final `3.1.0` stable release.  
+
+---
 
 ## \[3.0.3] - Hotfix Release
 
@@ -145,3 +170,4 @@ All notable changes to this project will be documented in this file.
 * `get_partitions_info()`
 
 ---
+
