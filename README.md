@@ -253,8 +253,39 @@ classDiagram
     DiskInfo "1" *-- "*" Disk
 ```
 
-*(and so on for GPU, Network, Partition, SMART, Usage & Monitoring)*
+### Sensor Value Fetch Flow (LiveView)
 
+```mermaid
+classDiagram
+    class LiveView {
+        Request To Read
+    }
+
+    %% Linux path
+    class LinuxPath {
+        Search sensor name in lm-sensors
+        If found → return value
+        If not found → return -1
+    }
+
+    %% Windows path
+    class WindowsPath {
+        Check if monitoring library is initialized
+        If initialized → ask HardwareWrapper
+    }
+
+    class HardwareWrapper {
+        Forward request to LibreHardwareMonitor
+        If value available → return value
+        If not available → return -1
+    }
+
+    %% Relations
+    LiveView --> LinuxPath : "Linux"
+    LiveView --> WindowsPath : "Windows"
+    WindowsPath --> HardwareWrapper
+
+```
 ---
 
 ## 🧪 Platform Support
@@ -335,6 +366,7 @@ Contributions are welcome!
 **HardView — Your Window into Hardware Information**
 
 See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+
 
 
 
