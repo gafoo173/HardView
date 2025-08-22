@@ -365,14 +365,6 @@ Contributions are welcome!
 
 **HardView — Your Window into Hardware Information**
 
-See [`What.md`](./docs/What.md): for full API, architecture, and benchmarking docs.
+See [`HardView API`](./docs/What.md): For the full HardView API
 
-
-
-
-
-
-
-
-
-
+See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
