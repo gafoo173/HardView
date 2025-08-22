@@ -275,7 +275,7 @@ classDiagram
     }
 
     class HardwareWrapper {
-        Forward request to LibreHardwareMonitor
+        Forward request to LibreHardwareMonitorlib
         If value available → return value
         If not available → return -1
     }
@@ -353,6 +353,8 @@ For a quick and visually appealing colorful test in the console using the **rich
 To test all functions normally without coloring, use:  
 [TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
 
+**LiveView Tests Soon**
+
 ---
 ## 🤝 Contribution
 
@@ -368,3 +370,4 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
