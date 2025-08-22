@@ -25,7 +25,7 @@ This document explains all functions in the HardView library, what they return, 
 
 > 📝 **Note:**  
 > All output examples here are for **Windows**.  
-> If you need Linux output examples, see the file [LinuxOutput.md](./LinuxOutbut.md).
+> If you need Linux output examples, see the file [LinuxOutput.md](./LinuxOutput.md).
 
 ## Table of Contents
 
@@ -1364,4 +1364,5 @@ pip install rich
 [test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
 
 For more details, refer to files inside the `docs/` folder.
+
 
