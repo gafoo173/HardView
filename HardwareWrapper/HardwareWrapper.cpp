@@ -104,6 +104,9 @@ public:
             comp->IsGpuEnabled = true;
             comp->IsMotherboardEnabled = true;
             comp->IsStorageEnabled = true;
+            comp->IsMemoryEnabled = true;
+            comp->IsControllerEnabled = true;
+            comp->IsNetworkEnabled = true;
             comp->Open();
             computer = comp;
         }

@@ -9,7 +9,7 @@ def _copy_dlls_to_python_dir():
         return
 
     python_dir = sys.exec_prefix
-    dll_files = ["HardwareWrapper.dll", "LibreHardwareMonitorLib.dll"]
+    dll_files = ["HardwareWrapper.dll", "LibreHardwareMonitorLib.dll","HidSharp.dll"]
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
     for dll in dll_files:

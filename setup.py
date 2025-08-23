@@ -181,8 +181,11 @@ HardView 3.1.0 now includes **cross-platform temperature monitoring**:
 > The `LibreHardwareMonitorLib.dll` required for Windows temperature monitoring is **bundled within the HardView wheel** and is **automatically copied to the Python installation directory** during the library’s initial setup.  
 > This means you do **not** need to manually download or place it alongside your script — unless you encounter specific import or loading issues.
 
+
+
 The included `LibreHardwareMonitorLib.dll` is the **original, unmodified build** of LibreHardwareMonitor, licensed under **MPL-2.0**, with full source code available in their [official repository](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor).
-The included `libsensors` library is the original, unmodified build of lm-sensors, licensed under LGPL-2.1-or-later, with full source code available in their [official repository](https://github.com/lm-sensors/lm-sensors).**
+The included `libsensors` library is the original, unmodified build of lm-sensors, licensed under **LGPL-2.1-or-later**, with full source code available in their [official repository](https://github.com/lm-sensors/lm-sensors).
+The included `HidSharp.dll` library is the original, unmodified build of HidSharp, licensed under **Apache License 2.0**, with full source code available in their [official repository](https://github.com/IntergatedCircuits/HidSharp). This project does **not** depend on it directly, but it is a dependency of `LibreHardwareMonitorLib`.
 
 ---
 
@@ -244,8 +247,7 @@ print(f"RAM Usage: {ram_usage_percent:.2f}%")
     author='gafoo',
     author_email='omarwaled3374@gmail.com',
     url='https://github.com/gafoo173/HardView',
-    license="MIT", # Recommended way to specify the license
-    # Use the dynamically configured package lists
+    license="MIT", 
     packages=packages,
     package_dir=package_dir,
     # Include non-python files specified in package_data
