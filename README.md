@@ -23,9 +23,25 @@
   <img src="resources/logo.png" alt="HardView Logo" width="300"/>
 </p>
 
-# HardView - Python Hardware Information Module
+# HardView - Hardware Information Library
 
-HardView is a high-performance, cross-platform Python module that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.
+HardView is a high-performance, cross-platform Library that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.
+
+
+# HardView Project Overview
+
+This table summarizes the libraries and tools included in the **HardView** project, describing their purpose, language, and features.
+
+
+| Library Name        | Description                                                                                                                                                                                                                                                                                                                                                                                             | Language(s)                 | Purpose / Features                                                                              |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------- |
+| **HardView**        | The core library providing static hardware information for Windows and Linux. Supports JSON or Python objects in the Python version.                                                                                                                                                                                                                                                                    | 🟦 C                        | Main library for retrieving static system information.                                          |
+| **LiveView**        | A monitoring library for both static hardware info and real-time data. Supports CPU temperature and regular usage on Windows and Linux via specialized functions.                                                                                                                                                                                                                                       | 🟪 C++                      | Real-time monitoring of hardware metrics, integrates static info and CPUID functions.           |
+| **HardwareWrapper** | An internal library wrapping LibreHardwareMonitorLib with simple functions through C++/CLI, allowing use from C++. Primarily used by LiveView on Windows for temperature readings.                                                                                                                                                                                                                      | 🟩 C++/CLI                  | Simplifies access to LibreHardwareMonitorLib, providing easy C++ usage for Windows sensor data. |
+| **cpuid**           | An internal, header-only C++ library providing easy helper functions to access most CPUID information. Used by LiveView for CPUID-related functionality.                                                                                                                                                                                                                                                | 🟨 C++ (header-only)        | Lightweight, easy-to-integrate CPUID helper library for detailed processor information.         |
+| **Tools**           | A collection of CLI and GUI Python tools that rely on HardView to display hardware information.                                                                                                                                                                                                                                                                                                     | 🟦 Python                   | Command-line and GUI utilities for interacting with hardware info provided by HardView.         |
+
+
 
 ## 🔑 Key Features
 
@@ -331,7 +347,7 @@ python setup.py build_ext --inplace
 
 * Python 3.7+
 * On Windows: WMI (included)
-* On Linux: standard system libraries
+* On Linux: standard system libraries And lm-sensors
 
 ---
 
@@ -370,4 +386,5 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
