@@ -289,6 +289,7 @@ char* get_cpu_info(bool Json) {
 #else
     // Linux implementation
     if (Json) {
+        char* json_str = NULL
         int fl = 0;
         // JSON mode - original implementation
         char* cpu_model = _read_dmi_attribute_linux("cpu_model");
@@ -306,13 +307,13 @@ char* get_cpu_info(bool Json) {
          fl++;
      }
      if (fl == 1) {
-      char* json_str = _create_json_string(
+        json_str = _create_json_string(
           "{\"name\": \"%s\", \"manufacturer\": \"%s\", \"architecture\": \"%s\", "
           "\"cores\": \"%s\", \"threads\": \"%s\", \"max_clock_speed\": \"%s\", \"socket_designation\": \"%s\"}",
           cpu_model, cpu_vendor, cpu_family, cpu_cores, cpu_threads, cpu_max_speed, cpu_socket
       );
      } else {
-        char* json_str = _create_json_string(
+          json_str = _create_json_string(
             "{\"name\": \"%s\", \"manufacturer\": \"%s\", \"architecture\": \"%s\", \"cores\": %s, \"threads\": %s, \"max_clock_speed\": %s, \"socket_designation\": \"%s\"}",
             cpu_model, cpu_vendor, cpu_family, cpu_cores, cpu_threads, cpu_max_speed, cpu_socket
         );
@@ -364,4 +365,5 @@ char* get_cpu_info(bool Json) {
     }
 #endif
 }
+
 
