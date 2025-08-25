@@ -66,7 +66,7 @@ elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
     liveview_extra_compile_args.append('-std=c++17')
     # Add flag for static linking with GCC C++ runtime
     liveview_extra_link_args.append('-static-libstdc++')
-
+    liveview_libraries.append('sensors')
 # Define the new C++ extension as a submodule of HardView
 liveview_module = Extension(
     'HardView.LiveView',
@@ -282,5 +282,6 @@ print(f"RAM Usage: {ram_usage_percent:.2f}%")
         'Source': 'https://github.com/gafoo173/HardView',
     },
 )
+
 
 
