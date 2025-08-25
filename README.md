@@ -132,15 +132,15 @@ All documentation is in the `docs/` folder:
 ---
 ## 📖 API Reference (Summary)
 
-| Function (JSON) / Class.Method             | Function (Python Object)                           | Description |
+| Function (JSON)            | Function (Python Object)                           | Description |
 | ------------------------------------------ | -------------------------------------------------- | ----------- |
 | `get_bios_info()`                          | `get_bios_info_objects()`                          | BIOS vendor, version, release date |
 | `get_system_info()`                        | `get_system_info_objects()`                        | System manufacturer, product name, UUID |
 | `get_baseboard_info()`                     | `get_baseboard_info_objects()`                     | Motherboard info |
 | `get_chassis_info()`                       | `get_chassis_info_objects()`                       | Chassis/computer case info |
-| `get_cpu_info()`                           | `get_cpu_info_objects()`                           | Processor details |
+| `get_cpu_info()`   (Windows Only)                        | `get_cpu_info_objects()`  (Windows Only)                          | Processor details |
 | `get_ram_info()`                           | `get_ram_info_objects()`                           | Memory modules and totals |
-| `get_gpu_info`                             | `get_gpu_info_objects()`                           | GPU information |
+| `get_gpu_info`      (Windows Only)                        | `get_gpu_info_objects()`     (Windows Only)                       | GPU information |
 | `get_disk_info()`                          | `get_disk_info_objects()`                          | Storage devices |
 | `get_network_info()`                       | `get_network_info_objects()`                       | Network adapters |
 | `get_partitions_info()`                    | `get_partitions_info_objects()`                    | Disk partitions (advanced) |
@@ -386,6 +386,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
