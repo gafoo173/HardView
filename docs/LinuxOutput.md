@@ -91,7 +91,19 @@ This document provides examples of system information output on Linux systems, d
 ## CPU Information
 
 ### get_cpu_info()
-**Note:** JSON decoding error occurred for this function.
+> **Note:** This function may return invalid JSON if any key has the value `N/A`; this issue has been fixed in versions above 3.1.0b2.
+
+```json
+{
+    "name": "N/A",
+    "manufacturer": "N/A",
+    "architecture": "N/A",
+    "cores": "N/A",
+    "threads": "N/A",
+    "max_clock_speed": "N/A",
+    "socket_designation": "N/A"
+}
+```
 
 **Python Object:**
 ```python
