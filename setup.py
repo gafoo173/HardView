@@ -154,7 +154,7 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.1.0b1',
+    version='3.1.0b2',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
 # HardView 3.1.0 - Advanced Hardware & Real-time Monitoring
@@ -282,6 +282,7 @@ print(f"RAM Usage: {ram_usage_percent:.2f}%")
         'Source': 'https://github.com/gafoo173/HardView',
     },
 )
+
 
 
 
