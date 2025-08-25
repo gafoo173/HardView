@@ -28,7 +28,7 @@
 HardView is a high-performance, cross-platform Library that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.
 
 
-# HardView Project Overview
+## HardView Project Overview
 
 This table summarizes the libraries and tools included in the **HardView** project, describing their purpose, language, and features.
 
@@ -359,7 +359,7 @@ All tools in the **Tools** folder are licensed under: GNU GENERAL PUBLIC LICENSE
 You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).  
 
 ---
-## 🚀 Quick Start
+## 🚀 Quick Start And Tests
 
 For a quick and visually appealing colorful test in the console using the **rich** library, run the script:  
 [test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
@@ -367,7 +367,17 @@ For a quick and visually appealing colorful test in the console using the **rich
 To test all functions normally without coloring, use:  
 [TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
 
-**LiveView Tests Soon**
+## 🚀 Quick Start And Tests
+
+For a quick and visually appealing colorful test in the console using the **rich** library, run the script:  
+[test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
+
+To test all functions normally without coloring, use:  
+[TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
+
+**LiveView Tests**  
+The LiveView test files are located in [tests/units](https://github.com/gafoo173/HardView/blob/main/tests/units)
+
 
 ---
 ## 🤝 Contribution
