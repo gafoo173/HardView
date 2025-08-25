@@ -1612,6 +1612,10 @@
 <p><img src="https://img.shields.io/badge/API_Version-1.0.0beta-informational" alt="API Version" height="30">                                                                                                            <img src="https://img.shields.io/badge/Module-LiveView-informational" alt="Module" height="30"></p>
 <p><code>LiveView</code> is a high-performance, cross-platform C++ module with Python bindings designed for real-time system monitoring. It provides easy-to-use classes for tracking CPU, RAM, Disk, Network, GPU performance, and comprehensive temperature monitoring. The library is optimized for low overhead, making it suitable for integration into monitoring dashboards, performance-critical applications, and system analysis tools.</p>
 <p>This document provides a comprehensive guide to the <code>LiveView</code> API, with detailed explanations and Python code examples for each component.</p>
+<blockquote>
+<p><strong>Note:</strong><br />
+Some classes and functions may require administrative privileges on Windows or <code>sudo</code> on Linux, especially classes related to temperature and sensors.</p>
+</blockquote>
 <hr />
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
@@ -2905,7 +2909,7 @@ with an average query time of <strong>8—15 microseconds</strong>.</p>
 <a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>
 <a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>    <span class="k">try</span><span class="p">:</span>
 <a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>        <span class="n">sensor</span> <span class="o">=</span> <span class="n">PySensor</span><span class="p">()</span>
-<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>        <span class="n">sensor</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>     <span class="c1">#The update is important after initialization here. </span>
 <a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>        <span class="c1"># Get all available sensors</span>
 <a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>        <span class="n">all_sensors</span> <span class="o">=</span> <span class="n">sensor</span><span class="o">.</span><span class="n">getAllSensors</span><span class="p">()</span>
 <a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available Sensors:&quot;</span><span class="p">)</span>
@@ -3454,6 +3458,8 @@ with an average query time of <strong>8—15 microseconds</strong>.</p>
 </ul>
 <h3 id="usage-tips-for-temperature-classes-in-windows">Usage Tips for Temperature Classes in Windows</h3>
 <blockquote>
+<p><strong>Note:</strong><br />
+Before performing the first read on Windows, make sure to update the values to ensure accurate results. This is especially important within the <code>PySensor</code> class, as some sensors require an initial update after initialization to return correct values.</p>
 <p><strong>Note:</strong> There's no need to worry about repeating the configuration,<br />
 as the function includes a safeguard that immediately prevents duplicates upon entry.</p>
 </blockquote>
