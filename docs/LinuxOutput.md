@@ -90,33 +90,8 @@ This document provides examples of system information output on Linux systems, d
 
 ## CPU Information
 
-### get_cpu_info()
-> **Note:** This function may return invalid JSON if any key has the value `N/A`; this issue has been fixed in versions above 3.1.0b2.
+> **Note:** This function is Windows-only. While it can be imported on Linux, all returned values will be `N/A` for strings and `0` for numeric fields.
 
-```json
-{
-    "name": "N/A",
-    "manufacturer": "N/A",
-    "architecture": "N/A",
-    "cores": "N/A",
-    "threads": "N/A",
-    "max_clock_speed": "N/A",
-    "socket_designation": "N/A"
-}
-```
-
-**Python Object:**
-```python
-{
-    'name': 'N/A', 
-    'manufacturer': 'N/A', 
-    'architecture': 'N/A', 
-    'cores': 0, 
-    'threads': 0, 
-    'max_clock_speed': 0.0, 
-    'socket_designation': 'N/A'
-}
-```
 
 ## RAM Information
 
@@ -353,22 +328,7 @@ This document provides examples of system information output on Linux systems, d
 ```
 
 ## GPU Information
-
-### get_gpu_info()
-**Note:** JSON decoding error occurred for this function.
-
-**Python Object:**
-```python
-[
-    {
-        'name': 'N/A', 
-        'manufacturer': 'N/A', 
-        'driver_version': 'N/A', 
-        'memory_size': 0, 
-        'video_processor': 'N/A', 
-        'video_mode_description': 'N/A'
-    }
-]
+> **Note:** This function is Windows-only. While it can be imported on Linux, all returned values will be `N/A` for strings and `0` for numeric fields.
 ```
 
 ## Monitoring Functions
@@ -610,7 +570,6 @@ This document provides examples of system information output on Linux systems, d
 ## Notes
 
 - This output is from a Microsoft Virtual Machine environment running Linux
-- **JSON Format Issues**: Some functions like `get_cpu_info()`, `get_disk_info()`, and `get_gpu_info()` show JSON decoding errors due to formatting issues with `N/A` values in the JSON output
 - **Recommendation**: It's preferable to use **Python Objects** instead of JSON format in newer versions of the HardView library to avoid these parsing errors
 ---
 *Generated from HardView library JSON function test results on Linux*
