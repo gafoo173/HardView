@@ -367,14 +367,6 @@ For a quick and visually appealing colorful test in the console using the **rich
 To test all functions normally without coloring, use:  
 [TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
 
-## 🚀 Quick Start And Tests
-
-For a quick and visually appealing colorful test in the console using the **rich** library, run the script:  
-[test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
-
-To test all functions normally without coloring, use:  
-[TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
-
 **LiveView Tests**  
 The LiveView test files are located in [tests/units](https://github.com/gafoo173/HardView/blob/main/tests/units)
 
@@ -394,6 +386,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
