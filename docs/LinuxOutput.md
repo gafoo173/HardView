@@ -329,7 +329,6 @@ This document provides examples of system information output on Linux systems, d
 
 ## GPU Information
 > **Note:** This function is Windows-only. While it can be imported on Linux, all returned values will be `N/A` for strings and `0` for numeric fields.
-```
 
 ## Monitoring Functions
 
