@@ -289,6 +289,7 @@ char* get_cpu_info(bool Json) {
 #else
     // Linux implementation
     if (Json) {
+        int fl = 0;
         // JSON mode - original implementation
         char* cpu_model = _read_dmi_attribute_linux("cpu_model");
         char* cpu_vendor = _read_dmi_attribute_linux("cpu_vendor");
@@ -297,11 +298,26 @@ char* get_cpu_info(bool Json) {
         char* cpu_threads = _read_dmi_attribute_linux("cpu_threads");
         char* cpu_max_speed = _read_dmi_attribute_linux("cpu_max_speed");
         char* cpu_socket = _read_dmi_attribute_linux("cpu_socket");
-
+     if (
+         !cpu_cores || strcmp(cpu_cores, "N/A") == 0 ||
+         !cpu_threads || strcmp(cpu_threads, "N/A") == 0 ||
+         !cpu_max_speed || strcmp(cpu_max_speed, "N/A") == 0  
+     ) {
+         fl++;
+     }
+     if (fl == 1) {
+      char* json_str = _create_json_string(
+          "{\"name\": \"%s\", \"manufacturer\": \"%s\", \"architecture\": \"%s\", "
+          "\"cores\": \"%s\", \"threads\": \"%s\", \"max_clock_speed\": \"%s\", \"socket_designation\": \"%s\"}",
+          cpu_model, cpu_vendor, cpu_family, cpu_cores, cpu_threads, cpu_max_speed, cpu_socket
+      );
+     } else {
         char* json_str = _create_json_string(
             "{\"name\": \"%s\", \"manufacturer\": \"%s\", \"architecture\": \"%s\", \"cores\": %s, \"threads\": %s, \"max_clock_speed\": %s, \"socket_designation\": \"%s\"}",
             cpu_model, cpu_vendor, cpu_family, cpu_cores, cpu_threads, cpu_max_speed, cpu_socket
         );
+     }
+
 
         free(cpu_model); free(cpu_vendor); free(cpu_family); 
         free(cpu_cores); free(cpu_threads); free(cpu_max_speed); free(cpu_socket);
@@ -348,3 +364,4 @@ char* get_cpu_info(bool Json) {
     }
 #endif
 }
+
