@@ -11,10 +11,6 @@ All notable changes to this project will be documented in this file.
 
   * Fixed an issue in the build process that caused problems when linking with the `lm-sensors` library on Linux.
 
-* **API Update**
-
-  * Updated API version to `3.1.0Beta1` for consistency and integration with new modules.
-
 > **Note:** This version remains experimental (`beta`). Users may encounter breaking changes before the stable `3.1.0` release.
 
 * **API Update 3.1.0Beta1**
@@ -188,5 +184,6 @@ All notable changes to this project will be documented in this file.
 * `get_partitions_info()`
 
 ---
+
 
 
