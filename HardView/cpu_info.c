@@ -289,7 +289,7 @@ char* get_cpu_info(bool Json) {
 #else
     // Linux implementation
     if (Json) {
-        char* json_str = NULL
+        char* json_str = NULL;
         int fl = 0;
         // JSON mode - original implementation
         char* cpu_model = _read_dmi_attribute_linux("cpu_model");
@@ -365,5 +365,6 @@ char* get_cpu_info(bool Json) {
     }
 #endif
 }
+
 
 
