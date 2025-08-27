@@ -78,8 +78,8 @@ For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 
 ---
 
-## 🚀 Usage Example
-
+## 🚀 Usage Examples
+### HardView
 ```python
 import HardView
 import json
@@ -106,7 +106,66 @@ ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500)
 import pprint
 pprint.pprint(json.loads(cpu_json))
 ```
+### LiveView
+```python
+from HardView.LiveView import PyLiveCPU, PyLiveRam, PyLiveDisk, PyLiveNetwork
+import time
 
+# Initialize system monitors
+cpu_monitor = PyLiveCPU()         # CPU usage monitor
+ram_monitor = PyLiveRam()         # RAM usage monitor
+disk_monitor = PyLiveDisk(mode=1) # Disk R/W speed monitor (mode 1 for MB/s)
+net_monitor = PyLiveNetwork()     # Network traffic monitor
+
+print("System Monitor - Single Reading")
+print("-" * 40)
+
+# Get system metrics with 1-second sampling interval
+cpu_usage = cpu_monitor.get_usage(1000)           # CPU percentage
+ram_usage = ram_monitor.get_usage()               # RAM percentage
+disk_rw = disk_monitor.get_usage(1000)            # Returns [(Read MB/s), (Write MB/s)]
+net_traffic = net_monitor.get_usage(1000, mode=0) # Total network MB/s
+
+# Display current system status
+print(f"CPU: {cpu_usage:5.1f}% | RAM: {ram_usage:5.1f}% | "
+      f"Disk R/W: {disk_rw[0][1]:4.1f}/{disk_rw[1][1]:4.1f} MB/s | "
+      f"Network: {net_traffic:6.3f} MB/s")
+      
+print("Monitoring complete.")
+```
+
+### LiveView (temperature)
+```python
+#!/usr/bin/env python3
+import sys
+
+# Check CPU temperature - single reading
+if sys.platform == "win32":
+    # Windows CPU temperature
+    try:
+        from HardView.LiveView import PyTempCpu
+        cpu_temp = PyTempCpu()  # Auto-initialize
+        temperature = cpu_temp.get_temp()
+        print(f"CPU Temperature: {temperature:.1f}°C")
+    except Exception as e:
+        print(f"Windows temperature error: {e}")
+        
+elif sys.platform == "linux":
+    # Linux CPU temperature  
+    try:
+        from HardView.LiveView import PyLinuxSensor
+        sensor = PyLinuxSensor()
+        temperature = sensor.getCpuTemp()
+        if temperature > 0:
+            print(f"CPU Temperature: {temperature:.1f}°C")
+        else:
+            print("CPU temperature not available")
+    except Exception as e:
+        print(f"Linux temperature error: {e}")
+        
+else:
+    print("Unsupported platform")
+```
 ---
 
 ## 📚 Documentation
@@ -386,6 +445,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
