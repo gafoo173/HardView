@@ -300,9 +300,9 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
       result.emplace_back("INVPCID", (ebx & (1 << 10)) ? "Yes" : "No",
                           leaf_str);
       result.emplace_back("RTM", (ebx & (1 << 11)) ? "Yes" : "No", leaf_str);
-      result.emplace_back("PQM", (ebx & (1 << 12)) ? "Yes" : "No", leaf_str);
+      result.emplace_back("RDT-M", (ebx & (1 << 12)) ? "Yes" : "No", leaf_str);
       result.emplace_back("MPX", (ebx & (1 << 14)) ? "Yes" : "No", leaf_str);
-      result.emplace_back("PQE", (ebx & (1 << 15)) ? "Yes" : "No", leaf_str);
+      result.emplace_back("RDT-A", (ebx & (1 << 15)) ? "Yes" : "No", leaf_str);
       result.emplace_back("AVX512F", (ebx & (1 << 16)) ? "Yes" : "No",
                           leaf_str);
       result.emplace_back("AVX512DQ", (ebx & (1 << 17)) ? "Yes" : "No",
@@ -1090,3 +1090,4 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
 }
 
 } // namespace cpuid
+
