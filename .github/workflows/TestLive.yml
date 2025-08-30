@@ -1,0 +1,78 @@
+name: Test HardView Units
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+
+    - name: Install HardView
+      run: pip install HardView
+
+    - name: Run all unit tests on Linux
+      if: runner.os == 'Linux'
+      run: |
+        RESULTS_FILE="TestUnitResults-Linux.txt"
+        rm -f $RESULTS_FILE
+        for f in tests/units/*.py; do
+          echo "=== Running $f ===" >> $RESULTS_FILE
+          python "$f" >> $RESULTS_FILE 2>&1 || echo "=== ERROR in $f ===" >> $RESULTS_FILE
+          echo -e "\n" >> $RESULTS_FILE
+        done
+      shell: bash
+
+    - name: Run all unit tests on Windows
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $ResultsFile = "TestUnitResults-Windows.txt"
+        if (Test-Path $ResultsFile) { Remove-Item $ResultsFile }
+
+        Get-ChildItem tests\units\*.py | ForEach-Object {
+          $FilePath = $_.FullName
+          Write-Output "=== Running $FilePath ===" | Out-File -FilePath $ResultsFile -Append
+          cmd /c "python `"$FilePath`" >> $ResultsFile 2>&1 || echo === ERROR in $FilePath === >> $ResultsFile"
+          Add-Content $ResultsFile "`n"
+        }
+
+    - name: Upload Linux unit test results
+      if: runner.os == 'Linux'
+      uses: actions/upload-artifact@v4
+      with:
+        name: TestUnitResults-Linux
+        path: TestUnitResults-Linux.txt
+        if-no-files-found: warn
+        compression-level: 6
+        overwrite: true
+
+    - name: Upload Windows unit test results
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v4
+      with:
+        name: TestUnitResults-Windows
+        path: TestUnitResults-Windows.txt
+        if-no-files-found: warn
+        compression-level: 6
+        overwrite: true
