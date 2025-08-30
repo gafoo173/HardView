@@ -166,6 +166,85 @@ elif sys.platform == "linux":
 else:
     print("Unsupported platform")
 ```
+### SDK Temperature (Rust)
+```Rust
+//This code will work on Windows only.
+use libloading::{Library, Symbol};
+use std::os::raw::{c_double, c_int};
+
+type InitFn = unsafe extern "C" fn() -> c_int;
+type ShutdownFn = unsafe extern "C" fn();
+type GetTempFn = unsafe extern "C" fn() -> c_double;
+type UpdateFn = unsafe extern "C" fn();
+
+// Check if required DLLs exist next to the executable
+fn check_dependencies() -> Result<(), String> {
+    let required_dlls = ["HardwareTemp.dll", "HardwareWrapper.dll", "LibreHardwareMonitorLib.dll", "HidSharp.dll"];
+    
+    let exe_dir = std::env::current_exe()
+        .map_err(|e| format!("Failed to get executable path: {}", e))?
+        .parent()
+        .ok_or("Failed to get executable directory")?
+        .to_owned();
+
+    let mut missing = Vec::new();
+    for dll in &required_dlls {
+        if !exe_dir.join(dll).exists() {
+            missing.push(*dll);
+        }
+    }
+
+    if !missing.is_empty() {
+        return Err(format!("Missing DLLs: {}", missing.join(", ")));
+    }
+    Ok(())
+}
+
+fn main() {
+    // Check dependencies first
+    if let Err(error) = check_dependencies() {
+        eprintln!("Error: {}", error);
+        return;
+    }
+
+    // Load the library from executable directory
+    let exe_dir = std::env::current_exe().unwrap().parent().unwrap().to_owned();
+    let dll_path = exe_dir.join("HardwareTemp.dll");
+    
+    let lib = unsafe { 
+        Library::new(&dll_path).expect("Failed to load HardwareTemp.dll") 
+    };
+
+    unsafe {
+        // Load required functions
+        let init: Symbol<InitFn> = lib.get(b"InitHardwareTempMonitor\0").expect("InitHardwareTempMonitor not found");
+        let get_cpu_temp: Symbol<GetTempFn> = lib.get(b"GetCpuTemperatureTemp\0").expect("GetCpuTemperatureTemp not found");
+        let update: Symbol<UpdateFn> = lib.get(b"UpdateHardwareMonitorTemp\0").expect("UpdateHardwareMonitorTemp not found");
+        let shutdown: Symbol<ShutdownFn> = lib.get(b"ShutdownHardwareTempMonitor\0").expect("ShutdownHardwareTempMonitor not found");
+
+        // Initialize hardware monitor
+        let init_result = init();
+        if init_result != 0 {
+            eprintln!("Failed to initialize hardware monitor. Error code: {}", init_result);
+            return;
+        }
+
+        // Update and get CPU temperature
+        update();
+        let cpu_temp = get_cpu_temp();
+
+        // Display result
+        match cpu_temp {
+            -1.0 => println!("CPU Temperature: ERROR - Run as Administrator or sensor not supported"),
+            -99.0 => println!("CPU Temperature: ERROR - Missing dependencies"),
+            temp => println!("CPU Temperature: {:.1} °C", temp),
+        }
+
+        // Cleanup
+        shutdown();
+    }
+}
+```
 ---
 
 ## 📚 Documentation
