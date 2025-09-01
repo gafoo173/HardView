@@ -1,6 +1,6 @@
 # `HardView.LiveView` API Documentation
 
-  <img src="https://img.shields.io/badge/API_Version-1.0.0beta-informational" alt="API Version" height="30">                                                                                                            <img src="https://img.shields.io/badge/Module-LiveView-informational" alt="Module" height="30">
+  <img src="https://img.shields.io/badge/API_Version-1.0.0-informational" alt="API Version" height="30">                                                                                                            <img src="https://img.shields.io/badge/Module-LiveView-informational" alt="Module" height="30">
 
 `LiveView` is a high-performance, cross-platform C++ module with Python bindings designed for real-time system monitoring. It provides easy-to-use classes for tracking CPU, RAM, Disk, Network, GPU performance, and comprehensive temperature monitoring. The library is optimized for low overhead, making it suitable for integration into monitoring dashboards, performance-critical applications, and system analysis tools.
 

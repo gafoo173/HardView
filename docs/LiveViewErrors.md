@@ -1,6 +1,6 @@
 # `HardView.LiveView` Errors Documentation
 
-  <img src="https://img.shields.io/badge/API_Version-1.0.0beta-informational" alt="API Version" height="30">                                                                                                            <img src="https://img.shields.io/badge/Module-LiveView-informational" alt="Module" height="30">
+  <img src="https://img.shields.io/badge/API_Version-1.0.0-informational" alt="API Version" height="30">                                                                                                            <img src="https://img.shields.io/badge/Module-LiveView-informational" alt="Module" height="30">
 
 This document provides comprehensive information about potential errors and exceptions that can occur when using the `LiveView` module. Understanding these errors will help you implement proper error handling in your applications.
 
