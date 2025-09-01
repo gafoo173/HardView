@@ -79,7 +79,7 @@ For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 ---
 
 ## 🚀 Usage Examples
-### HardView (Not recommended for monitoring in 3.1.0+)
+### HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)
 ```python
 import HardView
 import json
@@ -518,6 +518,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
