@@ -47,11 +47,11 @@ private:
         if (comp == nullptr)
             return -99.0;
 
-        for each (IHardware ^ hardware in comp->Hardware)
+        for each(IHardware ^ hardware in comp->Hardware)
         {
             if (hardware->HardwareType == type)
             {
-                for each (ISensor ^ sensor in hardware->Sensors)
+                for each(ISensor ^ sensor in hardware->Sensors)
                 {
                     if (sensor->SensorType == SensorType::Temperature &&
                         (sensorNamePartialMatch == nullptr || sensor->Name->Contains(sensorNamePartialMatch)))
@@ -71,11 +71,11 @@ private:
         if (comp == nullptr)
             return -99.0;
 
-        for each (IHardware ^ hardware in comp->Hardware)
+        for each(IHardware ^ hardware in comp->Hardware)
         {
             if (hardware->HardwareType == type)
             {
-                for each (ISensor ^ sensor in hardware->Sensors)
+                for each(ISensor ^ sensor in hardware->Sensors)
                 {
                     if (sensor->SensorType == SensorType::Fan &&
                         (sensorNamePartialMatch == nullptr || sensor->Name->Contains(sensorNamePartialMatch)))
@@ -117,14 +117,14 @@ public:
         auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
         if (comp != nullptr)
         {
-            for each (IHardware ^ hardware in comp->Hardware)
+            for each(IHardware ^ hardware in comp->Hardware)
                 hardware->Update();
         }
     }
 
     static double GetCpuTemperature()
     {
-        return GetTemperatureForHardwareType(HardwareType::Cpu, "Core");
+        return GetTemperatureForHardwareType(HardwareType::Cpu, "Package");
     }
 
     static double GetGpuTemperature()
@@ -150,27 +150,44 @@ public:
         Init();
         auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
         if (comp == nullptr)
-            return -99.0;
+            return -1.0;
 
-        double totalTemp = 0.0;
-        int coreCount = 0;
-
-        for each (IHardware ^ hardware in comp->Hardware)
+        for each(IHardware ^ hw in comp->Hardware)
         {
-            if (hardware->HardwareType == HardwareType::Cpu)
+            if (hw->HardwareType != HardwareType::Cpu) continue;
+            for each(ISensor ^ s in hw->Sensors)
             {
-                for each (ISensor ^ sensor in hardware->Sensors)
+                if (s->SensorType == SensorType::Temperature &&
+                    s->Name->Contains("Core Average") &&
+                    s->Value.HasValue)
                 {
-                    if (sensor->SensorType == SensorType::Temperature &&
-                        sensor->Name->Contains("Core") && sensor->Value.HasValue)
-                    {
-                        totalTemp += sensor->Value.Value;
-                        coreCount++;
-                    }
+                    return s->Value.Value;
                 }
             }
         }
-        return coreCount > 0 ? totalTemp / coreCount : -1.0;
+
+        double total = 0.0;
+        int count = 0;
+        for each(IHardware ^ hw in comp->Hardware)
+        {
+            if (hw->HardwareType != HardwareType::Cpu) continue;
+
+            for each(ISensor ^ s in hw->Sensors)
+            {
+                if (s->SensorType != SensorType::Temperature || !s->Value.HasValue) continue;
+
+                String^ name = s->Name;
+                bool isDerived = name->Contains("Average") || name->Contains("Max") || name->Contains("Distance");
+                bool isPerCore = name->StartsWith("CPU Core #") || name->StartsWith("Core #");
+
+                if (!isDerived && isPerCore)
+                {
+                    total += s->Value.Value;
+                    count++;
+                }
+            }
+        }
+        return count ? (total / count) : -1.0;
     }
 
     static double GetMaxCpuCoreTemperature()
@@ -178,29 +195,44 @@ public:
         Init();
         auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
         if (comp == nullptr)
-            return -99.0;
+            return -1.0;
 
-        double maxTemp = -1.0;
-
-        for each (IHardware ^ hardware in comp->Hardware)
+        for each(IHardware ^ hw in comp->Hardware)
         {
-            if (hardware->HardwareType == HardwareType::Cpu)
+            if (hw->HardwareType != HardwareType::Cpu) continue;
+            for each(ISensor ^ s in hw->Sensors)
             {
-                for each (ISensor ^ sensor in hardware->Sensors)
+                if (s->SensorType == SensorType::Temperature &&
+                    s->Name->Contains("Core Max") &&
+                    s->Value.HasValue)
                 {
-                    if (sensor->SensorType == SensorType::Temperature &&
-                        sensor->Name->Contains("Core") && sensor->Value.HasValue)
-                    {
-                        if (sensor->Value.Value > maxTemp)
-                        {
-                            maxTemp = sensor->Value.Value;
-                        }
-                    }
+                    return s->Value.Value;
+                }
+            }
+        }
+        double maxTemp = -1.0;
+        for each(IHardware ^ hw in comp->Hardware)
+        {
+            if (hw->HardwareType != HardwareType::Cpu) continue;
+
+            for each(ISensor ^ s in hw->Sensors)
+            {
+                if (s->SensorType != SensorType::Temperature || !s->Value.HasValue) continue;
+
+                String^ name = s->Name;
+                bool isDerived = name->Contains("Average") || name->Contains("Max") || name->Contains("Distance");
+                bool isPerCore = name->StartsWith("CPU Core #") || name->StartsWith("Core #");
+
+                if (!isDerived && isPerCore)
+                {
+                    if (s->Value.Value > maxTemp)
+                        maxTemp = s->Value.Value;
                 }
             }
         }
         return maxTemp;
     }
+
 
     static std::vector<std::string> GetAllSensorNames()
     {
@@ -210,9 +242,9 @@ public:
         if (comp == nullptr)
             return sensorNames;
 
-        for each (IHardware ^ hardware in comp->Hardware)
+        for each(IHardware ^ hardware in comp->Hardware)
         {
-            for each (ISensor ^ sensor in hardware->Sensors)
+            for each(ISensor ^ sensor in hardware->Sensors)
             {
                 String^ fullSensorName = String::Format("{0} - {1} - {2}",
                     hardware->Name, sensor->SensorType.ToString(), sensor->Name);
@@ -241,9 +273,9 @@ public:
         if (comp == nullptr)
             return;
 
-        for each (IHardware ^ hardware in comp->Hardware)
+        for each(IHardware ^ hardware in comp->Hardware)
         {
-            for each (ISensor ^ sensor in hardware->Sensors)
+            for each(ISensor ^ sensor in hardware->Sensors)
             {
                 if (sensor->SensorType == SensorType::Fan)
                 {
@@ -262,9 +294,9 @@ public:
         if (comp == nullptr || fullSensorNameManaged == nullptr)
             return -99.0;
 
-        for each (IHardware ^ hardware in comp->Hardware)
+        for each(IHardware ^ hardware in comp->Hardware)
         {
-            for each (ISensor ^ sensor in hardware->Sensors)
+            for each(ISensor ^ sensor in hardware->Sensors)
             {
                 String^ currentSensorFullName = String::Format("{0} - {1} - {2}",
                     hardware->Name, sensor->SensorType.ToString(), sensor->Name);
@@ -282,7 +314,7 @@ public:
 // C-style functions to be exported from DLL
 extern "C" __declspec(dllexport) void InitHardwareMonitor()
 {
-        MonitorManager::Init();
+    MonitorManager::Init();
 }
 
 extern "C" __declspec(dllexport) double GetCpuTemperature()
@@ -441,3 +473,4 @@ extern "C" __declspec(dllexport) void UpdateHardwareMonitor()
 {
     MonitorManager::Update();
 }
+
