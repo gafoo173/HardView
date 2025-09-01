@@ -154,93 +154,23 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.1.0',
+    version='3.1.1',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.1.0 - Advanced Hardware & Real-time Monitoring
+# HardView 3.1.1
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-##  New Features in 3.1.0
+## Additions in 3.1.1
 
-- **Added `LiveView` Extension**  
-  A new, high-performance C++ extension for real-time, class-based monitoring of system resources.  
-  This is the new recommended way for live monitoring, replacing the older `monitor_*` functions.
-
----
-
-## 🌡 Temperature Monitoring Support
-
-HardView 3.1.0 now includes **cross-platform temperature monitoring**:
-
-- **Windows**: Implemented via [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) through a **C++/CLI wrapper**, seamlessly exposed to Python.
-- **Linux**: Implemented using `lm-sensors` for accurate thermal readings.
-
-> The `LibreHardwareMonitorLib.dll` required for Windows temperature monitoring is **bundled within the HardView wheel** and is **automatically copied to the Python installation directory** during the library’s initial setup.  
-> This means you do **not** need to manually download or place it alongside your script — unless you encounter specific import or loading issues.
-
-
-
-The included `LibreHardwareMonitorLib.dll` is the **original, unmodified build** of LibreHardwareMonitor, licensed under **MPL-2.0**, with full source code available in their [official repository](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor).
-The included `libsensors` library is the original, unmodified build of lm-sensors, licensed under **LGPL-2.1-or-later**, with full source code available in their [official repository](https://github.com/lm-sensors/lm-sensors).
-The included `HidSharp.dll` library is the original, unmodified build of HidSharp, licensed under **Apache License 2.0**, with full source code available in their [official repository](https://github.com/IntergatedCircuits/HidSharp). This project does **not** depend on it directly, but it is a dependency of `LibreHardwareMonitorLib`.
+- Fixed issues with CPU sensor names from **LibreHardwareMonitor** in the main wrapper `HardwareWrapper.dll`  
+- Fixed CPU Average reading value  
+- Fixed CPU Max reading value  
+- Fixed CPU Temperature reading value  
 
 ---
-
-## 📦 `LiveView` Extension API
-
-The `LiveView` extension provides a simple, object-oriented interface for live resource monitoring.
-
-### **Usage Example:**
-```python
-from HardView import LiveView
-
-# Create a CPU monitoring object
-cpu_monitor = LiveView.CPU()
-cpu_usage_percent = cpu_monitor.get_usage(interval_ms=1000)
-print(f"CPU Usage: {cpu_usage_percent:.2f}%")
-
-# Create a RAM monitoring object
-ram_monitor = LiveView.RAM()
-ram_usage_percent = ram_monitor.get_usage()
-print(f"RAM Usage: {ram_usage_percent:.2f}%")
-```
-
----
-
-### **Available Classes and Methods:**
-
-#### `LiveView.CPU()`
-- **Description**: Creates a monitor for CPU usage.
-- **Methods**:
-    - `get_usage(interval_ms)`: Returns the average CPU usage over a specified interval in milliseconds.
-- **Platform Support**: `[Cross-platform: Windows, Linux]`
-
----
-
-#### `LiveView.RAM()`
-- **Description**: Creates a monitor for RAM usage.
-- **Methods**:
-    - `get_usage()`: Returns the current RAM usage percentage.
-- **Platform Support**: `[Cross-platform: Windows, Linux]`
-
----
-
-#### `LiveView.Disk()`
-- **Description**: Creates a monitor for physical disk activity (busy time).
-- **Methods**:
-    - `get_usage(interval)`: Returns the disk busy percentage over a specified interval in milliseconds.
-- **Platform Support**: `[Windows-only]`
-
----
-
-#### `LiveView.GPU()`
-- **Description**: Creates a monitor for GPU engine usage.
-- **Methods**:
-    - `get_usage(interval_ms)`: Returns the GPU usage percentage over a specified interval. The most suitable engine (e.g., 3D, Total) is selected automatically.
-- **Platform Support**: `[Windows-only]`
 
     ''',
     long_description_content_type='text/markdown',

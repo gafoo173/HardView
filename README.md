@@ -2,7 +2,7 @@
 <p align="center">
 
   <!--<img src="https://img.shields.io/badge/API_Version-3.1.0Beta1-orange" alt="API Version (Beta)" height="30">-->
-  <img src="https://img.shields.io/badge/PyPI_Stable-3.1.0-blue" alt="PyPI Stable Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Stable-3.1.1-blue" alt="PyPI Stable Version" height="30">
   <!--<img src="https://img.shields.io/badge/PyPI_Beta-3.1.0b2-purple" alt="PyPI Beta Version" height="30">-->
   <img src="https://img.shields.io/badge/downloads-10.7K-red" alt="Version" height="30">
   <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="30">
