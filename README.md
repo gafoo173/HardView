@@ -79,20 +79,20 @@ For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 ---
 
 ## 🚀 Usage Examples
-### HardView
+### HardView (Not recommended for monitoring in 3.1.0+)
 ```python
 import HardView
 import json
 
 # JSON output
 bios_json = HardView.get_bios_info()
-cpu_json = HardView.get_cpu_info()
+cpu_json = HardView.get_cpu_info() #In Linux all outputs N/A in this function 
 
 # Python objects output
 #You must pass the parameter `false` in versions prior to 3.0.3, e.g. `HardView.get_bios_info_objects(false)`.
 
 bios_objects = HardView.get_bios_info_objects() 
-cpu_objects = HardView.get_cpu_info_objects()
+cpu_objects = HardView.get_cpu_info_objects() #On Linux, all outputs of this function show N/A It is recommended in 3.1.0+ to use the cpuid function from LiveView.PyLiveCPU.
 
 # Performance monitoring
 cpu_usage_json = HardView.get_cpu_usage()
@@ -100,7 +100,7 @@ ram_usage_objects = HardView.get_ram_usage_objects()
 
 # Monitor over time
 cpu_monitor_json = HardView.monitor_cpu_usage_duration(5, 1000)
-ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500)
+ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500) 
 
 # Pretty print CPU info
 import pprint
@@ -518,6 +518,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
