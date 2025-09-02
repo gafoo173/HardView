@@ -134,7 +134,7 @@ print(f"CPU: {cpu_usage:5.1f}% | RAM: {ram_usage:5.1f}% | "
 print("Monitoring complete.")
 ```
 
-### LiveView (temperature)
+### LiveView (temperature) - **Requires admin privileges**
 ```python
 #!/usr/bin/env python3
 import sys
@@ -166,7 +166,7 @@ elif sys.platform == "linux":
 else:
     print("Unsupported platform")
 ```
-### SDK Temperature (Rust)
+### SDK Temperature (Rust)  - **Requires admin privileges**
 ```Rust
 //This code will work on Windows only.
 use libloading::{Library, Symbol};
@@ -518,6 +518,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
