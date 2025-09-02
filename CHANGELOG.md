@@ -3,6 +3,50 @@
 
 All notable changes to this project will be documented in this file.
 
+## \[3.1.1] - Hotfix Release
+
+### Highlights:
+
+* **CPU Monitoring Fixes:**
+
+  * Fixed issues with CPU sensor names from LibreHardwareMonitor in the main wrapper (`HardwareWrapper.dll`).
+  * Fixed CPU average reading value.
+  * Fixed CPU max reading value.
+  * Fixed CPU temperature reading value.
+
+* **API Update 3.1.1**
+
+---
+
+## \[3.1.0] - Major Release
+
+### Highlights:
+
+* **LiveView Module Stabilized**
+
+  * The `LiveView` module is now part of the stable release (no longer beta).
+  * Provides **real-time monitoring** for:
+
+    * CPU usage & per-core stats
+    * RAM usage & availability
+    * Disk activity (read/write speed, usage)
+    * Network activity (send/receive throughput)
+    * GPU usage (with temperature support)
+  * Temperature monitoring and device monitoring features are included.
+
+* **API Consistency**
+
+ * **API Update 3.1.0**
+
+* **Performance & Reliability**
+
+  * Stable and optimized for production use.
+
+> **Note:** This is the first stable release of the `3.1.x` branch.
+---
+
+
+
 ## \[3.1.0b2] - Beta Release
 
 ### Highlights:
@@ -184,6 +228,7 @@ All notable changes to this project will be documented in this file.
 * `get_partitions_info()`
 
 ---
+
 
 
 
