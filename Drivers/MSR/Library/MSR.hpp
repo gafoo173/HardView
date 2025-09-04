@@ -32,7 +32,7 @@ See the LICENSE file in the project root for more details.
 #include <sstream>
 #include <string>
 #include <windows.h>
-
+#include <vector>
 
 namespace MSR {
   
@@ -631,5 +631,6 @@ inline bool GetPackageTemp(MsrDriver &driver, int& temp) {
     return false;
 }
 } // namespace Thermal
+
 
 } // namespace MSR
