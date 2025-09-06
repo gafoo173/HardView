@@ -23,9 +23,10 @@
   <img src="resources/logo.png" alt="HardView Logo" width="300"/>
 </p>
 
-# HardView - Hardware Information Library
+# HardView - Hardware Information Project
 
-HardView is a high-performance, cross-platform Library that provides detailed hardware and system information in structured JSON format. It supports both Windows (via WMI) and Linux (via sysfs/proc), and now includes advanced storage/SMART info and real-time performance monitoring.
+HardView is a project that includes Python, C++, and C libraries, Windows drivers, and tools for monitoring hardware and displaying its information through various sources, whether from the system or other libraries. It provides a unified interface for developers to access information via libraries and a user interface for end-users through the tools.
+
 
 
 ## HardView Project Overview
@@ -519,6 +520,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
