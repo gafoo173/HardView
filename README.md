@@ -450,7 +450,7 @@ classDiagram
 | System Info              | ✅    | ✅    |
 | Baseboard Info           | ✅    | ✅    |
 | Chassis Info             | ✅    | ✅    |
-| CPU Info                 | ✅    | 🚫    |
+| CPU Info                 | ✅    | ✅(by LiveView)    |
 | RAM Info                 | ✅    | ✅    |
 | Disks                    | ✅    | ✅    |
 | Network                  | ✅    | ✅    |
@@ -520,6 +520,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
