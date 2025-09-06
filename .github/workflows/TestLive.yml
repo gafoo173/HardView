@@ -29,7 +29,7 @@ jobs:
       run: python -m pip install --upgrade pip
 
     - name: Install HardView
-      run: pip install HardView
+      run: pip install HardView --pre
 
     - name: Run all unit tests on Linux
       if: runner.os == 'Linux'
