@@ -5,6 +5,10 @@ import hashlib
 from . import HardView
 from . import LiveView
 
+
+if os.name == "nt":
+    from . import smbios
+
 def _file_hash(path):
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -28,12 +32,11 @@ def _copy_dlls_to_python_dir():
             copy_file = True
 
             if os.path.exists(dest_path):
-                
                 try:
                     if _file_hash(src_path) == _file_hash(dest_path):
-                        copy_file = False  
+                        copy_file = False
                 except Exception:
-                    pass  
+                    pass
 
             if copy_file:
                 try:
@@ -43,6 +46,7 @@ def _copy_dlls_to_python_dir():
 
 _copy_dlls_to_python_dir()
 
+
 for name in dir(HardView):
     if not name.startswith("_"):
         globals()[name] = getattr(HardView, name)
@@ -50,3 +54,8 @@ for name in dir(HardView):
 for name in dir(LiveView):
     if not name.startswith("_"):
         globals()[name] = getattr(LiveView, name)
+
+if os.name == "nt":
+    for name in dir(smbios):
+        if not name.startswith("_"):
+            globals()[name] = getattr(smbios, name)
