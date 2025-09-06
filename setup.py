@@ -67,6 +67,7 @@ elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
     # Add flag for static linking with GCC C++ runtime
     liveview_extra_link_args.append('-static-libstdc++')
     liveview_libraries.append('sensors')
+
 # Define the new C++ extension as a submodule of HardView
 liveview_module = Extension(
     'HardView.LiveView',
@@ -79,7 +80,32 @@ liveview_module = Extension(
 )
 
 # =================================================================
-# ==      Package Configuration                                  ==
+# ==      List of Extensions to be built                       ==
+# =================================================================
+
+# Start with the default extensions
+extensions = [hardview_module, liveview_module]
+
+# =================================================================
+# ==      SMBIOS Extension (C++) - Windows Only                ==
+# =================================================================
+
+# Conditionally define and add the SMBIOS module only on Windows
+if sys.platform.startswith('win'):
+    smbios_module = Extension(
+        'HardView.smbios',  # The name will be HardView/smbios.pyd
+        sources=['HardView/SMBIOS/PySMBIOS.cpp'],
+        include_dirs=['HardView/SMBIOS', pybind11.get_include()],
+        libraries=[],  # Add any required libraries here
+        extra_compile_args=['/std:c++17', '/MT'],  # Static linking for MSVC
+        extra_link_args=['-static-libgcc', '-static-libstdc++'],  # Static linking for MinGW
+        language='c++'
+    )
+    # Add the new module to the list of extensions to be built
+    extensions.append(smbios_module)
+
+# =================================================================
+# ==      Package Configuration                                ==
 # =================================================================
 
 # Base packages and package directories
@@ -88,7 +114,7 @@ package_dir = {'HardView': 'HardView/py'}
 package_data = {}
 
 # =================================================================
-# ==      Custom Build for Extensions                            ==
+# ==      Custom Build for Extensions                          ==
 # =================================================================
 
 # This custom class overrides the build_ext command.
@@ -149,26 +175,25 @@ class build_ext(_build_ext):
         return os.path.join(*path_parts, filename)
 
 # =================================================================
-# ==                       Setup Function                        ==
+# ==                               Setup Function               ==
 # =================================================================
 
 setup(
     name='HardView',
-    version='3.1.1',
+    version='3.2.0b1',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.1.1
+# HardView 3.2.0b1
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-## Additions in 3.1.1
+### Additions in 3.2.0b1
 
-- Fixed issues with CPU sensor names from **LibreHardwareMonitor** in the main wrapper `HardwareWrapper.dll`  
-- Fixed CPU Average reading value  
-- Fixed CPU Max reading value  
-- Fixed CPU Temperature reading value  
+- Added the new **HardView.smbios** module for Windows, which is responsible for parsing SMBIOS and displaying its information.  
+  The goal is to provide a faster and better alternative for retrieving **static hardware information** compared to the old module **HardView.HardView**.
+
 
 ---
 
@@ -183,7 +208,7 @@ A comprehensive Python library for querying low-level hardware information and m
     # Include non-python files specified in package_data
     package_data=package_data,
     include_package_data=True,
-    ext_modules=[hardview_module, liveview_module],
+    ext_modules=extensions, # Use the updated list of extensions
     # Use the custom build command
     cmdclass={'build_ext': build_ext},
     classifiers=[
@@ -212,8 +237,3 @@ A comprehensive Python library for querying low-level hardware information and m
         'Source': 'https://github.com/gafoo173/HardView',
     },
 )
-
-
-
-
-
