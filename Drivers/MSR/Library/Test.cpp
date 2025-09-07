@@ -331,12 +331,12 @@ void TestThermalFunctions() {
         if (driver.TryReadMsr(MSR::Registers::IA32_THERM_STATUS, thermStatus) == MSR::MsrResult::Success) {
             std::cout << "\n" << COLOR_BLUE << "Basic Thermal Status Analysis:" << COLOR_RESET << std::endl;
             
-            bool readingValid = MSR::IsBitSet(thermStatus, 0);
+            bool readingValid = MSR::IsBitSet(thermStatus, 31);
             bool thermalLog = MSR::IsBitSet(thermStatus, 1);
             bool prochot = MSR::IsBitSet(thermStatus, 2);
             bool prochotLog = MSR::IsBitSet(thermStatus, 3);
             bool criticalTemp = MSR::IsBitSet(thermStatus, 4);
-            bool criticalLog = MSR::IsBitSet(thermStatus, 26);
+            bool criticalLog = MSR::IsBitSet(thermStatus, 5);
             int digitalReadout = static_cast<int>(MSR::ExtractBitField(thermStatus, 16, 7));
             
             std::cout << "  Reading Valid: " << (readingValid ? COLOR_GREEN "YES" : COLOR_RED "NO") << COLOR_RESET << std::endl;
@@ -825,4 +825,5 @@ int main() {
     std::cout << COLOR_WHITE << "Thank you for testing the MSR Driver Library!" << COLOR_RESET << std::endl;
     
     return 0;
+
 }
