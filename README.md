@@ -48,10 +48,8 @@ This table summarizes the libraries and tools included in the **HardView** proje
 * 🖥️ **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network,GPU.
 * 🏗️ **Advanced Storage & SMART**: Detailed disk, partition, and SMART attributes.
 * 📊 **Performance Monitoring**: Real-time and interval-based CPU, RAM, and system performance.
-* 🖥️ **Cross-Platform**: Works on Windows (WMI) and Linux (sysfs/proc).
 * ⚡ **C Implementation**: High performance native code.
 * 🐍 **Python Integration**: Easy-to-use Python API.
-* 🧩 **Modular Design**: Extensible and well-documented.
 * 📝 **Structured Output**: All results are returned as JSON strings or Python objects in (3.0,1+).
 * 🌡️ **Temperature & Sensors Monitoring**:(3.1.0+) Retrieve real-time temperature, voltage, and fan speed readings from system sensors.  
   * **Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for comprehensive sensor data via native integration.  
@@ -60,7 +58,7 @@ This table summarizes the libraries and tools included in the **HardView** proje
 
 ---
 
-## 📦 Installation
+## 📦 Installation (Python)
 
 ### From PyPI
 
@@ -475,12 +473,6 @@ python setup.py build_ext --inplace
 python setup.py build_ext --inplace
 ```
 
-### Dependencies
-
-* Python 3.7+
-* On Windows: WMI (included)
-* On Linux: standard system libraries And lm-sensors
-
 ---
 
 ## 📄 License
@@ -520,20 +512,3 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
