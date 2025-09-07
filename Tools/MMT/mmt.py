@@ -1,3 +1,21 @@
+"""
+==============================================================================
+ GNU GENERAL PUBLIC LICENSE (GPL-3)
+
+ Copyright (c) 2025 gafoo
+
+ This file is part of the HardView project:
+ https://github.com/gafoo173/HardView
+
+ License Notice:
+ This file is licensed under the  (GPL-3),
+ located in the "LICENSE.GPL3" file at the project root.
+
+ Note:
+ While the main HardView project is licensed under the MIT License,
+ all tool-related files under the "Tools" directory are licensed under GPL-3.
+==============================================================================
+"""
 import sys
 import os
 import argparse
