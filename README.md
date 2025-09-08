@@ -256,8 +256,6 @@ All documentation is in the `docs/` folder:
 
 * [`What.md`](./docs/What.md): **API Reference & Output Examples**  
   Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
-* [`BENCHMARKS.md`](./docs/BENCHMARKS.md): **Performance & Feature Comparisons**  
-  Real-world speed benchmarks and feature comparisons with other Python libraries.
 * [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**  
   Supported platforms, installation methods, and troubleshooting tips.
 * [`FAQ.md`](./docs/FAQ.md): **Frequently Asked Questions**  
