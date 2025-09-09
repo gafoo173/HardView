@@ -134,6 +134,7 @@ print("Monitoring complete.")
 ```
 
 ### LiveView (temperature) - **Requires admin privileges**
+
 ```python
 #!/usr/bin/env python3
 import sys
@@ -165,7 +166,9 @@ elif sys.platform == "linux":
 else:
     print("Unsupported platform")
 ```
+
 ### SDK Temperature (Rust)  - **Requires admin privileges**
+
 ```Rust
 //This code will work on Windows only.
 use libloading::{Library, Symbol};
@@ -244,6 +247,140 @@ fn main() {
     }
 }
 ```
+
+### MSR.hpp Example (C++) - needs MsrDrv.sys installed and running 
+
+```cpp
+//this code will work in intel only
+#include "MSR.hpp"
+#include <iostream>
+
+int main() {
+    try {
+        // Create MSR driver instance
+        MSR::MsrDriver driver;
+
+        if (!driver.IsValid()) {
+            std::cerr << "MSR driver not available!" << std::endl;
+            return 1;
+        }
+
+        // Read CPU TjMax (maximum temperature)
+        int tjMax = 0;
+        if (MSR::Thermal::TryGetTjMax(driver, tjMax)) {
+            std::cout << "CPU TjMax: " << tjMax << "°C" << std::endl;
+        } else {
+            std::cerr << "Failed to get TjMax." << std::endl;
+        }
+
+        // Read current CPU temperature
+        int currentTemp = 0;
+        if (MSR::Thermal::TryGetCurrentTemperature(driver, currentTemp)) {
+            std::cout << "Current CPU Temperature: " << currentTemp << "°C" << std::endl;
+        } else {
+            std::cerr << "Failed to read CPU temperature." << std::endl;
+        }
+
+        // Read a specific MSR register (IA32_PLATFORM_ID)
+        try {
+            UINT64 platformId = driver.ReadMsr(MSR::Registers::IA32_PLATFORM_ID);
+            std::cout << "IA32_PLATFORM_ID MSR: 0x" 
+                      << std::hex << platformId << std::dec << std::endl;
+        } catch (const MSR::MsrException& ex) {
+            std::cerr << "Error reading MSR: " << ex.what() 
+                      << " (code: " << ex.GetErrorCode() << ")" << std::endl;
+        }
+
+    } catch (const MSR::DriverNotLoadedException& ex) {
+        std::cerr << "MSR driver not loaded: " << ex.what() << std::endl;
+        return 2;
+    } catch (const MSR::MsrException& ex) {
+        std::cerr << "MSR Exception: " << ex.what() 
+                  << " (code: " << ex.GetErrorCode() << ")" << std::endl;
+        return 3;
+    }
+
+    return 0;
+}
+```
+
+### PhysMemDrv.hpp Example (C++) - needs PhysMemDrv.sys installed and running
+
+```cpp
+#include "PhysMemDrv.hpp"
+#include <iostream>
+#include <iomanip>
+
+int main() {
+    try {
+        PhysMemDriver::DriverHandle driver;
+        uint8_t firstByte = driver.ReadPhysical<uint8_t>(0xF0000);
+        std::cout << "BIOS first byte: 0x" 
+                  << std::hex << std::setw(2) << std::setfill('0') 
+                  << static_cast<int>(firstByte) << std::dec << std::endl;
+    } catch (...) {
+        std::cerr << "Failed to read BIOS ROM" << std::endl;
+    }
+}
+```
+
+### SMART.hpp Example(C++) - requires Admin privileges 
+
+```cpp
+#include "SMART.hpp"
+#include <iostream>
+#include <vector>
+#include <memory>
+
+int main() {
+    try {
+        // Scan all available drives (0-7)
+        auto drives = smart_reader::ScanAllDrives(8);
+
+        for (const auto& drive : drives) {
+            std::cout << "Drive: " << drive->GetDrivePath() << "\n";
+            std::cout << "Type: " << drive->GetDriveType() << "\n";
+            std::cout << "Temperature: " << drive->GetTemperature() << " °C\n";
+            std::cout << "Power-On Hours: " << drive->GetPowerOnHours() << "\n";
+            std::cout << "Power Cycle Count: " << drive->GetPowerCycleCount() << "\n";
+            std::cout << "Reallocated Sectors: " << drive->GetReallocatedSectorsCount() << "\n";
+
+            if (drive->IsProbablySsd()) {
+                std::cout << "SSD Life Left: " << drive->GetSsdLifeLeft() << "%\n";
+                std::cout << "Total Bytes Written: " << drive->GetTotalBytesWritten() << "\n";
+                std::cout << "Total Bytes Read: " << drive->GetTotalBytesRead() << "\n";
+                std::cout << "Wear Leveling Count: " << drive->GetWearLevelingCount() << "\n";
+            }
+
+            std::cout << "-------------------------------------\n";
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error reading SMART data: " << e.what() << std::endl;
+    }
+}
+
+```
+
+### info.hpp (C++) - Linux Only
+
+```cpp
+#include "info.hpp"
+#include <iostream>
+using namespace LinuxInfo;
+int main() {
+    // Get CPU information
+    auto cpuInfo = getCPUInfo();
+
+    std::cout << "=== CPU Info ===\n";
+    for (const auto& [key, value] : cpuInfo) {
+        std::cout << key << ": " << value << "\n";
+    }
+
+    return 0;
+}
+
+```
+
 ---
 
 ## 📚 Documentation
@@ -265,7 +402,7 @@ All documentation is in the `docs/` folder:
 * [`LiveViewErrors.md`](./docs/LiveViewErrors.md): **LiveView Errors & Exceptions**  
   Guides and examples for handling errors and exceptions in the LiveView module.
 ---
-## 📖 API Reference (Summary)
+## 📖 API Reference (Python)
 
 | Function (JSON)            | Function (Python Object)                           | Description |
 | ------------------------------------------ | -------------------------------------------------- | ----------- |
@@ -509,4 +646,5 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
