@@ -36,9 +36,9 @@ public:
     std::string hardwareId;
     WORD vendorId;
     WORD deviceId;
-    BYTE classCode;
-    BYTE subClass;
-    BYTE progIF;
+    BYTE classCode; // Currently not populated; can be obtained by reading the PCI Configuration Space or via a static mapping from a data file (e.g., pci.ids).
+    BYTE subClass;  // Currently not populated; can be obtained by reading the PCI Configuration Space or via a static mapping from a data file (e.g., pci.ids).
+    BYTE progIF;    // Currently not populated; can be obtained by reading the PCI Configuration Space or via a static mapping from a data file (e.g., pci.ids).
     std::vector<DWORD> baseAddresses;
     std::vector<std::string> resources;
     bool isSMBusCandidate;
@@ -115,8 +115,7 @@ private:
                                          SPDRP_CLASS, NULL, (PBYTE)className,
                                          sizeof(className), NULL)) {
 #ifdef UNICODE
-      int size =
-          WideCharToMultiByte(CP_UTF8, 0, className, -1, NULL, 0, NULL, NULL);
+      int size = WideCharToMultiByte(CP_UTF8, 0, className, -1, NULL, 0, NULL, NULL);
       if (size > 0) {
         std::vector<char> buffer(size);
         WideCharToMultiByte(CP_UTF8, 0, className, -1, &buffer[0], size, NULL,
@@ -252,3 +251,4 @@ private:
       }
 
     };
+
