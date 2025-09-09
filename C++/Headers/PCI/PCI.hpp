@@ -218,7 +218,6 @@ private:
 
         device.isSMBusCandidate =
             (deviceNameLower.find("smbus") != std::string::npos) ||
-            (deviceNameLower.find("i2c") != std::string::npos) ||
             (hardwareIdLower.find("smb") != std::string::npos) ||
             (device.vendorId == 0x8086 && IsIntelSMBusDevice(device.deviceId)) ||
             (device.vendorId == 0x1022 && IsAMDSMBusDevice(device.deviceId));
@@ -251,4 +250,5 @@ private:
         ss << std::hex << std::uppercase << value;
         return ss.str();
       }
+
     };
