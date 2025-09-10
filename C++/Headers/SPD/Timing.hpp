@@ -192,7 +192,6 @@ struct TimingDDR3 {
     }
 
     // Byte 22: Minimum Active to Precharge Delay Time (tRASmin)
-    // Combined with upper nibble from byte 21 (bits 3-0)
     uint16_t tRAS_raw = ((spdData[21] & 0x0F) << 8) | spdData[22];
     switch (spdData[22]) {
     case 0x2C: // 37.5ns - DDR3-800D/E, DDR3-1066E/F/G
@@ -210,7 +209,6 @@ struct TimingDDR3 {
     }
 
     // Byte 23: Minimum Active to Active Refresh Delay Time (tRCmin)
-    // Combined with upper nibble from byte 21 (bits 7-4)
     uint16_t tRC_raw = (((spdData[21] & 0xF0) >> 4) << 8) | spdData[23];
     switch (spdData[23]) {
     case 0x90: // 50ns - DDR3-800D
@@ -284,7 +282,6 @@ struct TimingDDR3 {
     }
 
     // Bytes 28-29: Minimum Four Activate Window Delay Time (tFAWmin)
-    // Combined with upper nibble from byte 28 (bits 3-0)
     uint16_t tFAW_raw = ((spdData[28] & 0x0F) << 8) | spdData[29];
     switch (spdData[29]) {
     case 0x40: // 40.0ns - DDR3-800 1K page, DDR3-1600 2K page
@@ -629,3 +626,4 @@ struct TimingDDR4 {
     tCKmin += tCKmin_fine;
   }
 };
+
