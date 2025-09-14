@@ -15,6 +15,7 @@ body:
         - install
         - build
         - import
+        - Hardware detection
     validations:
       required: true
 
