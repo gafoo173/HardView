@@ -1,0 +1,128 @@
+name: HardView C++ Issue Report
+description: Report any problem related to HardView C++ libraries (bugs, performance, compilation, linking, or hardware detection issues).
+title: "[HardView C++]: "
+labels:
+  - bug
+  - cpp
+body:
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Type of Issue
+      description: Select the category that best matches your problem.
+      options:
+        - bug
+        - performance
+        - compilation
+        - linking
+        - hardware detection
+        - other
+    validations:
+      required: true
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Pre-Submission Checklist
+      description: Please confirm all of the following before submitting.
+      options:
+        - label: "I have read the library code or documentation and confirmed that my function calls are correct."
+          required: true
+        - label: "I am using a supported C++ standard (C++11 or higher)."
+          required: true
+        - label: "I am on a supported platform (Windows or Linux x64/x86)."
+          required: true
+  - type: input
+    id: library-name-version
+    attributes:
+      label: HardView C++ Library Name and Version
+      placeholder: "Example: SMART.hpp - 1.0.1"
+    validations:
+      required: true
+  - type: input
+    id: cpp-standard
+    attributes:
+      label: C++ Standard Version
+      placeholder: "Example: C++11, C++14, C++17, C++20, C++23"
+    validations:
+      required: true
+  - type: input
+    id: compiler-version
+    attributes:
+      label: Compiler Name and Version
+      placeholder: "Example: g++ 13.2.0, clang++ 15.0.0, MSVC 19.38"
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: Operating System / Distribution
+      placeholder: "Example: Windows 11 x64, Ubuntu 22.04"
+    validations:
+      required: true
+  - type: dropdown
+    id: build-system
+    attributes:
+      label: Build System
+      description: What build system are you using?
+      options:
+        - CMake
+        - Make
+        - Visual Studio
+        - Code::Blocks
+        - Manual compilation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: compilation-flags
+    attributes:
+      label: Compilation Flags / Build Configuration
+      description: "Include any specific compiler flags or build settings."
+      placeholder: "Example: -std=c++17 -Wall -Wextra"
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: "List the exact steps to reproduce the issue."
+      placeholder: |
+        1. Include the header file
+        2. Write specific code using the library
+        3. Compile with specific flags
+        4. Run the executable
+        5. Observe the error/issue
+    validations:
+      required: true
+  - type: textarea
+    id: code-sample
+    attributes:
+      label: Minimal Code Sample
+      description: "Provide a minimal, reproducible code example that demonstrates the issue."
+      placeholder: |
+        #include "SMART.hpp"
+        
+        int main() {
+            // Your code here that reproduces the issue
+            return 0;
+        }
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: "Describe what you expected to happen."
+      placeholder: "The code should compile successfully and run without errors, returning expected hardware information."
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: "Describe what actually happened, including compilation errors, runtime errors, or unexpected output."
+      placeholder: "Include full error messages, compiler output, or runtime logs here."
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: "Add any other details, hardware specifications, or environment information that may help."
+      placeholder: "Include hardware specs, dependency versions, or any other relevant details."
