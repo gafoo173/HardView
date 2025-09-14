@@ -180,19 +180,24 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.2.0b1',
+    version='3.2.0b2',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.2.0b1
+# HardView 3.2.0b2
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-### Additions in 3.2.0b1
+### Additions in 3.2.0b2
 
-- Added the new **HardView.smbios** module for Windows, which is responsible for parsing SMBIOS and displaying its information.  
-  The goal is to provide a faster and better alternative for retrieving **static hardware information** compared to the old module **HardView.HardView**.
+Added custom update functions to allow updating a single hardware component instead of performing a general update.  
+For example, you can update only the CPU sensors without updating all other components.  
+
+These functions were added to the `PyManageTemp` class in HardView.LiveView:  
+
+- SpecificUpdate(id: int)
+- MultiSpecificUpdate(ids: list[int])
 
 
 ---

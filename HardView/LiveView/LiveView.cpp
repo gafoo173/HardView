@@ -1179,6 +1179,16 @@ public:
   }
   void Close() { ShutdownHardwareTempMonitor(); }
   void Update() { UpdateHardwareMonitorTemp(); }
+  void SpecificUpdate(int id) {
+     if (id >= 1 && id <= 11)
+     SpecificUpdateHardwareTempMonitor(id);
+     }
+  void MultiSpecificUpdate(std::vector<int> ids) {
+    for (const int& id : ids) {
+      if (id >= 1 && id <= 11)
+      SpecificUpdateHardwareTempMonitor(id);
+   }
+  }
 };
 
 class PySensor {
@@ -1515,15 +1525,19 @@ PYBIND11_MODULE(LiveView, m) {
       .def("reget", &PySensor::ReGet, "ReGet sensor and fan data.")
       .def("re_get", &PySensor::ReGet, "ReGet sensor and fan data.");
 
-  // --- PyManageTemp Binding --
-  py::class_<PyManageTemp>(m, "PyManageTemp")
-      .def(py::init<>())
-      .def("Init", &PyManageTemp::Init)
-      .def("init", &PyManageTemp::Init)
-      .def("Close", &PyManageTemp::Close)
-      .def("close", &PyManageTemp::Close)
-      .def("Update", &PyManageTemp::Update)
-      .def("update", &PyManageTemp::Update);
+// --- PyManageTemp Binding ---
+py::class_<PyManageTemp>(m, "PyManageTemp")
+    .def(py::init<>())
+    .def("Init", &PyManageTemp::Init)
+    .def("init", &PyManageTemp::Init)
+    .def("Close", &PyManageTemp::Close)
+    .def("close", &PyManageTemp::Close)
+    .def("Update", &PyManageTemp::Update)
+    .def("update", &PyManageTemp::Update)
+    .def("SpecificUpdate", &PyManageTemp::SpecificUpdate)
+    .def("specific_update", &PyManageTemp::SpecificUpdate)
+    .def("MultiSpecificUpdate", &PyManageTemp::MultiSpecificUpdate)
+    .def("multi_specific_update", &PyManageTemp::MultiSpecificUpdate);
 
   // --- PyRawInfo Binding ---
   py::class_<PyRawInfo>(m, "PyRawInfo")
@@ -1577,4 +1591,3 @@ PYBIND11_MODULE(LiveView, m) {
            "Update sensor data, optionally update names");
 #endif
 }
-

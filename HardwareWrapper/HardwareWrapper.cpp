@@ -64,6 +64,9 @@ private:
         return -1.0;
     }
 
+
+
+
     static double GetFanRpmForHardwareType(HardwareType type, String^ sensorNamePartialMatch)
     {
         Init();
@@ -119,6 +122,71 @@ public:
         {
             for each(IHardware ^ hardware in comp->Hardware)
                 hardware->Update();
+        }
+    }
+
+    static void SpecificUpdate(int componentId)
+    {
+        Init();
+        auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
+        if (comp == nullptr)
+            return;
+
+        for each(IHardware ^ hardware in comp->Hardware)
+        {
+            switch (componentId)
+            {
+            case 1: // Motherboard
+                if (hardware->HardwareType == HardwareType::Motherboard)
+                    hardware->Update();
+                break;
+            case 2: // SuperIO
+                if (hardware->HardwareType == HardwareType::SuperIO)
+                    hardware->Update();
+                break;
+            case 3: // CPU
+                if (hardware->HardwareType == HardwareType::Cpu)
+                    hardware->Update();
+                break;
+            case 4: // Memory
+                if (hardware->HardwareType == HardwareType::Memory)
+                    hardware->Update();
+                break;
+            case 5: // GPU (Nvidia + AMD + Intel)
+                if (hardware->HardwareType == HardwareType::GpuNvidia ||
+                    hardware->HardwareType == HardwareType::GpuAmd ||
+                    hardware->HardwareType == HardwareType::GpuIntel)
+                {
+                    hardware->Update();
+                }
+                break;
+            case 6: // Storage
+                if (hardware->HardwareType == HardwareType::Storage)
+                    hardware->Update();
+                break;
+            case 7: // Network
+                if (hardware->HardwareType == HardwareType::Network)
+                    hardware->Update();
+                break;
+            case 8: // Cooler
+                if (hardware->HardwareType == HardwareType::Cooler)
+                    hardware->Update();
+                break;
+            case 9: // EmbeddedController
+                if (hardware->HardwareType == HardwareType::EmbeddedController)
+                    hardware->Update();
+                break;
+            case 10: // PSU
+                if (hardware->HardwareType == HardwareType::Psu)
+                    hardware->Update();
+                break;
+            case 11: // Battery
+                if (hardware->HardwareType == HardwareType::Battery)
+                    hardware->Update();
+                break;
+            default:
+                break;
+            }
         }
     }
 
@@ -473,4 +541,7 @@ extern "C" __declspec(dllexport) void UpdateHardwareMonitor()
 {
     MonitorManager::Update();
 }
-
+extern "C" __declspec(dllexport) void SpecificUpdateHardwareTemp(int componentId)
+{
+    MonitorManager::SpecificUpdate(componentId);
+}

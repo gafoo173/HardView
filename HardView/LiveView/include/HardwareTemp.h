@@ -22,6 +22,19 @@
 #define HWERR_NULL_FUNCTION    -99
 #define HWERR_MISS_FUNCTION    -1
 
+//Specified update values
+#define COMPONENT_MOTHERBOARD 1
+#define COMPONENT_SUPERIO 2
+#define COMPONENT_CPU 3
+#define COMPONENT_MEMORY 4
+#define COMPONENT_GPU 5
+#define COMPONENT_STORAGE 6
+#define COMPONENT_NETWORK 7
+#define COMPONENT_COOLER 7
+#define COMPONENT_EMBEDDED_CONTROLLER 9
+#define COMPONENT_PSU 10
+#define COMPONENT_BATTERY 11
+
 // Define function pointers for the functions in HardwareWrapper.dll
 typedef void (*InitHardwareMonitorFunc)();
 typedef double (*GetCpuTemperatureFunc)();
@@ -38,6 +51,7 @@ typedef double (*GetSpecificSensorValueFunc)(const char*);
 typedef void (*GetAllFanRpmsFunc)(char***, double**, int*);
 typedef void (*FreeFanDataFunc)(char**, double*, int);
 typedef void (*UpdateHardwareMonitorFunc)();
+typedef void (*SpecificUpdateHardwareTempFunc)(int);
 
 // Global handle to the loaded DLL and function pointers
 static HMODULE hHardwareWrapperDLL = NULL;
@@ -56,6 +70,7 @@ static GetSpecificSensorValueFunc pGetSpecificSensorValue = NULL;
 static GetAllFanRpmsFunc pGetAllFanRpms = NULL;
 static FreeFanDataFunc pFreeFanData = NULL;
 static UpdateHardwareMonitorFunc pUpdateHardwareMonitor = NULL;
+static SpecificUpdateHardwareTempFunc pSpecificUpdateHardwareTemp = NULL;
 
 // Helper to get function address and check
 template<typename FuncType>
@@ -94,12 +109,14 @@ __declspec(dllexport) int InitHardwareTempMonitor() {
     pGetAllFanRpms = GetFunction<GetAllFanRpmsFunc>(hHardwareWrapperDLL, "GetAllFanRpms");
     pFreeFanData = GetFunction<FreeFanDataFunc>(hHardwareWrapperDLL, "FreeFanData");
     pUpdateHardwareMonitor = GetFunction<UpdateHardwareMonitorFunc>(hHardwareWrapperDLL, "UpdateHardwareMonitor");
+    pSpecificUpdateHardwareTemp = GetFunction<SpecificUpdateHardwareTempFunc>(hHardwareWrapperDLL, "SpecificUpdateHardwareTemp");
 
     // Check if all essential functions were loaded
     if (!pInitHardwareMonitor || !pGetCpuTemperature || !pGetGpuTemperature || !pGetMotherboardTemperature ||
         !pGetStorageTemperature || !pGetAverageCpuCoreTemperature || !pGetMaxCpuCoreTemperature ||
         !pGetCpuFanRpm || !pGetGpuFanRpm || !pGetAvailableSensors || !pFreeSensorNames ||
-        !pGetSpecificSensorValue || !pGetAllFanRpms || !pFreeFanData || !pUpdateHardwareMonitor) {
+        !pGetSpecificSensorValue || !pGetAllFanRpms || !pFreeFanData || !pUpdateHardwareMonitor ||
+        !pSpecificUpdateHardwareTemp) {
         FreeLibrary(hHardwareWrapperDLL);
         hHardwareWrapperDLL = NULL;
         return -1;
@@ -130,6 +147,7 @@ __declspec(dllexport) void ShutdownHardwareTempMonitor() {
         pGetAllFanRpms = NULL;
         pFreeFanData = NULL;
         pUpdateHardwareMonitor = NULL;
+        pSpecificUpdateHardwareTemp = NULL;
     }
 }
 
@@ -217,6 +235,13 @@ __declspec(dllexport) void FreeFanDataTemp(char** fanNames, double* rpms, int co
 __declspec(dllexport) void UpdateHardwareMonitorTemp() {
     if (pUpdateHardwareMonitor) {
         pUpdateHardwareMonitor();
+    }
+}
+
+// NEW: Wrapper Function for Specific Update
+__declspec(dllexport) void SpecificUpdateHardwareTempMonitor(int componentId) {
+    if (pSpecificUpdateHardwareTemp) {
+        pSpecificUpdateHardwareTemp(componentId);
     }
 }
 

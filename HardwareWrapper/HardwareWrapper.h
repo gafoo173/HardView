@@ -30,7 +30,7 @@ extern "C" {
     __declspec(dllexport) void GetAllFanRpms(char*** fanNames, double** rpms, int* count);
     __declspec(dllexport) void FreeFanData(char** fanNames, double* rpms, int count);
     __declspec(dllexport) void UpdateHardwareMonitor();
-
+	__declspec(dllexport) void SpecificUpdateHardwareTemp(int componentId);
     // New function to get a specific sensor value by its full name
     __declspec(dllexport) double GetSpecificSensorValue(const char* fullSensorName);
 }
