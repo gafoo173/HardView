@@ -14,7 +14,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Linux-100%2B%20info-brightgreen" alt="Linux Info" height="30">
   <img src="https://img.shields.io/badge/Windows-120%2B%20info-blueviolet" alt="Windows Info" height="30">
-<img src="https://img.shields.io/badge/🌡_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="30">
+<img src="https://img.shields.io/badge/_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="30">
 
 </p>
 
@@ -35,29 +35,29 @@ This table summarizes the libraries and tools included in the **HardView** proje
 
 | Library Name                             | Description                                                                                                                                                                                                                                                                                                                                                                                                      | Language   | Purpose / Features                                                                                     |
 | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------ |
-| [**HardView**](./HardView)               | The **core library** providing static hardware information for Windows and Linux. Supports JSON or Python objects in the Python version.                                                                                                                                                                                                                                                                         | 🟦 C       | Main library for retrieving static system information.                                                 |
-| [**LiveView**](./HardView/LiveView)      | A **monitoring library** for both static hardware info and real-time data. Supports CPU temperature and regular usage on Windows and Linux                                                                                                                                                                                                                                                                       | 🟪 C++     | Real-time monitoring of hardware metrics, integrates static info and CPUID functions.                  |
-| [**HardwareWrapper**](./HardwareWrapper) | An **internal library** wrapping `LibreHardwareMonitorLib` with simple functions through C++/CLI, allowing use from C++. Primarily used by LiveView on Windows for temperature readings.                                                                                                                                                                                                                         | 🟩 C++/CLI | Simplifies access to LibreHardwareMonitorLib, providing easy C++ usage for Windows sensor data.        |
-| [**cpuid**](./cpuid)                     | An **internal, header-only C++ library** providing easy helper functions to access most CPUID information. Used by LiveView for CPUID-related functionality.                                                                                                                                                                                                                                                     | 🟨 C++     | Lightweight, easy-to-integrate CPUID helper library for detailed processor information.                |
-| [**C++/Headers**](./C++/Headers)             | A folder containing **header-only C++ libraries** like `SMART.hpp` (for SMART info) or `Live.hpp` (C++ header-only version of LiveView), and others.                                                                                                                                                                                                                                                             | 🟨 C++     | Header-only C++ modules for advanced hardware access and monitoring.                                   |
-| [**Drivers**](./Drivers)                 | A set of **Windows kernel drivers** granting access to low-level hardware functionality useful for monitoring. Each driver comes with a header-only C++ library for easier integration. These drivers are **not used** by the main HardView libraries (Python or C++) since they are unsigned. They are provided for those who wish to sign and use them, or for personal use with local build and test signing. | 🟥 C/C++   | Optional drivers for advanced hardware access under Windows. Not required for standard HardView usage. |
-| [**Tools**](./Tools)                     | A collection of **CLI and GUI Python tools** that rely on HardView to display hardware information.                                                                                                                                                                                                                                                                                                              | 🟦 Python  | Command-line and GUI utilities for interacting with hardware info provided by HardView.                |
+| [**HardView**](./HardView)               | The **core library** providing static hardware information for Windows and Linux. Supports JSON or Python objects in the Python version.                                                                                                                                                                                                                                                                         |  C       | Main library for retrieving static system information.                                                 |
+| [**LiveView**](./HardView/LiveView)      | A **monitoring library** for both static hardware info and real-time data. Supports CPU temperature and regular usage on Windows and Linux                                                                                                                                                                                                                                                                       |  C++     | Real-time monitoring of hardware metrics, integrates static info and CPUID functions.                  |
+| [**HardwareWrapper**](./HardwareWrapper) | An **internal library** wrapping `LibreHardwareMonitorLib` with simple functions through C++/CLI, allowing use from C++. Primarily used by LiveView on Windows for temperature readings.                                                                                                                                                                                                                         |  C++/CLI | Simplifies access to LibreHardwareMonitorLib, providing easy C++ usage for Windows sensor data.        |
+| [**cpuid**](./cpuid)                     | An **internal, header-only C++ library** providing easy helper functions to access most CPUID information. Used by LiveView for CPUID-related functionality.                                                                                                                                                                                                                                                     |  C++     | Lightweight, easy-to-integrate CPUID helper library for detailed processor information.                |
+| [**C++/Headers**](./C++/Headers)             | A folder containing **header-only C++ libraries** like `SMART.hpp` (for SMART info) or `Live.hpp` (C++ header-only version of LiveView), and others.                                                                                                                                                                                                                                                             |  C++     | Header-only C++ modules for advanced hardware access and monitoring.                                   |
+| [**Drivers**](./Drivers)                 | A set of **Windows kernel drivers** granting access to low-level hardware functionality useful for monitoring. Each driver comes with a header-only C++ library for easier integration. These drivers are **not used** by the main HardView libraries (Python or C++) since they are unsigned. They are provided for those who wish to sign and use them, or for personal use with local build and test signing. |  C/C++   | Optional drivers for advanced hardware access under Windows. Not required for standard HardView usage. |
+| [**Tools**](./Tools)                     | A collection of **CLI and GUI Python tools** that rely on HardView to display hardware information.                                                                                                                                                                                                                                                                                                              |  Python  | Command-line and GUI utilities for interacting with hardware info provided by HardView.                |
 
-## 🔑 Key Features
+##  Key Features
 
-* 🖥️ **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network,GPU.
-* 🏗️ **Advanced Storage & SMART**: Detailed disk, partition, and SMART attributes.
-* 📊 **Performance Monitoring**: Real-time and interval-based CPU, RAM, and system performance.
-* ⚡ **C/C++ Implementation**: High performance native code.
-* 🐍 **Python Integration**: Easy-to-use Python API.
-* 🌡️ **Temperature & Sensors Monitoring**:(3.1.0+) Retrieve real-time temperature, voltage, and fan speed readings from system sensors.  
+*  **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network,GPU.
+*  **Advanced Storage & SMART**: Detailed disk, partition, and SMART attributes.
+*  **Performance Monitoring**: Real-time and interval-based CPU, RAM, and system performance.
+*  **C/C++ Implementation**: High performance native code.
+*  **Python Integration**: Easy-to-use Python API.
+*  **Temperature & Sensors Monitoring**:(3.1.0+) Retrieve real-time temperature, voltage, and fan speed readings from system sensors.  
   * **Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for comprehensive sensor data via native integration.  
   * **Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors)  for direct hardware monitoring.  
   * **Licenses**: LibreHardwareMonitor — **MPL-2.0** ([`licenses/LICENSE.MPL-2.txt`](licenses/LICENSE.MPL-2.txt)), lm-sensors — **LGPL-2.1-or-later** ([`licenses/LICENSE.LGPL-2.1.txt`](licenses/LICENSE.LGPL-2.1.txt))
 
 ---
 
-## 📦 Installation (Python)
+##  Installation (Python)
 
 ### From PyPI
 
@@ -77,7 +77,7 @@ For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 
 ---
 
-## 🚀 Usage Examples
+##  Usage Examples
 ### HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)
 ```python
 import HardView
@@ -383,11 +383,11 @@ int main() {
 
 ---
 
-## 📚 Documentation
+##  Documentation
 
 Full documentation is available on the GitHub Pages website:
 
-➡️ [https://gafoo173.github.io/HardView/](https://gafoo173.github.io/HardView/)
+ [https://gafoo173.github.io/HardView/](https://gafoo173.github.io/HardView/)
 
 All documentation is in the `docs/` folder:
 
@@ -402,7 +402,7 @@ All documentation is in the `docs/` folder:
 * [`LiveViewErrors.md`](./docs/LiveViewErrors.md): **LiveView Errors & Exceptions**  
   Guides and examples for handling errors and exceptions in the LiveView module.
 ---
-## 📖 API Reference (Python)
+##  API Reference (Python)
 
 | Function (JSON)            | Function (Python Object)                           | Description |
 | ------------------------------------------ | -------------------------------------------------- | ----------- |
@@ -424,7 +424,7 @@ All documentation is in the `docs/` folder:
 | `monitor_ram_usage_duration(d, i)`         | `monitor_ram_usage_duration_objects(d,i)`          | Monitor RAM usage over time |
 | `monitor_system_performance_duration(d,i)` | `monitor_system_performance_duration_objects(d,i)` | Monitor system performance over time |
 
-## 🖥️ LiveView Classes & Methods
+##  LiveView Classes & Methods
 
 ## API Reference
 
@@ -480,7 +480,7 @@ All documentation is in the `docs/` folder:
 
 ---
 
-## 📊 Diagrams
+##  Diagrams
 
 *(Uses mermaid.js diagrams in compatible renderers)*
 
@@ -574,24 +574,25 @@ classDiagram
 ```
 ---
 
-## 🧪 Platform Support
+##  Platform Support
 
-| Feature                  | Windows | Linux|           
-| ------------------------ | ------- | -----|
-| BIOS Info                | ✅    | ✅    |
-| System Info              | ✅    | ✅    |
-| Baseboard Info           | ✅    | ✅    |
-| Chassis Info             | ✅    | ✅    |
-| CPU Info                 | ✅    | ✅(by LiveView)    |
-| RAM Info                 | ✅    | ✅    |
-| Disks                    | ✅    | ✅    |
-| Network                  | ✅    | ✅    |
-| Advanced Storage / SMART | ✅    | 🚫    |
-| Performance Monitoring   | ✅    | ✅    |
+| Feature                  | Windows           | Linux             |
+| ------------------------ | ----------------- | ----------------- |
+| BIOS Info                | yes               | yes               |
+| System Info              | yes               | yes               |
+| Baseboard Info           | yes               | yes               |
+| Chassis Info             | yes               | yes               |
+| CPU Info                 | yes               | yes (by LiveView) |
+| RAM Info                 | yes               | yes               |
+| Disks                    | yes               | yes               |
+| Network                  | yes               | yes               |
+| Advanced Storage / SMART | yes               | No                |
+| Performance Monitoring   | yes               | yes               |
+| Sensors                  | yes (by LiveView) | yes (by LiveView) |
 
 ---
 
-## 🛠️ Development
+##  Development
 
 ### Build Instructions
 
@@ -609,7 +610,7 @@ python setup.py build_ext --inplace
 
 ---
 
-## 📄 License
+##  License
 
 ### Core Project (HardView)
 All core project files, including project-specific libraries and header files are licensed under the **MIT License**. They are free for both personal and commercial use.
@@ -619,7 +620,7 @@ All tools in the **Tools** folder are licensed under: GNU GENERAL PUBLIC LICENSE
 You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).  
 
 ---
-## 🚀 Quick Start And Tests
+##  Quick Start And Tests
 
 For a quick and visually appealing colorful test in the console using the **rich** library, run the script:  
 [test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
@@ -632,7 +633,7 @@ The LiveView test files are located in [tests/units](https://github.com/gafoo173
 
 
 ---
-## 🤝 Contribution
+##  Contribution
 
 Contributions are welcome!
 
@@ -646,6 +647,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
