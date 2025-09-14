@@ -77,6 +77,22 @@ For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 
 ---
 
+## Dependencies
+
+**Python (Windows):**  
+Requires `LibreHardwareMonitorLib.dll` and `HidSharp.dll`.  
+These DLLs are included in the package, so no separate installation is needed.
+
+**Python (Linux):**  
+Requires the `lm-sensors` library to be installed for hardware monitoring.
+
+**C++ Libraries:**  
+Check the top of each library header file for listed dependencies.  
+Most libraries have no external dependencies.  
+Exception: `SPD.hpp` requires `InpOutx64.dll`.  
+It is recommended to review the header file beginning for any dependency notes.
+
+
 ##  Usage Examples
 ### HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)
 ```python
@@ -647,6 +663,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
