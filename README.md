@@ -432,7 +432,6 @@ All documentation is in the `docs/` folder:
 | `get_disk_info()`                          | `get_disk_info_objects()`                          | Storage devices |
 | `get_network_info()`                       | `get_network_info_objects()`                       | Network adapters |
 | `get_partitions_info()`                    | `get_partitions_info_objects()`                    | Disk partitions (advanced) |
-| `get_smart_info()`                         | `get_smart_info_objects()`                         | Full disk/SMART info (advanced) |
 | `get_cpu_usage()`                          | `get_cpu_usage_objects()`                          | Current CPU usage |
 | `get_ram_usage()`                          | `get_ram_usage_objects()`                          | Current RAM usage |
 | `get_system_performance()`                 | `get_system_performance_objects()`                 | Combined CPU/RAM usage |
@@ -663,6 +662,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
