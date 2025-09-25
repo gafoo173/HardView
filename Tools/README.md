@@ -17,7 +17,7 @@ This folder contains three tools built on top of the [HardView](https://github.c
 ---
 
 ## 📊 MMT (My Monitor Tray)
-> ⚠️ **Warning:**  
+> **Warning:**  
 > This tool is still in the experimental stage and may be unstable at times.
 
 <img src="https://img.shields.io/badge/MMT-Alpha-red" alt="MMT" height="30">
@@ -26,19 +26,19 @@ This folder contains three tools built on top of the [HardView](https://github.c
 
 Built using **[PySide6](https://doc.qt.io/qtforpython/)** and **[HardView.LiveView](https://github.com/gafoo173/hardview)** library for hardware data collection.
 
-### 📦 Dependencies:
+###  Dependencies:
 
 * **[PySide6](https://doc.qt.io/qtforpython/)** - Qt6 bindings for Python (GUI framework)
 * **[psutil](https://github.com/giampaolo/psutil)** - Cross-platform system and process utilities
 * **[pywin32](https://github.com/mhammond/pywin32)** - Python for Windows extensions (Windows only)
 
-### 📋 Installation Requirements:
+### Installation Requirements:
 
 ```bash
 pip install PySide6 psutil pywin32 HardView
 ```
 
-### 🚀 Usage Examples:
+###  Usage Examples:
 
 ```bash
 python MMT.py                                    # Start with default settings
@@ -56,7 +56,7 @@ python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
   * GPU Usage (%), GPU Temperature (°C)
   * RAM Usage (%), Disk Usage (MB/s)
 
-* 🚨 **Advanced Alert System:**
+* **Advanced Alert System:**
   * **Message + Restart**: Shows warning and automatically restarts system after 30 seconds
   * **Beep Alert**: Plays customizable beep sounds (frequency and duration)
   * **Message Only**: Shows warning message without system actions
@@ -74,19 +74,19 @@ python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
   * Context menu for quick control access
   * Tray notifications for alerts and status changes
 
-* 📊 **Status Monitoring Window:**
+*  **Status Monitoring Window:**
   * Live value display with progress bars
   * Color-coded indicators (green/orange/red)
   * System information tab
   * Alert status and configuration display
 
-* 🔧 **Advanced Settings:**
+*  **Advanced Settings:**
   * Thread-safe monitoring with proper error handling
   * Alert cooldown system (60 seconds between alerts)
   * Automatic error recovery and monitor restart
   * Administrator privilege detection for temperature monitoring
 
-### 📋 Command Line Options:
+### Command Line Options:
 
 ```
 --config FILE            Path to configuration file
@@ -101,7 +101,7 @@ python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
 --version                Show version information
 ```
 
-### 🎛️ Supported Monitor Types:
+### Supported Monitor Types:
 
 | Type | Description | Unit | Admin Required |
 |------|-------------|------|----------------|
@@ -114,16 +114,16 @@ python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
 
 ### ⚠️ Important Notices:
 
-* 🔒 **Administrator Privileges**
+*  **Administrator Privileges**
   Temperature monitoring on Windows requires administrator privileges. The application will warn you if admin rights are needed.
 
-* 🛡️ **System Protection**
+*  **System Protection**
   The "Message + Restart" alert method will automatically restart your system when critical thresholds are exceeded to prevent hardware damage.
 
-* 💾 **Configuration Persistence**
+* **Configuration Persistence**
   All settings are automatically saved to `mmt_settings.json` and restored on application restart.
 
-* 🎯 **Alert Cooldown**
+*  **Alert Cooldown**
   Alerts have a 60-second cooldown period to prevent notification spam during sustained high usage.
 
 ### 🔧 Configuration File Format:
@@ -134,7 +134,7 @@ python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
   "interval": 1000,
   "enable_alert": true,
   "threshold": 80,
-  "alert_method": "message_restart",
+  "alert_method": "message_only",
   "beep_frequency": 1000,
   "beep_duration": 1000,
   "auto_start": true,
