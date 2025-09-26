@@ -83,6 +83,18 @@ For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 Requires `LibreHardwareMonitorLib.dll` and `HidSharp.dll`.  
 These DLLs are included in the package, so no separate installation is needed.
 
+**Windows Temperature Information Features**
+
+The temperature information features in Windows specifically require the **MSVC Runtime**, namely the following DLLs on **64-bit systems**:
+
+- `msvcp140.dll`
+- `vcruntime140.dll`
+- `vcruntime140_1.dll`
+
+If you place these DLLs alongside HardwareWrapper.dll, the temperature-related functions will likely work properly even if you haven't installed the full MSVC runtime.  
+*(This applies whether you are using the Python **LiveView** or the **HardwareTemp.dll** from the SDK; in all cases, these libraries are required.)*
+**In HardView Python versions **3.2.0+**, these DLLs are already included alongside the package, so you don’t need to place them manually.)**
+
 **Python (Linux):**  
 Requires the `lm-sensors` library to be installed for hardware monitoring.
 
@@ -662,6 +674,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
