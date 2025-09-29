@@ -180,25 +180,24 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.2.0b2',
+    version='3.2.0',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.2.0b2
+# HardView 3.2.0
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-### Additions in 3.2.0b2
+### Additions in 3.2.0
 
-Added custom update functions to allow updating a single hardware component instead of performing a general update.  
-For example, you can update only the CPU sensors without updating all other components.  
+1-Added the smbios module, which retrieves hardware information on Windows by analyzing SMBIOS tables.
 
-These functions were added to the `PyManageTemp` class in HardView.LiveView:  
+2-Updated the __init__.py file: in previous versions, it used to copy the required DLLs to the Python directory so programs could access them. Now, it temporarily adds them to the PATH environment variable instead of copying.
 
-- SpecificUpdate(id: int)
-- MultiSpecificUpdate(ids: list[int])
+3-Added MSVC Runtime DLLs: the library can now use temperature functions on Windows without needing a separate MSVC Runtime installation, as the required libraries are included with the package.
 
+(All changes apply only to Windows; there are no changes for Linux.)
 
 ---
 
@@ -242,3 +241,4 @@ These functions were added to the `PyManageTemp` class in HardView.LiveView:
         'Source': 'https://github.com/gafoo173/HardView',
     },
 )
+
