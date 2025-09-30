@@ -505,66 +505,9 @@ All documentation is in the `docs/` folder:
 
 ---
 
-##  Diagrams
 
+## Sensor Value Fetch Flow (LiveView)
 *(Uses mermaid.js diagrams in compatible renderers)*
-
-### CPU Info
-
-```mermaid
-classDiagram
-    class CPUInfo {
-        +cpus: CPU[]
-    }
-    class CPU {
-        +name: str
-        +manufacturer: str
-        +architecture: str
-        +cores: int
-        +threads: int
-        +max_clock_speed: float
-        +socket_designation: str
-    }
-    CPUInfo "1" *-- "1" CPU
-```
-
-### Memory Info
-
-```mermaid
-classDiagram
-    class RAMInfo {
-        +total_physical_memory_bytes: int
-        +memory_modules: MemoryModule[]
-    }
-    class MemoryModule {
-        +capacity_bytes: int
-        +speed_mhz: int
-        +manufacturer: str
-        +serial_number: str
-        +part_number: str
-    }
-    RAMInfo "1" *-- "*" MemoryModule
-```
-
-### Disk Info
-
-```mermaid
-classDiagram
-    class DiskInfo {
-        +disks: Disk[]
-    }
-    class Disk {
-        +model: str
-        +manufacturer: str
-        +interface_type: str
-        +size: int
-        +serial_number: str
-        +media_type: str
-    }
-    DiskInfo "1" *-- "*" Disk
-```
-
-### Sensor Value Fetch Flow (LiveView)
 
 ```mermaid
 classDiagram
@@ -672,6 +615,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
