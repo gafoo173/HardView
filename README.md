@@ -2,8 +2,8 @@
 <p align="center">
 
   <!--<img src="https://img.shields.io/badge/API_Version-3.1.0Beta1-orange" alt="API Version (Beta)" height="30">-->
-  <img src="https://img.shields.io/badge/PyPI_Stable-3.1.1-blue" alt="PyPI Stable Version" height="30">
-  <img src="https://img.shields.io/badge/PyPI_Beta-3.2.0b1-purple" alt="PyPI Beta Version" height="30">
+  <img src="https://img.shields.io/badge/PyPI_Stable-3.2.0-blue" alt="PyPI Stable Version" height="30">
+  <!--img src="https://img.shields.io/badge/PyPI_Beta-3.2.0b1-purple" alt="PyPI Beta Version" height="30"-->
   <img src="https://img.shields.io/badge/downloads-10.7K-red" alt="Version" height="30">
   <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="30">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
@@ -12,8 +12,6 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Linux-100%2B%20info-brightgreen" alt="Linux Info" height="30">
-  <img src="https://img.shields.io/badge/Windows-120%2B%20info-blueviolet" alt="Windows Info" height="30">
 <img src="https://img.shields.io/badge/_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="30">
 
 </p>
@@ -674,6 +672,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
