@@ -1,7 +1,56 @@
 
 # 📜 Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to HardView Library (Python) will be documented in this file.
+
+
+## [3.2.0] - Minor Release
+
+### Highlights:
+
+* **SMBIOS Module**
+
+  * Added the `HardView.smbios` module, which retrieves hardware information on Windows by analyzing SMBIOS tables.
+
+* **Updated DLL Handling in `__init__.py`**
+
+  * Previously, required DLLs were copied to the Python directory for program access.
+  * Now, DLLs are temporarily added to the PATH environment variable instead of copying.
+
+* **MSVC Runtime DLLs Included**
+
+  * The library can now use temperature functions on Windows without needing a separate MSVC Runtime installation, as the required libraries are included with the package.
+
+> **Note:** All changes apply only to Windows; no changes for Linux.
+
+## [3.2.0b1] - Beta Release
+
+### Highlights:
+
+* **New SMBIOS Module for Windows**
+
+  * Added the `HardView.smbios` module, responsible for parsing SMBIOS tables and displaying hardware information.
+  * Provides a faster and improved alternative for retrieving static hardware information compared to the older `HardView.HardView` module.
+
+> **Note:** This version is experimental (`beta`). Expect further changes before the stable `3.2.0` release.
+
+---
+
+## [3.2.0b2] - Beta Release
+
+### Highlights:
+
+* **Custom Component Update Functions**
+
+  * Added functions to allow updating a single hardware component instead of performing a general update.
+  * Example: update only the CPU sensors without affecting other components.
+
+These functions were added to the `PyManageTemp` class in `HardView.LiveView`:
+
+* `SpecificUpdate(id: int)`
+* `MultiSpecificUpdate(ids: list[int])`
+
+> **Note:** This version is experimental (`beta`). Users may encounter breaking changes before the stable `3.2.0` release.
 
 ## \[3.1.1] - Hotfix Release
 
@@ -18,7 +67,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## \[3.1.0] - Major Release
+## \[3.1.0] - Minor Release
 
 ### Highlights:
 
@@ -228,6 +277,7 @@ All notable changes to this project will be documented in this file.
 * `get_partitions_info()`
 
 ---
+
 
 
 
