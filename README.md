@@ -102,6 +102,57 @@ Most libraries have no external dependencies.
 Exception: `SPD.hpp` requires `InpOutx64.dll`.  
 It is recommended to review the header file beginning for any dependency notes.
 
+## Potential Issues on Windows
+
+### HardView.LiveView Temperature Features
+
+The **temperature monitoring features** in `HardView.LiveView` rely on **LibreHardwareMonitorLib**, which in turn uses on **WinRing0**.  
+WinRing0 is an old and well-known driver used for reading from **MSR**, **physical memory**, and other low-level hardware resources.  
+
+#### The Problem
+Unfortunately, **WinRing0 is now blocked by Windows**.  
+This means you may encounter alerts from **Windows Defender** similar to this one:
+
+![Windows Defender Alert](resources/1.png)
+
+You’ll notice that **`python.sys`** is reported as the suspicious driver.  
+This has nothing to do with Python itself. What actually happens is:
+
+- LibreHardwareMonitorLib, when creating its driver, names it as **`<ProgramName>.sys`**.  
+- Since Python scripts run under **`python.exe`**, the driver ends up named **`python.sys`**.  
+- In reality, this file is just the **WinRing0 driver** renamed.
+
+#### Is It Dangerous?
+- WinRing0 is just a driver that grants access to resources that normally require kernel-mode from user-mode. The danger only arises if a malicious program abuses it.  
+- The driver created by LibreHardwareMonitorLib is **temporary**. It will be stop automatically when you restart your system.
+
+---
+
+### Manually Stopping or Removing the Driver
+
+If you want to close or remove the driver manually after running your script/program:
+
+1. Open **CMD as Administrator**.
+2. Run the following command to stop the driver:
+```
+
+sc stop R0<ProgramName>
+
+````
+- For Python scripts:  
+  ```
+  sc stop R0Python
+  ```
+- For an executable program named `X.exe`:  
+  ```
+  sc stop R0X
+  ```
+3. To permanently delete the driver, run:
+```
+sc delete R0Python
+
+```
+
 
 ##  Usage Examples
 ### HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)
