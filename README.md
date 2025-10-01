@@ -102,6 +102,8 @@ Most libraries have no external dependencies.
 Exception: `SPD.hpp` requires `InpOutx64.dll`.  
 It is recommended to review the header file beginning for any dependency notes.
 
+---
+
 ## Potential Issues on Windows
 
 ### HardView.LiveView Temperature Features
@@ -125,8 +127,6 @@ This has nothing to do with Python itself. What actually happens is:
 #### Is It Dangerous?
 - WinRing0 is just a driver that grants access to resources that normally require kernel-mode from user-mode. The danger only arises if a malicious program abuses it.  
 - The driver created by LibreHardwareMonitorLib is **temporary**. It will be stop automatically when you restart your system.
-
----
 
 ### Manually Stopping or Removing the Driver
 
@@ -152,7 +152,7 @@ sc stop R0<ProgramName>
 sc delete R0Python
 
 ```
-
+---
 
 ##  Usage Examples
 ### HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)
@@ -666,6 +666,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
