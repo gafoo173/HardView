@@ -17,10 +17,8 @@ This folder contains three tools built on top of the [HardView](https://github.c
 ---
 
 ## 📊 MMT (My Monitor Tray)
-> **Warning:**  
-> This tool is still in the experimental stage and may be unstable at times.
 
-<img src="https://img.shields.io/badge/MMT-Alpha-red" alt="MMT" height="30">
+<img src="https://img.shields.io/badge/MMT-Beta-blue" alt="MMT" height="30">
 
 **MMT** is an advanced system tray monitoring application that provides real-time hardware monitoring with customizable alerts and automatic system protection features.
 
@@ -49,7 +47,7 @@ python MMT.py --interval 500 --no-auto-start    # 500ms updates, manual start
 python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
 ```
 
-### ✨ Features:
+###  Features:
 
 * 📈 **Real-time Hardware Monitoring:**
   * CPU Usage (%), CPU Temperature (°C)
@@ -61,14 +59,14 @@ python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
   * **Beep Alert**: Plays customizable beep sounds (frequency and duration)
   * **Message Only**: Shows warning message without system actions
 
-* ⚙️ **Configuration Options:**
+*  **Configuration Options:**
   * Customizable update intervals (100-10000 ms)
   * Adjustable alert thresholds per monitor type
   * Auto-start monitoring on application launch
   * System tray integration with minimize to tray
   * Persistent settings storage (JSON configuration)
 
-* 🖥️ **System Tray Integration:**
+*  **System Tray Integration:**
   * Real-time value display in tray tooltip
   * Color-coded tray icon (green/orange/red based on status)
   * Context menu for quick control access
@@ -112,7 +110,7 @@ python MMT.py --monitor gpu_usage --alert message_restart --threshold 95
 | `ram_usage` | RAM Usage Percentage | % | No |
 | `disk_usage` | Disk I/O Speed | MB/s | No |
 
-### ⚠️ Important Notices:
+###  Important Notices:
 
 *  **Administrator Privileges**
   Temperature monitoring on Windows requires administrator privileges. The application will warn you if admin rights are needed.

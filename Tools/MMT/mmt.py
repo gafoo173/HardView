@@ -47,7 +47,7 @@ class MonitorConfig:
         "interval": 1000,
         "enable_alert": True,
         "threshold": 80,
-        "alert_method": "message_restart",
+        "alert_method": "message_only",
         "beep_frequency": 1000,
         "beep_duration": 1000,
         "auto_start": True,
