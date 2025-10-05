@@ -128,7 +128,8 @@ This has nothing to do with Python itself. What actually happens is:
 - WinRing0 is just a driver that grants access to resources that normally require kernel-mode from user-mode. The danger only arises if a malicious program abuses it.  
 - The driver created by LibreHardwareMonitorLib is **temporary**. It will be stop automatically when you restart your system.
 
-### Manually Stopping or Removing the Driver
+**It’s recommended to delete the driver using sc delete or remove its file after the program finishes, to prevent any malicious software from exploiting it.**
+### Manually Stopping or Removing the Driver 
 
 If you want to close or remove the driver manually after running your script/program:
 
@@ -666,6 +667,7 @@ Contributions are welcome!
 See [`HardView API`](./docs/What.md): For the full HardView API
 
 See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+
 
 
 
