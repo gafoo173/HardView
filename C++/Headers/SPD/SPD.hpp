@@ -13,6 +13,7 @@
 */
 
 /**
+ * @note This code is intended for devices that have an Intel-type SMBus.
  * @version 0.1B
  */
 
@@ -261,5 +262,6 @@ public:
         }
     }
 };
+
 
 } // namespace SPDLib
