@@ -1,67 +1,179 @@
-<p align="center">
-<p align="center">
+<div align="center">
 
-  <!--<img src="https://img.shields.io/badge/API_Version-3.1.0Beta1-orange" alt="API Version (Beta)" height="30">-->
-  <img src="https://img.shields.io/badge/PyPI_Stable-3.2.0-blue" alt="PyPI Stable Version" height="30">
-  <!--img src="https://img.shields.io/badge/PyPI_Beta-3.2.0b1-purple" alt="PyPI Beta Version" height="30"-->
-  <img src="https://img.shields.io/badge/downloads-10.7K-red" alt="Version" height="30">
-  <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="30">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="30">
-  <img src="https://img.shields.io/badge/Tools license-GPL3-red" alt="License" height="30">
-  <img src="https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey" alt="Platforms" height="30">
-</p>
-
-<p align="center">
-<img src="https://img.shields.io/badge/_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="30">
-
-</p>
-
-
-<p align="center">
-  <img src="resources/logo.png" alt="HardView Logo" width="300"/>
-</p>
+<img src="resources/logo.png" alt="HardView Logo" width="300"/>
 
 # HardView - Hardware Information Project
 
-HardView is a project that includes Python, C++, and C libraries, Windows drivers, and tools for monitoring hardware and displaying its information through various sources, whether from the system or other libraries. It provides a unified interface for developers to access information via libraries and a user interface for end-users through the tools.
+<p>
+  <img src="https://img.shields.io/badge/PyPI_Stable-3.2.0-blue" alt="PyPI Stable Version" height="28">
+  <img src="https://img.shields.io/badge/downloads-10.7K-red" alt="Version" height="28">
+  <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="28">
+</p>
 
+<p>
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="28">
+  <img src="https://img.shields.io/badge/Tools_license-GPL3-red" alt="License" height="28">
+  <img src="https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey" alt="Platforms" height="28">
+</p>
 
+<p>
+  <img src="https://img.shields.io/badge/_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="28">
+</p>
 
-## HardView Project Overview
+<p align="center">
+  <b>A comprehensive hardware monitoring solution with Python, C++, and C libraries</b><br>
+  <i>Unified interface for developers • Real-time monitoring • Cross-platform support</i>
+</p>
 
-This table summarizes the libraries and tools included in the **HardView** project, describing their purpose, language, and features.
-
-| Library Name                             | Description                                                                                                                                                                                                                                                                                                                                                                                                      | Language   | Purpose / Features                                                                                     |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------ |
-| [**HardView**](./HardView)               | The **core library** providing static hardware information for Windows and Linux. Supports JSON or Python objects in the Python version.                                                                                                                                                                                                                                                                         |  C       | Main library for retrieving static system information.                                                 |
-| [**LiveView**](./HardView/LiveView)      | A **monitoring library** for both static hardware info and real-time data. Supports CPU temperature and regular usage on Windows and Linux                                                                                                                                                                                                                                                                       |  C++     | Real-time monitoring of hardware metrics, integrates static info and CPUID functions.                  |
-| [**HardwareWrapper**](./HardwareWrapper) | An **internal library** wrapping `LibreHardwareMonitorLib` with simple functions through C++/CLI, allowing use from C++. Primarily used by LiveView on Windows for temperature readings.                                                                                                                                                                                                                         |  C++/CLI | Simplifies access to LibreHardwareMonitorLib, providing easy C++ usage for Windows sensor data.        |
-| [**cpuid**](./cpuid)                     | An **internal, header-only C++ library** providing easy helper functions to access most CPUID information. Used by LiveView for CPUID-related functionality.                                                                                                                                                                                                                                                     |  C++     | Lightweight, easy-to-integrate CPUID helper library for detailed processor information.                |
-| [**C++/Headers**](./C++/Headers)             | A folder containing **header-only C++ libraries** like `SMART.hpp` (for SMART info) or `Live.hpp` (C++ header-only version of LiveView), and others.                                                                                                                                                                                                                                                             |  C++     | Header-only C++ modules for advanced hardware access and monitoring.                                   |
-| [**Drivers**](./Drivers)                 | A set of **Windows kernel drivers** granting access to low-level hardware functionality useful for monitoring. Each driver comes with a header-only C++ library for easier integration. These drivers are **not used** by the main HardView libraries (Python or C++) since they are unsigned. They are provided for those who wish to sign and use them, or for personal use with local build and test signing. |  C/C++   | Optional drivers for advanced hardware access under Windows. Not required for standard HardView usage. |
-| [**Tools**](./Tools)                     | A collection of **CLI and GUI Python tools** that rely on HardView to display hardware information.                                                                                                                                                                                                                                                                                                              |  Python  | Command-line and GUI utilities for interacting with hardware info provided by HardView.                |
-
-##  Key Features
-
-*  **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network,GPU.
-*  **Advanced Storage & SMART**: Detailed disk, partition, and SMART attributes.
-*  **Performance Monitoring**: Real-time and interval-based CPU, RAM, and system performance.
-*  **C/C++ Implementation**: High performance native code.
-*  **Python Integration**: Easy-to-use Python API.
-*  **Temperature & Sensors Monitoring**:(3.1.0+) Retrieve real-time temperature, voltage, and fan speed readings from system sensors.  
-    **Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for comprehensive sensor data via native integration.  
-    **Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors)  for direct hardware monitoring.  
-    **Licenses**: LibreHardwareMonitor — **MPL-2.0** ([`licenses/LICENSE.MPL-2.txt`](licenses/LICENSE.MPL-2.txt)), lm-sensors — **LGPL-2.1-or-later** ([`licenses/LICENSE.LGPL-2.1.txt`](licenses/LICENSE.LGPL-2.1.txt))
+</div>
 
 ---
 
-##  Installation (Python)
+<div align="center">
+
+## 📋 Table of Contents
+
+[Overview](#-hardview-project-overview) • [Features](#-key-features) • [Installation](#-installation-python) • [Usage](#-usage-examples) • [Documentation](#-documentation) • [API Reference](#-api-reference-python) • [Platform Support](#-platform-support)
+
+</div>
+
+---
+
+## 📦 HardView Project Overview
+
+HardView is a project that includes Python, C++, and C libraries, Windows drivers, and tools for monitoring hardware and displaying its information through various sources, whether from the system or other libraries. It provides a unified interface for developers to access information via libraries and a user interface for end-users through the tools.
+
+<details open>
+<summary><b>Libraries & Components</b></summary>
+
+<table>
+<thead>
+<tr>
+<th width="200">Library Name</th>
+<th>Description</th>
+<th width="100">Language</th>
+<th width="250">Purpose / Features</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><a href="./HardView"><b>HardView</b></a></td>
+<td> <b> library</b> providing static hardware information for Windows and Linux. Supports JSON or Python objects in the Python version.</td>
+<td>C</td>
+<td>Main library for retrieving static system information.</td>
+</tr>
+
+<tr>
+<td><a href="./HardView/LiveView"><b>LiveView</b></a></td>
+<td>A <b>monitoring library</b> for both static hardware info and real-time data. Supports CPU temperature and regular usage on Windows and Linux</td>
+<td>C++</td>
+<td>Real-time monitoring of hardware metrics, integrates static info and CPUID functions.</td>
+</tr>
+
+<tr>
+<td><a href="./HardwareWrapper"><b>HardwareWrapper</b></a></td>
+<td>An <b>internal library</b> wrapping <code>LibreHardwareMonitorLib</code> with simple functions through C++/CLI, allowing use from C++. Primarily used by LiveView on Windows for temperature readings.</td>
+<td>C++/CLI</td>
+<td>Simplifies access to LibreHardwareMonitorLib, providing easy C++ usage for Windows sensor data.</td>
+</tr>
+
+<tr>
+<td><a href="./cpuid"><b>cpuid</b></a></td>
+<td>An <b>internal, header-only C++ library</b> providing easy helper functions to access most CPUID information. Used by LiveView for CPUID-related functionality.</td>
+<td>C++</td>
+<td>Lightweight, easy-to-integrate CPUID helper library for detailed processor information.</td>
+</tr>
+
+<tr>
+<td><a href="./C++/Headers"><b>C++/Headers</b></a></td>
+<td>A folder containing <b>header-only C++ libraries</b> like <code>SMART.hpp</code> (for SMART info) or <code>Live.hpp</code> (C++ header-only version of LiveView), and others.</td>
+<td>C++</td>
+<td>Header-only C++ modules for advanced hardware access and monitoring.</td>
+</tr>
+
+<tr>
+<td><a href="./Drivers"><b>Drivers</b></a></td>
+<td>A set of <b>Windows kernel drivers</b> granting access to low-level hardware functionality useful for monitoring. Each driver comes with a header-only C++ library for easier integration. These drivers are <b>not used</b> by the main HardView libraries (Python or C++) since they are unsigned. They are provided for those who wish to sign and use them, or for personal use with local build and test signing.</td>
+<td>C/C++</td>
+<td>Optional drivers for advanced hardware access under Windows. Not required for standard HardView usage.</td>
+</tr>
+
+<tr>
+<td><a href="./Tools"><b>Tools</b></a></td>
+<td>A collection of <b>CLI and GUI Python tools</b> that rely on HardView to display hardware information.</td>
+<td>Python</td>
+<td>Command-line and GUI utilities for interacting with hardware info provided by HardView.</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
+---
+
+## ✨ Key Features
+
+<div align="center">
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🔧 Hardware Information
+- **Comprehensive Hardware Data**: BIOS, System, Baseboard, Chassis, CPU, RAM, Disks, Network, GPU
+- **Advanced Storage & SMART**: Detailed disk, partition, and SMART attributes
+- **Cross-Platform Support**: Windows and Linux compatibility
+
+</td>
+<td width="50%" valign="top">
+
+### 📊 Performance Monitoring
+- **Real-time Monitoring**: CPU, RAM, Disk, Network, GPU usage
+- **Temperature & Sensors**: Live temperature, voltage, and fan speed readings
+- **Interval-based Tracking**: Custom monitoring intervals and durations
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 💻 Implementation
+- **C/C++ Core**: High performance native code
+- **Python Integration**: Easy-to-use Python API
+- **Header-Only Libraries**: Simple integration for C++ projects
+
+</td>
+<td width="50%" valign="top">
+
+### 🌡️ Temperature Monitoring
+**Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) (**MPL-2.0**)  
+**Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) (**LGPL-2.1-or-later**)  
+See [`licenses/`](licenses/) for full license texts
+
+</td>
+</tr>
+</table>
+
+</div>
+
+---
+
+## 🚀 Installation (Python)
+
+<table>
+<tr>
+<td width="50%">
 
 ### From PyPI
 
 ```bash
 pip install hardview
 ```
+
+</td>
+<td width="50%">
 
 ### From Source
 
@@ -71,17 +183,28 @@ cd hardview
 pip install .
 ```
 
+</td>
+</tr>
+</table>
+
+<details>
+<summary><b>📚 Full setup instructions and platform support</b></summary>
+
 For supported platforms and full setup instructions, see `docs/INSTALL.md`.
+
+</details>
 
 ---
 
-## Dependencies
+## 📦 Dependencies
 
-**Python (Windows):**  
+<details>
+<summary><b>Python (Windows)</b></summary>
+
 Requires `LibreHardwareMonitorLib.dll` and `HidSharp.dll`.  
 These DLLs are included in the package, so no separate installation is needed.
 
-**Windows Temperature Information Features**
+#### Windows Temperature Information Features
 
 The temperature information features in Windows specifically require the **MSVC Runtime**, namely the following DLLs on **64-bit systems**:
 
@@ -91,22 +214,34 @@ The temperature information features in Windows specifically require the **MSVC 
 
 If you place these DLLs alongside HardwareWrapper.dll, the temperature-related functions will likely work properly even if you haven't installed the full MSVC runtime.  
 *(This applies whether you are using the Python **LiveView** or the **HardwareTemp.dll** from the SDK; in all cases, these libraries are required.)*
-**In HardView Python versions **3.2.0+**, these DLLs are already included alongside the package, so you don’t need to place them manually.)**
 
-**Python (Linux):**  
+**In HardView Python versions **3.2.0+**, these DLLs are already included alongside the package, so you don't need to place them manually.**
+
+</details>
+
+<details>
+<summary><b>Python (Linux)</b></summary>
+
 Requires the `lm-sensors` library to be installed for hardware monitoring.
 
-**C++ Libraries:**  
+</details>
+
+<details>
+<summary><b>C++ Libraries</b></summary>
+
 Check the top of each library header file for listed dependencies.  
 Most libraries have no external dependencies.  
 Exception: `SPD.hpp` requires `InpOutx64.dll`.  
 It is recommended to review the header file beginning for any dependency notes.
 
+</details>
+
 ---
 
-## Potential Issues on Windows
+## ⚠️ Potential Issues on Windows
 
-### HardView.LiveView Temperature Features
+<details>
+<summary><b>HardView.LiveView Temperature Features</b></summary>
 
 The **temperature monitoring features** in `HardView.LiveView` rely on **LibreHardwareMonitorLib**, which in turn uses on **WinRing0**.  
 WinRing0 is an old and well-known driver used for reading from **MSR**, **physical memory**, and other low-level hardware resources.  
@@ -115,9 +250,11 @@ WinRing0 is an old and well-known driver used for reading from **MSR**, **physic
 Unfortunately, **WinRing0 is now blocked by Windows**.  
 This means you may encounter alerts from **Windows Defender** similar to this one:
 
-![Windows Defender Alert](resources/1.png)
+<div align="center">
+<img src="resources/1.png" alt="Windows Defender Alert" width="600"/>
+</div>
 
-You’ll notice that **`python.sys`** is reported as the suspicious driver.  
+You'll notice that **`python.sys`** is reported as the suspicious driver.  
 This has nothing to do with Python itself. What actually happens is:
 
 - LibreHardwareMonitorLib, when creating its driver, names it as **`<ProgramName>.sys`**.  
@@ -128,35 +265,43 @@ This has nothing to do with Python itself. What actually happens is:
 - WinRing0 is just a driver that grants access to resources that normally require kernel-mode from user-mode. The danger only arises if a malicious program abuses it.  
 - The driver created by LibreHardwareMonitorLib is **temporary**. It will be stop automatically when you restart your system.
 
-**It’s recommended to delete the driver using sc delete or remove its file after the program finishes, to prevent any malicious software from exploiting it.**
+**It's recommended to delete the driver using sc delete or remove its file after the program finishes, to prevent any malicious software from exploiting it.**
+
 ### Manually Stopping or Removing the Driver 
 
 If you want to close or remove the driver manually after running your script/program:
 
 1. Open **CMD as Administrator**.
 2. Run the following command to stop the driver:
+
+```bash
+sc stop R0<ProgramName>
 ```
 
-sc stop R0<ProgramName>
-
-````
 - For Python scripts:  
-  ```
+  ```bash
   sc stop R0Python
   ```
 - For an executable program named `X.exe`:  
-  ```
+  ```bash
   sc stop R0X
   ```
-3. To permanently delete the driver, run:
-```
-sc delete R0Python
 
+3. To permanently delete the driver, run:
+
+```bash
+sc delete R0Python
 ```
+
+</details>
+
 ---
 
-##  Usage Examples
-### HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)
+## 💡 Usage Examples
+
+<details>
+<summary><b>HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)</b></summary>
+
 ```python
 import HardView
 import json
@@ -183,7 +328,12 @@ ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500)
 import pprint
 pprint.pprint(json.loads(cpu_json))
 ```
-### LiveView
+
+</details>
+
+<details>
+<summary><b>LiveView</b></summary>
+
 ```python
 from HardView.LiveView import PyLiveCPU, PyLiveRam, PyLiveDisk, PyLiveNetwork
 import time
@@ -211,7 +361,10 @@ print(f"CPU: {cpu_usage:5.1f}% | RAM: {ram_usage:5.1f}% | "
 print("Monitoring complete.")
 ```
 
-### LiveView (temperature) - **Requires admin privileges**
+</details>
+
+<details>
+<summary><b>LiveView (temperature) - Requires admin privileges</b></summary>
 
 ```python
 #!/usr/bin/env python3
@@ -245,9 +398,12 @@ else:
     print("Unsupported platform")
 ```
 
-### SDK Temperature (Rust)  - **Requires admin privileges**
+</details>
 
-```Rust
+<details>
+<summary><b>SDK Temperature (Rust) - Requires admin privileges</b></summary>
+
+```rust
 //This code will work on Windows only.
 use libloading::{Library, Symbol};
 use std::os::raw::{c_double, c_int};
@@ -326,7 +482,10 @@ fn main() {
 }
 ```
 
-### MSR.hpp Example (C++) - needs MsrDrv.sys installed and running 
+</details>
+
+<details>
+<summary><b>MSR.hpp Example (C++) - needs MsrDrv.sys installed and running</b></summary>
 
 ```cpp
 //this code will work in intel only
@@ -382,7 +541,10 @@ int main() {
 }
 ```
 
-### PhysMemDrv.hpp Example (C++) - needs PhysMemDrv.sys installed and running
+</details>
+
+<details>
+<summary><b>PhysMemDrv.hpp Example (C++) - needs PhysMemDrv.sys installed and running</b></summary>
 
 ```cpp
 #include "PhysMemDrv.hpp"
@@ -402,7 +564,10 @@ int main() {
 }
 ```
 
-### SMART.hpp Example(C++) - requires Admin privileges 
+</details>
+
+<details>
+<summary><b>SMART.hpp Example (C++) - requires Admin privileges</b></summary>
 
 ```cpp
 #include "SMART.hpp"
@@ -436,15 +601,18 @@ int main() {
         std::cerr << "Error reading SMART data: " << e.what() << std::endl;
     }
 }
-
 ```
 
-### info.hpp (C++) - Linux Only
+</details>
+
+<details>
+<summary><b>info.hpp (C++) - Linux Only</b></summary>
 
 ```cpp
 #include "info.hpp"
 #include <iostream>
 using namespace LinuxInfo;
+
 int main() {
     // Get CPU information
     auto cpuInfo = getCPUInfo();
@@ -456,16 +624,24 @@ int main() {
 
     return 0;
 }
-
 ```
+
+</details>
 
 ---
 
-##  Documentation
+## 📖 Documentation
 
-Full documentation is available on the GitHub Pages website:
+<div align="center">
 
- [https://gafoo173.github.io/HardView/](https://gafoo173.github.io/HardView/)
+### Full documentation is available on the GitHub Pages website:
+
+### 🌐 [https://gafoo173.github.io/HardView/](https://gafoo173.github.io/HardView/)
+
+</div>
+
+<details>
+<summary><b>📁 Documentation Files</b></summary>
 
 All documentation is in the `docs/` folder:
 
@@ -479,87 +655,432 @@ All documentation is in the `docs/` folder:
   Detailed explanation of the LiveView module API, including functions, usage, and examples.
 * [`LiveViewErrors.md`](./docs/LiveViewErrors.md): **LiveView Errors & Exceptions**  
   Guides and examples for handling errors and exceptions in the LiveView module.
----
-##  API Reference (Python)
 
-| Function (JSON)            | Function (Python Object)                           | Description |
-| ------------------------------------------ | -------------------------------------------------- | ----------- |
-| `get_bios_info()`                          | `get_bios_info_objects()`                          | BIOS vendor, version, release date |
-| `get_system_info()`                        | `get_system_info_objects()`                        | System manufacturer, product name, UUID |
-| `get_baseboard_info()`                     | `get_baseboard_info_objects()`                     | Motherboard info |
-| `get_chassis_info()`                       | `get_chassis_info_objects()`                       | Chassis/computer case info |
-| `get_cpu_info()`   (Windows Only)                        | `get_cpu_info_objects()`  (Windows Only)                          | Processor details |
-| `get_ram_info()`                           | `get_ram_info_objects()`                           | Memory modules and totals |
-| `get_gpu_info`      (Windows Only)                        | `get_gpu_info_objects()`     (Windows Only)                       | GPU information |
-| `get_disk_info()`                          | `get_disk_info_objects()`                          | Storage devices |
-| `get_network_info()`                       | `get_network_info_objects()`                       | Network adapters |
-| `get_partitions_info()`                    | `get_partitions_info_objects()`                    | Disk partitions (advanced) |
-| `get_cpu_usage()`                          | `get_cpu_usage_objects()`                          | Current CPU usage |
-| `get_ram_usage()`                          | `get_ram_usage_objects()`                          | Current RAM usage |
-| `get_system_performance()`                 | `get_system_performance_objects()`                 | Combined CPU/RAM usage |
-| `monitor_cpu_usage_duration(d, i)`         | `monitor_cpu_usage_duration_objects(d,i)`          | Monitor CPU usage over time |
-| `monitor_ram_usage_duration(d, i)`         | `monitor_ram_usage_duration_objects(d,i)`          | Monitor RAM usage over time |
-| `monitor_system_performance_duration(d,i)` | `monitor_system_performance_duration_objects(d,i)` | Monitor system performance over time |
-
-##  LiveView Classes & Methods
-
-## API Reference
-
-| Class.Method                                               | Aliases                        | Description                                                       |
-| ---------------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------- |
-| **`PyLiveCPU.get_usage(interval_ms)`**                     | ---                            | Get total CPU usage % over a given interval.                      |
-| **`PyLiveCPU.cpuid()`**                                    | `cpu_id()`                     | Get CPU details via CPUID instruction.                            |
-| **`PyLiveCPU.CpuSnapShot(...)`** *(Windows)*               | `cpu_snapshot(...)`            | Get raw CPU time counters for a specific core or number of cores. |
-| **`PyLiveRam.get_usage(Raw=False)`**                       | ---                            | Get total RAM usage % or raw `[used_bytes, total_bytes]`.         |
-| **`PyLiveDisk(mode)`**                                     | ---                            | Create disk monitor (mode=0 % usage \[Windows], mode=1 R/W MB/s). |
-| **`PyLiveDisk.get_usage(interval)`**                       | ---                            | Get disk usage as % or `{Read MB/s, Write MB/s}`.                 |
-| **`PyLiveDisk.HighDiskUsage(...)`**                        | `high_disk_usage(...)`         | Check if disk R/W exceeds threshold.                              |
-| **`PyLiveNetwork.get_usage(interval, mode=0)`**            | ---                            | Get total MB/s (mode 0) or per-interface MB/s (mode 1).           |
-| **`PyLiveNetwork.getHighCard()`**                          | `get_high_card()`              | Get name of network adapter with highest usage.                   |
-| **`PyLiveGpu.get_usage(interval_ms)`** *(Windows)*         | ---                            | Get total GPU usage %.                                            |
-| **`PyLiveGpu.get_average_usage(interval_ms)`** *(Windows)* | ---                            | Get average GPU usage %.                                          |
-| **`PyLiveGpu.get_max_usage(interval_ms)`** *(Windows)*     | ---                            | Get maximum GPU usage %.                                          |
-| **`PyLiveGpu.get_counter_count()`** *(Windows)*            | ---                            | Get number of GPU counters monitored.                             |
-| **`PyTempCpu.get_temp()`** *(Windows)*                     | ---                            | Get current CPU temperature.                                      |
-| **`PyTempCpu.get_max_temp()`** *(Windows)*                 | ---                            | Get max CPU core temperature.                                     |
-| **`PyTempCpu.get_avg_temp()`** *(Windows)*                 | ---                            | Get average CPU core temperature.                                 |
-| **`PyTempCpu.get_fan_rpm()`** *(Windows)*                  | ---                            | Get CPU fan RPM.                                                  |
-| **`PyTempCpu.update()`**                                   | ---                            | Refresh CPU temperature & fan RPM.                                |
-| **`PyTempCpu.reget()`**                                    | `re_get()`                     | Re-read CPU temperature & fan RPM.                                |
-| **`PyTempGpu.get_temp()`** *(Windows)*                     | ---                            | Get current GPU temperature.                                      |
-| **`PyTempGpu.get_fan_rpm()`** *(Windows)*                  | ---                            | Get GPU fan RPM.                                                  |
-| **`PyTempGpu.update()`**                                   | ---                            | Refresh GPU temperature and fan RPM.                              |
-| **`PyTempGpu.reget()`**                                    | `re_get()`                     | Re-read GPU temperature and fan RPM.                              |
-| **`PyTempOther.get_mb_temp()`** *(Windows)*                | ---                            | Get motherboard temperature.                                      |
-| **`PyTempOther.get_Storage_temp()`** *(Windows)*           | `get_storage_temp()`           | Get storage temperature.                                          |
-| **`PyTempOther.update()`**                                 | ---                            | Refresh other temperatures.                                       |
-| **`PyTempOther.reget()`**                                  | `re_get()`                     | Re-read other temperatures.                                       |
-| **`PySensor.GetData(init=False)`** *(Windows)*             | `get_data(init=False)`         | Fetch sensors & fan data.                                         |
-| **`PySensor.GetValueByName(name)`** *(Windows)*            | `get_value_by_name(name)`      | Get sensor value by name.                                         |
-| **`PySensor.getAllSensors()`** *(Windows)*                 | `get_all_sensors()`            | List all sensor names.                                            |
-| **`PySensor.getAllFanRPMs()`** *(Windows)*                 | `get_all_fan_rpms()`           | List all fan RPM readings.                                        |
-| **`PySensor.update()`**                                    | ---                            | Refresh sensors & fans data.                                      |
-| **`PySensor.reget()`**                                     | `re_get()`                     | Re-fetch sensors & fans data.                                     |
-| **`PyManageTemp.Init()`** *(Windows)*                       | `init()`                       | Initialize temperature monitoring.                                |
-| **`PyManageTemp.Close()`** *(Windows)*                      | `close()`                      | Shutdown temperature monitoring.                                  |
-| **`PyManageTemp.Update()`** *(Windows)*                     | `update()`                     | Update all temperature data.                                      |
-| **`PyRawInfo.RSMB()`** *(Windows)*                         | `rsmb()`                       | Get raw SMBIOS table bytes.                                       |
-| **`PyLinuxSensor.getCpuTemp()`** *(Linux)*                 | `get_cpu_temp()`               | Get CPU temperature.                                              |
-| **`PyLinuxSensor.getChipsetTemp()`** *(Linux)*             | `get_chipset_temp()`           | Get chipset temperature.                                          |
-| **`PyLinuxSensor.getMotherboardTemp()`** *(Linux)*         | `get_motherboard_temp()`       | Get motherboard temperature.                                      |
-| **`PyLinuxSensor.getVRMTemp()`** *(Linux)*                 | `get_vrm_temp()`               | Get VRM/memory temperature.                                       |
-| **`PyLinuxSensor.getDriveTemp()`** *(Linux)*               | `get_drive_temp()`             | Get storage temperature.                                          |
-| **`PyLinuxSensor.getAllSensorNames()`** *(Linux)*          | `get_all_sensor_names()`       | List all sensor names.                                            |
-| **`PyLinuxSensor.findSensorName(name)`** *(Linux)*         | `find_sensor_name(name)`       | Search for a sensor name.                                         |
-| **`PyLinuxSensor.GetSensorTemp(name, Match)`** *(Linux)*   | `get_sensor_temp(name, Match)` | Get sensor temperature by name.                                   |
-| **`PyLinuxSensor.GetSensorsWithTemp()`** *(Linux)*         | `get_sensors_with_temp()`      | Get all sensors with their temperatures.                          |
-| **`PyLinuxSensor.update(names=False)`** *(Linux)*          | ---                            | Refresh sensor readings.                                          |
+</details>
 
 ---
 
+## 📚 API Reference (Python)
 
-## Sensor Value Fetch Flow (LiveView)
-*(Uses mermaid.js diagrams in compatible renderers)*
+<details>
+<summary><b>HardView Functions</b></summary>
+
+<table>
+<thead>
+<tr>
+<th>Function (JSON)</th>
+<th>Function (Python Object)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><code>get_bios_info()</code></td>
+<td><code>get_bios_info_objects()</code></td>
+<td>BIOS vendor, version, release date</td>
+</tr>
+
+<tr>
+<td><code>get_system_info()</code></td>
+<td><code>get_system_info_objects()</code></td>
+<td>System manufacturer, product name, UUID</td>
+</tr>
+
+<tr>
+<td><code>get_baseboard_info()</code></td>
+<td><code>get_baseboard_info_objects()</code></td>
+<td>Motherboard info</td>
+</tr>
+
+<tr>
+<td><code>get_chassis_info()</code></td>
+<td><code>get_chassis_info_objects()</code></td>
+<td>Chassis/computer case info</td>
+</tr>
+
+<tr>
+<td><code>get_cpu_info()</code> <i>(Windows Only)</i></td>
+<td><code>get_cpu_info_objects()</code> <i>(Windows Only)</i></td>
+<td>Processor details</td>
+</tr>
+
+<tr>
+<td><code>get_ram_info()</code></td>
+<td><code>get_ram_info_objects()</code></td>
+<td>Memory modules and totals</td>
+</tr>
+
+<tr>
+<td><code>get_gpu_info()</code> <i>(Windows Only)</i></td>
+<td><code>get_gpu_info_objects()</code> <i>(Windows Only)</i></td>
+<td>GPU information</td>
+</tr>
+
+<tr>
+<td><code>get_disk_info()</code></td>
+<td><code>get_disk_info_objects()</code></td>
+<td>Storage devices</td>
+</tr>
+
+<tr>
+<td><code>get_network_info()</code></td>
+<td><code>get_network_info_objects()</code></td>
+<td>Network adapters</td>
+</tr>
+
+<tr>
+<td><code>get_partitions_info()</code></td>
+<td><code>get_partitions_info_objects()</code></td>
+<td>Disk partitions (advanced)</td>
+</tr>
+
+<tr>
+<td><code>get_cpu_usage()</code></td>
+<td><code>get_cpu_usage_objects()</code></td>
+<td>Current CPU usage</td>
+</tr>
+
+<tr>
+<td><code>get_ram_usage()</code></td>
+<td><code>get_ram_usage_objects()</code></td>
+<td>Current RAM usage</td>
+</tr>
+
+<tr>
+<td><code>get_system_performance()</code></td>
+<td><code>get_system_performance_objects()</code></td>
+<td>Combined CPU/RAM usage</td>
+</tr>
+
+<tr>
+<td><code>monitor_cpu_usage_duration(d, i)</code></td>
+<td><code>monitor_cpu_usage_duration_objects(d,i)</code></td>
+<td>Monitor CPU usage over time</td>
+</tr>
+
+<tr>
+<td><code>monitor_ram_usage_duration(d, i)</code></td>
+<td><code>monitor_ram_usage_duration_objects(d,i)</code></td>
+<td>Monitor RAM usage over time</td>
+</tr>
+
+<tr>
+<td><code>monitor_system_performance_duration(d,i)</code></td>
+<td><code>monitor_system_performance_duration_objects(d,i)</code></td>
+<td>Monitor system performance over time</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
+<details>
+<summary><b>LiveView Classes & Methods</b></summary>
+
+<table>
+<thead>
+<tr>
+<th>Class.Method</th>
+<th>Aliases</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>PyLiveCPU.get_usage(interval_ms)</code></b></td>
+<td>---</td>
+<td>Get total CPU usage % over a given interval.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveCPU.cpuid()</code></b></td>
+<td><code>cpu_id()</code></td>
+<td>Get CPU details via CPUID instruction.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveCPU.CpuSnapShot(...)</code></b> <i>(Windows)</i></td>
+<td><code>cpu_snapshot(...)</code></td>
+<td>Get raw CPU time counters for a specific core or number of cores.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveRam.get_usage(Raw=False)</code></b></td>
+<td>---</td>
+<td>Get total RAM usage % or raw <code>[used_bytes, total_bytes]</code>.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveDisk(mode)</code></b></td>
+<td>---</td>
+<td>Create disk monitor (mode=0 % usage [Windows], mode=1 R/W MB/s).</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveDisk.get_usage(interval)</code></b></td>
+<td>---</td>
+<td>Get disk usage as % or <code>{Read MB/s, Write MB/s}</code>.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveDisk.HighDiskUsage(...)</code></b></td>
+<td><code>high_disk_usage(...)</code></td>
+<td>Check if disk R/W exceeds threshold.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveNetwork.get_usage(interval, mode=0)</code></b></td>
+<td>---</td>
+<td>Get total MB/s (mode 0) or per-interface MB/s (mode 1).</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveNetwork.getHighCard()</code></b></td>
+<td><code>get_high_card()</code></td>
+<td>Get name of network adapter with highest usage.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveGpu.get_usage(interval_ms)</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get total GPU usage %.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveGpu.get_average_usage(interval_ms)</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get average GPU usage %.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveGpu.get_max_usage(interval_ms)</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get maximum GPU usage %.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLiveGpu.get_counter_count()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get number of GPU counters monitored.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempCpu.get_temp()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get current CPU temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempCpu.get_max_temp()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get max CPU core temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempCpu.get_avg_temp()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get average CPU core temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempCpu.get_fan_rpm()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get CPU fan RPM.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempCpu.update()</code></b></td>
+<td>---</td>
+<td>Refresh CPU temperature & fan RPM.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempCpu.reget()</code></b></td>
+<td><code>re_get()</code></td>
+<td>Re-read CPU temperature & fan RPM.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempGpu.get_temp()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get current GPU temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempGpu.get_fan_rpm()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get GPU fan RPM.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempGpu.update()</code></b></td>
+<td>---</td>
+<td>Refresh GPU temperature and fan RPM.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempGpu.reget()</code></b></td>
+<td><code>re_get()</code></td>
+<td>Re-read GPU temperature and fan RPM.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempOther.get_mb_temp()</code></b> <i>(Windows)</i></td>
+<td>---</td>
+<td>Get motherboard temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempOther.get_Storage_temp()</code></b> <i>(Windows)</i></td>
+<td><code>get_storage_temp()</code></td>
+<td>Get storage temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempOther.update()</code></b></td>
+<td>---</td>
+<td>Refresh other temperatures.</td>
+</tr>
+
+<tr>
+<td><b><code>PyTempOther.reget()</code></b></td>
+<td><code>re_get()</code></td>
+<td>Re-read other temperatures.</td>
+</tr>
+
+<tr>
+<td><b><code>PySensor.GetData(init=False)</code></b> <i>(Windows)</i></td>
+<td><code>get_data(init=False)</code></td>
+<td>Fetch sensors & fan data.</td>
+</tr>
+
+<tr>
+<td><b><code>PySensor.GetValueByName(name)</code></b> <i>(Windows)</i></td>
+<td><code>get_value_by_name(name)</code></td>
+<td>Get sensor value by name.</td>
+</tr>
+
+<tr>
+<td><b><code>PySensor.getAllSensors()</code></b> <i>(Windows)</i></td>
+<td><code>get_all_sensors()</code></td>
+<td>List all sensor names.</td>
+</tr>
+
+<tr>
+<td><b><code>PySensor.getAllFanRPMs()</code></b> <i>(Windows)</i></td>
+<td><code>get_all_fan_rpms()</code></td>
+<td>List all fan RPM readings.</td>
+</tr>
+
+<tr>
+<td><b><code>PySensor.update()</code></b></td>
+<td>---</td>
+<td>Refresh sensors & fans data.</td>
+</tr>
+
+<tr>
+<td><b><code>PySensor.reget()</code></b></td>
+<td><code>re_get()</code></td>
+<td>Re-fetch sensors & fans data.</td>
+</tr>
+
+<tr>
+<td><b><code>PyManageTemp.Init()</code></b> <i>(Windows)</i></td>
+<td><code>init()</code></td>
+<td>Initialize temperature monitoring.</td>
+</tr>
+
+<tr>
+<td><b><code>PyManageTemp.Close()</code></b> <i>(Windows)</i></td>
+<td><code>close()</code></td>
+<td>Shutdown temperature monitoring.</td>
+</tr>
+
+<tr>
+<td><b><code>PyManageTemp.Update()</code></b> <i>(Windows)</i></td>
+<td><code>update()</code></td>
+<td>Update all temperature data.</td>
+</tr>
+
+<tr>
+<td><b><code>PyRawInfo.RSMB()</code></b> <i>(Windows)</i></td>
+<td><code>rsmb()</code></td>
+<td>Get raw SMBIOS table bytes.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.getCpuTemp()</code></b> <i>(Linux)</i></td>
+<td><code>get_cpu_temp()</code></td>
+<td>Get CPU temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.getChipsetTemp()</code></b> <i>(Linux)</i></td>
+<td><code>get_chipset_temp()</code></td>
+<td>Get chipset temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.getMotherboardTemp()</code></b> <i>(Linux)</i></td>
+<td><code>get_motherboard_temp()</code></td>
+<td>Get motherboard temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.getVRMTemp()</code></b> <i>(Linux)</i></td>
+<td><code>get_vrm_temp()</code></td>
+<td>Get VRM/memory temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.getDriveTemp()</code></b> <i>(Linux)</i></td>
+<td><code>get_drive_temp()</code></td>
+<td>Get storage temperature.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.getAllSensorNames()</code></b> <i>(Linux)</i></td>
+<td><code>get_all_sensor_names()</code></td>
+<td>List all sensor names.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.findSensorName(name)</code></b> <i>(Linux)</i></td>
+<td><code>find_sensor_name(name)</code></td>
+<td>Search for a sensor name.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.GetSensorTemp(name, Match)</code></b> <i>(Linux)</i></td>
+<td><code>get_sensor_temp(name, Match)</code></td>
+<td>Get sensor temperature by name.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.GetSensorsWithTemp()</code></b> <i>(Linux)</i></td>
+<td><code>get_sensors_with_temp()</code></td>
+<td>Get all sensors with their temperatures.</td>
+</tr>
+
+<tr>
+<td><b><code>PyLinuxSensor.update(names=False)</code></b> <i>(Linux)</i></td>
+<td>---</td>
+<td>Refresh sensor readings.</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
+---
+
+## 📊 Sensor Value Fetch Flow (LiveView)
+
+<div align="center">
 
 ```mermaid
 classDiagram
@@ -590,92 +1111,220 @@ classDiagram
     LiveView --> LinuxPath : "Linux"
     LiveView --> WindowsPath : "Windows"
     WindowsPath --> HardwareWrapper
-
 ```
----
 
-##  Platform Support
-
-| Feature                  | Windows           | Linux             |
-| ------------------------ | ----------------- | ----------------- |
-| BIOS Info                | yes               | yes               |
-| System Info              | yes               | yes               |
-| Baseboard Info           | yes               | yes               |
-| Chassis Info             | yes               | yes               |
-| CPU Info                 | yes               | yes (by LiveView) |
-| RAM Info                 | yes               | yes               |
-| Disks                    | yes               | yes               |
-| Network                  | yes               | yes               |
-| Advanced Storage / SMART | yes               | No                |
-| Performance Monitoring   | yes               | yes               |
-| Sensors                  | yes (by LiveView) | yes (by LiveView) |
+</div>
 
 ---
 
-##  Development
+## 🖥️ Platform Support
+
+<div align="center">
+
+<table>
+<thead>
+<tr>
+<th width="300">Feature</th>
+<th width="150">Windows</th>
+<th width="150">Linux</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b>BIOS Info</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>System Info</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>Baseboard Info</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>Chassis Info</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>CPU Info</b></td>
+<td>✅ yes</td>
+<td>✅ yes (by LiveView)</td>
+</tr>
+
+<tr>
+<td><b>RAM Info</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>Disks</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>Network</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>Advanced Storage / SMART</b></td>
+<td>✅ yes</td>
+<td>❌ No</td>
+</tr>
+
+<tr>
+<td><b>Performance Monitoring</b></td>
+<td>✅ yes</td>
+<td>✅ yes</td>
+</tr>
+
+<tr>
+<td><b>Sensors</b></td>
+<td>✅ yes (by LiveView)</td>
+<td>✅ yes (by LiveView)</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+---
+
+## 🛠️ Development
 
 ### Build Instructions
 
-**Windows:**
+<table>
+<tr>
+<td width="50%">
+
+#### Windows
 
 ```bash
 python setup.py build_ext --inplace
 ```
 
-**Linux:**
+</td>
+<td width="50%">
+
+#### Linux
 
 ```bash
 python setup.py build_ext --inplace
 ```
+
+</td>
+</tr>
+</table>
 
 ---
 
-##  License
+## 📄 License
+
+<div align="center">
+
+<table>
+<tr>
+<td width="50%" valign="top">
 
 ### Core Project (HardView)
 All core project files, including project-specific libraries and header files are licensed under the **MIT License**. They are free for both personal and commercial use.
 
-### **Tools Folder**  
+</td>
+<td width="50%" valign="top">
+
+### Tools Folder
 All tools in the **Tools** folder are licensed under: GNU GENERAL PUBLIC LICENSE **(GPL-3)**.  
-You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).  
+You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).
+
+</td>
+</tr>
+</table>
+
+</div>
 
 ---
-##  Quick Start And Tests
 
-For a quick and visually appealing colorful test in the console using the **rich** library, run the script:  
-[test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
+## 🧪 Quick Start And Tests
 
-To test all functions normally without coloring, use:  
-[TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
+<div align="center">
 
-**LiveView Tests**  
+### For a quick and visually appealing colorful test in the console
+
+#### Using the **rich** library
+
+**Run the script:** [test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
+
+---
+
+### To test HardView.HardView functions normally without coloring
+
+**Use:** [TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
+
+---
+
+### LiveView Tests
+
 The LiveView test files are located in [tests/units](https://github.com/gafoo173/HardView/blob/main/tests/units)
 
-
----
-##  Contribution
-
-Contributions are welcome!
-
-* Fork and submit pull requests
-* Report issues or feature requests
+</div>
 
 ---
 
-**HardView — Your Window into Hardware Information**
+## 🤝 Contribution
 
-See [`HardView API`](./docs/What.md): For the full HardView API
+<div align="center">
 
-See [`LiveView API`](./docs/LiveViewAPI.md): For the full LiveView API
+**Contributions are welcome!**
 
+<table>
+<tr>
+<td align="center" width="50%">
 
+### 🔀 Fork & Pull Requests
+Fork the repository and submit pull requests with your improvements
 
+</td>
+<td align="center" width="50%">
 
+### 🐛 Issues & Features
+Report issues or request features through GitHub Issues
 
+</td>
+</tr>
+</table>
 
+</div>
 
+---
 
+<div align="center">
 
+## 🌟 HardView — Your Window into Hardware Information
 
+<p>
+<b>See</b> <a href="./docs/What.md"><code>HardView API</code></a> for the full HardView API<br>
+<b>See</b> <a href="./docs/LiveViewAPI.md"><code>LiveView API</code></a> for the full LiveView API
+</p>
 
+---
 
+<p>
+  <i>Made with ❤️ for hardware enthusiasts and developers</i>
+</p>
+
+</div>
