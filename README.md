@@ -1264,21 +1264,7 @@ You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).
 ## 🧪 Quick Start And Tests
 
 <div align="center">
-
-### For a quick and visually appealing colorful test in the console
-
-#### Using the **rich** library
-
-**Run the script:** [test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
-
----
-
-### To test HardView.HardView functions normally without coloring
-
-**Use:** [TestAll.py](https://github.com/gafoo173/HardView/blob/main/tests/TestAll.py)
-
----
-
+  
 ### LiveView Tests
 
 The LiveView test files are located in [tests/units](https://github.com/gafoo173/HardView/blob/main/tests/units)
@@ -1330,4 +1316,5 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
