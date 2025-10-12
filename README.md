@@ -33,7 +33,7 @@
 
 ## 📋 Table of Contents
 
-[Overview](#-hardview-project-overview) • [Features](#-key-features) • [Installation](#-installation-python) • [Usage](#-usage-examples) • [Documentation](#-documentation) • [API Reference](#-api-reference-python) • [Platform Support](#-platform-support)
+[Overview](#-hardview-project-overview) • [Features](#-key-features) • [Installation](#-installation-python) • [Usage](#-usage-examples) • [Documentation](#-documentation) • [API Reference](#-api-reference-python) • [Platform Support](#-platform-support) 
 
 </div>
 
@@ -59,10 +59,12 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 
 <tr>
 <td><a href="./HardView"><b>HardView</b></a></td>
-<td> <b> library</b> providing static hardware information for Windows and Linux. Supports JSON or Python objects in the Python version.</td>
+<td><b>Legacy library</b> providing static hardware information for Windows and Linux.  
+ Uses WMI and old query methods — kept for compatibility only.</td>
 <td>C</td>
-<td>Main library for retrieving static system information.</td>
+<td><b>Legacy (superseded by LiveView & SMBIOS)</b></td>
 </tr>
+
 
 <tr>
 <td><a href="./HardView/LiveView"><b>LiveView</b></a></td>
@@ -1117,7 +1119,7 @@ classDiagram
 
 ---
 
-## 🖥️ Platform Support
+## Platform Support
 
 <div align="center">
 
@@ -1328,3 +1330,4 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
