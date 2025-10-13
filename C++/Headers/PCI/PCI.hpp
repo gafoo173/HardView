@@ -13,7 +13,7 @@
 */
 
 /**
- * @version Beta
+ * @version 0.2
  */
 #pragma once
 #include <windows.h>

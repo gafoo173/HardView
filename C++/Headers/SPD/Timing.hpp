@@ -13,7 +13,7 @@
 */
 
 /**
- * @version 0.1B
+ * @version 0.1
  */
 
 
