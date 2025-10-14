@@ -6,7 +6,9 @@
 </p>
 
 This document explains all functions in the HardView library, what they return, and how to use them from Python with example outputs.
+>**Note:** This library is legacy and no longer supported. Please read the README.md file to learn about available alternatives.
 
+---
 > **Note:** To see all functions working together in practice, refer to the `TestAll.py` file included in the project.
 
 > ⚠️ **Important Notice**  
@@ -1364,5 +1366,6 @@ pip install rich
 [test.py](https://github.com/gafoo173/HardView/blob/main/tests/test.py)
 
 For more details, refer to files inside the `docs/` folder.
+
 
 
