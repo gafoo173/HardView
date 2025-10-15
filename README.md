@@ -134,7 +134,6 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 ### 📊 Performance Monitoring
 - **Real-time Monitoring**: CPU, RAM, Disk, Network, GPU usage
 - **Temperature & Sensors**: Live temperature, voltage, and fan speed readings
-- **Interval-based Tracking**: Custom monitoring intervals and durations
 
 </td>
 </tr>
@@ -1316,6 +1315,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
