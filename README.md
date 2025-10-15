@@ -1077,6 +1077,243 @@ All documentation is in the `docs/` folder:
 
 </details>
 
+<details>
+<summary><b>SMBIOS Module</b></summary>
+
+### Main Classes
+
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Properties</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>SMBIOSParser</code></b></td>
+<td>---</td>
+<td>Main parser for SMBIOS firmware data</td>
+</tr>
+
+<tr>
+<td><b><code>BIOSInfo</code></b></td>
+<td><code>vendor, version, release_date, major_release, minor_release, characteristics, rom_size</code></td>
+<td>BIOS vendor, version, release date, ROM size</td>
+</tr>
+
+<tr>
+<td><b><code>SystemInfo</code></b></td>
+<td><code>manufacturer, product_name, version, serial_number, uuid, sku_number, family, wake_up_type</code></td>
+<td>System manufacturer, product, UUID, serial number</td>
+</tr>
+
+<tr>
+<td><b><code>BaseboardInfo</code></b></td>
+<td><code>manufacturer, product, version, serial_number, asset_tag, feature_flags, board_type</code></td>
+<td>Motherboard manufacturer, product, version</td>
+</tr>
+
+<tr>
+<td><b><code>SystemEnclosureInfo</code></b></td>
+<td><code>manufacturer, version, serial_number, asset_tag, chassis_type, bootup_state, power_supply_state, thermal_state, security_status, height</code></td>
+<td>Chassis type, thermal state, security status</td>
+</tr>
+
+<tr>
+<td><b><code>ProcessorInfo</code></b></td>
+<td><code>socket_designation, manufacturer, version, serial_number, asset_tag, part_number, processor_type, processor_family, processor_id, max_speed, current_speed, core_count, thread_count, characteristics</code></td>
+<td>CPU details, cores, threads, speeds</td>
+</tr>
+
+<tr>
+<td><b><code>MemoryInfo</code></b></td>
+<td><code>device_locator, bank_locator, manufacturer, serial_number, asset_tag, part_number, size_mb, speed, memory_type, form_factor, type_detail</code></td>
+<td>RAM module details, size, speed, type</td>
+</tr>
+
+<tr>
+<td><b><code>CacheInfo</code></b></td>
+<td><code>socket_designation, cache_configuration, maximum_cache_size, installed_size, cache_speed, error_correction_type, system_cache_type, associativity</code></td>
+<td>CPU cache levels and sizes</td>
+</tr>
+
+<tr>
+<td><b><code>PortConnectorInfo</code></b></td>
+<td><code>internal_reference_designator, external_reference_designator, internal_connector_type, external_connector_type, port_type</code></td>
+<td>Physical port connectors information</td>
+</tr>
+
+<tr>
+<td><b><code>SystemSlotInfo</code></b></td>
+<td><code>slot_designation, slot_type, slot_data_bus_width, current_usage, slot_length, slot_id</code></td>
+<td>Expansion slots (PCIe, PCI, etc.)</td>
+</tr>
+
+<tr>
+<td><b><code>PhysicalMemoryArrayInfo</code></b></td>
+<td><code>location, use, memory_error_correction, maximum_capacity, number_of_memory_devices</code></td>
+<td>Memory array capacity and configuration</td>
+</tr>
+
+<tr>
+<td><b><code>PortableBatteryInfo</code></b></td>
+<td><code>location, manufacturer, manufacture_date, serial_number, device_name, device_chemistry, design_capacity, design_voltage</code></td>
+<td>Battery capacity, chemistry, voltage</td>
+</tr>
+
+<tr>
+<td><b><code>TemperatureProbeInfo</code></b></td>
+<td><code>description, location_and_status, maximum_value, minimum_value, nominal_value</code></td>
+<td>Temperature sensor information</td>
+</tr>
+
+<tr>
+<td><b><code>VoltageProbeInfo</code></b></td>
+<td><code>description, location_and_status, maximum_value, minimum_value, nominal_value</code></td>
+<td>Voltage probe information</td>
+</tr>
+
+<tr>
+<td><b><code>CoolingDeviceInfo</code></b></td>
+<td><code>description, device_type_and_status, nominal_speed</code></td>
+<td>Cooling device and fan information</td>
+</tr>
+
+<tr>
+<td><b><code>SMBIOSInfo</code></b></td>
+<td><code>major_version, minor_version, bios, system, baseboard, system_enclosure, physical_memory_array, processors[], memory_devices[], caches[], port_connectors[], system_slots[], batteries[], temperature_probes[], voltage_probes[], cooling_devices[], oem_strings[]</code></td>
+<td>Complete SMBIOS information container</td>
+</tr>
+
+</tbody>
+</table>
+
+### SMBIOSParser Methods
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>load_smbios_data()</code></b></td>
+<td>---</td>
+<td>Load SMBIOS data from system firmware</td>
+</tr>
+
+<tr>
+<td><b><code>parse_smbios_data()</code></b></td>
+<td>---</td>
+<td>Parse the loaded SMBIOS data</td>
+</tr>
+
+<tr>
+<td><b><code>get_parsed_info()</code></b></td>
+<td>---</td>
+<td>Get parsed SMBIOS information (returns SMBIOSInfo)</td>
+</tr>
+
+<tr>
+<td><b><code>get_memory_type_string(type)</code></b></td>
+<td><code>type: int</code></td>
+<td>Convert memory type code to string (DDR4, DDR5, etc.)</td>
+</tr>
+
+<tr>
+<td><b><code>get_form_factor_string(factor)</code></b></td>
+<td><code>factor: int</code></td>
+<td>Convert form factor code to string (DIMM, SODIMM, etc.)</td>
+</tr>
+
+<tr>
+<td><b><code>get_processor_type_string(type)</code></b></td>
+<td><code>type: int</code></td>
+<td>Convert processor type code to string</td>
+</tr>
+
+<tr>
+<td><b><code>get_chassis_type_string(type)</code></b></td>
+<td><code>type: int</code></td>
+<td>Convert chassis type code to string (Desktop, Laptop, etc.)</td>
+</tr>
+
+<tr>
+<td><b><code>get_slot_type_string(type)</code></b></td>
+<td><code>type: int</code></td>
+<td>Convert slot type code to string (PCIe, PCI, etc.)</td>
+</tr>
+
+<tr>
+<td><b><code>get_connector_type_string(type)</code></b></td>
+<td><code>type: int</code></td>
+<td>Convert connector type code to string</td>
+</tr>
+
+<tr>
+<td><b><code>get_port_type_string(type)</code></b></td>
+<td><code>type: int</code></td>
+<td>Convert port type code to string (USB, HDMI, etc.)</td>
+</tr>
+
+<tr>
+<td><b><code>get_cache_type_string(type)</code></b></td>
+<td><code>type: int</code></td>
+<td>Convert cache type code to string (L1, L2, L3, etc.)</td>
+</tr>
+
+<tr>
+<td><b><code>get_battery_chemistry_string(chem)</code></b></td>
+<td><code>chem: int</code></td>
+<td>Convert battery chemistry code to string</td>
+</tr>
+
+<tr>
+<td><b><code>get_last_error_as_string()</code></b> <i>(static)</i></td>
+<td>---</td>
+<td>Get last Windows error as string</td>
+</tr>
+
+</tbody>
+</table>
+
+### Convenience Functions
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>parse_smbios()</code></b></td>
+<td><code>(SMBIOSParser, SMBIOSInfo)</code></td>
+<td>Quick function to parse SMBIOS and return parser and info tuple</td>
+</tr>
+
+<tr>
+<td><b><code>get_system_info()</code></b></td>
+<td><code>SMBIOSInfo</code></td>
+<td>Quick function to get complete SMBIOS system information</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
+---
 ---
 
 ## 📊 Sensor Value Fetch Flow (LiveView)
@@ -1315,6 +1552,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
