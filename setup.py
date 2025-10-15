@@ -105,6 +105,24 @@ if sys.platform.startswith('win'):
     extensions.append(smbios_module)
 
 # =================================================================
+# ==      SMART Extension (C++) - Windows Only                 ==
+# =================================================================
+
+# Conditionally define and add the SMART module only on Windows
+if sys.platform.startswith('win'):
+    smart_module = Extension(
+        'HardView.SMART',  # The name will be HardView/SMART.pyd
+        sources=['HardView/SMART/PySMART.cpp'],
+        include_dirs=['HardView/SMART', pybind11.get_include()],
+        libraries=[],  # No additional libraries needed for SMART
+        extra_compile_args=['/std:c++17', '/MT'],  # Static linking for MSVC
+        extra_link_args=['-static-libgcc', '-static-libstdc++'],  # Static linking for MinGW
+        language='c++'
+    )
+    # Add the new module to the list of extensions to be built
+    extensions.append(smart_module)
+
+# =================================================================
 # ==      Package Configuration                                ==
 # =================================================================
 
@@ -180,25 +198,18 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.2.0',
+    version='3.3.0b1',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.2.0
+# HardView 3.3.0b1
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-### Additions in 3.2.0
+### Additions in 3.3.0b1
 
-1-Added the smbios module, which retrieves hardware information on Windows by analyzing SMBIOS tables.
-
-2-Updated the __init__.py file: in previous versions, it used to copy the required DLLs to the Python directory so programs could access them. Now, it temporarily adds them to the PATH environment variable instead of copying.
-
-3-Added MSVC Runtime DLLs: the library can now use temperature functions on Windows without needing a separate MSVC Runtime installation, as the required libraries are included with the package.
-
-(All changes apply only to Windows; there are no changes for Linux.)
-
+- A SMART module has been added to retrieve SMART information for disks on Windows (HDD & SSD SATA).
 ---
 
     ''',
@@ -241,4 +252,3 @@ A comprehensive Python library for querying low-level hardware information and m
         'Source': 'https://github.com/gafoo173/HardView',
     },
 )
-
