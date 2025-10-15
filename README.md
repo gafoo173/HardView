@@ -660,7 +660,6 @@ All documentation is in the `docs/` folder:
 </details>
 
 ---
-
 ## 📚 API Reference (Python)
 
 <details>
@@ -1078,6 +1077,172 @@ All documentation is in the `docs/` folder:
 </details>
 
 <details>
+<summary><b>SMART Module (3.3.0+)</b></summary>
+
+### Main Classes
+
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Properties</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>SmartReader</code></b></td>
+<td><code>is_valid, drive_path, revision_number, valid_attributes, raw_data</code></td>
+<td>Main SMART data reader for physical drives</td>
+</tr>
+
+<tr>
+<td><b><code>SmartAttribute</code></b></td>
+<td><code>id, flags, current, worst, raw_value, name</code></td>
+<td>Individual SMART attribute data</td>
+</tr>
+
+<tr>
+<td><b><code>SmartValues</code></b></td>
+<td><code>revision_number, offline_data_collection_status, self_test_execution_status, total_time_to_complete_offline_data_collection</code></td>
+<td>SMART values structure</td>
+</tr>
+
+</tbody>
+</table>
+
+### SmartReader Methods
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>SmartReader(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td>Create SMART reader for physical drive number (0, 1, 2, ...)</td>
+</tr>
+
+<tr>
+<td><b><code>SmartReader(drive_path)</code></b></td>
+<td><code>drive_path: str</code></td>
+<td>Create SMART reader for drive path (e.g., '\\\\.\\PhysicalDrive0')</td>
+</tr>
+
+<tr>
+<td><b><code>refresh()</code></b></td>
+<td>---</td>
+<td>Refresh SMART data from drive</td>
+</tr>
+
+<tr>
+<td><b><code>find_attribute(attribute_id)</code></b></td>
+<td><code>attribute_id: int</code></td>
+<td>Find specific attribute by ID</td>
+</tr>
+
+<tr>
+<td><b><code>get_temperature()</code></b></td>
+<td>---</td>
+<td>Get drive temperature in Celsius (-1 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>get_power_on_hours()</code></b></td>
+<td>---</td>
+<td>Get power-on hours (0 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>get_power_cycle_count()</code></b></td>
+<td>---</td>
+<td>Get power cycle count (0 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>get_reallocated_sectors_count()</code></b></td>
+<td>---</td>
+<td>Get reallocated sectors count (0 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>get_ssd_life_left()</code></b></td>
+<td>---</td>
+<td>Get SSD life remaining percentage (-1 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>get_total_bytes_written()</code></b></td>
+<td>---</td>
+<td>Get total bytes written (SSD only, 0 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>get_total_bytes_read()</code></b></td>
+<td>---</td>
+<td>Get total bytes read (SSD only, 0 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>get_wear_leveling_count()</code></b></td>
+<td>---</td>
+<td>Get wear leveling count (SSD only, 0 if not available)</td>
+</tr>
+
+<tr>
+<td><b><code>is_probably_ssd()</code></b></td>
+<td>---</td>
+<td>Check if drive is likely an SSD</td>
+</tr>
+
+<tr>
+<td><b><code>is_probably_hdd()</code></b></td>
+<td>---</td>
+<td>Check if drive is likely an HDD</td>
+</tr>
+
+<tr>
+<td><b><code>get_drive_type()</code></b></td>
+<td>---</td>
+<td>Get drive type as string ('SSD', 'HDD', or 'Unknown')</td>
+</tr>
+
+</tbody>
+</table>
+
+### Utility Functions
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>scan_all_drives(max_drives)</code></b></td>
+<td><code>max_drives: int = 8</code></td>
+<td><code>([SmartReader, ...], [(drive_num, error_msg), ...])</code></td>
+<td>Scan all available drives and return tuple of readers list and errors list</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
+<details>
 <summary><b>SMBIOS Module</b></summary>
 
 ### Main Classes
@@ -1313,7 +1478,6 @@ All documentation is in the `docs/` folder:
 
 </details>
 
----
 ---
 
 ## 📊 Sensor Value Fetch Flow (LiveView)
@@ -1552,6 +1716,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
