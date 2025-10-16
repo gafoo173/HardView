@@ -24,7 +24,7 @@ This document provides a comprehensive guide to the `LiveView` API, with detaile
   - [`PySensor`](#pysensor) - For advanced sensor monitoring (Windows).
   - [`PyManageTemp`](#PyManageTemp) - For temperature monitoring management (Windows).
   - [`PyLinuxSensor`](#pylinuxsensor) - For comprehensive sensor monitoring (Linux).
-- [`PyRawInfo`](#pyrawinfo) - For accessing raw system firmware tables (Windows only).
+- [`PyRawInfo`](#-pyrawinfo) - For accessing raw system firmware tables (Windows only).
 
 ---
 
@@ -1175,48 +1175,53 @@ else:
 
 ### Methods
 
-#### `Init()`
+| Method                                | Description                                                         |
+| ------------------------------------- | ------------------------------------------------------------------- |
+| `Init()`                              | Initializes the hardware temperature monitor.                       |
+| `Close()`                             | Shuts down the hardware temperature monitor.                        |
+| `Update()`                            | Updates the hardware monitor data.                                  |
+| `SpecificUpdate(id: int)`             | Updates the temperature of a specific hardware component by its ID. |
+| `MultiSpecificUpdate(ids: list[int])` | Updates the temperatures of multiple hardware components at once.   |
 
-Initializes the hardware temperature monitor.
+### Component IDs
 
-#### `Close()`
+| Component           | ID |
+| ------------------- | -- |
+| Motherboard         | 1  |
+| SuperIO             | 2  |
+| CPU                 | 3  |
+| Memory              | 4  |
+| GPU                 | 5  |
+| Storage             | 6  |
+| Network             | 7  |
+| Embedded Controller | 9  |
 
-Shuts down the hardware temperature monitor.
+### Examples
 
-#### `Update()`
-
-Updates the hardware monitor data.
-
-**Example**
+#### Single component update
 
 ```python
-# This code will only run on Windows
-import sys
 if sys.platform == "win32":
-    from HardView.LiveView import PyManageTemp, PyTempCpu
+    temp_manager = PyManageTemp()
+    temp_manager.Init()
     
-    try:
-        temp_manager = PyManageTemp()
-        
-        # Initialize the hardware monitor
-        temp_manager.Init()
-        
-        # Create CPU temperature monitor (without auto-init)
-        cpu_temp = PyTempCpu(init=False)
-        
-        # Update hardware monitor
-        temp_manager.Update()
-        
-        # Get updated temperature
-        print(f"CPU Temperature: {cpu_temp.get_temp():.1f}°C")
-        
-        # Clean shutdown
-        temp_manager.Close()
-        
-    except Exception as e:
-        print(f"Error with temperature management: {e}")
-else:
-    print("Temperature management is only supported on Windows.")
+    # Update only CPU temperature
+    temp_manager.SpecificUpdate(3)  # 3 = CPU
+    
+    temp_manager.Close()
+```
+
+#### Multiple components update
+
+```python
+if sys.platform == "win32":
+    temp_manager = PyManageTemp()
+    temp_manager.Init()
+    
+    # Update multiple components: CPU, GPU, Memory
+    temp_manager.MultiSpecificUpdate([3, 4, 5])
+    
+    temp_manager.Close()
 ```
 
 ---
@@ -1639,10 +1644,11 @@ Always use try-catch blocks when working with hardware monitoring functions.
     In this case, you must use `.reget` to refresh all temperature sensor objects.
   * **When using `.update` from an individual temperature object**:
     This method performs **two tasks** — it updates the sensor values in both `libreHardwareMonitorlib` and `HardwareWrapper`, **and** updates the properties of the specific object you used it on.
-    Therefore, if you call `.update` on an individual object, there is **no need** to call `.reget` for that object.
+    Therefore, if you call `.update` on an individual object, there is **no need** to call `.reget` for that object. (In newer versions, you can use the SpecificUpdate function, which is better than the regular update functions)
 
 * **Performance tip**:
   After a global update using `PyManageTemp`’s `.Update` or calling `.update` on a specific temperature object, **do not** call `.Update` or `.update` again for the remaining objects.
   This would add unnecessary load, increase execution time, and cause redundant updates.
   Instead, use `.reget` to simply fetch the latest values.
+
 
