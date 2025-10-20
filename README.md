@@ -405,6 +405,7 @@ else:
 <summary><b>SMBIOS - (3.2.0+) </b></summary>
 
 ```python
+#This code will work on Windows only.
 from HardView import smbios
 
 # Get all system information
@@ -445,6 +446,7 @@ print(f"Serial Number:   {info.baseboard.serial_number}")
 <summary><b>SMART  - Requires admin privileges (3.3.0+) </b></summary>
 
 ```python
+#This code will work on Windows only.
 from HardView import SMART
 
 def generate_health_report(drive_number):
@@ -1828,6 +1830,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
