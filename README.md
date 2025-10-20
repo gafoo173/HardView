@@ -402,6 +402,118 @@ else:
 </details>
 
 <details>
+<summary><b>SMBIOS - (3.2.0+) </b></summary>
+
+```python
+from HardView import smbios
+
+# Get all system information
+info = smbios.get_system_info()
+
+# Display system details
+print("=" * 60)
+print("SYSTEM INFORMATION")
+print("=" * 60)
+print(f"Manufacturer:    {info.system.manufacturer}")
+print(f"Product Name:    {info.system.product_name}")
+print(f"Version:         {info.system.version}")
+print(f"Serial Number:   {info.system.serial_number}")
+print(f"UUID:            {info.system.uuid}")
+print(f"SKU Number:      {info.system.sku_number}")
+print(f"Family:          {info.system.family}")
+
+print("\n" + "=" * 60)
+print("BIOS INFORMATION")
+print("=" * 60)
+print(f"Vendor:          {info.bios.vendor}")
+print(f"Version:         {info.bios.version}")
+print(f"Release Date:    {info.bios.release_date}")
+print(f"BIOS Version:    {info.bios.major_release}.{info.bios.minor_release}")
+
+print("\n" + "=" * 60)
+print("MOTHERBOARD INFORMATION")
+print("=" * 60)
+print(f"Manufacturer:    {info.baseboard.manufacturer}")
+print(f"Product:         {info.baseboard.product}")
+print(f"Version:         {info.baseboard.version}")
+print(f"Serial Number:   {info.baseboard.serial_number}")
+```
+
+</details>
+
+<details>
+<summary><b>SMART  - Requires admin privileges (3.3.0+) </b></summary>
+
+```python
+from HardView import SMART
+
+def generate_health_report(drive_number):
+    try:
+        reader = SMART.SmartReader(drive_number)
+        
+        print("\n" + "="*60)
+        print(f"DRIVE HEALTH REPORT - {reader.drive_path}")
+        print("="*60)
+        
+        # Basic Info
+        print(f"\n Basic Information:")
+        print(f"   Drive Type: {reader.get_drive_type()}")
+        print(f"   SMART Valid: {reader.is_valid}")
+        
+        # Temperature
+        temp = reader.get_temperature()
+        if temp != -1:
+            temp_status = "✓ Good" if temp < 50 else "  High"
+            print(f"\n  Temperature: {temp}°C - {temp_status}")
+        
+        # Usage Statistics
+        print(f"\n⏱️  Usage Statistics:")
+        hours = reader.get_power_on_hours()
+        print(f"   Power-On Hours: {hours} ({hours/24:.1f} days)")
+        print(f"   Power Cycles: {reader.get_power_cycle_count()}")
+        
+        # Health Status
+        print(f"\n💊 Health Status:")
+        realloc = reader.get_reallocated_sectors_count()
+        if realloc == 0:
+            print(f"   Reallocated Sectors: ✓ None (Excellent)")
+        else:
+            print(f"   Reallocated Sectors:   {realloc} (Needs Attention)")
+        
+        # SSD Specific
+        if reader.is_probably_ssd():
+            print(f"\n SSD Information:")
+            life = reader.get_ssd_life_left()
+            if life != -1:
+                life_status = "✓ Good" if life > 80 else "  Monitor" if life > 50 else " Critical"
+                print(f"   Life Remaining: {life}% - {life_status}")
+            
+            written = reader.get_total_bytes_written()
+            if written > 0:
+                written_tb = written / (1024**4)
+                print(f"   Total Written: {written_tb:.2f} TB")
+            
+            read = reader.get_total_bytes_read()
+            if read > 0:
+                read_tb = read / (1024**4)
+                print(f"   Total Read: {read_tb:.2f} TB")
+        
+        print("\n" + "="*60 + "\n")
+        
+    except Exception as e:
+        print(f"Error generating report: {e}")
+
+# Generate reports for all drives
+readers, errors = SMART.scan_all_drives()
+for i, reader in enumerate(readers):
+    generate_health_report(i)
+```
+
+</details>
+
+
+
+<details>
 <summary><b>SDK Temperature (Rust) - Requires admin privileges</b></summary>
 
 ```rust
@@ -1716,6 +1828,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
