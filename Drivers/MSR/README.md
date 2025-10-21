@@ -1,5 +1,5 @@
 
-<img src="https://img.shields.io/badge/Status-Beta-blue" alt="Version Status" height="30">
+<img src="https://img.shields.io/badge/Version-1.0-blue" alt="Version Status" height="30">
 
 # MSRDrv
 
@@ -25,5 +25,6 @@ It includes:
 ---
 
 # Notes
+
 
 - The driver is **unsigned**, so you need to build it yourself and sign it with a **Test Signature**.  
