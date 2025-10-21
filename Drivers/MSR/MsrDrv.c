@@ -1,4 +1,4 @@
-﻿
+
 /*
  __  __ ____  ____    ____       _
 |  \/  / ___||  _ \  |  _ \ _ __(_)_   _____ _ __
@@ -76,6 +76,29 @@ typedef struct _MSR_WRITE_INPUT {
 //=================================================Create Driver====================================================================
 static PDEVICE_OBJECT g_DeviceObject = NULL;
 
+BOOLEAN isAdmin(PIRP Irp) {
+    PEPROCESS proc = IoGetRequestorProcess(Irp);
+    if (!proc)
+        return 0;
+
+    PACCESS_TOKEN token = NULL;
+    __try {
+        token = PsReferencePrimaryToken(proc);
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER) {
+        return 0;
+    }
+
+    if (!token)
+        return 0;
+
+    BOOLEAN isAdmin = SeTokenIsAdmin(token);
+    PsDereferencePrimaryToken(token);
+
+    return isAdmin;
+}
+
+
 NTSTATUS
 DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 {
@@ -139,14 +162,18 @@ MsrCreateClose(_In_ PDEVICE_OBJECT DeviceObject, _Inout_ PIRP Irp)
 {
     PAGED_CODE();
     UNREFERENCED_PARAMETER(DeviceObject);
+    NTSTATUS stat = STATUS_SUCCESS;
+    if (!isAdmin(Irp)) {
+        stat = STATUS_ACCESS_DENIED;
+    }
 
-    Irp->IoStatus.Status = STATUS_SUCCESS;
+    Irp->IoStatus.Status = stat;
     Irp->IoStatus.Information = 0;
     IoCompleteRequest(Irp, IO_NO_INCREMENT);
-    return STATUS_SUCCESS;
+    return stat;
 }
 //===============================================Read And Write Functions==============================================
-static __forceinline NTSTATUS SafeReadMsr(UINT32 reg, UINT64* outVal)
+static NTSTATUS SafeReadMsr(UINT32 reg, UINT64* outVal)
 {
 #if defined(_M_IX86) || defined(_M_AMD64)
     __try {
@@ -155,8 +182,7 @@ static __forceinline NTSTATUS SafeReadMsr(UINT32 reg, UINT64* outVal)
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
         *outVal = 0;
-        return STATUS_PRIVILEGED_INSTRUCTION;
-        return STATUS_PRIVILEGED_INSTRUCTION;
+        return STATUS_PRIVILEGED_INSTRUCTION; //It’s not necessarily the cause of the error it’s just an indication that a read or write error occurred.
     }
 #else
     UNREFERENCED_PARAMETER(reg);
@@ -165,7 +191,7 @@ static __forceinline NTSTATUS SafeReadMsr(UINT32 reg, UINT64* outVal)
 #endif
 }
 
-static __forceinline NTSTATUS SafeWriteMsr(UINT32 reg, UINT64 val)
+static NTSTATUS SafeWriteMsr(UINT32 reg, UINT64 val)
 {
 #if defined(_M_IX86) || defined(_M_AMD64)
     __try {
