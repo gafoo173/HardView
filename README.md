@@ -248,7 +248,7 @@ The **temperature monitoring features** in `HardView.LiveView` rely on **LibreHa
 WinRing0 is an old and well-known driver used for reading from **MSR**, **physical memory**, and other low-level hardware resources.  
 
 #### The Problem
-Unfortunately, **WinRing0 is now blocked by Windows**.  
+**WinRing0 is now blocked by Windows**.  
 This means you may encounter alerts from **Windows Defender** similar to this one:
 
 <div align="center">
@@ -294,6 +294,7 @@ sc stop R0<ProgramName>
 sc delete R0Python
 ```
 
+After that, you can manually delete the driver file.
 </details>
 
 ---
@@ -1830,6 +1831,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
