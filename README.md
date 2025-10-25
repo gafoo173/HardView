@@ -5,7 +5,7 @@
 # HardView - Hardware Information Project
 
 <p>
-  <img src="https://img.shields.io/badge/PyPI_Stable-3.2.0-blue" alt="PyPI Stable Version" height="28">
+  <img src="https://img.shields.io/badge/PyPI_Stable-3.3.0-blue" alt="PyPI Stable Version" height="28">
   <img src="https://img.shields.io/badge/downloads-10.7K-red" alt="Version" height="28">
   <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="28">
 </p>
@@ -1831,6 +1831,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
