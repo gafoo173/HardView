@@ -198,17 +198,17 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.3.0b1',
+    version='3.3.0',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.3.0b1
+# HardView 3.3.0
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-### Additions in 3.3.0b1
-
+### Additions in 3.3.0
+- Fixing some errors in SMBIOS parsing in the smbios model for Windows.
 - A SMART module has been added to retrieve SMART information for disks on Windows (HDD & SSD SATA).
 ---
 
