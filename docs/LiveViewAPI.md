@@ -1473,120 +1473,6 @@ Total SMBIOS Data Size: 64 bytes
 
 ---
 
-## Complete System Monitoring Example
-
-Here's a comprehensive example that demonstrates how to use multiple `LiveView` classes together for complete system monitoring:
-
-```python
-import sys
-import time
-from HardView.LiveView import *
-
-def monitor_system():
-    """Complete system monitoring example"""
-    
-    print("=== HardView LiveView System Monitor ===\n")
-    
-    # Initialize monitors
-    cpu_monitor = PyLiveCPU()
-    ram_monitor = PyLiveRam()
-    disk_monitor = PyLiveDisk(mode=1)  # Read/Write speed mode
-    net_monitor = PyLiveNetwork()
-    
-    # Platform-specific monitors
-    if sys.platform == "win32":
-        print("Initializing Windows-specific monitors...")
-        try:
-            gpu_monitor = PyLiveGpu()
-            temp_manager = PyManageTemp()
-            cpu_temp = PyTempCpu()
-            gpu_temp = PyTempGpu()
-            other_temp = PyTempOther()
-            sensor = PySensor()
-            windows_monitors = True
-        except Exception as e:
-            print(f"Error initializing Windows monitors: {e}")
-            windows_monitors = False
-    elif sys.platform == "linux":
-        print("Initializing Linux-specific monitors...")
-        try:
-            linux_sensor = PyLinuxSensor()
-            linux_monitors = True
-        except Exception as e:
-            print(f"Error initializing Linux monitors: {e}")
-            linux_monitors = False
-    
-    # Monitoring loop
-    for i in range(3):  # Monitor for 3 iterations
-        print(f"\n--- Monitoring Cycle {i+1} ---")
-        
-        # Basic system monitoring (cross-platform)
-        cpu_usage = cpu_monitor.get_usage(1000)
-        ram_usage = ram_monitor.get_usage()
-        disk_usage = disk_monitor.get_usage(1000)
-        net_usage = net_monitor.get_usage(1000, mode=0)
-        
-        print(f"CPU Usage: {cpu_usage:.2f}%")
-        print(f"RAM Usage: {ram_usage:.2f}%")
-        print(f"Disk R/W: Read {disk_usage[0][1]:.2f} MB/s, Write {disk_usage[1][1]:.2f} MB/s")
-        print(f"Network Usage: {net_usage:.4f} MB/s")
-        
-        # Windows-specific monitoring
-        if sys.platform == "win32" and windows_monitors:
-            try:
-                gpu_usage = gpu_monitor.get_usage(1000)
-                cpu_temp.update()
-                gpu_temp.update()
-                other_temp.update()
-                
-                print(f"GPU Usage: {gpu_usage:.2f}%")
-                print(f"CPU Temperature: {cpu_temp.get_temp():.1f}°C")
-                print(f"GPU Temperature: {gpu_temp.get_temp():.1f}°C")
-                print(f"Motherboard Temperature: {other_temp.get_mb_temp():.1f}°C")
-                
-                # Show some fan speeds
-                fan_rpms = sensor.getAllFanRPMs()
-                if fan_rpms:
-                    print("Fan Speeds:")
-                    for fan_name, rpm in fan_rpms[:3]:  # Show first 3 fans
-                        print(f" - {fan_name}: {rpm:.0f} RPM")
-                        
-            except Exception as e:
-                print(f"Error reading Windows-specific data: {e}")
-        
-        # Linux-specific monitoring
-        elif sys.platform == "linux" and linux_monitors:
-            try:
-                linux_sensor.update()
-                cpu_temp = linux_sensor.getCpuTemp()
-                mb_temp = linux_sensor.getMotherboardTemp()
-                
-                if cpu_temp > 0:
-                    print(f"CPU Temperature: {cpu_temp:.1f}°C")
-                if mb_temp > 0:
-                    print(f"Motherboard Temperature: {mb_temp:.1f}°C")
-                    
-            except Exception as e:
-                print(f"Error reading Linux-specific data: {e}")
-        
-        if i < 2:  # Don't sleep on last iteration
-            time.sleep(2)
-    
-    print("\n=== Monitoring Complete ===")
-
-if __name__ == "__main__":
-    monitor_system()
-```
-
----
-
-## Quick Test
-
-To quickly test the `LiveView` functions and see them in action, run the `Test.py` script located in the `tests/LiveView/` directory of the `HardView` project.
-
-```bash
-python tests/LiveView/Test.py
-```
 
 This script will execute various `LiveView` functions and display their outputs, providing a practical demonstration of how to use the module.
 
@@ -1650,5 +1536,6 @@ Always use try-catch blocks when working with hardware monitoring functions.
   After a global update using `PyManageTemp`’s `.Update` or calling `.update` on a specific temperature object, **do not** call `.Update` or `.update` again for the remaining objects.
   This would add unnecessary load, increase execution time, and cause redundant updates.
   Instead, use `.reget` to simply fetch the latest values.
+
 
 
