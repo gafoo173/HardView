@@ -1416,24 +1416,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#complete-system-monitoring-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete System Monitoring Example
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Test
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#notes-and-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       Notes and Requirements
@@ -3430,112 +3412,6 @@ with an average query time of <strong>8—15 microseconds</strong>.</p>
 <a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>Total SMBIOS Data Size: 64 bytes
 </code></pre></div>
 <hr />
-<h2 id="complete-system-monitoring-example">Complete System Monitoring Example</h2>
-<p>Here's a comprehensive example that demonstrates how to use multiple <code>LiveView</code> classes together for complete system monitoring:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">HardView.LiveView</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>
-<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">monitor_system</span><span class="p">():</span>
-<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Complete system monitoring example&quot;&quot;&quot;</span>
-<a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a>
-<a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== HardView LiveView System Monitor ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a>
-<a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a>    <span class="c1"># Initialize monitors</span>
-<a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a>    <span class="n">cpu_monitor</span> <span class="o">=</span> <span class="n">PyLiveCPU</span><span class="p">()</span>
-<a id="__codelineno-42-12" name="__codelineno-42-12" href="#__codelineno-42-12"></a>    <span class="n">ram_monitor</span> <span class="o">=</span> <span class="n">PyLiveRam</span><span class="p">()</span>
-<a id="__codelineno-42-13" name="__codelineno-42-13" href="#__codelineno-42-13"></a>    <span class="n">disk_monitor</span> <span class="o">=</span> <span class="n">PyLiveDisk</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Read/Write speed mode</span>
-<a id="__codelineno-42-14" name="__codelineno-42-14" href="#__codelineno-42-14"></a>    <span class="n">net_monitor</span> <span class="o">=</span> <span class="n">PyLiveNetwork</span><span class="p">()</span>
-<a id="__codelineno-42-15" name="__codelineno-42-15" href="#__codelineno-42-15"></a>
-<a id="__codelineno-42-16" name="__codelineno-42-16" href="#__codelineno-42-16"></a>    <span class="c1"># Platform-specific monitors</span>
-<a id="__codelineno-42-17" name="__codelineno-42-17" href="#__codelineno-42-17"></a>    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
-<a id="__codelineno-42-18" name="__codelineno-42-18" href="#__codelineno-42-18"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing Windows-specific monitors...&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-19" name="__codelineno-42-19" href="#__codelineno-42-19"></a>        <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-42-20" name="__codelineno-42-20" href="#__codelineno-42-20"></a>            <span class="n">gpu_monitor</span> <span class="o">=</span> <span class="n">PyLiveGpu</span><span class="p">()</span>
-<a id="__codelineno-42-21" name="__codelineno-42-21" href="#__codelineno-42-21"></a>            <span class="n">temp_manager</span> <span class="o">=</span> <span class="n">PyManageTemp</span><span class="p">()</span>
-<a id="__codelineno-42-22" name="__codelineno-42-22" href="#__codelineno-42-22"></a>            <span class="n">cpu_temp</span> <span class="o">=</span> <span class="n">PyTempCpu</span><span class="p">()</span>
-<a id="__codelineno-42-23" name="__codelineno-42-23" href="#__codelineno-42-23"></a>            <span class="n">gpu_temp</span> <span class="o">=</span> <span class="n">PyTempGpu</span><span class="p">()</span>
-<a id="__codelineno-42-24" name="__codelineno-42-24" href="#__codelineno-42-24"></a>            <span class="n">other_temp</span> <span class="o">=</span> <span class="n">PyTempOther</span><span class="p">()</span>
-<a id="__codelineno-42-25" name="__codelineno-42-25" href="#__codelineno-42-25"></a>            <span class="n">sensor</span> <span class="o">=</span> <span class="n">PySensor</span><span class="p">()</span>
-<a id="__codelineno-42-26" name="__codelineno-42-26" href="#__codelineno-42-26"></a>            <span class="n">windows_monitors</span> <span class="o">=</span> <span class="kc">True</span>
-<a id="__codelineno-42-27" name="__codelineno-42-27" href="#__codelineno-42-27"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-42-28" name="__codelineno-42-28" href="#__codelineno-42-28"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error initializing Windows monitors: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-29" name="__codelineno-42-29" href="#__codelineno-42-29"></a>            <span class="n">windows_monitors</span> <span class="o">=</span> <span class="kc">False</span>
-<a id="__codelineno-42-30" name="__codelineno-42-30" href="#__codelineno-42-30"></a>    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span><span class="p">:</span>
-<a id="__codelineno-42-31" name="__codelineno-42-31" href="#__codelineno-42-31"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initializing Linux-specific monitors...&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-32" name="__codelineno-42-32" href="#__codelineno-42-32"></a>        <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-42-33" name="__codelineno-42-33" href="#__codelineno-42-33"></a>            <span class="n">linux_sensor</span> <span class="o">=</span> <span class="n">PyLinuxSensor</span><span class="p">()</span>
-<a id="__codelineno-42-34" name="__codelineno-42-34" href="#__codelineno-42-34"></a>            <span class="n">linux_monitors</span> <span class="o">=</span> <span class="kc">True</span>
-<a id="__codelineno-42-35" name="__codelineno-42-35" href="#__codelineno-42-35"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-42-36" name="__codelineno-42-36" href="#__codelineno-42-36"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error initializing Linux monitors: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-37" name="__codelineno-42-37" href="#__codelineno-42-37"></a>            <span class="n">linux_monitors</span> <span class="o">=</span> <span class="kc">False</span>
-<a id="__codelineno-42-38" name="__codelineno-42-38" href="#__codelineno-42-38"></a>
-<a id="__codelineno-42-39" name="__codelineno-42-39" href="#__codelineno-42-39"></a>    <span class="c1"># Monitoring loop</span>
-<a id="__codelineno-42-40" name="__codelineno-42-40" href="#__codelineno-42-40"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>  <span class="c1"># Monitor for 3 iterations</span>
-<a id="__codelineno-42-41" name="__codelineno-42-41" href="#__codelineno-42-41"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Monitoring Cycle </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-42" name="__codelineno-42-42" href="#__codelineno-42-42"></a>
-<a id="__codelineno-42-43" name="__codelineno-42-43" href="#__codelineno-42-43"></a>        <span class="c1"># Basic system monitoring (cross-platform)</span>
-<a id="__codelineno-42-44" name="__codelineno-42-44" href="#__codelineno-42-44"></a>        <span class="n">cpu_usage</span> <span class="o">=</span> <span class="n">cpu_monitor</span><span class="o">.</span><span class="n">get_usage</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-<a id="__codelineno-42-45" name="__codelineno-42-45" href="#__codelineno-42-45"></a>        <span class="n">ram_usage</span> <span class="o">=</span> <span class="n">ram_monitor</span><span class="o">.</span><span class="n">get_usage</span><span class="p">()</span>
-<a id="__codelineno-42-46" name="__codelineno-42-46" href="#__codelineno-42-46"></a>        <span class="n">disk_usage</span> <span class="o">=</span> <span class="n">disk_monitor</span><span class="o">.</span><span class="n">get_usage</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-<a id="__codelineno-42-47" name="__codelineno-42-47" href="#__codelineno-42-47"></a>        <span class="n">net_usage</span> <span class="o">=</span> <span class="n">net_monitor</span><span class="o">.</span><span class="n">get_usage</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<a id="__codelineno-42-48" name="__codelineno-42-48" href="#__codelineno-42-48"></a>
-<a id="__codelineno-42-49" name="__codelineno-42-49" href="#__codelineno-42-49"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Usage: </span><span class="si">{</span><span class="n">cpu_usage</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-50" name="__codelineno-42-50" href="#__codelineno-42-50"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RAM Usage: </span><span class="si">{</span><span class="n">ram_usage</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-51" name="__codelineno-42-51" href="#__codelineno-42-51"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Disk R/W: Read </span><span class="si">{</span><span class="n">disk_usage</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB/s, Write </span><span class="si">{</span><span class="n">disk_usage</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB/s&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-52" name="__codelineno-42-52" href="#__codelineno-42-52"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Network Usage: </span><span class="si">{</span><span class="n">net_usage</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> MB/s&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-53" name="__codelineno-42-53" href="#__codelineno-42-53"></a>
-<a id="__codelineno-42-54" name="__codelineno-42-54" href="#__codelineno-42-54"></a>        <span class="c1"># Windows-specific monitoring</span>
-<a id="__codelineno-42-55" name="__codelineno-42-55" href="#__codelineno-42-55"></a>        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span> <span class="ow">and</span> <span class="n">windows_monitors</span><span class="p">:</span>
-<a id="__codelineno-42-56" name="__codelineno-42-56" href="#__codelineno-42-56"></a>            <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-42-57" name="__codelineno-42-57" href="#__codelineno-42-57"></a>                <span class="n">gpu_usage</span> <span class="o">=</span> <span class="n">gpu_monitor</span><span class="o">.</span><span class="n">get_usage</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
-<a id="__codelineno-42-58" name="__codelineno-42-58" href="#__codelineno-42-58"></a>                <span class="n">cpu_temp</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-<a id="__codelineno-42-59" name="__codelineno-42-59" href="#__codelineno-42-59"></a>                <span class="n">gpu_temp</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-<a id="__codelineno-42-60" name="__codelineno-42-60" href="#__codelineno-42-60"></a>                <span class="n">other_temp</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-<a id="__codelineno-42-61" name="__codelineno-42-61" href="#__codelineno-42-61"></a>
-<a id="__codelineno-42-62" name="__codelineno-42-62" href="#__codelineno-42-62"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GPU Usage: </span><span class="si">{</span><span class="n">gpu_usage</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-63" name="__codelineno-42-63" href="#__codelineno-42-63"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Temperature: </span><span class="si">{</span><span class="n">cpu_temp</span><span class="o">.</span><span class="n">get_temp</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°C&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-64" name="__codelineno-42-64" href="#__codelineno-42-64"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GPU Temperature: </span><span class="si">{</span><span class="n">gpu_temp</span><span class="o">.</span><span class="n">get_temp</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°C&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-65" name="__codelineno-42-65" href="#__codelineno-42-65"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Motherboard Temperature: </span><span class="si">{</span><span class="n">other_temp</span><span class="o">.</span><span class="n">get_mb_temp</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°C&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-66" name="__codelineno-42-66" href="#__codelineno-42-66"></a>
-<a id="__codelineno-42-67" name="__codelineno-42-67" href="#__codelineno-42-67"></a>                <span class="c1"># Show some fan speeds</span>
-<a id="__codelineno-42-68" name="__codelineno-42-68" href="#__codelineno-42-68"></a>                <span class="n">fan_rpms</span> <span class="o">=</span> <span class="n">sensor</span><span class="o">.</span><span class="n">getAllFanRPMs</span><span class="p">()</span>
-<a id="__codelineno-42-69" name="__codelineno-42-69" href="#__codelineno-42-69"></a>                <span class="k">if</span> <span class="n">fan_rpms</span><span class="p">:</span>
-<a id="__codelineno-42-70" name="__codelineno-42-70" href="#__codelineno-42-70"></a>                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fan Speeds:&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-71" name="__codelineno-42-71" href="#__codelineno-42-71"></a>                    <span class="k">for</span> <span class="n">fan_name</span><span class="p">,</span> <span class="n">rpm</span> <span class="ow">in</span> <span class="n">fan_rpms</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>  <span class="c1"># Show first 3 fans</span>
-<a id="__codelineno-42-72" name="__codelineno-42-72" href="#__codelineno-42-72"></a>                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - </span><span class="si">{</span><span class="n">fan_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rpm</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> RPM&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-73" name="__codelineno-42-73" href="#__codelineno-42-73"></a>
-<a id="__codelineno-42-74" name="__codelineno-42-74" href="#__codelineno-42-74"></a>            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-42-75" name="__codelineno-42-75" href="#__codelineno-42-75"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading Windows-specific data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-76" name="__codelineno-42-76" href="#__codelineno-42-76"></a>
-<a id="__codelineno-42-77" name="__codelineno-42-77" href="#__codelineno-42-77"></a>        <span class="c1"># Linux-specific monitoring</span>
-<a id="__codelineno-42-78" name="__codelineno-42-78" href="#__codelineno-42-78"></a>        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span> <span class="ow">and</span> <span class="n">linux_monitors</span><span class="p">:</span>
-<a id="__codelineno-42-79" name="__codelineno-42-79" href="#__codelineno-42-79"></a>            <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-42-80" name="__codelineno-42-80" href="#__codelineno-42-80"></a>                <span class="n">linux_sensor</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-<a id="__codelineno-42-81" name="__codelineno-42-81" href="#__codelineno-42-81"></a>                <span class="n">cpu_temp</span> <span class="o">=</span> <span class="n">linux_sensor</span><span class="o">.</span><span class="n">getCpuTemp</span><span class="p">()</span>
-<a id="__codelineno-42-82" name="__codelineno-42-82" href="#__codelineno-42-82"></a>                <span class="n">mb_temp</span> <span class="o">=</span> <span class="n">linux_sensor</span><span class="o">.</span><span class="n">getMotherboardTemp</span><span class="p">()</span>
-<a id="__codelineno-42-83" name="__codelineno-42-83" href="#__codelineno-42-83"></a>
-<a id="__codelineno-42-84" name="__codelineno-42-84" href="#__codelineno-42-84"></a>                <span class="k">if</span> <span class="n">cpu_temp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-42-85" name="__codelineno-42-85" href="#__codelineno-42-85"></a>                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Temperature: </span><span class="si">{</span><span class="n">cpu_temp</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°C&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-86" name="__codelineno-42-86" href="#__codelineno-42-86"></a>                <span class="k">if</span> <span class="n">mb_temp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-42-87" name="__codelineno-42-87" href="#__codelineno-42-87"></a>                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Motherboard Temperature: </span><span class="si">{</span><span class="n">mb_temp</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°C&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-88" name="__codelineno-42-88" href="#__codelineno-42-88"></a>
-<a id="__codelineno-42-89" name="__codelineno-42-89" href="#__codelineno-42-89"></a>            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-42-90" name="__codelineno-42-90" href="#__codelineno-42-90"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading Linux-specific data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-91" name="__codelineno-42-91" href="#__codelineno-42-91"></a>
-<a id="__codelineno-42-92" name="__codelineno-42-92" href="#__codelineno-42-92"></a>        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Don&#39;t sleep on last iteration</span>
-<a id="__codelineno-42-93" name="__codelineno-42-93" href="#__codelineno-42-93"></a>            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<a id="__codelineno-42-94" name="__codelineno-42-94" href="#__codelineno-42-94"></a>
-<a id="__codelineno-42-95" name="__codelineno-42-95" href="#__codelineno-42-95"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Monitoring Complete ===&quot;</span><span class="p">)</span>
-<a id="__codelineno-42-96" name="__codelineno-42-96" href="#__codelineno-42-96"></a>
-<a id="__codelineno-42-97" name="__codelineno-42-97" href="#__codelineno-42-97"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-<a id="__codelineno-42-98" name="__codelineno-42-98" href="#__codelineno-42-98"></a>    <span class="n">monitor_system</span><span class="p">()</span>
-</code></pre></div>
-<hr />
-<h2 id="quick-test">Quick Test</h2>
-<p>To quickly test the <code>LiveView</code> functions and see them in action, run the <code>Test.py</code> script located in the <code>tests/LiveView/</code> directory of the <code>HardView</code> project.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>python<span class="w"> </span>tests/LiveView/Test.py
-</code></pre></div>
 <p>This script will execute various <code>LiveView</code> functions and display their outputs, providing a practical demonstration of how to use the module.</p>
 <hr />
 <h2 id="notes-and-requirements">Notes and Requirements</h2>
@@ -3561,7 +3437,6 @@ with an average query time of <strong>8—15 microseconds</strong>.</p>
 <h3 id="notes">Notes</h3>
 <ul>
 <li><strong>PyLiveRam</strong>: Fastest RAM monitoring (~400K-500K queries/second)</li>
-<li><strong>Temperature classes</strong>: Require hardware initialization, use sparingly</li>
 <li><strong>Sensor classes</strong>: Provide the most comprehensive hardware information</li>
 <li><strong>GPU monitoring</strong>: May not work well with integrated GPUs</li>
 </ul>
@@ -3569,8 +3444,6 @@ with an average query time of <strong>8—15 microseconds</strong>.</p>
 <blockquote>
 <p><strong>Note:</strong><br />
 Before performing the first read on Windows, make sure to update the values to ensure accurate results. This is especially important within the <code>PySensor</code> class, as some sensors require an initial update after initialization to return correct values.</p>
-<p><strong>Note:</strong> There's no need to worry about repeating the configuration,<br />
-as the function includes a safeguard that immediately prevents duplicates upon entry.</p>
 </blockquote>
 <ul>
 <li>
