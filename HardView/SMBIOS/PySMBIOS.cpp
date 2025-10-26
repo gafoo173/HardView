@@ -2,7 +2,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include "../../C++/Headers/SMBIOS/SMBIOS.hpp"
-
+using namespace HV::SMBIOS;
 namespace py = pybind11;
 
 PYBIND11_MODULE(smbios, m) {
@@ -299,4 +299,5 @@ PYBIND11_MODULE(smbios, m) {
         }
         return parser.GetParsedInfo();
     }, "Quick function to get SMBIOS system information");
+
 }
