@@ -1505,16 +1505,12 @@ Always use try-catch blocks when working with hardware monitoring functions.
 ### Notes
 
 - **PyLiveRam**: Fastest RAM monitoring (~400K-500K queries/second)
-- **Temperature classes**: Require hardware initialization, use sparingly
 - **Sensor classes**: Provide the most comprehensive hardware information
 - **GPU monitoring**: May not work well with integrated GPUs
 
 ### Usage Tips for Temperature Classes in Windows
 > **Note:**  
 > Before performing the first read on Windows, make sure to update the values to ensure accurate results. This is especially important within the `PySensor` class, as some sensors require an initial update after initialization to return correct values.
-
-> **Note:** There's no need to worry about repeating the configuration,  
-> as the function includes a safeguard that immediately prevents duplicates upon entry.
 
 
 * **For simple scripts** (e.g., monitoring only CPU temperature):
@@ -1536,6 +1532,7 @@ Always use try-catch blocks when working with hardware monitoring functions.
   After a global update using `PyManageTemp`’s `.Update` or calling `.update` on a specific temperature object, **do not** call `.Update` or `.update` again for the remaining objects.
   This would add unnecessary load, increase execution time, and cause redundant updates.
   Instead, use `.reget` to simply fetch the latest values.
+
 
 
 
