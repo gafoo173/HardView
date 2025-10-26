@@ -557,18 +557,6 @@ struct SystemPowerSupply {
  uint16_t InputCurrentProbeHandle;
 };
 
-struct AdditionalInformation {
- SMBIOSHeader Header;
- uint8_t NumberOfEntries;
- struct Entry {
-  uint8_t EntryLength;
-  uint16_t ReferencedHandle;
-  uint8_t ReferencedOffset;
-  uint8_t String;
-  uint8_t Value[]; 
- } Entries[];
-};
-
 struct OnboardDevicesExtended {
  SMBIOSHeader Header;
  uint8_t ReferenceDesignation;
@@ -578,20 +566,6 @@ struct OnboardDevicesExtended {
  uint8_t BusNumber;
  uint8_t DeviceFunctionNumber;
 };
-
-struct ManagementControllerHostInterface {
- SMBIOSHeader Header;
- uint8_t InterfaceType;
- uint8_t InterfaceTypeSpecificDataLength;
- uint8_t* InterfaceTypeSpecificData; // N bytes, variable length
- uint8_t NumberOfProtocolRecords;
- struct ProtocolRecord {
-  uint8_t ProtocolType;
-  uint8_t ProtocolTypeSpecificDataLength;
-  uint8_t ProtocolTypeSpecificData[]; // variable length
- } ProtocolRecords[];
-};
-
 
 struct TPMDevice {
  SMBIOSHeader Header;
@@ -1447,3 +1421,4 @@ inline void ParseCacheInformation(const CacheInformation* cache) {
 };
 } //name space SMBIOS
 } // namesapce HV
+
