@@ -5,7 +5,8 @@
 #include <map>
 #include <memory>
 #include <cstdint>
-
+namespace HV {
+namespace SMBIOS {
 // SMBIOS Structure Types
 enum class SMBIOSType : uint8_t {
     BIOS_INFORMATION = 0,
@@ -318,7 +319,20 @@ struct MemoryDevice {
     uint16_t configured_memory_speed;
     uint16_t minimum_voltage;
     uint16_t maximum_voltage;
-    uint16_t configured_voltage;
+    uint16_t configured_voltage;                              // 2.8+
+    uint8_t memory_technology;                                // 3.2+
+    uint16_t memory_operating_mode_capability;                // 3.2+
+    uint8_t firmware_version;                                 // 3.2+
+    uint16_t module_manufacturer_id;                          // 3.2+
+    uint16_t module_product_id;                               // 3.2+
+    uint16_t memory_subsystem_controller_manufacturer_id;     // 3.2+
+    uint16_t memory_subsystem_controller_product_id;          // 3.2+
+    uint64_t non_volatile_size;                               // 3.2+
+    uint64_t volatile_size;                                   // 3.2+
+    uint64_t cache_size;                                      // 3.2+
+    uint64_t logical_size;                                    // 3.2+
+    uint32_t extended_speed;                                  // 3.3+
+    uint32_t extended_configured_memory_speed;                // 3.3+
 };
 
 struct MemoryError32Bit {
@@ -438,6 +452,157 @@ struct TemperatureProbe {
     uint16_t accuracy;
     uint32_t oem_defined;
     uint16_t nominal_value;
+};
+
+
+struct ElectricalCurrentProbe {
+ SMBIOSHeader Header;
+ uint8_t Description;
+ uint8_t LocationAndStatus;
+ uint16_t MaximumValue;
+ uint16_t MinimumValue;
+ uint16_t Resolution;
+ uint16_t Tolerance;
+ uint16_t Accuracy;
+ uint32_t OemDefined;
+ uint16_t NominalValue;
+};
+
+struct OutOfBandRemoteAccess {
+ SMBIOSHeader Header;
+ uint8_t ManufacturerName;
+ uint8_t Connections;
+};
+
+struct SystemBootInformation {
+ SMBIOSHeader Header;
+ uint8_t Reserved[6];
+ uint8_t BootStatus[];
+};
+
+struct MemoryError64Bit {
+ SMBIOSHeader Header;
+ uint8_t ErrorType;
+ uint8_t ErrorGranularity;
+ uint8_t ErrorOperation;
+ uint32_t VendorSyndrome;
+ uint64_t MemoryArrayErrorAddress;
+ uint64_t DeviceErrorAddress;
+ uint32_t ErrorResolution;
+};
+
+struct ManagementDevice {
+ SMBIOSHeader Header;
+ uint8_t Description;
+ uint8_t Type;
+ uint32_t Address;
+ uint8_t AddressType;
+};
+
+struct ManagementDeviceComponent {
+ SMBIOSHeader Header;
+ uint8_t Description;
+ uint16_t ManagementDeviceHandle;
+ uint16_t ComponentHandle;
+ uint16_t ThresholdHandle;
+};
+
+struct ManagementDeviceThresholdData {
+ SMBIOSHeader Header;
+ uint16_t LowerThresholdNonCritical;
+ uint16_t UpperThresholdNonCritical;
+ uint16_t LowerThresholdCritical;
+ uint16_t UpperThresholdCritical;
+ uint16_t LowerThresholdNonRecoverable;
+ uint16_t UpperThresholdNonRecoverable;
+};
+
+struct MemoryChannel {
+ SMBIOSHeader Header;
+ uint8_t ChannelType;
+ uint8_t MaximumChannelLoad;
+ uint8_t MemoryDeviceCount;
+ struct {
+  uint8_t DeviceLoad;
+  uint16_t DeviceHandle;
+ } Devices[];
+};
+
+struct IPMIDeviceInformation {
+ SMBIOSHeader Header;
+ uint8_t InterfaceType;
+ uint8_t SpecificationRevision;
+ uint8_t I2CTargetAddress;
+ uint8_t NVStorageDeviceAddress;
+ uint64_t BaseAddress;
+ uint8_t BaseAddressModifierInterruptInfo;
+ uint8_t InterruptNumber;
+};
+
+
+struct SystemPowerSupply {
+ SMBIOSHeader Header;
+ uint8_t PowerUnitGroup;
+ uint8_t Location;
+ uint8_t DeviceName;
+ uint8_t Manufacturer;
+ uint8_t SerialNumber;
+ uint8_t AssetTagNumber;
+ uint8_t ModelPartNumber;
+ uint8_t RevisionLevel;
+ uint16_t MaxPowerCapacity;
+ uint16_t PowerSupplyCharacteristics;
+ uint16_t InputVoltageProbeHandle;
+ uint16_t CoolingDeviceHandle;
+ uint16_t InputCurrentProbeHandle;
+};
+
+struct AdditionalInformation {
+ SMBIOSHeader Header;
+ uint8_t NumberOfEntries;
+ struct Entry {
+  uint8_t EntryLength;
+  uint16_t ReferencedHandle;
+  uint8_t ReferencedOffset;
+  uint8_t String;
+  uint8_t Value[]; 
+ } Entries[];
+};
+
+struct OnboardDevicesExtended {
+ SMBIOSHeader Header;
+ uint8_t ReferenceDesignation;
+ uint8_t DeviceType;
+ uint8_t DeviceTypeInstance;
+ uint16_t SegmentGroupNumber;
+ uint8_t BusNumber;
+ uint8_t DeviceFunctionNumber;
+};
+
+struct ManagementControllerHostInterface {
+ SMBIOSHeader Header;
+ uint8_t InterfaceType;
+ uint8_t InterfaceTypeSpecificDataLength;
+ uint8_t* InterfaceTypeSpecificData; // N bytes, variable length
+ uint8_t NumberOfProtocolRecords;
+ struct ProtocolRecord {
+  uint8_t ProtocolType;
+  uint8_t ProtocolTypeSpecificDataLength;
+  uint8_t ProtocolTypeSpecificData[]; // variable length
+ } ProtocolRecords[];
+};
+
+
+struct TPMDevice {
+ SMBIOSHeader Header;
+ uint8_t VendorID[4];
+ uint8_t MajorSpecVersion;
+ uint8_t MinorSpecVersion;
+ uint32_t FirmwareVersion1;
+ uint32_t FirmwareVersion2;
+ uint8_t Description;
+ uint64_t Characteristics;
+ uint32_t OemDefined;
 };
 
 #pragma pack(pop)
@@ -1122,15 +1287,15 @@ inline void ParseCacheInformation(const CacheInformation* cache) {
         }
         
         buffer_size = result;
-        raw_data = std::make_unique<uint8_t[]>(buffer_size);
+        raw_data = std::make_unique<uint8_t[]>(buffer_size + 512);
         
         // Get actual data
         result = GetSystemFirmwareTable('RSMB', 0, raw_data.get(), buffer_size);
         if (result == 0) {
             return false;
         }
-        
         data_size = result;
+        memset((raw_data.get() + buffer_size),0,512);
         return true;
     }
 
@@ -1280,3 +1445,5 @@ inline void ParseCacheInformation(const CacheInformation* cache) {
         return message;
     }
 };
+} //name space SMBIOS
+} // namesapce HV
