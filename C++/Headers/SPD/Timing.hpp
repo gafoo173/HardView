@@ -23,6 +23,9 @@
 #include <vector>
 #include <stdexcept>
 
+namespace HV {
+namespace Timing {
+
 struct TimingDDR3 {
   float MTB;     // Medium Timebase in ns
   float tCKmin;  // Clock cycle time in ns
@@ -626,4 +629,5 @@ struct TimingDDR4 {
     tCKmin += tCKmin_fine;
   }
 };
-
+}
+}

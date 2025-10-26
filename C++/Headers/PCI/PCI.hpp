@@ -24,7 +24,8 @@
 #include <setupapi.h>
 #include <string>
 #include <vector>
-
+namespace HV {
+namespace PCI {
 
 #pragma comment(lib, "setupapi.lib")
 #pragma comment(lib, "cfgmgr32.lib")
@@ -251,4 +252,6 @@ private:
       }
 
     };
+  }
+}
 

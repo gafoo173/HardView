@@ -265,3 +265,8 @@ public:
 
 
 } // namespace SPDLib
+
+//new alias
+namespace HV {
+  namespace SPD = SPDLib;
+}
