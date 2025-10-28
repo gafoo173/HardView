@@ -119,24 +119,22 @@ PYBIND11_MODULE(SMART, m) {
                    "' valid=" + (reader.IsValid() ? "True" : "False") + ">";
         });
 
-    // Utility function
-    m.def("scan_all_drives", 
-        [](int max_drives) {
-            std::vector<std::pair<int, std::string>> errors;
-            auto readers = ScanAllDrives(max_drives, &errors);
-            
-            // Convert unique_ptr vector to regular vector for Python
-            std::vector<SmartReader*> result;
-            for (auto& reader : readers) {
-                result.push_back(reader.release());
-            }
-            
-            py::tuple ret = py::make_tuple(result, errors);
-            return ret;
-        },
-        py::arg("max_drives") = 8,
-        "Scan all available drives and return tuple of (readers_list, errors_list)\n"
-        "Returns: ([SmartReader, ...], [(drive_num, error_msg), ...])",
-        py::return_value_policy::take_ownership
-    );
+    m.def("scan_all_drives",  
+       [](int max_drives) { 
+        std::vector<std::pair<int, std::string>> errors; 
+        auto readers = ScanAllDrives(max_drives, &errors); 
+         
+        // Convert unique_ptr vector to py::list with proper ownership
+        py::list result; 
+        for (auto& reader : readers) { 
+            result.append(py::cast(reader.release(), 
+                          py::return_value_policy::take_ownership));
+        } 
+         
+        return py::make_tuple(result, errors); 
+    }, 
+    py::arg("max_drives") = 8, 
+    "Scan all available drives and return tuple of (readers_list, errors_list)\n" 
+    "Returns: ([SmartReader, ...], [(drive_num, error_msg), ...])"
+);
 }

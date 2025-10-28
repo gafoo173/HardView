@@ -4,6 +4,46 @@
 All notable changes to HardView Library (Python) will be documented in this file.
 
 
+## [3.3.1] - Hotfix Release
+
+### Highlights:
+
+* **SMART Module Memory Leak Fix:**
+
+  * Fixed a potential memory leak in the `scan_all_drives` function within the SMART module.
+* **API Update 3.3.1**
+
+---
+
+## [3.3.0] - Minor Release
+
+### Highlights:
+
+* **SMART Module for Windows**
+
+  * Added the `HardView.smart` module for retrieving SMART information for disks on Windows (HDD & SSD SATA).
+
+* **SMBIOS Parsing Improvements**
+
+  * Fixed several errors in SMBIOS parsing within the `smbios` module for Windows.
+* **API Update 3.3.0**
+
+> **Note:** All changes apply only to Windows; no changes for Linux.
+
+---
+
+## [3.3.0b1] - Beta Release
+
+### Highlights:
+
+* **New SMART Module for Windows**
+
+  * Added the `HardView.smart` module for retrieving SMART information for disks on Windows (HDD & SSD SATA).
+
+> **Note:** This version is experimental (`beta`). Expect further changes before the stable `3.3.0` release.
+
+---
+
 ## [3.2.0] - Minor Release
 
 ### Highlights:
