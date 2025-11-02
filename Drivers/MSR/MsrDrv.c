@@ -182,7 +182,7 @@ static NTSTATUS SafeReadMsr(UINT32 reg, UINT64* outVal)
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
         *outVal = 0;
-        return STATUS_PRIVILEGED_INSTRUCTION; //It’s not necessarily the cause of the error it’s just an indication that a read or write error occurred.
+        return STATUS_UNSUCCESSFUL;
     }
 #else
     UNREFERENCED_PARAMETER(reg);
@@ -199,7 +199,7 @@ static NTSTATUS SafeWriteMsr(UINT32 reg, UINT64 val)
         return STATUS_SUCCESS;
     }
     __except (EXCEPTION_EXECUTE_HANDLER) {
-        return STATUS_PRIVILEGED_INSTRUCTION;
+        return STATUS_UNSUCCESSFUL;
     }
 #else
     UNREFERENCED_PARAMETER(reg);
@@ -267,3 +267,4 @@ MsrDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _Inout_ PIRP Irp)
     IoCompleteRequest(Irp, IO_NO_INCREMENT);
     return status;
 }
+
