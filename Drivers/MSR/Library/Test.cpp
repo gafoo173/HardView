@@ -1,12 +1,9 @@
 /*
 ================================================================================
 MIT License
-
 Copyright (c) 2025 gafoo
-
 This file is part of the HardView project:
 https://github.com/gafoo173/HardView
-
 Licensed under the MIT License
 See the LICENSE file in the project root for more details.
 ================================================================================
@@ -754,7 +751,7 @@ int main() {
     std::getline(std::cin, inp);
     if (!inp.empty()) {
         try {
-            std::stoi(inp);
+            core = std::stoi(inp);
         }catch (...) {
             std::cout << COLOR_MAGENTA << "Invalid core number, defaulting to core 0" << COLOR_RESET << std::endl;
             core = 0;
@@ -825,5 +822,4 @@ int main() {
     std::cout << COLOR_WHITE << "Thank you for testing the MSR Driver Library!" << COLOR_RESET << std::endl;
     
     return 0;
-
 }
