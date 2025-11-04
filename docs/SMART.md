@@ -21,7 +21,6 @@ The `HardView.SMART` module provides a Python interface for reading S.M.A.R.T (S
 2. [Functions](#functions)
    - [scan_all_drives()](#scan_all_drives)
 3. [Usage Examples](#usage-examples)
-4. [Common SMART Attributes](#common-smart-attributes)
 
 ---
 
@@ -51,6 +50,17 @@ reader = SMART.SmartReader(0)
 for attr in reader.valid_attributes:
     print(f"{attr.name}: {attr.raw_value}")
 ```
+
+> **Note:**  
+> The names of **S.M.A.R.T. attributes** may vary depending on the manufacturer or model.  
+> The SMART system used by the **`SMART.hpp`** library only tries to interpret the most common attributes.  
+> It does this through simple `switch`-case logic, without any manufacturer-specific analysis.  
+> Therefore, it’s **not recommended** to rely on it for uncommon attributes or those that differ across brands.  
+>  
+> If you want your program to analyze S.M.A.R.T. data accurately,  
+> retrieve the **hard drive name or model** from `IDENTIFY_DEVICE_DATA`,  
+> then interpret the attribute IDs according to the **drive type and manufacturer**.
+
 
 ---
 
