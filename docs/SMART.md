@@ -3,7 +3,9 @@
 ## Overview
 
 The `HardView.SMART` module provides a Python interface for reading S.M.A.R.T (Self-Monitoring, Analysis and Reporting Technology) data from storage drives on Windows systems. It allows you to monitor drive health, temperature, usage statistics, and other critical metrics.
+
 **NVMe Not Supported**
+
 **Platform Support:** Windows only
 
 **Requirements:** Administrator privilege required to access drive SMART data.
