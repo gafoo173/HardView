@@ -634,27 +634,6 @@ for i, reader in enumerate(readers):
     generate_health_report(i)
 ```
 
----
-
-## Common SMART Attributes
-
-| ID (Hex) | Name | Description |
-|----------|------|-------------|
-| 0x01 | Raw Read Error Rate | Error rate when reading from disk |
-| 0x05 | Reallocated Sectors Count | Count of reallocated sectors (critical) |
-| 0x09 | Power-On Hours | Total hours drive has been powered on |
-| 0x0C | Power Cycle Count | Number of power-on events |
-| 0xC2 | Temperature | Current drive temperature in Celsius |
-| 0xC4 | Reallocation Event Count | Count of remap operations |
-| 0xC5 | Current Pending Sector Count | Unstable sectors waiting for remapping |
-| 0xC6 | Uncorrectable Sector Count | Sectors that couldn't be recovered |
-| 0xA7 | SSD Life Left | Remaining SSD life percentage |
-| 0xAD | Wear Leveling Count | SSD wear leveling operations |
-| 0xF1 | Total LBAs Written | Total data written (32MB units) |
-| 0xF2 | Total LBAs Read | Total data read (32MB units) |
-
----
-
 ## Error Handling
 
 The module raises `RuntimeError` exceptions when:
