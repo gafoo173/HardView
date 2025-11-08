@@ -45,7 +45,7 @@ struct SmartAttribute {
     }
     return rawValue;
   }
-
+  // The names here are approximate and may vary between manufacturers or different models.
   inline std::string GetAttributeName() const {
     switch (Id) {
     // Common attributes (HDD & SSD)
@@ -82,7 +82,7 @@ struct SmartAttribute {
     case 0xA3:
       return "Total LBAs Written";
     case 0xA7:
-      return "SSD Life Left";
+      return "Average Erase Count or SSD Life Left";
     case 0xA9:
       return "SSD Life Left (Alternative)";
     case 0xAB:
@@ -98,7 +98,7 @@ struct SmartAttribute {
     case 0xB0:
       return "Erase Fail Count (Alternative)";
     case 0xB1:
-      return "Wear Range Delta";
+      return "Wear Range Delta Or Wear Leveling Count";
     case 0xB3:
       return "Used Reserved Block Count Total";
     case 0xB4:
@@ -912,3 +912,4 @@ ScanAllDrives(int maxDrives = 8,
 namespace HV {
   namespace SMART = smart_reader;
 }
+
