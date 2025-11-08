@@ -1796,32 +1796,6 @@ The LiveView test files are located in [tests/units](https://github.com/gafoo173
 </div>
 
 ---
-
-## 🤝 Contribution
-
-<div align="center">
-
-**Contributions are welcome!**
-
-<table>
-<tr>
-<td align="center" width="50%">
-
-### 🔀 Fork & Pull Requests
-Fork the repository and submit pull requests with your improvements
-
-</td>
-<td align="center" width="50%">
-
-### 🐛 Issues & Features
-Report issues or request features through GitHub Issues
-
-</td>
-</tr>
-</table>
-
-</div>
-
 ---
 
 <div align="center">
@@ -1840,6 +1814,7 @@ Report issues or request features through GitHub Issues
 </p>
 
 </div>
+
 
 
 
