@@ -798,23 +798,14 @@ public:
   }
 
   // Get total bytes written (SSD)
-  inline ULONGLONG GetTotalBytesWritten() const {
+inline ULONGLONG GetTotalBytesWritten() const {
     const SmartAttribute *attr = FindAttribute(0xF1); // Total LBAs Written
-    if (!attr)
-      attr = FindAttribute(0xA3); // Alternative
-
     if (attr) {
-      // Usually in 32MB units for 0xF1, or raw sectors for 0xA3
-      ULONGLONG value = attr->GetRawValue();
-      if (attr->Id == 0xF1) {
-        return value * 32 * 1024 * 1024; // Convert 32MB units to bytes
-      } else {
-        return value *
-               512; // Convert sectors to bytes (assuming 512-byte sectors)
-      }
+        ULONGLONG value = attr->GetRawValue();
+        return value * 32ULL * 1024 * 1024; // 32MB units to bytes
     }
     return 0; // Not available
-  }
+}
 
   // Get total bytes read (SSD)
   inline ULONGLONG GetTotalBytesRead() const {
@@ -838,7 +829,7 @@ public:
   // Check if drive is likely an SSD
   inline bool IsProbablySsd() const {
     // Check for SSD-specific attributes
-    return FindAttribute(0xAD) != nullptr || // Wear Leveling Count
+    return FindAttribute(0xAD) != nullptr ||
            FindAttribute(0xE7) != nullptr || // SSD Life Left
            FindAttribute(0xF1) != nullptr || // Total LBAs Written
            FindAttribute(0xA7) != nullptr;   // SSD Life Left (Alt)
@@ -912,4 +903,5 @@ ScanAllDrives(int maxDrives = 8,
 namespace HV {
   namespace SMART = smart_reader;
 }
+
 
