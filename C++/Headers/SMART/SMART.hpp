@@ -786,11 +786,6 @@ public:
   inline int GetSsdLifeLeft() const {
     // Try different SSD life attributes
     const SmartAttribute *lifeAttr = FindAttribute(0xE7); // Most common
-    if (!lifeAttr)
-      lifeAttr = FindAttribute(0xA7);
-    if (!lifeAttr)
-      lifeAttr = FindAttribute(0xA9);
-
     if (lifeAttr) {
       return lifeAttr->Current; // Usually in Current value for SSDs
     }

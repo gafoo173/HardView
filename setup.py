@@ -198,17 +198,17 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.3.1',
+    version='3.3.2',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.3.1
+# HardView 3.3.2
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-### Fixes in 3.3.1
-- Fixed a potential memory leak in the SMART module scan_all_drives function.
+### 3.3.2
+- Modifications to the HardView.SMART model
 ---
 
     ''',
