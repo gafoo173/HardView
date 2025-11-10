@@ -668,28 +668,6 @@ int main() {
 
 </details>
 
-<details>
-<summary><b>PhysMemDrv.hpp Example (C++) - needs PhysMemDrv.sys installed and running</b></summary>
-
-```cpp
-#include "PhysMemDrv.hpp"
-#include <iostream>
-#include <iomanip>
-
-int main() {
-    try {
-        PhysMemDriver::DriverHandle driver;
-        uint8_t firstByte = driver.ReadPhysical<uint8_t>(0xF0000);
-        std::cout << "BIOS first byte: 0x" 
-                  << std::hex << std::setw(2) << std::setfill('0') 
-                  << static_cast<int>(firstByte) << std::dec << std::endl;
-    } catch (...) {
-        std::cerr << "Failed to read BIOS ROM" << std::endl;
-    }
-}
-```
-
-</details>
 
 <details>
 <summary><b>SMART.hpp Example (C++) - requires Admin privileges</b></summary>
