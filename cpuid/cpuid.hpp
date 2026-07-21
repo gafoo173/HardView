@@ -19,7 +19,7 @@
 ================================================================================
  MIT License
 
- Copyright (c) 2025 gafoo
+ Copyright (c) 2026 gafoo
 
  This file is part of the HardView project:
  https://github.com/gafoo173/HardView
@@ -28,6 +28,7 @@
  See the LICENSE file in the project root for more details.
 ================================================================================
 */
+
 #pragma once
 
 #include <cstdint>
@@ -133,6 +134,15 @@ inline std::string decode_associativity(int assoc) {
   default:
     return std::to_string(assoc) + "-way";
   }
+}
+
+
+inline std::string decode_l1_associativity(int assoc) {
+  if (assoc == 0x00)
+    return "Reserved";
+  if (assoc == 0xFF)
+    return "Fully associative";
+  return std::to_string(assoc) + "-way";
 }
 
 static inline std::vector<std::tuple<std::string, std::string, std::string>>
@@ -300,9 +310,9 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
       result.emplace_back("INVPCID", (ebx & (1 << 10)) ? "Yes" : "No",
                           leaf_str);
       result.emplace_back("RTM", (ebx & (1 << 11)) ? "Yes" : "No", leaf_str);
-      result.emplace_back("RDT-M", (ebx & (1 << 12)) ? "Yes" : "No", leaf_str);
+      result.emplace_back("PQM", (ebx & (1 << 12)) ? "Yes" : "No", leaf_str);
       result.emplace_back("MPX", (ebx & (1 << 14)) ? "Yes" : "No", leaf_str);
-      result.emplace_back("RDT-A", (ebx & (1 << 15)) ? "Yes" : "No", leaf_str);
+      result.emplace_back("PQE", (ebx & (1 << 15)) ? "Yes" : "No", leaf_str);
       result.emplace_back("AVX512F", (ebx & (1 << 16)) ? "Yes" : "No",
                           leaf_str);
       result.emplace_back("AVX512DQ", (ebx & (1 << 17)) ? "Yes" : "No",
@@ -703,70 +713,87 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
     }
   }
 
-  // 14. Extended State Features (XSAVE/XSAVEC) (leaf 0xD)
-  if (mask & static_cast<uint64_t>(Feature::XCRFeatures)) {
-    if (is_leaf_supported(0xD)) {
-      leaf_str = "0xD, Subleaf 0";
-      do_cpuid(regs, 0xD, 0);
-      uint32_t xcr0_low = regs[0];
-      uint32_t xcr0_high = regs[3];
-      uint32_t max_size = regs[1];
-      uint32_t current_size = regs[2];
+// 14. Extended State Features (XSAVE/XSAVEC) (leaf 0xD)
+if (mask & static_cast<uint64_t>(Feature::XCRFeatures)) {
+  if (is_leaf_supported(0xD)) {
+    // ----------------------------
+    // Subleaf 0
+    // ----------------------------
+    leaf_str = "0xD, Subleaf 0";
+    do_cpuid(regs, 0xD, 0);
+    uint32_t xcr0_low = regs[0];
+    uint32_t current_size = regs[1];  // EBX: size required by ENABLED features in XCR0
+    uint32_t max_size = regs[2];      // ECX: size required by ALL SUPPORTED features
+    uint32_t xcr0_high = regs[3];
+    result.emplace_back("XCR0 Supported Features (Low)", to_hex(xcr0_low),
+                        leaf_str);
+    result.emplace_back("XCR0 Supported Features (High)", to_hex(xcr0_high),
+                        leaf_str);
+    result.emplace_back("Current XSAVE Area Size (Enabled Features)",
+                        std::to_string(current_size) + " bytes", leaf_str);
+    result.emplace_back("Max XSAVE Area Size (All Supported Features)",
+                        std::to_string(max_size) + " bytes", leaf_str);
 
-      result.emplace_back("XCR0 Supported Features (Low)", to_hex(xcr0_low),
-                          leaf_str);
-      result.emplace_back("XCR0 Supported Features (High)", to_hex(xcr0_high),
-                          leaf_str);
-      result.emplace_back("Max XSAVE Area Size",
-                          std::to_string(max_size) + " bytes", leaf_str);
-      result.emplace_back("Current XSAVE Area Size",
-                          std::to_string(current_size) + " bytes", leaf_str);
+    // ----------------------------
+    // Subleaf 1
+    // ----------------------------
+    leaf_str = "0xD, Subleaf 1";
+    do_cpuid(regs, 0xD, 1);
+    uint32_t xsave_eax = regs[0];
+    uint32_t xsave_area_size = regs[1];
+    result.emplace_back("XSAVEOPT", (xsave_eax & 1) ? "Yes" : "No", leaf_str);
+    result.emplace_back("XSAVEC", (xsave_eax & (1 << 1)) ? "Yes" : "No",
+                        leaf_str);
+    result.emplace_back("XGETBV_ECX1", (xsave_eax & (1 << 2)) ? "Yes" : "No",
+                        leaf_str);
+    result.emplace_back("XSAVES", (xsave_eax & (1 << 3)) ? "Yes" : "No",
+                        leaf_str);
+    result.emplace_back("XSAVE Area Size (XCR0 | IA32_XSS)",
+                        std::to_string(xsave_area_size) + " bytes",
+                        leaf_str);
 
-      leaf_str = "0xD, Subleaf 1";
-      do_cpuid(regs, 0xD, 1);
-      uint32_t xsave_eax = regs[0];
-      result.emplace_back("XSAVEOPT", (xsave_eax & 1) ? "Yes" : "No", leaf_str);
-      result.emplace_back("XSAVEC", (xsave_eax & (1 << 1)) ? "Yes" : "No",
-                          leaf_str);
-      result.emplace_back("XGETBV_ECX1", (xsave_eax & (1 << 2)) ? "Yes" : "No",
-                          leaf_str);
-      result.emplace_back("XSAVES", (xsave_eax & (1 << 3)) ? "Yes" : "No",
-                          leaf_str);
+    // ----------------------------
+    // Subleaves 2-15: based on xcr0_low ONLY (no IA32_XSS involved)
+    // ----------------------------
+    const char *state_names[] = {
+        "x87",               // 0  - legacy x87
+        "SSE",               // 1  - 128-bit SSE
+        "AVX",               // 2  - 256-bit AVX
+        "BNDREGS",           // 3  - MPX state
+        "BNDCSR",            // 4  - MPX state
+        "AVX-512 opmask",    // 5  - AVX-512 state
+        "AVX-512 ZMM_Hi256", // 6  - AVX-512 state
+        "AVX-512 Hi16_ZMM",  // 7  - AVX-512 state
+        NULL,                // 8  - Used for IA32_XSS (not an XCR0 state)
+        "PKRU",              // 9  - PKRU state
+        NULL,                // 10 - Reserved
+        NULL,                // 11 - Reserved
+        NULL,                // 12 - Reserved
+        NULL,                // 13 - Used for IA32_XSS (not an XCR0 state)
+        NULL,                // 14 - Reserved
+        NULL,                // 15 - Reserved
+    };
+    for (int i = 2; i <= 15; ++i) {
+      if (!(xcr0_low & (1u << i)))
+        continue;
+      if (!state_names[i])
+        continue;
 
-      const char *state_names[] = {"x87",
-                                   "SSE",
-                                   "AVX",
-                                   "BNDREGS",
-                                   "BNDCSR",
-                                   "AVX-512 opmask",
-                                   "AVX-512 ZMM_Hi256",
-                                   "AVX-512 Hi16_ZMM",
-                                   "Intel PT",
-                                   "PKRU",
-                                   "PASID",
-                                   "CET_U",
-                                   "CET_S",
-                                   "HDC",
-                                   "UINTR",
-                                   "LBR",
-                                   "HWP"};
-
-      for (int i = 2; i < 17 && i < 32; ++i) {
-        if (xcr0_low & (1u << i)) {
-          leaf_str = "0xD, Subleaf " + std::to_string(i);
-          do_cpuid(regs, 0xD, i);
-          if (regs[0] > 0 && regs[0] < 65536) {
-            std::string name =
-                (i < 17) ? state_names[i] : ("State " + std::to_string(i));
-            result.emplace_back(name + " State Size",
-                                std::to_string(regs[0]) + " bytes", leaf_str);
-            result.emplace_back(name + " State Offset",
-                                std::to_string(regs[1]) + " bytes", leaf_str);
-          }
-        }
+      leaf_str = "0xD, Subleaf " + std::to_string(i);
+      do_cpuid(regs, 0xD, i);
+      if (regs[0] != 0) {
+        result.emplace_back(
+            std::string(state_names[i]) + " State Size",
+            std::to_string(regs[0]) + " bytes",
+            leaf_str);
+        result.emplace_back(
+            std::string(state_names[i]) + " State Offset",
+            std::to_string(regs[1]) + " bytes",
+            leaf_str);
       }
     }
   }
+}
 
   // 15. Processor Serial Number (leaf 3) - Intel only
   if (mask & static_cast<uint64_t>(Feature::ProcessorSerial)) {
@@ -899,14 +926,14 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
         result.emplace_back("L1 DTLB 2MB-4MB",
                             std::to_string(l1_dtlb_2m_4m_entries) +
                                 " entries, " +
-                                decode_associativity(l1_dtlb_2m_4m_assoc),
+                                decode_l1_associativity(l1_dtlb_2m_4m_assoc),
                             leaf_str);
       }
       if (l1_itlb_2m_4m_entries > 0) {
         result.emplace_back("L1 ITLB 2MB-4MB",
                             std::to_string(l1_itlb_2m_4m_entries) +
                                 " entries, " +
-                                decode_associativity(l1_itlb_2m_4m_assoc),
+                                decode_l1_associativity(l1_itlb_2m_4m_assoc),
                             leaf_str);
       }
 
@@ -921,14 +948,14 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
       if (l1_dcache_size > 0) {
         result.emplace_back("L1 Data Cache (AMD)",
                             std::to_string(l1_dcache_size) + " KB, " +
-                                decode_associativity(l1_dcache_assoc) + ", " +
+                                decode_l1_associativity(l1_dcache_assoc) + ", " +
                                 std::to_string(l1_dcache_line_size) + "B line",
                             leaf_str);
       }
       if (l1_icache_size > 0) {
         result.emplace_back("L1 Instruction Cache (AMD)",
                             std::to_string(l1_icache_size) + " KB, " +
-                                decode_associativity(l1_icache_assoc) + ", " +
+                                decode_l1_associativity(l1_icache_assoc) + ", " +
                                 std::to_string(l1_icache_line_size) + "B line",
                             leaf_str);
       }
@@ -1049,22 +1076,40 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
     if (is_leaf_supported(0x14)) {
       leaf_str = "0x14";
       do_cpuid(regs, 0x14, 0);
-      if (regs[0] > 0) {
-        result.emplace_back("Intel PT Max Subleaf", std::to_string(regs[0]),
+      result.emplace_back("Intel PT Max Subleaf", std::to_string(regs[0]),
                             leaf_str);
+        // EBX (regs[1]): CR3 filtering / PSB / IP filtering / MTC bits
         if (regs[1] & 1)
-          result.emplace_back("Intel PT MSRs available", "Yes", leaf_str);
+          result.emplace_back("CR3 filtering supported", "Yes", leaf_str);
         if (regs[1] & (1 << 1))
-          result.emplace_back("ToPA output scheme supported", "Yes", leaf_str);
+          result.emplace_back("Configurable PSB and Cycle-Accurate Mode supported",
+                              "Yes", leaf_str);
         if (regs[1] & (1 << 2))
+          result.emplace_back(
+              "IP/TraceStop filtering and preservation of Intel PT MSRs across warm reset supported",
+              "Yes", leaf_str);
+        if (regs[1] & (1 << 3))
+          result.emplace_back("MTC timing packet / COFI-based packet suppression supported",
+                              "Yes", leaf_str);
+        // ECX (regs[2]): ToPA / Single-range / Trace Transport / LIP bits
+        if (regs[2] & 1)
+          result.emplace_back("ToPA output scheme supported", "Yes", leaf_str);
+        if (regs[2] & (1 << 1))
+          result.emplace_back("ToPA tables allow multiple output regions", "Yes",
+                              leaf_str);
+        if (regs[2] & (1 << 2))
           result.emplace_back("Single-range output scheme supported", "Yes",
                               leaf_str);
-        if (regs[1] & (1 << 3))
+        if (regs[2] & (1 << 3))
           result.emplace_back("Output to Trace Transport subsystem supported",
                               "Yes", leaf_str);
-        if (regs[1] & (1 << 31))
+        if (regs[2] & (1u << 31))
           result.emplace_back("IP payloads are LIP", "Yes", leaf_str);
-      }
+        if (regs[1] & (1u << 4))
+          result.emplace_back("PTWRITE supported", "Yes", leaf_str);
+
+        if (regs[1] & (1u << 5))
+          result.emplace_back("Power Event Trace supported", "Yes", leaf_str);
     }
 
     if (is_leaf_supported(0x10)) {
@@ -1090,4 +1135,3 @@ cpuid(uint64_t mask = static_cast<uint64_t>(Feature::All)) {
 }
 
 } // namespace cpuid
-

@@ -1,12 +1,3 @@
-<p align="center">
-
-# Notice
-
-This project is **archived** and will **no longer receive updates or fixes**, including **critical issues**.
-
-</p>
-
-
 <div align="center">
 
 <img src="resources/logo.png" alt="HardView Logo" width="300"/>

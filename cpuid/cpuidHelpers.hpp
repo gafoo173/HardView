@@ -2,7 +2,7 @@
 ================================================================================
  MIT License
 
- Copyright (c) 2025 gafoo
+ Copyright (c) 2026 gafoo
 
  This file is part of the HardView project:
  https://github.com/gafoo173/HardView
@@ -123,44 +123,6 @@ inline LeafType get_leaft(uint32_t leaf) {
     // More cases can be added here if needed
 
     return LeafType::UNKNOWN;
-}
-/**
-* @brief Get the CPU type from the name
-* @param name The name of the CPU
-* @return The CPU gen
-*/
-int get_cpug(std::string name) {
-    for (auto& c : name) c = std::tolower(c);
-
-    if (name.find("intel") != std::string::npos) {
-        size_t dash_pos = name.find('-');
-        if (dash_pos != std::string::npos && dash_pos + 1 < name.size()) {
-            char first_digit = name[dash_pos + 1];
-            if (!isdigit(first_digit)) return -1; // not a digit
-            if (first_digit == '1' && dash_pos + 2 < name.size()) {
-                char second_digit = name[dash_pos + 2];
-                if (isdigit(second_digit)) {
-                    return std::stoi(std::string() + first_digit + second_digit);
-                }
-            }
-            return first_digit - '0'; 
-        }
-        return -1; 
-    } 
-    else if (name.find("amd") != std::string::npos) {
-        size_t n_pos = name.find('n');
-        if (n_pos != std::string::npos) {
-            n_pos++;
-            while (n_pos < name.size() && !isdigit(name[n_pos])) n_pos++;
-            if (n_pos < name.size() && isdigit(name[n_pos])) {
-                return name[n_pos] - '0';
-            }
-        }
-        return -1; 
-    } 
-    else {
-        return -1;
-    }
 }
 
 /**
