@@ -4,6 +4,56 @@
 All notable changes to HardView Library (Python) will be documented in this file.
 
 
+## [4.0.0b0] - Beta Release
+
+### Highlights
+
+* **Major SMART Module Enhancements**
+
+  * Significantly improved the `HardView.SMART` module.
+  * Added many new features and expanded SMART information support.
+
+* **CPU Identification Fixes**
+
+  * Fixed issues in `cpuid.hpp` that caused incorrect interpretation of certain AMD cache features.
+  * Corrected Intel Processor Trace (Intel PT) feature detection on Intel CPUs.
+
+* **HardwareWrapper.dll Improvements**
+
+  * Updated `HardwareWrapper` to use the latest version of `LibreHardwareMonitorLib`, which no longer depends on WinRing0.
+  * Resolved Windows temperature sensor monitoring issues in the `HardView.LiveView` module.
+  * Introduced internal performance optimizations in `HardwareWrapper.dll`, providing noticeably better performance in `HardView.LiveView.PySensor`, especially when working with a large number of sensors.
+
+* **Experimental Process Module**
+
+  * Added a new experimental `HardView.process` module for Windows process management.
+
+* **High-Level Python Wrappers**
+
+  * Added optional high-level Python wrapper modules that simplify working with the underlying C++ extension modules.
+  * Instead of interacting directly with the `.pyd` modules, you can now use a more Pythonic API through helper modules.
+  * Available wrappers include:
+
+    * `HardView.LiveView`
+    * `HardView.SMART`
+    * `HardView.smbios`
+  * These wrappers are optional. Existing code that imports the underlying extension modules directly will continue to work.
+  * The legacy `HardView.HardView` module is not included, as it is deprecated and will no longer receive updates or improvements.
+  * The `HardView.process` module is not included yet because it is still experimental.
+
+* **Linux Support Status**
+
+  * Active development for Linux has been discontinued.
+  * Existing Linux functionality will remain available and will continue to be distributed as Linux wheels.
+  * However, no new Linux-specific features, improvements, or bug fixes are planned.
+  * Future development will focus primarily on the Windows implementation.  
+
+> **Compatibility:** No API changes have been introduced in this release. Existing function signatures and calling conventions remain unchanged, so applications developed for **3.0.1+** are expected to work with **4.0.0** without requiring code changes in most cases.
+>
+> **Behavior Change:** The `get_all_fan_rpms()` function no longer returns fan RPM data and will now always return an empty array. This change is intentional and should be taken into account if your application relies on this function.
+
+---
+
 ## [3.3.1] - Hotfix Release
 
 ### Highlights:

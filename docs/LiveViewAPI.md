@@ -1,6 +1,11 @@
-# `HardView.LiveView` API Documentation
+<div align="center">
 
-  <img src="https://img.shields.io/badge/API_Version-1.0.0-informational" alt="API Version" height="30">                                                                                                            <img src="https://img.shields.io/badge/Module-LiveView-informational" alt="Module" height="30">
+<img src="../resources/LiveViewLogo.png" alt="HardView Logo" width="200"/>
+
+# `HardView.LiveView` API Documentation
+</div>
+
+
 
 `LiveView` is a high-performance, cross-platform C++ module with Python bindings designed for real-time system monitoring. It provides easy-to-use classes for tracking CPU, RAM, Disk, Network, GPU performance, and comprehensive temperature monitoring. The library is optimized for low overhead, making it suitable for integration into monitoring dashboards, performance-critical applications, and system analysis tools.
 
@@ -18,13 +23,14 @@ This document provides a comprehensive guide to the `LiveView` API, with detaile
 - [`PyLiveNetwork`](#pylivenetwork) - For monitoring network traffic (total or per-interface).
 - [`PyLiveGpu`](#pylivegpu) - For monitoring GPU utilization (Windows only).
 - [**Temperature Monitoring Classes**](#temperature-monitoring)
-  - [`PyTempCpu`](#pytempcpu) - For monitoring CPU temperature and fan speed (Windows).
-  - [`PyTempGpu`](#pytempgpu) - For monitoring GPU temperature and fan speed (Windows).
-  - [`PyTempOther`](#pytempother) - For monitoring motherboard and storage temperatures (Windows).
-  - [`PySensor`](#pysensor) - For advanced sensor monitoring (Windows).
-  - [`PyManageTemp`](#PyManageTemp) - For temperature monitoring management (Windows).
-  - [`PyLinuxSensor`](#pylinuxsensor) - For comprehensive sensor monitoring (Linux).
+  - [`PyTempCpu`](#pytempvcpu-windows-only---restricted) - **Restricted.** For monitoring CPU temperature and fan speed (Windows).
+  - [`PyTempGpu`](#pytempgpu-windows-only---restricted) - **Restricted.** For monitoring GPU temperature and fan speed (Windows).
+  - [`PyTempOther`](#pytempother-windows-only---restricted) - **Restricted.** For monitoring motherboard and storage temperatures (Windows).
+  - [`PySensor`](#pysensor-windows-only) - For advanced sensor monitoring (Windows).
+  - [`PyManageTemp`](#PyManageTemp-windows-only) - For temperature monitoring management (Windows).
+  - [`PyLinuxSensor`](#pylinuxsensor-linux-only) - For comprehensive sensor monitoring (Linux).
 - [`PyRawInfo`](#-pyrawinfo) - For accessing raw system firmware tables (Windows only).
+- [**LiveView Helper**](#liveview_helper-python-helper-module) - A Python helper module for LiveView.
 
 ---
 
@@ -345,7 +351,7 @@ AVX State Offset: 576 bytes
 Processor Serial Number: Not Available
 ```
 
-### `CpuSnapShot(core, coreNumbers=False, Kernel=True, User=True, Idle=True, PureKernalTime=False)` (Windows Only)
+### `cpu_snapshot(core, coreNumbers=False, Kernel=True, User=True, Idle=True, PureKernalTime=False)` (Windows Only)
 
 (Windows-only) Gets a snapshot of CPU time counters for a specific core. Can also return the total number of cores.
 
@@ -383,16 +389,16 @@ if sys.platform == "win32":
     cpu_monitor = PyLiveCPU()
 
     # Get total number of cores
-    core_count = cpu_monitor.CpuSnapShot(core=0, coreNumbers=True)
+    core_count = cpu_monitor.cpu_snapshot(core=0, coreNumbers=True)
     print(f"CPU Core Count: {core_count}")
 
     # Get snapshot for core 0
-    snapshot = cpu_monitor.CpuSnapShot(core=0)
+    snapshot = cpu_monitor.cpu_snapshot(core=0)
     print(f"Snapshot for Core 0:")
     for key, value in snapshot.items():
         print(f" - {key}: {value}")
 else:
-    print("CpuSnapShot is only supported on Windows.")
+    print("cpu_snapshot is only supported on Windows.")
 ```
 
 **Example Output**
@@ -549,7 +555,7 @@ Returns the current disk read and write speeds in Megabytes per second (MB/s).
 Disk R/W (mode 1): Read MB/s: 0.00, Write MB/s: 0.00
 ```
 
-### `HighDiskUsage(threshold_mbps=80.0)`
+### `high_disk_usage(threshold_mbps=80.0)`
 
 Checks if the combined read or write speed exceeds a specified threshold. This method is only available when the class is initialized with `mode=1`.
 
@@ -576,7 +582,7 @@ Checks if the combined read or write speed exceeds a specified threshold. This m
 ```python
 from HardView.LiveView import PyLiveDisk
 disk_monitor = PyLiveDisk(mode=1)
-is_high = disk_monitor.HighDiskUsage(threshold_mbps=100.0)
+is_high = disk_monitor.high_disk_usage(threshold_mbps=100.0)
 print(f"High Disk Usage (>100 MB/s): {is_high}")
 ```
 
@@ -650,7 +656,7 @@ Per-Adapter Usage (mode 1):
  - Intel[R] Ethernet Connection I217-V: 0.0000 MB/s
 ```
 
-### `getHighCard()`
+### `get_high_card()`
 
 Identifies and returns the name of the network interface with the highest current usage.
 
@@ -675,7 +681,7 @@ This method takes no parameters.
 ```python
 from HardView.LiveView import PyLiveNetwork
 net_monitor = PyLiveNetwork()
-busiest_card = net_monitor.getHighCard()
+busiest_card = net_monitor.get_high_card()
 print(f"Highest Usage Card: {busiest_card}")
 ```
 
@@ -809,7 +815,7 @@ else:
 
 The `LiveView` module provides comprehensive temperature monitoring capabilities for both Windows and Linux systems.
 
-## `PyTempCpu` (Windows Only)
+## `PyTempCpu` (Windows Only) - **Restricted**
 
 The `PyTempCpu` class monitors CPU temperature and fan speed on Windows systems.
 
@@ -873,7 +879,7 @@ Returns the CPU fan RPM.
 
 Updates all CPU temperature and fan data by calling the hardware monitor update function.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()` (Alternative: `re_get()`)
 
 Re-retrieves CPU temperature and fan data without updating the hardware monitor.
 
@@ -905,7 +911,7 @@ else:
 
 ---
 
-## `PyTempGpu` (Windows Only)
+## `PyTempGpu` (Windows Only) - **Restricted**
 
 The `PyTempGpu` class monitors GPU temperature and fan speed on Windows systems.
 
@@ -949,7 +955,7 @@ Returns the GPU fan RPM.
 
 Updates all GPU temperature and fan data.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()` (Alternative: `re_get()`)
 
 Re-retrieves GPU temperature and fan data.
 
@@ -979,7 +985,7 @@ else:
 
 ---
 
-## `PyTempOther` (Windows Only)
+## `PyTempOther` (Windows Only) - **Restricted**
 
 The `PyTempOther` class monitors motherboard and storage device temperatures on Windows systems.
 
@@ -1009,7 +1015,7 @@ Returns the motherboard temperature.
 |---------|-------------------------------------------|
 | `float` | The motherboard temperature in Celsius. |
 
-#### `get_Storage_temp()`
+#### `get_storage_temp()`
 
 Returns the storage device temperature.
 
@@ -1023,7 +1029,7 @@ Returns the storage device temperature.
 
 Updates all temperature data.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()` (Alternative: `re_get()`)
 
 Re-retrieves temperature data.
 
@@ -1039,7 +1045,7 @@ if sys.platform == "win32":
         other_temp = PyTempOther()
         
         print(f"Motherboard Temperature: {other_temp.get_mb_temp():.1f}°C")
-        print(f"Storage Temperature: {other_temp.get_Storage_temp():.1f}°C")
+        print(f"Storage Temperature: {other_temp.get_storage_temp():.1f}°C")
         
         # Update readings
         other_temp.update()
@@ -1073,7 +1079,7 @@ else:
 
 ### Methods
 
-#### `GetValueByName(name)`
+#### `get_value_by_name(name)`
 
 Gets a specific sensor value by name.
 
@@ -1089,7 +1095,7 @@ Gets a specific sensor value by name.
 |---------|-------------------------------------------|
 | `float` | The sensor value. |
 
-#### `getAllSensors()`
+#### `get_all_sensors()`
 
 Gets a list of all available sensor names.
 
@@ -1099,21 +1105,37 @@ Gets a list of all available sensor names.
 |--------------|-------------------------------------------|
 | `list[str]`  | A list of all sensor names. |
 
-#### `getAllFanRPMs()`
+#### `get_sensors()`
 
-Gets a list of all fan RPM data as name-value pairs.
+Gets a dictionary of all available sensors and their values.
+
+**Returns**
+
+| Type         | Description                               |
+|--------------|-------------------------------------------|
+| `dict[str, float]`  | A dictionary of sensor names and their values. |
+
+#### `get_all_fan_rpms()`
+
+> **Note**
+>
+> This method is kept for backward compatibility only.  
+> It no longer fetches data and always returns an empty array.
+>
+> Fan sensors are now available in the dictionary returned by `get_sensors()`.  
+> You can use the `liveview_helper` model shown below to parse the sensor name and determine which device it belongs to.
 
 **Returns**
 
 | Type                           | Description                               |
 |--------------------------------|-------------------------------------------|
-| `list[tuple[str, float]]`     | A list of tuples containing fan name and RPM. |
+| `list[tuple[str, float]]`      | Empty.                                     |
 
 #### `update()`
 
 Updates all sensor and fan data.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()`
 
 Re-retrieves sensor and fan data.
 
@@ -1129,17 +1151,17 @@ if sys.platform == "win32":
         sensor = PySensor()
         sensor.update()     #The update is important after initialization here. 
         # Get all available sensors
-        all_sensors = sensor.getAllSensors()
+        all_sensors = sensor.get_all_sensors()
         print("Available Sensors:")
         for sensor_name in all_sensors[:10]:  # Show first 10 sensors
             try:
-                value = sensor.GetValueByName(sensor_name)
+                value = sensor.get_value_by_name(sensor_name)
                 print(f" - {sensor_name}: {value:.1f}°C")
             except:
                 print(f" - {sensor_name}: Unable to read")
         
         # Get all fan RPMs
-        fan_rpms = sensor.getAllFanRPMs()
+        fan_rpms = sensor.get_all_fan_rpms()
         print("\nFan RPMs:")
         for fan_name, rpm in fan_rpms:
             print(f" - {fan_name}: {rpm:.0f} RPM")
@@ -1177,11 +1199,11 @@ else:
 
 | Method                                | Description                                                         |
 | ------------------------------------- | ------------------------------------------------------------------- |
-| `Init()`                              | Initializes the hardware temperature monitor.                       |
-| `Close()`                             | Shuts down the hardware temperature monitor.                        |
-| `Update()`                            | Updates the hardware monitor data.                                  |
-| `SpecificUpdate(id: int)`             | Updates the temperature of a specific hardware component by its ID. |
-| `MultiSpecificUpdate(ids: list[int])` | Updates the temperatures of multiple hardware components at once.   |
+| `init()`                              | Initializes the hardware temperature monitor.                       |
+| `close()`                             | Shuts down the hardware temperature monitor.                        |
+| `update()`                            | Updates the hardware monitor data.                                  |
+| `specific_update(id: int)`             | Updates the temperature of a specific hardware component by its ID. |
+| `multi_specific_update(ids: list[int])` | Updates the temperatures of multiple hardware components at once.   |
 
 ### Component IDs
 
@@ -1203,12 +1225,12 @@ else:
 ```python
 if sys.platform == "win32":
     temp_manager = PyManageTemp()
-    temp_manager.Init()
+    temp_manager.init()
     
     # Update only CPU temperature
-    temp_manager.SpecificUpdate(3)  # 3 = CPU
+    temp_manager.specific_update(3)  # 3 = CPU
     
-    temp_manager.Close()
+    temp_manager.close()
 ```
 
 #### Multiple components update
@@ -1216,12 +1238,12 @@ if sys.platform == "win32":
 ```python
 if sys.platform == "win32":
     temp_manager = PyManageTemp()
-    temp_manager.Init()
+    temp_manager.init()
     
     # Update multiple components: CPU, GPU, Memory
-    temp_manager.MultiSpecificUpdate([3, 4, 5])
+    temp_manager.multi_specific_update([3, 4, 5])
     
-    temp_manager.Close()
+    temp_manager.close()
 ```
 
 ---
@@ -1246,7 +1268,7 @@ else:
 
 ### Methods
 
-#### `getCpuTemp()`
+#### `get_cpu_temp()`
 
 Returns the CPU package temperature.
 
@@ -1256,7 +1278,7 @@ Returns the CPU package temperature.
 |---------|-------------------------------------------|
 | `float` | The CPU temperature in Celsius. Returns -1 if not found. |
 
-#### `getChipsetTemp()`
+#### `get_chipset_temp()`
 
 Returns the chipset temperature.
 
@@ -1266,7 +1288,7 @@ Returns the chipset temperature.
 |---------|-------------------------------------------|
 | `float` | The chipset temperature in Celsius. Returns -1 if not found. |
 
-#### `getMotherboardTemp()`
+#### `get_motherboard_temp()`
 
 Returns the motherboard temperature.
 
@@ -1276,7 +1298,7 @@ Returns the motherboard temperature.
 |---------|-------------------------------------------|
 | `float` | The motherboard temperature in Celsius. Returns -1 if not found. |
 
-#### `getVRMTemp()`
+#### `get_vrm_temp()`
 
 Returns the VRM (Voltage Regulator Module) temperature.
 
@@ -1286,7 +1308,7 @@ Returns the VRM (Voltage Regulator Module) temperature.
 |---------|-------------------------------------------|
 | `float` | The VRM temperature in Celsius. Returns -1 if not found. |
 
-#### `getDriveTemp()`
+#### `get_drive_temp()`
 
 Returns the storage drive temperature.
 
@@ -1296,7 +1318,7 @@ Returns the storage drive temperature.
 |---------|-------------------------------------------|
 | `float` | The drive temperature in Celsius. Returns -1 if not found. |
 
-#### `getAllSensorNames()`
+#### `get_all_sensor_names()`
 
 Returns a list of all available sensor names.
 
@@ -1306,7 +1328,7 @@ Returns a list of all available sensor names.
 |--------------|-------------------------------------------|
 | `list[str]`  | A list of all available sensor names. |
 
-#### `findSensorName(name)`
+#### `find_sensor_name(name)`
 
 Finds sensors that match a specific name.
 
@@ -1322,7 +1344,7 @@ Finds sensors that match a specific name.
 |--------------------------------|-------------------------------------------|
 | `list[tuple[str, int]]`       | A list of tuples containing sensor name and index. |
 
-#### `GetSensorTemp(name, Match)`
+#### `get_sensor_temp(name, Match)`
 
 Gets the temperature of a specific sensor by name.
 
@@ -1339,7 +1361,7 @@ Gets the temperature of a specific sensor by name.
 |---------|-------------------------------------------|
 | `float` | The sensor temperature in Celsius. Returns -1 if not found. |
 
-#### `GetSensorsWithTemp()`
+#### `get_sensors_with_temp()`
 
 Gets all sensors with their temperature values.
 
@@ -1371,28 +1393,28 @@ if sys.platform == "linux":
         linux_sensor = PyLinuxSensor()
         
         # Get specific temperature readings
-        print(f"CPU Temperature: {linux_sensor.getCpuTemp():.1f}°C")
-        print(f"Motherboard Temperature: {linux_sensor.getMotherboardTemp():.1f}°C")
-        print(f"Chipset Temperature: {linux_sensor.getChipsetTemp():.1f}°C")
-        print(f"VRM Temperature: {linux_sensor.getVRMTemp():.1f}°C")
-        print(f"Drive Temperature: {linux_sensor.getDriveTemp():.1f}°C")
+        print(f"CPU Temperature: {linux_sensor.get_cpu_temp():.1f}°C")
+        print(f"Motherboard Temperature: {linux_sensor.get_motherboard_temp():.1f}°C")
+        print(f"Chipset Temperature: {linux_sensor.get_chipset_temp():.1f}°C")
+        print(f"VRM Temperature: {linux_sensor.get_vrm_temp():.1f}°C")
+        print(f"Drive Temperature: {linux_sensor.get_drive_temp():.1f}°C")
         
         # Get all available sensors
-        all_sensors = linux_sensor.getAllSensorNames()
+        all_sensors = linux_sensor.get_all_sensor_names()
         print(f"\nTotal Sensors Available: {len(all_sensors)}")
         
         # Show first few sensors with temperatures
-        sensors_with_temp = linux_sensor.GetSensorsWithTemp()
+        sensors_with_temp = linux_sensor.get_sensors_with_temp()
         print("\nAll Sensors with Temperatures:")
         for sensor_name, temp in sensors_with_temp[:10]:  # Show first 10
             if temp > 0:  # Only show valid temperatures
                 print(f" - {sensor_name}: {temp:.1f}°C")
         
         # Find specific sensor
-        core_sensors = linux_sensor.findSensorName("Core")
+        core_sensors = linux_sensor.find_sensor_name("Core")
         print(f"\nCore Sensors Found: {len(core_sensors)}")
         for sensor_name, index in core_sensors:
-            temp = linux_sensor.GetSensorTemp(sensor_name, True)
+            temp = linux_sensor.get_sensor_temp(sensor_name, True)
             if temp > 0:
                 print(f" - {sensor_name}: {temp:.1f}°C")
         
@@ -1426,7 +1448,7 @@ else:
     print("PyRawInfo is only supported on Windows.")
 ```
 
-### `RSMB()` (Static Method)
+### `rsmb()` (Static Method)
 
 Retrieves the raw SMBIOS (RSMB) data from the system firmware.
 
@@ -1455,7 +1477,7 @@ if sys.platform == "win32":
     from HardView.LiveView import PyRawInfo
     
     try:
-        smbios_data = PyRawInfo.RSMB()
+        smbios_data = PyRawInfo.rsmb()
         print(f"Raw SMBIOS Data (first 20 bytes): {smbios_data[:20]}...")
         print(f"Total SMBIOS Data Size: {len(smbios_data)} bytes")
     except Exception as e:
@@ -1526,13 +1548,495 @@ Always use try-catch blocks when working with hardware monitoring functions.
     In this case, you must use `.reget` to refresh all temperature sensor objects.
   * **When using `.update` from an individual temperature object**:
     This method performs **two tasks** — it updates the sensor values in both `libreHardwareMonitorlib` and `HardwareWrapper`, **and** updates the properties of the specific object you used it on.
-    Therefore, if you call `.update` on an individual object, there is **no need** to call `.reget` for that object. (In newer versions, you can use the SpecificUpdate function, which is better than the regular update functions)
+    Therefore, if you call `.update` on an individual object, there is **no need** to call `.reget` for that object. (In newer versions, you can use the specific_update function, which is better than the regular update functions)
 
 * **Performance tip**:
   After a global update using `PyManageTemp`’s `.Update` or calling `.update` on a specific temperature object, **do not** call `.Update` or `.update` again for the remaining objects.
   This would add unnecessary load, increase execution time, and cause redundant updates.
   Instead, use `.reget` to simply fetch the latest values.
 
+* **Starting from version 4.0.0**:
+  `PyTempCpu`, `PyTempGpu`, `PyTempOther` (and their `liveview_helper` wrappers) are **restricted** and no longer recommended for monitoring sensors. Use `PySensor` instead — it's faster and more accurate.
+
+  If you only want to monitor **one specific device** (not all sensors), you can still do this efficiently with `PySensor`:
+
+  1. Loop over the sensor map from `PySensor`.
+  2. For each sensor name, figure out which hardware it belongs to — either with `liveview_helper`'s `parse_sensor()`, or directly with `PyManageTemp.get_hardware_id_by_name(hardware_name)`, where `hardware_name` is just the first segment of the sensor name (see the `liveview_helper` section below for the exact sensor-name format). This call returns the hardware's ID.
+  3. To refresh just that device, call `PyManageTemp.specific_update(id)` — **not** `PySensor.update()`, since that updates everything.
+  4. Call `PySensor.reget()` to refresh the sensor map.
+  5. Call `PySensor.get_value_by_name(name)` to read the updated value for the sensor you care about.
+
+  This whole flow is fast, especially if you pass the hardware-name segment straight to `get_hardware_id_by_name()` rather than going through `liveview_helper`'s full `parse_sensor()` (which also builds Python objects) — that extra parsing isn't needed for this use case and adds avoidable overhead.
+  **example:**
+
+```python
+import time
+
+from HardView import LiveView
+from HardView.liveview_helper import HardwareType
+
+sensor = LiveView.PySensor()
+manager = LiveView.PyManageTemp()
+
+# Figure out once which sensor names belong to the CPU (no need to redo
+# this every loop iteration; the set of sensor names doesn't change).
+all_names = sensor.getAllSensors()
+cpu_names = [
+    name
+    for name in all_names
+    if manager.get_hardware_id_by_name(name.split(" - ")[0]) == HardwareType.CPU
+]
+
+while True:
+
+    manager.specific_update(HardwareType.CPU)  # refresh CPU sensors only
+    sensor.reget()                              # refresh the sensor map
 
 
+    print("--- CPU Sensors ---")
+    for name in cpu_names:
+        print(f"{name}: {sensor.get_value_by_name(name)}")
 
+    print(f"Update took {elapsed_ms:.2f} ms")
+
+    time.sleep(1)
+
+```
+
+---
+
+## `liveview_helper` (Python Helper Module)
+
+`liveview_helper` is a small pure-Python convenience layer built **on top of** `HardView.LiveView`. It does not add any new C++/native functionality — it simply wraps the existing `PyTempCpu`, `PyTempGpu`, `PyTempOther`, `PySensor`, and `PyManageTemp` classes so that updating a temperature object's data becomes a single function call, without the caller having to remember which component ID to pass to `PyManageTemp.specific_update()`.
+
+---
+
+
+### `PyTempDisk` - Liveview_helper
+
+A subclass of `PyTempOther` that represents **Storage temperature only**. It inherits every method from `PyTempOther` (`get_mb_temp`, `get_storage_temp`, `reget`/`re_get`, ...), but overrides `update()` so that **only the Storage hardware is refreshed instead of updating all hardware components**.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempDisk
+
+disk_temp = PyTempDisk()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(6)` (Storage ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+#### `get_disk_temp()`
+
+Convenience alias for `get_storage_temp()`.
+
+**Returns**
+
+| Type    | Description                               |
+|---------|-------------------------------------------|
+| `float` | The storage drive temperature in Celsius. |
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempDisk
+
+disk_temp = PyTempDisk()
+print(f"Disk Temperature: {disk_temp.get_disk_temp():.1f}°C")
+
+disk_temp.update()
+print(f"Updated Disk Temperature: {disk_temp.get_disk_temp():.1f}°C")
+```
+
+---
+
+### `PyTempMotherboard` - Liveview_helper
+
+A subclass of `PyTempOther` that represents **Motherboard temperature only**. Same idea as `PyTempDisk`, but `update()` refreshes only the Motherboard branch.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempMotherboard
+
+mb_temp = PyTempMotherboard()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(1)` (Motherboard ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+#### `get_motherboard_temp()`
+
+Convenience alias for `get_mb_temp()`.
+
+**Returns**
+
+| Type    | Description                               |
+|---------|-------------------------------------------|
+| `float` | The motherboard temperature in Celsius.   |
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempMotherboard
+
+mb_temp = PyTempMotherboard()
+print(f"Motherboard Temperature: {mb_temp.get_motherboard_temp():.1f}°C")
+
+mb_temp.update()
+print(f"Updated Motherboard Temperature: {mb_temp.get_motherboard_temp():.1f}°C")
+```
+
+---
+
+### `update_hardware(temp_obj)`
+
+A generic updater that accepts **any** LiveView temperature object and refreshes it using the correct method for its type, so the caller does not need to know component IDs or call `PyManageTemp` directly.
+
+**Parameters**
+
+| Name       | Type                                                                                       | Description                                    |
+|------------|---------------------------------------------------------------------------------------------|-------------------------------------------------|
+| `temp_obj` | `PySensor` \| `PyTempCpu` \| `PyTempGpu` \| `PyTempOther` \| `PyTempDisk` \| `PyTempMotherboard` | The temperature object to update.               |
+
+**Returns**
+
+| Type   | Description                                            |
+|--------|---------------------------------------------------------|
+| *(same type as `temp_obj`)* | The same object passed in, with its data refreshed. |
+
+**Behavior by type**
+
+| Object type                          | Behavior                                                                                     |
+|---------------------------------------|-----------------------------------------------------------------------------------------------|
+| `PySensor`                             | Calls the object's own `.update()` directly (handles everything internally).                 |
+| `PyTempCpu`                            | `specific_update(3)` (CPU) then `.re_get()`.                                                  |
+| `PyTempGpu`                            | `specific_update(5)` (GPU) then `.re_get()`.                                                  |
+| `PyTempDisk`                           | `specific_update(6)` (Storage only) then `.re_get()`.                                         |
+| `PyTempMotherboard`                    | `specific_update(1)` (Motherboard only) then `.re_get()`.                                     |
+| `PyTempOther` (plain, not a subclass)  | `multi_specific_update([1, 6])` (Motherboard **and** Storage, since a plain `PyTempOther` holds both), then `.re_get()`. |
+
+Raises `TypeError` if `temp_obj` is not one of the supported types.
+
+> **Note:** `PyTempDisk` and `PyTempMotherboard` are both subclasses of `PyTempOther`, so the type check for them is performed **before** the plain `PyTempOther` check inside `update_hardware`. Otherwise a `PyTempDisk` or `PyTempMotherboard` instance would incorrectly match the plain `PyTempOther` branch and trigger an unnecessary update of both Motherboard and Storage.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+### `PyTempCPU` - Liveview_helper
+
+A subclass of `PyTempCpu` that overrides `update()` so it refreshes **only the CPU sensors** using `specific_update`, instead of triggering a full/generic hardware update. It inherits every other method from `PyTempCpu` (`get_temp`, `get_fan_rpm`, `re_get`, ...) unchanged.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempCPU
+
+cpu_temp = PyTempCPU()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(3)` (CPU ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempCPU
+
+cpu_temp = PyTempCPU()
+print(f"CPU Temperature: {cpu_temp.get_temp():.1f}°C")
+
+cpu_temp.update()
+print(f"Updated CPU Temperature: {cpu_temp.get_temp():.1f}°C")
+```
+
+---
+
+### `PyTempGPU` - Liveview_helper
+
+A subclass of `PyTempGpu` that overrides `update()` so it refreshes **only the GPU sensors** using `specific_update`, instead of triggering a full/generic hardware update. It inherits every other method from `PyTempGpu` unchanged.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempGPU
+
+gpu_temp = PyTempGPU()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(5)` (GPU ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempGPU
+
+gpu_temp = PyTempGPU()
+print(f"GPU Temperature: {gpu_temp.get_temp():.1f}°C")
+
+gpu_temp.update()
+print(f"Updated GPU Temperature: {gpu_temp.get_temp():.1f}°C")
+```
+
+---
+
+### `update_hardware(temp_obj)`
+
+A generic updater that accepts **any** LiveView temperature object and refreshes it using the correct method for its type, so the caller does not need to know component IDs or call `PyManageTemp` directly.
+
+**Parameters**
+
+| Name       | Type                                                                                       | Description                                    |
+|------------|---------------------------------------------------------------------------------------------|-------------------------------------------------|
+| `temp_obj` | `PySensor` \| `PyTempCpu` \| `PyTempGpu` \| `PyTempOther` \| `PyTempDisk` \| `PyTempMotherboard` | The temperature object to update.               |
+
+**Returns**
+
+| Type   | Description                                            |
+|--------|---------------------------------------------------------|
+| *(same type as `temp_obj`)* | The same object passed in, with its data refreshed. |
+
+**Behavior by type**
+
+| Object type                          | Behavior                                                                                     |
+|---------------------------------------|-----------------------------------------------------------------------------------------------|
+| `PySensor`                             | Calls the object's own `.update()` directly (handles everything internally).                 |
+| `PyTempCpu`                            | `specific_update(3)` (CPU) then `.re_get()`.                                                  |
+| `PyTempGpu`                            | `specific_update(5)` (GPU) then `.re_get()`.                                                  |
+| `PyTempDisk`                           | `specific_update(6)` (Storage only) then `.re_get()`.                                         |
+| `PyTempMotherboard`                    | `specific_update(1)` (Motherboard only) then `.re_get()`.                                     |
+| `PyTempOther` (plain, not a subclass)  | `multi_specific_update([1, 6])` (Motherboard **and** Storage, since a plain `PyTempOther` holds both), then `.re_get()`. |
+
+Raises `TypeError` if `temp_obj` is not one of the supported types.
+
+> **Note:** `PyTempDisk` and `PyTempMotherboard` are both subclasses of `PyTempOther`, so the type check for them is performed **before** the plain `PyTempOther` check inside `update_hardware`. Otherwise a `PyTempDisk` or `PyTempMotherboard` instance would incorrectly match the plain `PyTempOther` branch and trigger an unnecessary update of both Motherboard and Storage.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from HardView import LiveView
+from liveview_helper import PyTempDisk, PyTempMotherboard, update_hardware
+
+cpu = LiveView.PyTempCpu()
+update_hardware(cpu)
+print(f"CPU Temperature: {cpu.get_temp():.1f}°C")
+
+disk = PyTempDisk()
+update_hardware(disk)
+print(f"Disk Temperature: {disk.get_disk_temp():.1f}°C")
+
+mb = PyTempMotherboard()
+update_hardware(mb)
+print(f"Motherboard Temperature: {mb.get_motherboard_temp():.1f}°C")
+
+other = LiveView.PyTempOther()
+update_hardware(other)  # updates BOTH Motherboard and Storage
+print(f"MB: {other.get_mb_temp():.1f}°C, Storage: {other.get_storage_temp():.1f}°C")
+
+sensor = LiveView.PySensor()
+update_hardware(sensor)
+print(sensor.get_all_sensors())
+```
+### `HardwareType`
+
+An `IntEnum` built directly from `COMPONENT_IDS`, so it is always kept in sync with the same ID table used everywhere else in `liveview_helper` (`specific_update`, `multi_specific_update`, etc.).
+
+| Member                  | Value |
+|------------------------ |:-----:|
+| `Motherboard`           | 1     |
+| `SuperIO`               | 2     |
+| `CPU`                   | 3     |
+| `Memory`                | 4     |
+| `GPU`                   | 5     |
+| `Storage`               | 6     |
+| `Network`               | 7     |
+| `EmbeddedController`    | 9     |
+| `Cooler`                | 10    |
+| `Battery`               | 11    |
+
+**Python Usage**
+
+```python
+from liveview_helper import HardwareType
+
+print(HardwareType.Storage)        # HardwareType.Storage
+print(int(HardwareType.Storage))   # 6
+print(HardwareType(6))             # HardwareType.Storage
+```
+
+---
+
+### `SensorType`
+
+A plain `Enum` representing the sensor "type" segment that appears in a raw LiveView sensor name — for example the `Throughput` in `"HS-SSD-E100 256G - Throughput - Write Rate"`.
+
+| Member          | Value           |
+|-------------------|-----------------|
+| `Data`             | `"Data"`         |
+| `Load`              | `"Load"`        |
+| `Power`             | `"Power"`       |
+| `Clock`             | `"Clock"`       |
+| `Temperature`       | `"Temperature"` |
+| `Voltage`           | `"Voltage"`     |
+| `Throughput`        | `"Throughput"`  |
+| `Fan`        | `"Fan"`                |
+
+**Python Usage**
+
+```python
+from liveview_helper import SensorType
+
+print(SensorType.Throughput)        # SensorType.Throughput
+print(SensorType.Throughput.value)  # "Throughput"
+```
+
+---
+
+### `ParsedSensor`
+
+A simple container object returned by [`parse_sensor()`](#parse_sensorsensor_name).
+
+**Attributes**
+
+| Name             | Type            | Description                                              |
+|-------------------|-----------------|-----------------------------------------------------------|
+| `hardware_type`    | `HardwareType`  | The resolved hardware component the sensor belongs to.    |
+| `sensor_type`      | `SensorType`    | The kind of measurement the sensor reports.                |
+| `name`             | `str`           | The sensor's own name (last segment of the raw string).   |
+
+**Python Usage**
+
+```python
+from liveview_helper import parse_sensor
+
+parsed = parse_sensor("HS-SSD-E100 256G - Throughput - Write Rate")
+print(parsed.hardware_type)  # HardwareType.Storage
+print(parsed.sensor_type)    # SensorType.Throughput
+print(parsed.name)           # "Write Rate"
+```
+
+---
+
+### `parse_sensor(sensor_name)`
+
+Parses a raw LiveView sensor name string of the form `"<Hardware> - <Type> - <Name>"` into a [`ParsedSensor`](#parsedsensor) object.
+
+**Parameters**
+
+| Name           | Type  | Description                                                              |
+|-----------------|-------|---------------------------------------------------------------------------|
+| `sensor_name`    | `str` | The raw sensor name, e.g. as returned inside `PySensor.get_all_sensors()`. |
+
+**Returns**
+
+| Type            | Description                                                        |
+|------------------|----------------------------------------------------------------------|
+| `ParsedSensor`    | Object exposing `.hardware_type`, `.sensor_type`, and `.name`.       |
+
+## How it works
+
+* The string is split on the first two occurrences of the exact delimiter `" - "` (space, dash, space), using `str.split(" - ", 2)`.
+* This means dashes that are not surrounded by spaces (e.g. `"Filter-0000"`, `"2-WFP"`) are **not** treated as delimiters and remain part of the hardware name.
+* The first segment (the full hardware name, e.g. `"HS-SSD-E100 256G"` or `"Ethernet 2-WFP 802.3 MAC Layer LightWeight Filter-0000"`) is passed as-is, in full, to `PyManageTemp().get_hardware_id_by_name()`.
+* If `get_hardware_id_by_name()` returns a negative number, the hardware name could not be resolved **or an internal library error occurred**, and `parse_sensor` raises a `ValueError`.
+* Otherwise, the returned ID is converted into a `HardwareType` member.
+* The second segment (e.g. `"Throughput"`) is matched against the names of `SensorType` members **using a case-insensitive comparison**. If no matching member is found, a `ValueError` is raised.
+* The third (remaining) segment is used as-is for `.name`.
+
+
+**Raises**
+
+| Exception     | When                                                                                          |
+|----------------|------------------------------------------------------------------------------------------------|
+| `ValueError`    | The string does not contain at least two `" - "` delimiters, `get_hardware_id_by_name()` returns a negative id, the id doesn't map to a known `HardwareType`, or the type segment doesn't match any `SensorType`. |
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import parse_sensor
+
+parsed = parse_sensor("HS-SSD-E100 256G - Throughput - Write Rate")
+print(parsed)
+# ParsedSensor(hardware_type=<HardwareType.Storage: 6>, sensor_type=<SensorType.Throughput: 'Throughput'>, name='Write Rate')
+
+parsed2 = parse_sensor("Ethernet 2-WFP 802.3 MAC Layer LightWeight Filter-0000 - Data - Data Uploaded")
+print(parsed2.hardware_type, parsed2.sensor_type, parsed2.name)
+# HardwareType.Network SensorType.Data Data Uploaded
+```

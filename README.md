@@ -6,7 +6,8 @@
 
 <p>
   <img src="https://img.shields.io/badge/PyPI_Stable-3.3.1-blue" alt="PyPI Stable Version" height="28">
-  <img src="https://img.shields.io/badge/downloads-10.7K-red" alt="Version" height="28">
+  <img src="https://img.shields.io/badge/PyPI_Beta-4.0.0b1-blue" alt="PyPI Stable Version" height="28">
+  <img src="https://img.shields.io/badge/downloads-303.98k-red" alt="Version" height="28">
   <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="28">
 </p>
 
@@ -239,62 +240,15 @@ It is recommended to review the header file beginning for any dependency notes.
 
 ---
 
-## ⚠️ Potential Issues on Windows
+## Potential Issues on Windows (resolved in version **4.0.0**)
 
 <details>
 <summary><b>HardView.LiveView Temperature Features</b></summary>
 
-The **temperature monitoring features** in `HardView.LiveView` rely on **LibreHardwareMonitorLib**, which in turn uses on **WinRing0**.  
-WinRing0 is an old and well-known driver used for reading from **MSR**, **physical memory**, and other low-level hardware resources.  
+The **temperature monitoring features** in `HardView.LiveView` rely on **LibreHardwareMonitorLib**, which previously depended on **WinRing0**.  
+WinRing0 is an old and well-known driver used to access **MSRs**, **physical memory**, and other low-level hardware resources.
 
-#### The Problem
-**WinRing0 is now blocked by Windows**.  
-This means you may encounter alerts from **Windows Defender** similar to this one:
-
-<div align="center">
-<img src="resources/1.png" alt="Windows Defender Alert" width="600"/>
-</div>
-
-You'll notice that **`python.sys`** is reported as the suspicious driver.  
-This has nothing to do with Python itself. What actually happens is:
-
-- LibreHardwareMonitorLib, when creating its driver, names it as **`<ProgramName>.sys`**.  
-- Since Python scripts run under **`python.exe`**, the driver ends up named **`python.sys`**.  
-- In reality, this file is just the **WinRing0 driver** renamed.
-
-#### Is It Dangerous?
-- WinRing0 is just a driver that grants access to resources that normally require kernel-mode from user-mode. The danger only arises if a malicious program abuses it.  
-- The driver created by LibreHardwareMonitorLib is **temporary**. It will be stop automatically when you restart your system.
-
-**It's recommended to delete the driver using sc delete or remove its file after the program finishes, to prevent any malicious software from exploiting it.**
-
-### Manually Stopping or Removing the Driver 
-
-If you want to close or remove the driver manually after running your script/program:
-
-1. Open **CMD as Administrator**.
-2. Run the following command to stop the driver:
-
-```bash
-sc stop R0<ProgramName>
-```
-
-- For Python scripts:  
-  ```bash
-  sc stop R0Python
-  ```
-- For an executable program named `X.exe`:  
-  ```bash
-  sc stop R0X
-  ```
-
-3. To permanently delete the driver, run:
-
-```bash
-sc delete R0Python
-```
-
-After that, you can manually delete the driver file.
+> In version **4.0.0**, the HardwareWrapper library was updated to use the latest version of [LibreHardwareMonitorlib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor), which no longer depends on WinRing0 and instead relies on the [PawnIO](https://pawnio.eu/) driver.
 </details>
 
 ---
@@ -889,14 +843,14 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyLiveCPU.cpuid()</code></b></td>
-<td><code>cpu_id()</code></td>
+<td><b><code>PyLiveCPU.cpu_id()</code></b></td>
+<td><code>cpuid()</code></td>
 <td>Get CPU details via CPUID instruction.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLiveCPU.CpuSnapShot(...)</code></b> <i>(Windows)</i></td>
-<td><code>cpu_snapshot(...)</code></td>
+<td><b><code>PyLiveCPU.cpu_snapshot(...)</code></b> <i>(Windows)</i></td>
+<td><code>CpuSnapShot(...)</code></td>
 <td>Get raw CPU time counters for a specific core or number of cores.</td>
 </tr>
 
@@ -919,8 +873,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyLiveDisk.HighDiskUsage(...)</code></b></td>
-<td><code>high_disk_usage(...)</code></td>
+<td><b><code>PyLiveDisk.high_disk_usage(...)</code></b></td>
+<td><code>HighDiskUsage(...)</code></td>
 <td>Check if disk R/W exceeds threshold.</td>
 </tr>
 
@@ -931,8 +885,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyLiveNetwork.getHighCard()</code></b></td>
-<td><code>get_high_card()</code></td>
+<td><b><code>PyLiveNetwork.get_high_card()</code></b></td>
+<td><code>getHighCard()</code></td>
 <td>Get name of network adapter with highest usage.</td>
 </tr>
 
@@ -991,8 +945,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempCpu.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PyTempCpu.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-read CPU temperature & fan RPM.</td>
 </tr>
 
@@ -1015,8 +969,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempGpu.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PyTempGpu.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-read GPU temperature and fan RPM.</td>
 </tr>
 
@@ -1027,8 +981,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempOther.get_Storage_temp()</code></b> <i>(Windows)</i></td>
-<td><code>get_storage_temp()</code></td>
+<td><b><code>PyTempOther.get_storage_temp()</code></b> <i>(Windows)</i></td>
+<td><code>get_Storage_temp()</code></td>
 <td>Get storage temperature.</td>
 </tr>
 
@@ -1039,33 +993,27 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempOther.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PyTempOther.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-read other temperatures.</td>
 </tr>
 
 <tr>
-<td><b><code>PySensor.GetData(init=False)</code></b> <i>(Windows)</i></td>
-<td><code>get_data(init=False)</code></td>
+<td><b><code>PySensor.get_data(init=False)</code></b> <i>(Windows)</i></td>
+<td><code>GetData(init=False)</code></td>
 <td>Fetch sensors & fan data.</td>
 </tr>
 
 <tr>
-<td><b><code>PySensor.GetValueByName(name)</code></b> <i>(Windows)</i></td>
-<td><code>get_value_by_name(name)</code></td>
+<td><b><code>PySensor.get_value_by_name(name)</code></b> <i>(Windows)</i></td>
+<td><code>GetValueByName(name)</code></td>
 <td>Get sensor value by name.</td>
 </tr>
 
 <tr>
-<td><b><code>PySensor.getAllSensors()</code></b> <i>(Windows)</i></td>
-<td><code>get_all_sensors()</code></td>
+<td><b><code>PySensor.get_all_sensors()</code></b> <i>(Windows)</i></td>
+<td><code>getAllSensors()</code></td>
 <td>List all sensor names.</td>
-</tr>
-
-<tr>
-<td><b><code>PySensor.getAllFanRPMs()</code></b> <i>(Windows)</i></td>
-<td><code>get_all_fan_rpms()</code></td>
-<td>List all fan RPM readings.</td>
 </tr>
 
 <tr>
@@ -1075,86 +1023,86 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PySensor.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PySensor.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-fetch sensors & fans data.</td>
 </tr>
 
 <tr>
-<td><b><code>PyManageTemp.Init()</code></b> <i>(Windows)</i></td>
-<td><code>init()</code></td>
+<td><b><code>PyManageTemp.init()</code></b> <i>(Windows)</i></td>
+<td><code>Init()</code></td>
 <td>Initialize temperature monitoring.</td>
 </tr>
 
 <tr>
-<td><b><code>PyManageTemp.Close()</code></b> <i>(Windows)</i></td>
-<td><code>close()</code></td>
+<td><b><code>PyManageTemp.close()</code></b> <i>(Windows)</i></td>
+<td><code>Close()</code></td>
 <td>Shutdown temperature monitoring.</td>
 </tr>
 
 <tr>
-<td><b><code>PyManageTemp.Update()</code></b> <i>(Windows)</i></td>
-<td><code>update()</code></td>
+<td><b><code>PyManageTemp.update()</code></b> <i>(Windows)</i></td>
+<td><code>Update()</code></td>
 <td>Update all temperature data.</td>
 </tr>
 
 <tr>
-<td><b><code>PyRawInfo.RSMB()</code></b> <i>(Windows)</i></td>
-<td><code>rsmb()</code></td>
+<td><b><code>PyRawInfo.rsmb()</code></b> <i>(Windows)</i></td>
+<td><code>RSMB()</code></td>
 <td>Get raw SMBIOS table bytes.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getCpuTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_cpu_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_cpu_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getCpuTemp()</code></td>
 <td>Get CPU temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getChipsetTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_chipset_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_chipset_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getChipsetTemp()</code></td>
 <td>Get chipset temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getMotherboardTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_motherboard_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_motherboard_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getMotherboardTemp()</code></td>
 <td>Get motherboard temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getVRMTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_vrm_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_vrm_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getVRMTemp()</code></td>
 <td>Get VRM/memory temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getDriveTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_drive_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_drive_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getDriveTemp()</code></td>
 <td>Get storage temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getAllSensorNames()</code></b> <i>(Linux)</i></td>
-<td><code>get_all_sensor_names()</code></td>
+<td><b><code>PyLinuxSensor.get_all_sensor_names()</code></b> <i>(Linux)</i></td>
+<td><code>getAllSensorNames()</code></td>
 <td>List all sensor names.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.findSensorName(name)</code></b> <i>(Linux)</i></td>
-<td><code>find_sensor_name(name)</code></td>
+<td><b><code>PyLinuxSensor.find_sensor_name(name)</code></b> <i>(Linux)</i></td>
+<td><code>findSensorName(name)</code></td>
 <td>Search for a sensor name.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.GetSensorTemp(name, Match)</code></b> <i>(Linux)</i></td>
-<td><code>get_sensor_temp(name, Match)</code></td>
+<td><b><code>PyLinuxSensor.get_sensor_temp(name, Match)</code></b> <i>(Linux)</i></td>
+<td><code>GetSensorTemp(name, Match)</code></td>
 <td>Get sensor temperature by name.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.GetSensorsWithTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_sensors_with_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_sensors_with_temp()</code></b> <i>(Linux)</i></td>
+<td><code>GetSensorsWithTemp()</code></td>
 <td>Get all sensors with their temperatures.</td>
 </tr>
 
@@ -1200,6 +1148,48 @@ All documentation is in the `docs/` folder:
 <td><b><code>SmartValues</code></b></td>
 <td><code>revision_number, offline_data_collection_status, self_test_execution_status, total_time_to_complete_offline_data_collection</code></td>
 <td>SMART values structure</td>
+</tr>
+
+<tr>
+<td><b><code>SmartThreshold</code></b></td>
+<td><code>id, threshold</code></td>
+<td>Per-attribute failure threshold, from <code>get_smart_thresholds()</code></td>
+</tr>
+
+<tr>
+<td><b><code>StateByte</code></b></td>
+<td><code>byte, device_fault, stream_error</code></td>
+<td>Decoded device status byte found in the SMART error log</td>
+</tr>
+
+<tr>
+<td><b><code>ErrorCommand</code></b></td>
+<td><code>spvalue, feature, sector_count, lba, device, command, timestamp</code></td>
+<td>One of the 5 commands that preceded a logged error</td>
+</tr>
+
+<tr>
+<td><b><code>ErrorLogData</code></b></td>
+<td><code>error_commands, cerror, sector_count, lba, device, written_status, state, life_timestamp</code></td>
+<td>A single entry in the SMART Summary Error Log</td>
+</tr>
+
+<tr>
+<td><b><code>ErrorLog</code></b></td>
+<td><code>log_version, log_index, errors, error_count, checksum</code></td>
+<td>Full SMART Summary Error Log (log page 0x01), up to 5 recent entries</td>
+</tr>
+
+<tr>
+<td><b><code>SMARTInfoS</code></b></td>
+<td><code>model_upper, attributes, firmware_rev, is_ssd</code></td>
+<td>Model/firmware/attributes bundle used as input to <code>detect_ssd_type()</code></td>
+</tr>
+
+<tr>
+<td><b><code>SSDType</code></b></td>
+<td><i>enum</i></td>
+<td>Detected SSD controller/vendor family (e.g. <code>PHISON</code>, <code>SAMSUNG</code>, <code>HDD_GENERAL</code>, <code>GENERAL_SSD</code>, ...)</td>
 </tr>
 
 </tbody>
@@ -1305,6 +1295,196 @@ All documentation is in the `docs/` folder:
 <td><b><code>get_drive_type()</code></b></td>
 <td>---</td>
 <td>Get drive type as string ('SSD', 'HDD', or 'Unknown')</td>
+</tr>
+
+<tr>
+<td><b><code>fill_disk_info()</code></b></td>
+<td>---</td>
+<td>Send IDENTIFY DEVICE and return a dict with <code>model_number</code>, <code>serial_number</code>, <code>firmware_revision</code>, <code>user_addressable_sectors</code>, <code>nominal_media_rotation_rate</code>. Returns <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_thresholds()</code></b></td>
+<td>---</td>
+<td>Read the SMART attribute thresholds table, returns <code>list[SmartThreshold]</code></td>
+</tr>
+
+<tr>
+<td><b><code>read_log(log_number)</code></b></td>
+<td><code>log_number: int</code></td>
+<td>Read a raw SMART log page (e.g. 1 = Summary Error Log), returns 512 raw <code>bytes</code> or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>read_error_log()</code></b></td>
+<td>---</td>
+<td>Read and parse the SMART Summary Error Log (log page 0x01). Returns an <code>ErrorLog</code>, or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>run_test(test_type)</code></b></td>
+<td><code>test_type: int = 0x01</code></td>
+<td>Start a SMART self-test (SMART EXECUTE OFF-LINE IMMEDIATE). Defaults to a short off-line test</td>
+</tr>
+
+</tbody>
+</table>
+
+### Controller / Vendor Detection
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>get_disk_info_s(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>SMARTInfoS | None</code></td>
+<td>Open the given physical drive, read SMART + IDENTIFY data ready to pass to <code>detect_ssd_type()</code></td>
+</tr>
+
+<tr>
+<td><b><code>detect_ssd_type(info, raw_smart_data)</code></b></td>
+<td><code>info: SMARTInfoS, raw_smart_data: bytes | None = None</code></td>
+<td><code>SSDType</code></td>
+<td>Detect the SSD controller/vendor type (or <code>HDD_GENERAL</code>) from a <code>SMARTInfoS</code>. <code>raw_smart_data</code> is only needed to disambiguate a few Silicon Motion / ADATA models</td>
+</tr>
+
+<tr>
+<td><b><code>ssd_type_to_string(type)</code></b></td>
+<td><code>type: SSDType</code></td>
+<td><code>str</code></td>
+<td>Human-readable name for an <code>SSDType</code>, e.g. 'Phison', 'Samsung', 'HDD'</td>
+</tr>
+
+<tr>
+<td><b><code>get_attribute_name_by_id_and_type(type, attribute_id)</code></b></td>
+<td><code>type: SSDType, attribute_id: int</code></td>
+<td><code>str</code></td>
+<td>Vendor-specific human-readable name for a SMART attribute ID, falls back to a generic ATA name</td>
+</tr>
+
+</tbody>
+</table>
+
+### Vendor Detection Heuristics
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr><td><code>is_ssd_old(model_upper)</code></td><td><code>model_upper: str</code></td><td>Heuristic for older/generic SSD models</td></tr>
+<tr><td><code>is_ssd_mtron(attributes, model_upper, attribute_count)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, attribute_count: int</code></td><td>MTRON detection heuristic</td></tr>
+<tr><td><code>is_ssd_jmicron_60x(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>JMicron 60x controller detection</td></tr>
+<tr><td><code>is_ssd_jmicron_61x(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>JMicron 61x controller detection</td></tr>
+<tr><td><code>is_ssd_jmicron_66x(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>JMicron 66x controller detection</td></tr>
+<tr><td><code>is_ssd_indilinx(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>Indilinx controller detection</td></tr>
+<tr><td><code>is_ssd_intel_dc(model_upper)</code></td><td><code>model_upper: str</code></td><td>Intel Data Center SSD detection</td></tr>
+<tr><td><code>is_ssd_intel(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Intel SSD detection</td></tr>
+<tr><td><code>is_ssd_samsung(attributes, model_upper, is_ssd)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, is_ssd: bool</code></td><td>Samsung SSD detection</td></tr>
+<tr><td><code>is_ssd_sandforce(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>SandForce controller detection</td></tr>
+<tr><td><code>is_ssd_micron_mu03(model_upper, firmware_rev)</code></td><td><code>model_upper: str, firmware_rev: str</code></td><td>Micron MU03 detection</td></tr>
+<tr><td><code>is_ssd_micron(attributes, model_upper, firmware_rev)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str</code></td><td>Micron SSD detection</td></tr>
+<tr><td><code>is_ssd_ocz(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>OCZ SSD detection</td></tr>
+<tr><td><code>is_ssd_ocz_vector(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>OCZ Vector series detection</td></tr>
+<tr><td><code>is_ssd_ssstc(model_upper)</code></td><td><code>model_upper: str</code></td><td>SSSTC SSD detection</td></tr>
+<tr><td><code>is_ssd_plextor(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Plextor SSD detection</td></tr>
+<tr><td><code>is_ssd_sandisk(model_upper)</code></td><td><code>model_upper: str</code></td><td>SanDisk SSD detection</td></tr>
+<tr><td><code>is_ssd_kingston(model_upper)</code></td><td><code>model_upper: str</code></td><td>Kingston SSD detection</td></tr>
+<tr><td><code>is_ssd_corsair(model_upper)</code></td><td><code>model_upper: str</code></td><td>Corsair SSD detection</td></tr>
+<tr><td><code>is_ssd_toshiba(model_upper, is_ssd)</code></td><td><code>model_upper: str, is_ssd: bool</code></td><td>Toshiba SSD detection</td></tr>
+<tr><td><code>is_ssd_realtek(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>Realtek controller detection</td></tr>
+<tr><td><code>is_ssd_skhynix(model_upper)</code></td><td><code>model_upper: str</code></td><td>SK hynix SSD detection</td></tr>
+<tr><td><code>is_ssd_kioxia(model_upper)</code></td><td><code>model_upper: str</code></td><td>Kioxia SSD detection</td></tr>
+<tr><td><code>is_ssd_apacer(model_upper, firmware_rev)</code></td><td><code>model_upper: str, firmware_rev: str</code></td><td>Apacer SSD detection</td></tr>
+<tr><td><code>is_ssd_ymtc(model_upper)</code></td><td><code>model_upper: str</code></td><td>YMTC SSD detection</td></tr>
+<tr><td><code>is_ssd_scy(model_upper)</code></td><td><code>model_upper: str</code></td><td>SCY SSD detection</td></tr>
+<tr><td><code>is_ssd_recadata(model_upper)</code></td><td><code>model_upper: str</code></td><td>Recadata SSD detection</td></tr>
+<tr><td><code>is_ssd_silicon_motion_cvc(model_upper)</code></td><td><code>model_upper: str</code></td><td>Silicon Motion CVC controller detection</td></tr>
+<tr><td><code>is_ssd_silicon_motion(attributes, model_upper, firmware_rev, raw_smart_data)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str, raw_smart_data: bytes | None = None</code></td><td>Silicon Motion controller detection</td></tr>
+<tr><td><code>is_ssd_phison(attributes, model_upper, firmware_rev)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str</code></td><td>Phison controller detection</td></tr>
+<tr><td><code>is_ssd_wdc(model_upper)</code></td><td><code>model_upper: str</code></td><td>WDC SSD detection</td></tr>
+<tr><td><code>is_ssd_seagate(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Seagate SSD detection</td></tr>
+<tr><td><code>is_ssd_marvell(attributes, model_upper, firmware_rev)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str</code></td><td>Marvell controller detection</td></tr>
+<tr><td><code>is_ssd_maxiotek(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Maxiotek controller detection</td></tr>
+<tr><td><code>is_ssd_adata_industrial(model_upper)</code></td><td><code>model_upper: str</code></td><td>ADATA Industrial SSD detection</td></tr>
+
+</tbody>
+</table>
+
+### Low-Level Raw SCSI / NVMe Helpers
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>get_scsi_path(path)</code></b></td>
+<td><code>path: str</code></td>
+<td><code>str</code></td>
+<td>Resolve a device path (e.g. '\\\\.\\PhysicalDrive0') to its underlying '\\\\.\\SCSIn:' path, or '' on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_scsi_address(path)</code></b></td>
+<td><code>path: str</code></td>
+<td><code>(port, path_id, target_id, lun) | None</code></td>
+<td>Get the SCSI address of a device path, or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_intel(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page via generic Intel NVMe pass-through. Returns 512 bytes, or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_samsung(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page via Samsung's vendor-specific SCSI security protocol commands</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_storage_query(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page via the standard Windows <code>IOCTL_STORAGE_QUERY_PROPERTY</code> query. Usually the first one to try</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_intel_rst(drive_number, scsi_port, scsi_target_id)</code></b></td>
+<td><code>drive_number: int = -1, scsi_port: int = 0, scsi_target_id: int = 0</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page through an Intel Rapid Storage Technology (RST) SCSI miniport pass-through</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_intel_vroc(drive_number, scsi_port, scsi_target_id)</code></b></td>
+<td><code>drive_number: int = -1, scsi_port: int = 0, scsi_target_id: int = 0</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page through an Intel Virtual RAID on CPU (VROC) SCSI miniport pass-through</td>
 </tr>
 
 </tbody>
@@ -1565,6 +1745,248 @@ All documentation is in the `docs/` folder:
 <td><code>SMBIOSInfo</code></td>
 <td>Quick function to get complete SMBIOS system information</td>
 </tr>
+
+</tbody>
+</table>
+
+</details>
+
+<details>
+<summary><b>Process Module (Experimental 4.0.0+)</b></summary>
+
+<i>Windows Only</i> — wraps <code>ProcessControl</code> for opening, inspecting, and controlling a running process (memory, priority, modules, suspend/resume, PEB command line, etc.).
+
+### Main Classes
+
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Properties</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>Process</code></b></td>
+<td>---</td>
+<td>Main class wrapping a handle to a running process</td>
+</tr>
+
+<tr>
+<td><b><code>ModuleInfo</code></b></td>
+<td><code>name, address, size</code></td>
+<td>A loaded module (DLL) inside the target process</td>
+</tr>
+
+<tr>
+<td><b><code>ProcessBasicInfo</code></b></td>
+<td><code>pid, parent_pid, thread_count, priority_base, exe_name</code></td>
+<td>Basic process info from a ToolHelp32 snapshot</td>
+</tr>
+
+<tr>
+<td><b><code>ProcessInfoEx</code></b></td>
+<td><code>number_of_threads, image_name, base_priority, priority_class, priority_class_name, pid, handle_count, session_id, peak_virtual_size, virtual_size, peak_working_set_size, working_set_size, quota_paged_pool_usage, quota_nonpaged_pool_usage, pagefile_usage, peak_pagefile_usage, private_page_count</code></td>
+<td>Extended process info from <code>NtQuerySystemInformation</code></td>
+</tr>
+
+<tr>
+<td><b><code>CpuTimes</code></b></td>
+<td><code>kernel_time, user_time, creation_time, exit_time</code></td>
+<td>Raw FILETIME process CPU time counters (100-ns units)</td>
+</tr>
+
+</tbody>
+</table>
+
+### Process Methods
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>Process(pid, enable_debug_privilege, access)</code></b></td>
+<td><code>pid: int, enable_debug_privilege: bool = False, access: int = PROCESS_ALL_ACCESS</code></td>
+<td>Open a handle to an existing process by PID</td>
+</tr>
+
+<tr>
+<td><b><code>get_ram_usage()</code></b></td>
+<td>---</td>
+<td>Get the process working set size in bytes</td>
+</tr>
+
+<tr>
+<td><b><code>get_cpu_times()</code></b></td>
+<td>---</td>
+<td>Get kernel/user/creation/exit times as a <code>CpuTimes</code> object</td>
+</tr>
+
+<tr>
+<td><b><code>get_modules()</code></b></td>
+<td>---</td>
+<td>Get the loaded modules (DLLs) as <code>list[ModuleInfo]</code></td>
+</tr>
+
+<tr>
+<td><b><code>suspend(one_thread, thread_id)</code></b></td>
+<td><code>one_thread: bool = False, thread_id: int = 0</code></td>
+<td>Suspend all threads, or a single thread if <code>one_thread=True</code></td>
+</tr>
+
+<tr>
+<td><b><code>resume(one_thread, thread_id)</code></b></td>
+<td><code>one_thread: bool = False, thread_id: int = 0</code></td>
+<td>Resume all threads, or a single thread if <code>one_thread=True</code></td>
+</tr>
+
+<tr>
+<td><b><code>kill(exit_code)</code></b></td>
+<td><code>exit_code: int = 0</code></td>
+<td>Terminate the process</td>
+</tr>
+
+<tr>
+<td><b><code>get_process_info()</code></b></td>
+<td>---</td>
+<td>Get basic process info (returns <code>ProcessBasicInfo</code>)</td>
+</tr>
+
+<tr>
+<td><b><code>read_memory(address, size)</code></b></td>
+<td><code>address: int, size: int</code></td>
+<td>Read <code>size</code> bytes from process memory at <code>address</code>, returns <code>bytes</code></td>
+</tr>
+
+<tr>
+<td><b><code>write_memory(address, data)</code></b></td>
+<td><code>address: int, data: bytes</code></td>
+<td>Write <code>data</code> to process memory at <code>address</code></td>
+</tr>
+
+<tr>
+<td><b><code>set_priority(priority_class)</code></b></td>
+<td><code>priority_class: int</code></td>
+<td>Set the process priority class</td>
+</tr>
+
+<tr>
+<td><b><code>get_priority()</code></b></td>
+<td>---</td>
+<td>Get the raw process priority class value</td>
+</tr>
+
+<tr>
+<td><b><code>get_process_info_ex()</code></b></td>
+<td>---</td>
+<td>Get extended process info (returns <code>ProcessInfoEx</code>)</td>
+</tr>
+
+<tr>
+<td><b><code>get_cmdline()</code></b></td>
+<td>---</td>
+<td>Read the process command line via its PEB</td>
+</tr>
+
+<tr>
+<td><b><code>get_current_directory()</code></b></td>
+<td>---</td>
+<td>Read the process current directory via its PEB</td>
+</tr>
+
+<tr>
+<td><b><code>enable_privilege(privilege_name)</code></b></td>
+<td><code>privilege_name: str</code></td>
+<td>Enable a privilege (e.g. <code>'SeDebugPrivilege'</code>) on this process's token</td>
+</tr>
+
+</tbody>
+</table>
+
+### Static Methods
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>Process.get_process_map()</code></b></td>
+<td><code>dict[str, int]</code></td>
+<td>Map of <code>{process_name: pid}</code> for all running processes (ToolHelp32 snapshot)</td>
+</tr>
+
+<tr>
+<td><b><code>Process.get_process_info_map()</code></b></td>
+<td><code>dict[int, ProcessInfoEx]</code></td>
+<td>Map of <code>{pid: ProcessInfoEx}</code> for all running processes (<code>NtQuerySystemInformation</code>)</td>
+</tr>
+
+</tbody>
+</table>
+
+### Module-Level Functions
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>get_priority_name(priority)</code></b></td>
+<td><code>priority: int</code></td>
+<td><code>str</code></td>
+<td>Human-readable name of a Windows priority class value</td>
+</tr>
+
+<tr>
+<td><b><code>enable_privilege(privilege_name)</code></b></td>
+<td><code>privilege_name: str</code></td>
+<td><code>bool</code></td>
+<td>Enable a privilege on the current process token</td>
+</tr>
+
+</tbody>
+</table>
+
+### Module-Level Constants
+
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr><td><code>IDLE_PRIORITY_CLASS</code></td><td>Idle priority class value</td></tr>
+<tr><td><code>BELOW_NORMAL_PRIORITY_CLASS</code></td><td>Below-normal priority class value</td></tr>
+<tr><td><code>NORMAL_PRIORITY_CLASS</code></td><td>Normal priority class value</td></tr>
+<tr><td><code>ABOVE_NORMAL_PRIORITY_CLASS</code></td><td>Above-normal priority class value</td></tr>
+<tr><td><code>HIGH_PRIORITY_CLASS</code></td><td>High priority class value</td></tr>
+<tr><td><code>REALTIME_PRIORITY_CLASS</code></td><td>Realtime priority class value</td></tr>
+<tr><td><code>PROCESS_ALL_ACCESS</code></td><td>Default access-rights mask used when opening a process</td></tr>
 
 </tbody>
 </table>

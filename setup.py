@@ -123,6 +123,22 @@ if sys.platform.startswith('win'):
     extensions.append(smart_module)
 
 # =================================================================
+# ==      Process Extension (C++) - Windows Only                ==
+# =================================================================
+if sys.platform.startswith('win'):
+    process_module = Extension(
+        'HardView.process',
+        sources=['HardView/Process/PyProcess.cpp'],
+        include_dirs=['HardView/Process', pybind11.get_include()],
+        libraries=['Psapi', 'Advapi32'],
+        extra_compile_args=['/std:c++17', '/MT'],  # Static linking for MSVC
+        extra_link_args=['-static-libgcc', '-static-libstdc++'],  # Static linking for MinGW
+        language='c++'
+    )
+    # Add the new module to the list of extensions to be built
+    extensions.append(process_module)
+
+# =================================================================
 # ==      Package Configuration                                ==
 # =================================================================
 
@@ -156,7 +172,9 @@ class build_ext(_build_ext):
                 # 32-bit Windows
                 dll_source_dir = 'HardView/LiveView/32'
 
-            dll_source_path = os.path.join(dll_source_dir, '*.dll')
+            files_to_copy = []
+            files_to_copy.extend(glob.glob(os.path.join(dll_source_dir, '*.dll')))
+            files_to_copy.extend(glob.glob(os.path.join(dll_source_dir, '*.json')))
 
             # The build directory for the package (e.g., build/lib.win-amd64-...)
             build_lib = self.build_lib
@@ -168,11 +186,10 @@ class build_ext(_build_ext):
             # Ensure the destination directory exists
             os.makedirs(dest_dir, exist_ok=True)
 
-            # Find and copy each DLL
-            for dll_file in glob.glob(dll_source_path):
-                print(f"Copying DLL: {dll_file} to {dest_dir}")
-                shutil.copy(dll_file, dest_dir)
-
+            # Copy the files
+            for file in files_to_copy:
+                print(f"Copying: {file} -> {dest_dir}")
+                shutil.copy2(file, dest_dir)
     def get_ext_filename(self, ext_name):
         # Get the original filename from the superclass to ensure the correct suffix
         original_filename = super().get_ext_filename(ext_name)
@@ -198,17 +215,17 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.3.2',
+    version='4.0.0b1',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.3.2
+# HardView 4.0.0b1
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-### 3.3.2
-- Modifications to the HardView.SMART model
+### 4.0.0b1
+- Beta release
 ---
 
     ''',

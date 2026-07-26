@@ -30,7 +30,7 @@
 #define COMPONENT_GPU 5
 #define COMPONENT_STORAGE 6
 #define COMPONENT_NETWORK 7
-#define COMPONENT_COOLER 7
+#define COMPONENT_COOLER 8
 #define COMPONENT_EMBEDDED_CONTROLLER 9
 #define COMPONENT_PSU 10
 #define COMPONENT_BATTERY 11
@@ -52,6 +52,9 @@ typedef void (*GetAllFanRpmsFunc)(char***, double**, int*);
 typedef void (*FreeFanDataFunc)(char**, double*, int);
 typedef void (*UpdateHardwareMonitorFunc)();
 typedef void (*SpecificUpdateHardwareTempFunc)(int);
+typedef int (*GetHardwareIdByNameFunc)(const char*);
+typedef void (*GetAllSensorsPackedFunc)(char**, int*);
+typedef void (*FreePackedSensorsFunc)(char*);
 
 // Global handle to the loaded DLL and function pointers
 static HMODULE hHardwareWrapperDLL = NULL;
@@ -71,6 +74,9 @@ static GetAllFanRpmsFunc pGetAllFanRpms = NULL;
 static FreeFanDataFunc pFreeFanData = NULL;
 static UpdateHardwareMonitorFunc pUpdateHardwareMonitor = NULL;
 static SpecificUpdateHardwareTempFunc pSpecificUpdateHardwareTemp = NULL;
+static GetHardwareIdByNameFunc pGetHardwareIdByNameFunc = NULL;
+static GetAllSensorsPackedFunc pGetAllSensorsPacked = NULL;
+static FreePackedSensorsFunc pFreePackedSensors = NULL;
 
 // Helper to get function address and check
 template<typename FuncType>
@@ -110,13 +116,16 @@ __declspec(dllexport) int InitHardwareTempMonitor() {
     pFreeFanData = GetFunction<FreeFanDataFunc>(hHardwareWrapperDLL, "FreeFanData");
     pUpdateHardwareMonitor = GetFunction<UpdateHardwareMonitorFunc>(hHardwareWrapperDLL, "UpdateHardwareMonitor");
     pSpecificUpdateHardwareTemp = GetFunction<SpecificUpdateHardwareTempFunc>(hHardwareWrapperDLL, "SpecificUpdateHardwareTemp");
+    pGetHardwareIdByNameFunc = GetFunction<GetHardwareIdByNameFunc>(hHardwareWrapperDLL,"GetHardwareIdByName");
+    pGetAllSensorsPacked = GetFunction<GetAllSensorsPackedFunc>(hHardwareWrapperDLL, "GetAllSensorsPacked");
+    pFreePackedSensors = GetFunction<FreePackedSensorsFunc>(hHardwareWrapperDLL, "FreePackedSensors");
 
     // Check if all essential functions were loaded
     if (!pInitHardwareMonitor || !pGetCpuTemperature || !pGetGpuTemperature || !pGetMotherboardTemperature ||
         !pGetStorageTemperature || !pGetAverageCpuCoreTemperature || !pGetMaxCpuCoreTemperature ||
         !pGetCpuFanRpm || !pGetGpuFanRpm || !pGetAvailableSensors || !pFreeSensorNames ||
         !pGetSpecificSensorValue || !pGetAllFanRpms || !pFreeFanData || !pUpdateHardwareMonitor ||
-        !pSpecificUpdateHardwareTemp) {
+        !pSpecificUpdateHardwareTemp || !pGetHardwareIdByNameFunc || !pGetAllSensorsPacked || !pFreePackedSensors) {
         FreeLibrary(hHardwareWrapperDLL);
         hHardwareWrapperDLL = NULL;
         return -1;
@@ -148,6 +157,9 @@ __declspec(dllexport) void ShutdownHardwareTempMonitor() {
         pFreeFanData = NULL;
         pUpdateHardwareMonitor = NULL;
         pSpecificUpdateHardwareTemp = NULL;
+        pGetHardwareIdByNameFunc = NULL;
+        pGetAllSensorsPacked = NULL;
+        pFreePackedSensors = NULL;
     }
 }
 
@@ -214,6 +226,11 @@ __declspec(dllexport) double GetSpecificSensorValueTemp(const char* fullSensorNa
     if (pGetSpecificSensorValue) return pGetSpecificSensorValue(fullSensorName);
     return -99.0;
 }
+__declspec(dllexport) int GetHardwareIdByNameTemp(const char* fullHardwareName) {
+    if (pGetHardwareIdByNameFunc) return pGetHardwareIdByNameFunc(fullHardwareName);
+    return -99;
+}
+
 
 __declspec(dllexport) void GetAllFanRpmsTemp(char*** fanNames, double** rpms, int* count) {
     if (pGetAllFanRpms) {
@@ -242,6 +259,27 @@ __declspec(dllexport) void UpdateHardwareMonitorTemp() {
 __declspec(dllexport) void SpecificUpdateHardwareTempMonitor(int componentId) {
     if (pSpecificUpdateHardwareTemp) {
         pSpecificUpdateHardwareTemp(componentId);
+    }
+}
+
+__declspec(dllexport) void GetAllSensorsPackedTemp(char** data, int* size)
+{
+    if (pGetAllSensorsPacked)
+    {
+        pGetAllSensorsPacked(data, size);
+    }
+    else
+    {
+        if (data) *data = nullptr;
+        if (size) *size = 0;
+    }
+}
+
+__declspec(dllexport) void FreePackedSensorsTemp(char* data)
+{
+    if (pFreePackedSensors)
+    {
+        pFreePackedSensors(data);
     }
 }
 
