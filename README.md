@@ -7,18 +7,13 @@
 <p>
   <img src="https://img.shields.io/badge/PyPI_Stable-3.3.1-blue" alt="PyPI Stable Version" height="28">
   <img src="https://img.shields.io/badge/PyPI_Beta-4.0.0b1-blue" alt="PyPI Stable Version" height="28">
-  <img src="https://img.shields.io/badge/downloads-303.98k-red" alt="Version" height="28">
   <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="28">
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="28">
-  <img src="https://img.shields.io/badge/Tools_license-GPL3-red" alt="License" height="28">
-  <img src="https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey" alt="Platforms" height="28">
-</p>
-
-<p>
-  <img src="https://img.shields.io/badge/_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="28">
+  <img src="https://img.shields.io/badge/Platform-linux%20%7C%20windows-red" alt="Platforms" height="28">
+  <img src="https://img.shields.io/badge/Full Support-windows-red" alt="Platforms" height="28">
+  <img src="https://img.shields.io/badge/_Sensors-Windows%20%7C%20Linux-red" alt="Sensors Monitoring" height="28">
 </p>
 
 <p align="center">
