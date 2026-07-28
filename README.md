@@ -4,16 +4,34 @@
 
 # HardView - Hardware Information Project
 
-<p>
-  <img src="https://img.shields.io/badge/PyPI_Stable-3.3.1-00abbe" alt="PyPI Stable Version" height="28">
-  <img src="https://img.shields.io/badge/PyPI_Beta-4.0.0b1-00abbe" alt="PyPI Stable Version" height="28">
-  <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-00abbe" alt="Supported Python versions" height="28">
+<p align="center">
+  <a href="https://pypi.org/project/HardView/">
+    <img src="https://img.shields.io/badge/PyPI-Stable%203.3.1-3775A9?logo=pypi&logoColor=white" alt="PyPI Stable" height="28">
+  </a>
+
+  <a href="https://pypi.org/project/HardView/4.0.0b1/">
+    <img src="https://img.shields.io/badge/PyPI-Beta%204.0.0b1-F59E0B?logo=pypi&logoColor=white" alt="PyPI Beta" height="28">
+  </a>
+
+  <a href="https://docs.python.org/3/">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=FFD43B" alt="Python 3.8+" height="28">
+  </a>
+
+  <a href="https://gafoo173.github.io/HardView/">
+    <img src="https://img.shields.io/badge/Docs-GitHub%20Pages-22C55E?logo=github&logoColor=white" alt="Documentation" height="28">
+  </a>
+
+  <a href="https://github.com/gafoo173/HardView/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-8B5CF6?logo=open-source-initiative&logoColor=white" alt="MIT License" height="28">
+  </a>
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/Platform-linux%20%7C%20windows-3b4455" alt="Platforms" height="28">
-  <img src="https://img.shields.io/badge/Full Support-windows-3b4455" alt="Platforms" height="28">
-  <img src="https://img.shields.io/badge/_Sensors-Windows%20%7C%20Linux-3b4455" alt="Sensors Monitoring" height="28">
+  <img src="https://img.shields.io/badge/Windows-Full%20Support-3b4455" alt="Windows Full Support" height="28">
+
+  <img src="https://img.shields.io/badge/Linux-Basic-3b4455?logo=linux&logoColor=white" alt="Linux Support" height="28">
+
+  <img src="https://img.shields.io/badge/Sensors-Windows%20%7C%20Linux-3b4455" alt="Sensors Monitoring" height="28">
 </p>
 
 <p align="center">
