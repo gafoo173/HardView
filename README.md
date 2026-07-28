@@ -1,19 +1,19 @@
 <div align="center">
 
-<img src="resources/logo.png" alt="HardView Logo" width="470"/>
+<img src="resources/logo.png" alt="HardView Logo" width="750"/>
 
 # HardView - Hardware Information Project
 
 <p>
-  <img src="https://img.shields.io/badge/PyPI_Stable-3.3.1-0093fa" alt="PyPI Stable Version" height="28">
-  <img src="https://img.shields.io/badge/PyPI_Beta-4.0.0b1-0093fa" alt="PyPI Stable Version" height="28">
-  <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-0093fa" alt="Supported Python versions" height="28">
+  <img src="https://img.shields.io/badge/PyPI_Stable-3.3.1-00abbe" alt="PyPI Stable Version" height="28">
+  <img src="https://img.shields.io/badge/PyPI_Beta-4.0.0b1-00abbe" alt="PyPI Stable Version" height="28">
+  <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-00abbe" alt="Supported Python versions" height="28">
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/Platform-linux%20%7C%20windows-001931" alt="Platforms" height="28">
-  <img src="https://img.shields.io/badge/Full Support-windows-001931" alt="Platforms" height="28">
-  <img src="https://img.shields.io/badge/_Sensors-Windows%20%7C%20Linux-001931" alt="Sensors Monitoring" height="28">
+  <img src="https://img.shields.io/badge/Platform-linux%20%7C%20windows-3b4455" alt="Platforms" height="28">
+  <img src="https://img.shields.io/badge/Full Support-windows-3b4455" alt="Platforms" height="28">
+  <img src="https://img.shields.io/badge/_Sensors-Windows%20%7C%20Linux-3b4455" alt="Sensors Monitoring" height="28">
 </p>
 
 <p align="center">
