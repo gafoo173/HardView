@@ -6,15 +6,15 @@
 
 <p align="center">
   <a href="https://pypi.org/project/HardView/">
-    <img src="https://img.shields.io/badge/PyPI-Stable%203.3.1-3775A9?logo=pypi&logoColor=white" alt="PyPI Stable" height="28">
+    <img src="https://img.shields.io/badge/PyPI-Stable%203.3.1-22C55E?logo=pypi&logoColor=white" alt="PyPI Stable" height="28">
   </a>
 
   <a href="https://pypi.org/project/HardView/4.0.0b1/">
-    <img src="https://img.shields.io/badge/PyPI-Beta%204.0.0b1-F59E0B?logo=pypi&logoColor=white" alt="PyPI Beta" height="28">
+    <img src="https://img.shields.io/badge/PyPI-Beta%204.0.0b1-22C55E?logo=pypi&logoColor=white" alt="PyPI Beta" height="28">
   </a>
 
   <a href="https://docs.python.org/3/">
-    <img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=FFD43B" alt="Python 3.8+" height="28">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-22C55E?logo=python&logoColor=white" alt="Python 3.8+" height="28">
   </a>
 
   <a href="https://gafoo173.github.io/HardView/">
@@ -22,7 +22,7 @@
   </a>
 
   <a href="https://github.com/gafoo173/HardView/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-8B5CF6?logo=open-source-initiative&logoColor=white" alt="MIT License" height="28">
+    <img src="https://img.shields.io/badge/License-MIT-22C55E?logo=open-source-initiative&logoColor=white" alt="MIT License" height="28">
   </a>
 </p>
 
