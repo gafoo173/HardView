@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="resources/logo.png" alt="HardView Logo" width="300"/>
+<img src="resources/logo.png" alt="HardView Logo" width="470"/>
 
 # HardView - Hardware Information Project
 
@@ -150,10 +150,8 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 <td width="50%" valign="top">
 
 ### 🌡️ Temperature Monitoring
-**Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) (**MPL-2.0**)  
-**Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) (**LGPL-2.1-or-later**)  
-See [`licenses/`](licenses/) for full license texts
-
+- **Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) 
+- **Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) 
 </td>
 </tr>
 </table>
@@ -254,38 +252,6 @@ WinRing0 is an old and well-known driver used to access **MSRs**, **physical mem
 ---
 
 ## 💡 Usage Examples
-
-<details>
-<summary><b>HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)</b></summary>
-
-```python
-import HardView
-import json
-
-# JSON output
-bios_json = HardView.get_bios_info()
-cpu_json = HardView.get_cpu_info() #In Linux all outputs N/A in this function 
-
-# Python objects output
-#You must pass the parameter `false` in versions prior to 3.0.3, e.g. `HardView.get_bios_info_objects(false)`.
-
-bios_objects = HardView.get_bios_info_objects() 
-cpu_objects = HardView.get_cpu_info_objects() #On Linux, all outputs of this function show N/A It is recommended in 3.1.0+ to use the cpuid function from LiveView.PyLiveCPU.
-
-# Performance monitoring
-cpu_usage_json = HardView.get_cpu_usage()
-ram_usage_objects = HardView.get_ram_usage_objects()
-
-# Monitor over time
-cpu_monitor_json = HardView.monitor_cpu_usage_duration(5, 1000)
-ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500) 
-
-# Pretty print CPU info
-import pprint
-pprint.pprint(json.loads(cpu_json))
-```
-
-</details>
 
 <details>
 <summary><b>LiveView</b></summary>
@@ -398,217 +364,71 @@ print(f"Serial Number:   {info.baseboard.serial_number}")
 </details>
 
 <details>
-<summary><b>SMART  - Requires admin privileges (3.3.0+) </b></summary>
+<summary><b>SMART  - Requires admin privileges (4.0.0+) </b></summary>
 
 ```python
 #This code will work on Windows only.
 from HardView import SMART
 
-def generate_health_report(drive_number):
-    try:
-        reader = SMART.SmartReader(drive_number)
-        
-        print("\n" + "="*60)
-        print(f"DRIVE HEALTH REPORT - {reader.drive_path}")
-        print("="*60)
-        
-        # Basic Info
-        print(f"\n Basic Information:")
-        print(f"   Drive Type: {reader.get_drive_type()}")
-        print(f"   SMART Valid: {reader.is_valid}")
-        
-        # Temperature
-        temp = reader.get_temperature()
-        if temp != -1:
-            temp_status = "✓ Good" if temp < 50 else "  High"
-            print(f"\n  Temperature: {temp}°C - {temp_status}")
-        
-        # Usage Statistics
-        print(f"\n⏱️  Usage Statistics:")
-        hours = reader.get_power_on_hours()
-        print(f"   Power-On Hours: {hours} ({hours/24:.1f} days)")
-        print(f"   Power Cycles: {reader.get_power_cycle_count()}")
-        
-        # Health Status
-        print(f"\n💊 Health Status:")
-        realloc = reader.get_reallocated_sectors_count()
-        if realloc == 0:
-            print(f"   Reallocated Sectors: ✓ None (Excellent)")
-        else:
-            print(f"   Reallocated Sectors:   {realloc} (Needs Attention)")
-        
-        # SSD Specific
-        if reader.is_probably_ssd():
-            print(f"\n SSD Information:")
-            life = reader.get_ssd_life_left()
-            if life != -1:
-                life_status = "✓ Good" if life > 80 else "  Monitor" if life > 50 else " Critical"
-                print(f"   Life Remaining: {life}% - {life_status}")
-            
-            written = reader.get_total_bytes_written()
-            if written > 0:
-                written_tb = written / (1024**4)
-                print(f"   Total Written: {written_tb:.2f} TB")
-            
-            read = reader.get_total_bytes_read()
-            if read > 0:
-                read_tb = read / (1024**4)
-                print(f"   Total Read: {read_tb:.2f} TB")
-        
-        print("\n" + "="*60 + "\n")
-        
-    except Exception as e:
-        print(f"Error generating report: {e}")
+try:
+    drive_number = 0
+    info = SMART.get_disk_info_s(drive_number)
+    if info is None:
+        raise RuntimeError(f"Could not read SMART/IDENTIFY data for drive {drive_number}")
 
-# Generate reports for all drives
-readers, errors = SMART.scan_all_drives()
-for i, reader in enumerate(readers):
-    generate_health_report(i)
+    controller_type = SMART.detect_ssd_type(info)
+    controller_name = SMART.ssd_type_to_string(controller_type)
+
+    print(f"\nDrive:      \\\\.\\PhysicalDrive{drive_number}")
+    print(f"Model:      {info.model_upper}")
+    print(f"Firmware:   {info.firmware_rev}")
+    print(f"Media:      {'SSD' if info.is_ssd else 'HDD'}")
+    print(f"Controller: {controller_name}")
+    print("\n" + "="*70)
+    print(f"{'ID':<4} {'Attribute Name':<40} {'Current':<8} {'Worst':<8} {'Raw Value'}")
+    print("="*70)
+
+    for attr in info.attributes:
+        name = SMART.get_attribute_name_by_id_and_type(controller_type, attr.id)
+        print(f"{attr.id:02X}   {name:<40} {attr.current:<8} {attr.worst:<8} {attr.raw_value}")
+
+    print("="*70)
+
+except Exception as e:
+    print(f"Error: {e}")
 ```
 
 </details>
 
 
-
 <details>
-<summary><b>SDK Temperature (Rust) - Requires admin privileges</b></summary>
+<summary><b>HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)</b></summary>
 
-```rust
-//This code will work on Windows only.
-use libloading::{Library, Symbol};
-use std::os::raw::{c_double, c_int};
+```python
+import HardView
+import json
 
-type InitFn = unsafe extern "C" fn() -> c_int;
-type ShutdownFn = unsafe extern "C" fn();
-type GetTempFn = unsafe extern "C" fn() -> c_double;
-type UpdateFn = unsafe extern "C" fn();
+# JSON output
+bios_json = HardView.get_bios_info()
+cpu_json = HardView.get_cpu_info() #In Linux all outputs N/A in this function 
 
-// Check if required DLLs exist next to the executable
-fn check_dependencies() -> Result<(), String> {
-    let required_dlls = ["HardwareTemp.dll", "HardwareWrapper.dll", "LibreHardwareMonitorLib.dll", "HidSharp.dll"];
-    
-    let exe_dir = std::env::current_exe()
-        .map_err(|e| format!("Failed to get executable path: {}", e))?
-        .parent()
-        .ok_or("Failed to get executable directory")?
-        .to_owned();
+# Python objects output
+#You must pass the parameter `false` in versions prior to 3.0.3, e.g. `HardView.get_bios_info_objects(false)`.
 
-    let mut missing = Vec::new();
-    for dll in &required_dlls {
-        if !exe_dir.join(dll).exists() {
-            missing.push(*dll);
-        }
-    }
+bios_objects = HardView.get_bios_info_objects() 
+cpu_objects = HardView.get_cpu_info_objects() #On Linux, all outputs of this function show N/A It is recommended in 3.1.0+ to use the cpuid function from LiveView.PyLiveCPU.
 
-    if !missing.is_empty() {
-        return Err(format!("Missing DLLs: {}", missing.join(", ")));
-    }
-    Ok(())
-}
+# Performance monitoring
+cpu_usage_json = HardView.get_cpu_usage()
+ram_usage_objects = HardView.get_ram_usage_objects()
 
-fn main() {
-    // Check dependencies first
-    if let Err(error) = check_dependencies() {
-        eprintln!("Error: {}", error);
-        return;
-    }
+# Monitor over time
+cpu_monitor_json = HardView.monitor_cpu_usage_duration(5, 1000)
+ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500) 
 
-    // Load the library from executable directory
-    let exe_dir = std::env::current_exe().unwrap().parent().unwrap().to_owned();
-    let dll_path = exe_dir.join("HardwareTemp.dll");
-    
-    let lib = unsafe { 
-        Library::new(&dll_path).expect("Failed to load HardwareTemp.dll") 
-    };
-
-    unsafe {
-        // Load required functions
-        let init: Symbol<InitFn> = lib.get(b"InitHardwareTempMonitor\0").expect("InitHardwareTempMonitor not found");
-        let get_cpu_temp: Symbol<GetTempFn> = lib.get(b"GetCpuTemperatureTemp\0").expect("GetCpuTemperatureTemp not found");
-        let update: Symbol<UpdateFn> = lib.get(b"UpdateHardwareMonitorTemp\0").expect("UpdateHardwareMonitorTemp not found");
-        let shutdown: Symbol<ShutdownFn> = lib.get(b"ShutdownHardwareTempMonitor\0").expect("ShutdownHardwareTempMonitor not found");
-
-        // Initialize hardware monitor
-        let init_result = init();
-        if init_result != 0 {
-            eprintln!("Failed to initialize hardware monitor. Error code: {}", init_result);
-            return;
-        }
-
-        // Update and get CPU temperature
-        update();
-        let cpu_temp = get_cpu_temp();
-
-        // Display result
-        match cpu_temp {
-            -1.0 => println!("CPU Temperature: ERROR - Run as Administrator or sensor not supported"),
-            -99.0 => println!("CPU Temperature: ERROR - Missing dependencies"),
-            temp => println!("CPU Temperature: {:.1} °C", temp),
-        }
-
-        // Cleanup
-        shutdown();
-    }
-}
-```
-
-</details>
-
-<details>
-<summary><b>MSR.hpp Example (C++) - needs MsrDrv.sys installed and running</b></summary>
-
-```cpp
-//this code will work in intel only
-#include "MSR.hpp"
-#include <iostream>
-
-int main() {
-    try {
-        // Create MSR driver instance
-        MSR::MsrDriver driver;
-
-        if (!driver.IsValid()) {
-            std::cerr << "MSR driver not available!" << std::endl;
-            return 1;
-        }
-
-        // Read CPU TjMax (maximum temperature)
-        int tjMax = 0;
-        if (MSR::Thermal::TryGetTjMax(driver, tjMax)) {
-            std::cout << "CPU TjMax: " << tjMax << "°C" << std::endl;
-        } else {
-            std::cerr << "Failed to get TjMax." << std::endl;
-        }
-
-        // Read current CPU temperature
-        int currentTemp = 0;
-        if (MSR::Thermal::TryGetCurrentTemperature(driver, currentTemp)) {
-            std::cout << "Current CPU Temperature: " << currentTemp << "°C" << std::endl;
-        } else {
-            std::cerr << "Failed to read CPU temperature." << std::endl;
-        }
-
-        // Read a specific MSR register (IA32_PLATFORM_ID)
-        try {
-            UINT64 platformId = driver.ReadMsr(MSR::Registers::IA32_PLATFORM_ID);
-            std::cout << "IA32_PLATFORM_ID MSR: 0x" 
-                      << std::hex << platformId << std::dec << std::endl;
-        } catch (const MSR::MsrException& ex) {
-            std::cerr << "Error reading MSR: " << ex.what() 
-                      << " (code: " << ex.GetErrorCode() << ")" << std::endl;
-        }
-
-    } catch (const MSR::DriverNotLoadedException& ex) {
-        std::cerr << "MSR driver not loaded: " << ex.what() << std::endl;
-        return 2;
-    } catch (const MSR::MsrException& ex) {
-        std::cerr << "MSR Exception: " << ex.what() 
-                  << " (code: " << ex.GetErrorCode() << ")" << std::endl;
-        return 3;
-    }
-
-    return 0;
-}
+# Pretty print CPU info
+import pprint
+pprint.pprint(json.loads(cpu_json))
 ```
 
 </details>
@@ -653,29 +473,6 @@ int main() {
 
 </details>
 
-<details>
-<summary><b>info.hpp (C++) - Linux Only</b></summary>
-
-```cpp
-#include "info.hpp"
-#include <iostream>
-using namespace LinuxInfo;
-
-int main() {
-    // Get CPU information
-    auto cpuInfo = getCPUInfo();
-
-    std::cout << "=== CPU Info ===\n";
-    for (const auto& [key, value] : cpuInfo) {
-        std::cout << key << ": " << value << "\n";
-    }
-
-    return 0;
-}
-```
-
-</details>
-
 ---
 
 ## 📖 Documentation
@@ -693,16 +490,21 @@ int main() {
 
 All documentation is in the `docs/` folder:
 
-* [`What.md`](./docs/What.md): **API Reference & Output Examples**  
-  Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
-* [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**  
-  Supported platforms, installation methods, and troubleshooting tips.
-* [`FAQ.md`](./docs/FAQ.md): **Frequently Asked Questions**  
-  Solutions to common installation, usage, and troubleshooting issues.
+
 * [`LiveViewAPI.md`](./docs/LiveViewAPI.md): **LiveView API Reference**  
   Detailed explanation of the LiveView module API, including functions, usage, and examples.
-* [`LiveViewErrors.md`](./docs/LiveViewErrors.md): **LiveView Errors & Exceptions**  
-  Guides and examples for handling errors and exceptions in the LiveView module.
+
+* [`SMART.md`](./docs/SMART.md): **SMART API Reference**
+  Full explanation of the SMART module API, including functions, usage, and examples.
+
+* [`SMBIOS.md`](./docs/SMBIOS.md): **SMBIOS API Reference**
+  Full explanation of the SMBIOS module API, including functions, usage, and examples.
+
+* [`What.md`](./docs/What.md): **API Reference & Output Examples (Legacy)**  
+  Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
+
+* [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**  
+  Supported platforms, installation methods, and troubleshooting tips.
 
 </details>
 
@@ -2194,8 +1996,12 @@ The LiveView test files are located in [tests/units](https://github.com/gafoo173
 ## 🌟 HardView — Your Window into Hardware Information
 
 <p>
-<b>See</b> <a href="./docs/What.md"><code>HardView API</code></a> for the full HardView API<br>
-<b>See</b> <a href="./docs/LiveViewAPI.md"><code>LiveView API</code></a> for the full LiveView API
+
+<b>See</b> <a href="./docs/LiveViewAPI.md"><code>LiveView API</code></a> for the full LiveView API<br>
+<b>See</b> <a href="./docs/SMART.md"><code>SMART API</code></a> for the full SMART API<br>
+<b>See</b> <a href="./docs/SMBIOS.md"><code>SMBIOS API</code></a> for the full SMBIOS API<br>
+<b>See</b> <a href="./docs/What.md"><code>HardView API (legacy)</code></a> for the full HardView API
+
 </p>
 
 ---
