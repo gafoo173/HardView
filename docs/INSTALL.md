@@ -34,7 +34,7 @@ This will automatically download the correct prebuilt wheel for your platform an
 If you want to build HardView yourself (for development or unsupported Python versions):
 
 ```bash
-git clone https://github.com/yourusername/hardview.git
+git clone https://github.com/gafoo173/hardview.git
 cd hardview
 pip install .
 ```
@@ -42,27 +42,3 @@ pip install .
 This will build the extension from source using your system's compiler.
 
 ---
-
-## Python Version Compatibility
-
-- HardView provides wheels for multiple Python versions (see PyPI for the list).
-- If your Python version is not supported by a prebuilt wheel, you can build from source as above.
-
----
-
-## Other Distribution Channels
-
-- **Currently, HardView is only distributed via PyPI or from the official GitHub repository.**
-- No other download or package sources are supported.
-
----
-
-## Troubleshooting
-
-- If you encounter issues during installation, please check your Python version and platform compatibility.
-- For Windows, ensure you have a working C compiler (Visual Studio Build Tools recommended for source builds).
-- For Linux, ensure you have Python development headers and a C compiler installed.
-
----
-
-For more help, see the [FAQ](./FAQ.md) or open an issue on the project's GitHub page. 
