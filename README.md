@@ -17,7 +17,6 @@
   <a href="https://gafoo173.github.io/HardView/">
     <img src="https://img.shields.io/badge/Docs-GitHub%20Pages-22C55E?logo=github&logoColor=white" alt="Documentation" height="28">
   </a>
->>>>>>> 74c61f6 (4.0.0b1 2)
   <a href="https://github.com/gafoo173/HardView/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-22C55E?logo=open-source-initiative&logoColor=white" alt="MIT License" height="28">
   </a>
