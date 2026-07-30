@@ -8,19 +8,16 @@
   <a href="https://pypi.org/project/HardView/">
     <img src="https://img.shields.io/badge/PyPI-Stable%203.3.1-22C55E?logo=pypi&logoColor=white" alt="PyPI Stable" height="28">
   </a>
-
   <a href="https://pypi.org/project/HardView/4.0.0b1/">
     <img src="https://img.shields.io/badge/PyPI-Beta%204.0.0b1-22C55E?logo=pypi&logoColor=white" alt="PyPI Beta" height="28">
   </a>
-
   <a href="https://docs.python.org/3/">
     <img src="https://img.shields.io/badge/Python-3.8%2B-22C55E?logo=python&logoColor=white" alt="Python 3.8+" height="28">
   </a>
-
   <a href="https://gafoo173.github.io/HardView/">
     <img src="https://img.shields.io/badge/Docs-GitHub%20Pages-22C55E?logo=github&logoColor=white" alt="Documentation" height="28">
   </a>
-
+>>>>>>> 74c61f6 (4.0.0b1 2)
   <a href="https://github.com/gafoo173/HardView/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-22C55E?logo=open-source-initiative&logoColor=white" alt="MIT License" height="28">
   </a>
@@ -28,11 +25,8 @@
 
 <p>
   <img src="https://img.shields.io/badge/Windows-Full%20Support-3b4455" alt="Windows Full Support" height="28">
-
   <img src="https://img.shields.io/badge/Linux-Basic-3b4455?logo=linux&logoColor=white" alt="Linux Support" height="28">
-
   <img src="https://img.shields.io/badge/Sensors-Windows%20%7C%20Linux-3b4455" alt="Sensors Monitoring" height="28">
-</p>
 
 <p align="center">
   <b>A comprehensive hardware monitoring solution with Python, C++, and C libraries</b><br>
@@ -53,6 +47,31 @@
 
 ---
 
+## 🧪 Quick Start
+
+Install HardView from PyPI:
+
+```bash
+pip install HardView
+```
+
+Then download `tests/quick_start.py` from this repository and run:
+
+```bash
+python quick_start.py
+```
+
+Or clone the repository and install HardView locally:
+
+```bash
+git clone https://github.com/gafoo173/HardView.git
+cd HardView
+pip install .
+python tests/quick_start.py
+```
+
+---
+
 ## 📦 HardView Project Overview
 
 HardView is a project that includes Python, C++, and C libraries, Windows drivers, and tools for monitoring hardware and displaying its information through various sources, whether from the system or other libraries. It provides a unified interface for developers to access information via libraries and a user interface for end-users through the tools.
@@ -70,14 +89,6 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 </tr>
 </thead>
 <tbody>
-
-<tr>
-<td><a href="./HardView"><b>HardView</b></a></td>
-<td><b>Legacy library</b> providing static hardware information for Windows and Linux.  
- Uses WMI and old query methods — kept for compatibility only.</td>
-<td>C</td>
-<td><b>Legacy (superseded by LiveView & SMBIOS)</b></td>
-</tr>
 
 
 <tr>
@@ -113,6 +124,14 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 <td>A set of <b>Windows kernel drivers</b> granting access to low-level hardware functionality useful for monitoring. Each driver comes with a header-only C++ library for easier integration. These drivers are <b>not used</b> by the main HardView libraries (Python or C++) since they are unsigned. They are provided for those who wish to sign and use them, or for personal use with local build and test signing.</td>
 <td>C/C++</td>
 <td>Optional drivers for advanced hardware access under Windows. Not required for standard HardView usage.</td>
+</tr>
+
+<tr>
+<td><a href="./HardView"><b>HardView</b></a></td>
+<td><b>Legacy library</b> providing static hardware information for Windows and Linux.  
+ Uses WMI and old query methods — kept for compatibility only.</td>
+<td>C</td>
+<td><b>Legacy (superseded by LiveView & SMBIOS)</b></td>
 </tr>
 
 <tr>
@@ -524,119 +543,6 @@ All documentation is in the `docs/` folder:
 ---
 ## 📚 API Reference (Python)
 
-<details>
-<summary><b>HardView Functions</b></summary>
-
-<table>
-<thead>
-<tr>
-<th>Function (JSON)</th>
-<th>Function (Python Object)</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-
-<tr>
-<td><code>get_bios_info()</code></td>
-<td><code>get_bios_info_objects()</code></td>
-<td>BIOS vendor, version, release date</td>
-</tr>
-
-<tr>
-<td><code>get_system_info()</code></td>
-<td><code>get_system_info_objects()</code></td>
-<td>System manufacturer, product name, UUID</td>
-</tr>
-
-<tr>
-<td><code>get_baseboard_info()</code></td>
-<td><code>get_baseboard_info_objects()</code></td>
-<td>Motherboard info</td>
-</tr>
-
-<tr>
-<td><code>get_chassis_info()</code></td>
-<td><code>get_chassis_info_objects()</code></td>
-<td>Chassis/computer case info</td>
-</tr>
-
-<tr>
-<td><code>get_cpu_info()</code> <i>(Windows Only)</i></td>
-<td><code>get_cpu_info_objects()</code> <i>(Windows Only)</i></td>
-<td>Processor details</td>
-</tr>
-
-<tr>
-<td><code>get_ram_info()</code></td>
-<td><code>get_ram_info_objects()</code></td>
-<td>Memory modules and totals</td>
-</tr>
-
-<tr>
-<td><code>get_gpu_info()</code> <i>(Windows Only)</i></td>
-<td><code>get_gpu_info_objects()</code> <i>(Windows Only)</i></td>
-<td>GPU information</td>
-</tr>
-
-<tr>
-<td><code>get_disk_info()</code></td>
-<td><code>get_disk_info_objects()</code></td>
-<td>Storage devices</td>
-</tr>
-
-<tr>
-<td><code>get_network_info()</code></td>
-<td><code>get_network_info_objects()</code></td>
-<td>Network adapters</td>
-</tr>
-
-<tr>
-<td><code>get_partitions_info()</code></td>
-<td><code>get_partitions_info_objects()</code></td>
-<td>Disk partitions (advanced)</td>
-</tr>
-
-<tr>
-<td><code>get_cpu_usage()</code></td>
-<td><code>get_cpu_usage_objects()</code></td>
-<td>Current CPU usage</td>
-</tr>
-
-<tr>
-<td><code>get_ram_usage()</code></td>
-<td><code>get_ram_usage_objects()</code></td>
-<td>Current RAM usage</td>
-</tr>
-
-<tr>
-<td><code>get_system_performance()</code></td>
-<td><code>get_system_performance_objects()</code></td>
-<td>Combined CPU/RAM usage</td>
-</tr>
-
-<tr>
-<td><code>monitor_cpu_usage_duration(d, i)</code></td>
-<td><code>monitor_cpu_usage_duration_objects(d,i)</code></td>
-<td>Monitor CPU usage over time</td>
-</tr>
-
-<tr>
-<td><code>monitor_ram_usage_duration(d, i)</code></td>
-<td><code>monitor_ram_usage_duration_objects(d,i)</code></td>
-<td>Monitor RAM usage over time</td>
-</tr>
-
-<tr>
-<td><code>monitor_system_performance_duration(d,i)</code></td>
-<td><code>monitor_system_performance_duration_objects(d,i)</code></td>
-<td>Monitor system performance over time</td>
-</tr>
-
-</tbody>
-</table>
-
-</details>
 
 <details>
 <summary><b>LiveView Classes & Methods</b></summary>
@@ -1808,6 +1714,120 @@ All documentation is in the `docs/` folder:
 
 </details>
 
+<details>
+<summary><b>HardView Functions (Legacy)</b></summary>
+
+<table>
+<thead>
+<tr>
+<th>Function (JSON)</th>
+<th>Function (Python Object)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><code>get_bios_info()</code></td>
+<td><code>get_bios_info_objects()</code></td>
+<td>BIOS vendor, version, release date</td>
+</tr>
+
+<tr>
+<td><code>get_system_info()</code></td>
+<td><code>get_system_info_objects()</code></td>
+<td>System manufacturer, product name, UUID</td>
+</tr>
+
+<tr>
+<td><code>get_baseboard_info()</code></td>
+<td><code>get_baseboard_info_objects()</code></td>
+<td>Motherboard info</td>
+</tr>
+
+<tr>
+<td><code>get_chassis_info()</code></td>
+<td><code>get_chassis_info_objects()</code></td>
+<td>Chassis/computer case info</td>
+</tr>
+
+<tr>
+<td><code>get_cpu_info()</code> <i>(Windows Only)</i></td>
+<td><code>get_cpu_info_objects()</code> <i>(Windows Only)</i></td>
+<td>Processor details</td>
+</tr>
+
+<tr>
+<td><code>get_ram_info()</code></td>
+<td><code>get_ram_info_objects()</code></td>
+<td>Memory modules and totals</td>
+</tr>
+
+<tr>
+<td><code>get_gpu_info()</code> <i>(Windows Only)</i></td>
+<td><code>get_gpu_info_objects()</code> <i>(Windows Only)</i></td>
+<td>GPU information</td>
+</tr>
+
+<tr>
+<td><code>get_disk_info()</code></td>
+<td><code>get_disk_info_objects()</code></td>
+<td>Storage devices</td>
+</tr>
+
+<tr>
+<td><code>get_network_info()</code></td>
+<td><code>get_network_info_objects()</code></td>
+<td>Network adapters</td>
+</tr>
+
+<tr>
+<td><code>get_partitions_info()</code></td>
+<td><code>get_partitions_info_objects()</code></td>
+<td>Disk partitions (advanced)</td>
+</tr>
+
+<tr>
+<td><code>get_cpu_usage()</code></td>
+<td><code>get_cpu_usage_objects()</code></td>
+<td>Current CPU usage</td>
+</tr>
+
+<tr>
+<td><code>get_ram_usage()</code></td>
+<td><code>get_ram_usage_objects()</code></td>
+<td>Current RAM usage</td>
+</tr>
+
+<tr>
+<td><code>get_system_performance()</code></td>
+<td><code>get_system_performance_objects()</code></td>
+<td>Combined CPU/RAM usage</td>
+</tr>
+
+<tr>
+<td><code>monitor_cpu_usage_duration(d, i)</code></td>
+<td><code>monitor_cpu_usage_duration_objects(d,i)</code></td>
+<td>Monitor CPU usage over time</td>
+</tr>
+
+<tr>
+<td><code>monitor_ram_usage_duration(d, i)</code></td>
+<td><code>monitor_ram_usage_duration_objects(d,i)</code></td>
+<td>Monitor RAM usage over time</td>
+</tr>
+
+<tr>
+<td><code>monitor_system_performance_duration(d,i)</code></td>
+<td><code>monitor_system_performance_duration_objects(d,i)</code></td>
+<td>Monitor system performance over time</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
 ---
 
 ## 📊 Sensor Value Fetch Flow (LiveView)
@@ -1989,19 +2009,6 @@ You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).
 
 </div>
 
----
-
-## 🧪 Quick Start And Tests
-
-<div align="center">
-  
-### LiveView Tests
-
-The LiveView test files are located in [tests/units](https://github.com/gafoo173/HardView/blob/main/tests/units)
-
-</div>
-
----
 ---
 
 <div align="center">

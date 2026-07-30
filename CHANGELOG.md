@@ -8,6 +8,11 @@ All notable changes to HardView Library (Python) will be documented in this file
 
 ### Highlights
 
+* **LiveView Module**
+
+  * Fixed an issue in the `HardView.LiveView` C++ extension where interval-based functions that internally call `Sleep` were holding the Python Global Interpreter Lock (GIL), preventing other Python threads from running.
+  * The GIL is now released before performing these waits, allowing concurrent Python thread execution.
+
 * **Major SMART Module Enhancements**
 
   * Significantly improved the `HardView.SMART` module.
@@ -28,18 +33,22 @@ All notable changes to HardView Library (Python) will be documented in this file
 
   * Added a new experimental `HardView.process` module for Windows process management.
 
-* **High-Level Python Wrappers**
+* **Python Package Improvements**
 
-  * Added optional high-level Python wrapper modules that simplify working with the underlying C++ extension modules.
-  * Instead of interacting directly with the `.pyd` modules, you can now use a more Pythonic API through helper modules.
-  * Available wrappers include:
+  * Added `liveview_helper.py`, providing helper functions to simplify interaction with the `HardView.LiveView` module.
+  * The wrapper provides a more convenient interface for common LiveView operations.
+  * Added Python type stub files (`.pyi`) to improve IDE support, autocomplete, and static type checking.
+  * Included type definitions for:
+    * `LiveView.pyi`
+    * `smbios.pyi`
+    * `SMART.pyi`
 
-    * `HardView.LiveView`
-    * `HardView.SMART`
-    * `HardView.smbios`
-  * These wrappers are optional. Existing code that imports the underlying extension modules directly will continue to work.
-  * The legacy `HardView.HardView` module is not included, as it is deprecated and will no longer receive updates or improvements.
-  * The `HardView.process` module is not included yet because it is still experimental.
+
+* **HardView C++ Improvements**
+
+  * Improved the WMI component, including enhancements to the `win_helpers.h` library.
+  * Enhanced the SMART component with updates to `SMART.hpp` and the addition of `SMARTHelprs.hpp`.
+  * Added a new experimental Process component for process management with the `Process.hpp` library.
 
 * **Linux Support Status**
 
@@ -316,14 +325,9 @@ These functions were added to the `PyManageTemp` class in `HardView.LiveView`:
 
 ### Highlights:
 
-* **Refactor:**
-
-  * Each function moved to a separate C source file.
-  * Improved memory safety and leak prevention.1
-* **New Advanced Features:**
+* **New Features:**
 
   * `get_partitions_info()`
-  * `get_smart_info()`
   * `get_cpu_usage()`
   * `get_ram_usage()`
   * `get_system_performance()`
@@ -343,7 +347,7 @@ These functions were added to the `PyManageTemp` class in `HardView.LiveView`:
 
 ---
 
-## \[1.0.0] - First Stable Release
+## \[1.0.0]
 
 ### Highlights:
 

@@ -64,18 +64,20 @@ inline std::vector<std::string> get_string_array(IWbemClassObject* obj, const wc
             SAFEARRAY* psa = vtProp.parray;
             if (psa != nullptr) {
                 LONG lBound = 0, uBound = 0;
-                SafeArrayGetLBound(psa, 1, &lBound);
-                SafeArrayGetUBound(psa, 1, &uBound);
+                if (FAILED(SafeArrayGetLBound(psa, 1, &lBound)) || FAILED(SafeArrayGetUBound(psa, 1, &uBound)))
+                    {
+                    VariantClear(&vtProp);
+                    return result;
+                    }
 
                 for (LONG i = lBound; i <= uBound; i++) {
                     BSTR bstrItem;
-                    SafeArrayGetElement(psa, &i, &bstrItem);
-                    if (bstrItem != nullptr) {
+                    if (SUCCEEDED(SafeArrayGetElement(psa, &i, &bstrItem)) && bstrItem != nullptr) {
                         int length = SysStringLen(bstrItem);
                         int size_needed = WideCharToMultiByte(CP_UTF8, 0, bstrItem, length, NULL, 0, NULL, NULL);
                         std::string str(size_needed, 0);
                         WideCharToMultiByte(CP_UTF8, 0, bstrItem, length, &str[0], size_needed, NULL, NULL);
-                        result.push_back(str);
+                        result.push_back(std::move(str));
                         SysFreeString(bstrItem);
                     }
                 }
@@ -339,13 +341,23 @@ inline float get_float_property(IWbemClassObject* obj, const wchar_t* name) {
     return result;
 }
 
-inline void initialize_wmi(IWbemLocator** pLoc, IWbemServices** pSvc) {
+inline void initialize_wmi(IWbemLocator** pLoc, IWbemServices** pSvc, const wchar_t* namespaceStr = L"ROOT\\CIMV2",bool* init = nullptr) {
     HRESULT hr;
-
     hr = CoInitializeEx(0, COINIT_MULTITHREADED);
     if (FAILED(hr) && hr != RPC_E_CHANGED_MODE) {
         throw std::runtime_error("CoInitializeEx failed");
     }
+    // We set `init = true` only if `CoInitializeEx` succeeds.
+    // If it fails, `init` remains `false`, even if the failure code is
+    // `RPC_E_CHANGED_MODE`.
+    //
+    // Although `RPC_E_CHANGED_MODE` is technically a failure HRESULT,
+    // execution continues because the purpose of this function is to
+    // ensure that `pLoc` and `pSvc` are valid pointers.
+    //
+    // The purpose of the `init` flag, however, is to tell the caller
+    // whether it is responsible for calling `CoUninitialize()`.
+    if (init && hr != RPC_E_CHANGED_MODE) *init = true;
 
     hr = CoInitializeSecurity(
         NULL, -1, NULL, NULL,
@@ -355,7 +367,6 @@ inline void initialize_wmi(IWbemLocator** pLoc, IWbemServices** pSvc) {
     if (FAILED(hr) && hr != RPC_E_TOO_LATE && hr != HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED)) {
         throw std::runtime_error("CoInitializeSecurity failed");
     }
-
     hr = CoCreateInstance(
         CLSID_WbemLocator, NULL, CLSCTX_INPROC_SERVER,
         IID_IWbemLocator, (LPVOID*)pLoc
@@ -363,17 +374,13 @@ inline void initialize_wmi(IWbemLocator** pLoc, IWbemServices** pSvc) {
     if (FAILED(hr)) {
         throw std::runtime_error("CoCreateInstance failed");
     }
-
-    BSTR resource = SysAllocString(L"ROOT\\CIMV2");
+    BSTR resource = SysAllocString(namespaceStr);
     if (!resource) throw std::bad_alloc();
-
     hr = (*pLoc)->ConnectServer(resource, NULL, NULL, 0, 0, 0, 0, pSvc);
     SysFreeString(resource);
-
     if (FAILED(hr)) {
         throw std::runtime_error("ConnectServer failed");
     }
-
     hr = CoSetProxyBlanket(
         *pSvc, RPC_C_AUTHN_WINNT, RPC_C_AUTHZ_NONE, NULL,
         RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE,

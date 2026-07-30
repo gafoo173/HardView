@@ -739,6 +739,7 @@ private:
     return result && returned > 0;
   }
 
+
 public:
   // Constructor - opens drive and reads SMART data
   inline explicit SmartReader(int driveNumber)

@@ -10,31 +10,33 @@ import pybind11
 # ==      HardView Main Extension (C)                          ==
 # =================================================================
 
+LEGACY_DIR = 'HardView/Legacy'
+
 hardview_source_files = [
-    'HardView/HardView.c',
-    'HardView/helpers.c',
-    'HardView/bios_info.c',
-    'HardView/system_info.c',
-    'HardView/baseboard_info.c',
-    'HardView/chassis_info.c',
-    'HardView/cpu_info.c',
-    'HardView/ram_info.c',
-    'HardView/disk_info.c',
-    'HardView/gpu_info.c',
-    'HardView/network_info.c',
-    'HardView/performance_monitor.c',
-    'HardView/advanced_storage_info.c',
-    'HardView/Smart_disk.c'
+    f'{LEGACY_DIR}/HardView.c',
+    f'{LEGACY_DIR}/helpers.c',
+    f'{LEGACY_DIR}/bios_info.c',
+    f'{LEGACY_DIR}/system_info.c',
+    f'{LEGACY_DIR}/baseboard_info.c',
+    f'{LEGACY_DIR}/chassis_info.c',
+    f'{LEGACY_DIR}/cpu_info.c',
+    f'{LEGACY_DIR}/ram_info.c',
+    f'{LEGACY_DIR}/disk_info.c',
+    f'{LEGACY_DIR}/gpu_info.c',
+    f'{LEGACY_DIR}/network_info.c',
+    f'{LEGACY_DIR}/performance_monitor.c',
+    f'{LEGACY_DIR}/advanced_storage_info.c',
+    f'{LEGACY_DIR}/Smart_disk.c'
 ]
 
 hardview_libraries = []
 hardview_extra_compile_args = []
 
 if sys.platform.startswith('win'):
-    hardview_source_files.append('HardView/win_helpers.c')
+    hardview_source_files.append(f'{LEGACY_DIR}/win_helpers.c')
     hardview_libraries.extend(['wbemuuid', 'ole32', 'oleaut32'])
 elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
-    hardview_source_files.append('HardView/linux_helpers.c')
+    hardview_source_files.append(f'{LEGACY_DIR}/linux_helpers.c')
 
 # Define the main C extension as a submodule of HardView
 hardview_module = Extension(
@@ -44,7 +46,7 @@ hardview_module = Extension(
     extra_compile_args=hardview_extra_compile_args,
     libraries=hardview_libraries,
     library_dirs=[],
-    include_dirs=['HardView']
+    include_dirs=[LEGACY_DIR]
 )
 
 # =================================================================

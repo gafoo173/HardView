@@ -40,5 +40,3 @@ pip install .
 ```
 
 This will build the extension from source using your system's compiler.
-
----

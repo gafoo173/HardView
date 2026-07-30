@@ -19,6 +19,11 @@
 // pybind11.
 // ===================================================================================
 
+#ifdef LIVEVIEW_CPP
+    #define HV_GIL_RELEASE while(false){}
+#else
+    #define HV_GIL_RELEASE py::gil_scoped_release unlock
+#endif
 // --- Standard Library Includes ---
 #include <algorithm>
 #include <chrono>
@@ -29,15 +34,20 @@
 #include <thread>
 #include <variant>
 #include <vector>
-
+#include <map>
+#include <cmath>
+#ifndef LIVEVIEW_CPP
 // --- pybind11 Includes ---
 #include <pybind11/chrono.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-// --- Custom Headers ---
+#endif
+
+// --- HardView Includes ---
 #include "../../cpuid/cpuid.hpp"
 #include "../../cpuid/cpuidHelpers.hpp"
+#include "../../C++/Headers/WMI/WMI_info.hpp"
 #ifdef _WIN32
 #include "include/HardwareTemp.h" //For Hardware temperature
 
@@ -63,11 +73,13 @@
 #include <sensors/sensors.h>
 #include <unistd.h>
 #endif
-
+#ifndef LIVEVIEW_CPP
 namespace py = pybind11;
+#endif
 #ifndef max
 #define max(a, b) (((a) > (b)) ? (a) : (b))
 #endif
+
 // ===================================================================================
 // HELPER FUNCTIONS
 // ===================================================================================
@@ -130,7 +142,7 @@ double MonitorCpuRealtime_Nt(int intervalMs) {
     throw std::runtime_error(
       "Failed to query system information (first call).");
   }
-
+  HV_GIL_RELEASE;
   std::this_thread::sleep_for(std::chrono::milliseconds(intervalMs));
 
   if (!NT_SUCCESS(NtQuerySystemInformation(
@@ -427,6 +439,7 @@ public:
     return MonitorCpuRealtime_Nt(interval_ms);
 #elif __linux__
     CpuTimes start = get_cpu_times();
+    HV_GIL_RELEASE;
     std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
     CpuTimes end = get_cpu_times();
 
@@ -454,7 +467,7 @@ public:
     return result;
   }
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(LIVEVIEW_CPP)
   /**
    * @brief (Windows-only) Gets a snapshot of CPU time counters for a specific
    * core.
@@ -639,6 +652,7 @@ public:
   std::variant<double, std::vector<std::pair<std::string, double>>>
     get_usage(int interval = 1000) {
 #ifdef _WIN32
+    HV_GIL_RELEASE;
     Sleep(interval);
     if (PdhCollectQueryData(query) != ERROR_SUCCESS)
       throw std::runtime_error("Disk Monitor: Failed to collect query data.");
@@ -675,6 +689,7 @@ public:
     }
 #elif __linux__
     auto start_stats = get_disk_stats();
+    HV_GIL_RELEASE;
     std::this_thread::sleep_for(std::chrono::milliseconds(interval));
     auto end_stats = get_disk_stats();
 
@@ -755,6 +770,7 @@ public:
   std::variant<double, std::vector<std::pair<std::string, double>>>
     get_usage(int interval = 1000, int mode = 0) {
 #ifdef _WIN32
+    HV_GIL_RELEASE;
     Sleep(interval);
     if (PdhCollectQueryData(query) != ERROR_SUCCESS)
       throw std::runtime_error(
@@ -800,6 +816,7 @@ public:
     }
 #elif __linux__
     auto start_stats = get_network_stats();
+    HV_GIL_RELEASE;
     std::this_thread::sleep_for(std::chrono::milliseconds(interval));
     auto end_stats = get_network_stats();
     double interval_sec = static_cast<double>(interval) / 1000.0;
@@ -942,7 +959,7 @@ public:
     if (!query || counters.empty()) {
       throw std::runtime_error("GPU Monitor was not initialized correctly.");
     }
-
+    HV_GIL_RELEASE;
     Sleep(interval_ms);
 
     if (PdhCollectQueryData(query) != ERROR_SUCCESS) {
@@ -988,7 +1005,7 @@ public:
     if (!query || counters.empty()) {
       throw std::runtime_error("GPU Monitor was not initialized correctly.");
     }
-
+    HV_GIL_RELEASE;
     Sleep(interval_ms);
 
     if (PdhCollectQueryData(query) != ERROR_SUCCESS) {
@@ -1030,7 +1047,7 @@ public:
     if (!query || counters.empty()) {
       throw std::runtime_error("GPU Monitor was not initialized correctly.");
     }
-
+    HV_GIL_RELEASE;
     Sleep(interval_ms);
 
     if (PdhCollectQueryData(query) != ERROR_SUCCESS) {
@@ -1350,6 +1367,150 @@ public:
     return buffer;
   }
 };
+
+class PyHPCMISensor {
+  enum HP_UNITS {
+    HP_UNIT_OTHER = 1,
+    HP_UNIT_CELSIUS = 2,
+    HP_UNIT_VOLTS = 5,
+    HP_UNIT_AMPS = 6,
+    HP_UNIT_RPM = 19
+};
+public:
+ struct CMISensor {
+    std::string Name;
+    std::string Description;
+    double Value;
+    std::string Unit;
+};
+private:
+  IWbemLocator* m_pLoc = nullptr;
+  IWbemServices* m_pSvc = nullptr;
+
+  // Helper to calculate actual value (Base * 10^Modifier)
+static double ApplyScaling(uint32_t rawValue, int32_t modifier)
+{
+  return rawValue * std::pow(10, modifier);
+}
+static std::vector<CMISensor> GetHPCMISensors(IWbemLocator* pLoc, IWbemServices* pSvc) {
+    std::vector<CMISensor> sensors;
+
+    if (!pLoc || !pSvc) {
+        return sensors; // Return empty if WMI pointers are invalid
+    }
+
+    IEnumWbemClassObject* pEnumerator = nullptr;
+    
+
+    BSTR bstrLanguage = SysAllocString(L"WQL");
+    BSTR bstrQuery = SysAllocString(L"SELECT * FROM HPBIOS_BIOSNumericSensor");
+
+
+    if (!bstrLanguage || !bstrQuery) {
+        if (bstrLanguage) SysFreeString(bstrLanguage);
+        if (bstrQuery) SysFreeString(bstrQuery);
+        return sensors;
+    }
+
+    // Execute Query
+    HRESULT hr = pSvc->ExecQuery(
+        bstrLanguage,
+        bstrQuery, 
+        WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY,
+        NULL,
+        &pEnumerator);
+
+
+    SysFreeString(bstrLanguage);
+    SysFreeString(bstrQuery);
+
+    if (FAILED(hr) || !pEnumerator) {
+        // Query failed, possibly not an HP Business machine
+        return sensors; 
+    }
+
+    IWbemClassObject* pclsObj = nullptr;
+    ULONG uReturn = 0;
+try {
+    while (true) {
+        if (FAILED(pEnumerator->Next(WBEM_INFINITE, 1, &pclsObj, &uReturn)) || 0 == uReturn) break;
+        CMISensor sensor;
+
+        sensor.Name = win::get_string_property(pclsObj, L"Name");
+        sensor.Description = win::get_string_property(pclsObj, L"Description");
+        
+        uint32_t rawVal = win::get_uint32_property(pclsObj, L"CurrentReading");
+        uint32_t baseUnits = win::get_uint32_property(pclsObj, L"BaseUnits");
+        
+        int32_t modifier = static_cast<int32_t>(win::get_uint32_property(pclsObj, L"UnitModifier"));
+
+        // Calculate final value
+        sensor.Value = ApplyScaling(rawVal, modifier);
+        
+
+        // Determine Unit String
+        switch (baseUnits) {
+            case HP_UNIT_CELSIUS:
+                sensor.Unit = "C";
+                break;
+            case HP_UNIT_RPM:
+                sensor.Unit = "RPM";
+                break;
+            case HP_UNIT_VOLTS:
+                sensor.Unit = "V";
+                break;
+            case HP_UNIT_AMPS:
+                sensor.Unit = "A";
+                break;
+            default:
+                sensor.Unit = "";
+                break;
+        }
+
+        if (sensor.Value != 0) {
+            sensors.push_back(sensor);
+        }
+
+        pclsObj->Release();
+        pclsObj = nullptr;
+      }
+    } catch (...) {
+        if (pclsObj) pclsObj->Release();
+        if (pEnumerator) pEnumerator->Release();
+        throw;
+      }
+
+    // Clean up local enumerator
+    pEnumerator->Release();
+
+    return sensors;
+}
+  public:
+  std::vector<CMISensor> sensors; // sensors
+  PyHPCMISensor() {
+    bool init = false;
+    try {
+    win::initialize_wmi(&m_pLoc, &m_pSvc, L"ROOT\\HP\\InstrumentedBIOS",&init);
+    } catch (...) {
+      if (m_pLoc) m_pLoc->Release();
+      if (m_pSvc) m_pSvc->Release();
+      if (init) CoUninitialize();
+      throw;
+    }
+    sensors = GetHPCMISensors(m_pLoc,m_pSvc);
+  }
+  ~PyHPCMISensor() {
+    if (m_pLoc) m_pLoc->Release();
+    if (m_pSvc) m_pSvc->Release();
+    CoUninitialize();
+  }
+  static void UninitializeWMI(){ CoUninitialize(); }
+  bool Update() {
+    sensors = GetHPCMISensors(m_pLoc,m_pSvc);
+    return !(sensors.empty());
+  }
+};
+
 #endif // _WIN32
 #ifdef __linux__
 class PyLinuxSensor {
@@ -1414,6 +1575,7 @@ public:
 };
 #endif //__Linux__
 
+#ifndef LIVEVIEW_CPP
 // ===================================================================================
 // PYBIND11 MODULE DEFINITION
 // ===================================================================================
@@ -1581,6 +1743,32 @@ PYBIND11_MODULE(LiveView, m) {
       "Get raw SMBIOS firmware table bytes.")
     .def_static("rsmb", &PyRawInfo::RSMB,
       "Get raw SMBIOS firmware table bytes.");
+
+  // --- HPCMISensor::CMISensor Binding ---
+py::class_<PyHPCMISensor::CMISensor>(m, "HPCMISensorData")
+    .def(py::init<>())
+    .def_readonly("name", &PyHPCMISensor::CMISensor::Name)
+    .def_readonly("description", &PyHPCMISensor::CMISensor::Description)
+    .def_readonly("value", &PyHPCMISensor::CMISensor::Value)
+    .def_readonly("unit", &PyHPCMISensor::CMISensor::Unit);
+
+
+// --- PyHPCMISensor Binding ---
+py::class_<PyHPCMISensor>(m, "PyHPCMISensor")
+    .def(py::init<>())
+
+    .def("update",
+        &PyHPCMISensor::Update,
+        "Update HP CMI sensor values.")
+
+    .def ("uninitialize_wmi",
+    &PyHPCMISensor::UninitializeWMI,
+    "Call CoUninitialize()")
+
+    .def_readonly(
+        "sensors",
+        &PyHPCMISensor::sensors,
+        "List of HP CMI sensors.");
 #endif
 
 #ifdef __linux__
@@ -1627,3 +1815,4 @@ PYBIND11_MODULE(LiveView, m) {
       "Update sensor data, optionally update names");
 #endif
 }
+#endif

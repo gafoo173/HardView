@@ -1579,8 +1579,9 @@ sensor = LiveView.PySensor()
 manager = LiveView.PyManageTemp()
 
 # Figure out once which sensor names belong to the CPU (no need to redo
-# this every loop iteration; the set of sensor names doesn't change).
-all_names = sensor.getAllSensors()
+# this every loop iteration, as the sensor names are not expected to change
+# while monitoring the CPU).
+all_names = sensor.get_all_sensors()
 cpu_names = [
     name
     for name in all_names
@@ -1596,8 +1597,6 @@ while True:
     print("--- CPU Sensors ---")
     for name in cpu_names:
         print(f"{name}: {sensor.get_value_by_name(name)}")
-
-    print(f"Update took {elapsed_ms:.2f} ms")
 
     time.sleep(1)
 
