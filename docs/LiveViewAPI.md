@@ -23,13 +23,13 @@ This document provides a comprehensive guide to the `LiveView` API, with detaile
 - [`PyLiveNetwork`](#pylivenetwork) - For monitoring network traffic (total or per-interface).
 - [`PyLiveGpu`](#pylivegpu) - For monitoring GPU utilization (Windows only).
 - [**Temperature Monitoring Classes**](#temperature-monitoring)
-  - [`PyTempCpu`](#pytempvcpu-windows-only---restricted) - **Restricted.** For monitoring CPU temperature and fan speed (Windows).
+  - [`PyTempCpu`](#pytempcpu-windows-only---restricted) - **Restricted.** For monitoring CPU temperature and fan speed (Windows).
   - [`PyTempGpu`](#pytempgpu-windows-only---restricted) - **Restricted.** For monitoring GPU temperature and fan speed (Windows).
   - [`PyTempOther`](#pytempother-windows-only---restricted) - **Restricted.** For monitoring motherboard and storage temperatures (Windows).
   - [`PySensor`](#pysensor-windows-only) - For advanced sensor monitoring (Windows).
-  - [`PyManageTemp`](#PyManageTemp-windows-only) - For temperature monitoring management (Windows).
+  - [`PyManageTemp`](#pymanagetemp-windows-only) - For temperature monitoring management (Windows).
   - [`PyLinuxSensor`](#pylinuxsensor-linux-only) - For comprehensive sensor monitoring (Linux).
-- [`PyRawInfo`](#-pyrawinfo) - For accessing raw system firmware tables (Windows only).
+- [`PyRawInfo`](#pyrawinfo-windows-only) - For accessing raw system firmware tables (Windows only).
 - [**LiveView Helper**](#liveview_helper-python-helper-module) - A Python helper module for LiveView.
 
 ---
@@ -125,231 +125,468 @@ for feature_name, feature_value in cpu_info:
 
 ```
 
-**Example Output(Intel)**
+## Available Features
 
-```
-Vendor: GenuineIntel
-Max Basic CPUID Level: 13
-Brand: Intel(R) Core(TM) i5-4210M CPU @ 2.60GHz
-Family: 6
-Model: 60
-Stepping: 3
-Processor Type: 0
-APIC ID: 3
-CLFLUSH Size: 64 bytes
-Signature: 0x306C3
-SSE3: Yes
-PCLMULQDQ: Yes
-DTES64: Yes
-MONITOR: Yes
-DS-CPL: Yes
-VMX: Yes
-SMX: No
-EIST: Yes
-TM2: Yes
-SSSE3: Yes
-FMA: Yes
-CMPXCHG16B: Yes
-SSE4.1: Yes
-SSE4.2: Yes
-MOVBE: Yes
-POPCNT: Yes
-TSC-Deadline: Yes
-AES: Yes
-XSAVE: Yes
-OSXSAVE: Yes
-AVX: Yes
-F16C: Yes
-RDRAND: Yes
-FPU: Yes
-VME: Yes
-DE: Yes
-PSE: Yes
-TSC: Yes
-MSR: Yes
-PAE: Yes
-MCE: Yes
-CX8: Yes
-APIC: Yes
-SEP: Yes
-MTRR: Yes
-PGE: Yes
-MCA: Yes
-CMOV: Yes
-PAT: Yes
-PSE-36: Yes
-PSN: No
-CLFSH: Yes
-DS: Yes
-ACPI: Yes
-MMX: Yes
-FXSR: Yes
-SSE: Yes
-SSE2: Yes
-SS: Yes
-TM: Yes
-PBE: Yes
-FSGSBASE: Yes
-TSC_ADJUST: Yes
-SGX: No
-BMI1: Yes
-HLE: No
-AVX2: Yes
-SMEP: Yes
-BMI2: Yes
-ERMS: Yes
-INVPCID: Yes
-RTM: No
-PQM: No
-MPX: No
-PQE: No
-AVX512F: No
-AVX512DQ: No
-RDSEED: No
-ADX: No
-SMAP: No
-AVX512_IFMA: No
-CLFLUSHOPT: No
-CLWB: No
-Intel PT: No
-AVX512PF: No
-AVX512ER: No
-AVX512CD: No
-SHA: No
-AVX512BW: No
-AVX512VL: No
-PREFETCHWT1: No
-AVX512_VBMI: No
-UMIP: No
-PKU: No
-OSPKE: No
-WAITPKG: No
-AVX512_VBMI2: No
-CET_SS: No
-GFNI: No
-VAES: No
-VPCLMULQDQ: No
-AVX512_VNNI: No
-AVX512_BITALG: No
-AVX512_VPOPCNTDQ: No
-RDPID: No
-CLDEMOTE: No
-MOVDIRI: No
-MOVDIR64B: No
-ENQCMD: No
-AVX512_4VNNIW: No
-AVX512_4FMAPS: No
-FSRM: No
-AVX512_VP2INTERSECT: No
-MD_CLEAR: Yes
-TSX_FORCE_ABORT: No
-SERIALIZE: No
-HYBRID: No
-TSXLDTRK: No
-PCONFIG: No
-IBT: No
-AMX-BF16: No
-AMX-TILE: No
-AMX-INT8: No
-IBRS_IBPB: Yes
-STIBP: Yes
-L1D_FLUSH: Yes
-ARCH_CAPABILITIES: No
-SSBD: Yes
-L1 Data Cache: 32 KB, 8-way, 64B line
-L1 Instruction Cache: 32 KB, 8-way, 64B line
-L2 Unified Cache: 256 KB, 8-way, 64B line
-L3 Unified Cache: 3072 KB, 12-way, 64B line
-Physical Address bits: 39
-Virtual Address bits: 48
-CLZERO: No
-InstRetCntMsr: No
-RstrFpErrPtrs: No
-INVLPGB: No
-RDPRU: No
-MCOMMIT: No
-WBNOINVD: No
-IBPB: No
-INT_WBINVD: No
-IBRS: No
-STIBP: No
-IbrsAlwaysOn: No
-StibpAlwaysOn: No
-IbrsPreferred: No
-IbrsSameMode: No
-EferLmsleUnsupported: No
-INVLPGB_NESTED: No
-SSBD: No
-SsbdVirtSpecCtrl: No
-SsbdNotRequired: No
-TLB/Cache Descriptors (raw): 0x76036301 0xF0B5FF 0x0 0xC10000
-Digital Thermal Sensor: Yes
-Intel Turbo Boost: Yes
-ARAT: Yes
-PLN: Yes
-ECMD: Yes
-PTM: Yes
-HWP: No
-HWP_Notification: No
-HWP_Activity_Window: No
-HWP_Energy_Performance: No
-HWP_Package_Level: No
-HDC: No
-Intel Turbo Boost Max 3.0: No
-HWP_Capabilities: No
-HWP_PECI_Override: No
-Flexible_HWP: No
-Fast_Access_Mode: No
-HW_Feedback: No
-Ignore_Idle_Logical_Processor_HWP: No
-Digital Thermal Sensor Interrupt Thresholds: 2
-Hardware Coordination Feedback: Yes
-ACNT2: No
-Performance-Energy Bias: Yes
-Temperature Sensor: No
-Frequency ID Control: No
-Voltage ID Control: No
-Thermal Trip: No
-Thermal Monitoring: No
-Software Thermal Control: No
-100MHz Steps: No
-Hardware P-State: No
-TSC Invariant: Yes
-Core Performance Boost: No
-Read-Only Effective Frequency: No
-Processor Feedback Interface: No
-Processor Power Reporting: No
-Hypervisor Present: No
-SMEP: Yes
-SMAP: No
-UMIP: No
-PKU: No
-CET_SS: No
-CET_IBT: No
-PMU Version: 3
-GP Performance Counters: 4
-GP Counter Width: 48 bits
-Fixed Performance Counters: 3
-Fixed Counter Width: 48 bits
-Core Cycles Event: Available
-Instruction Retired Event: Available
-Reference Cycles Event: Available
-LLC Reference Event: Available
-LLC Misses Event: Available
-Branch Instruction Retired Event: Available
-Branch Mispredict Retired Event: Available
-XCR0 Supported Features (Low): 0x7
-XCR0 Supported Features (High): 0x0
-Max XSAVE Area Size: 832 bytes
-Current XSAVE Area Size: 832 bytes
-XSAVEOPT: Yes
-XSAVEC: No
-XGETBV_ECX1: No
-XSAVES: No
-AVX State Size: 256 bytes
-AVX State Offset: 576 bytes
-Processor Serial Number: Not Available
-```
+CPU features are grouped below by **CPUID leaf** (the `EAX` input value passed to the `CPUID` instruction). Each group is collapsible and tagged with the vendors that expose it:
+
+- 🟢 **AMD & Intel** — leaf is present and decoded the same way on both vendors
+- 🔵 **Intel Only** — leaf/feature set is Intel-specific
+- 🟠 **AMD Only** — leaf/feature set is AMD-specific
+
+
+<details>
+<summary><b>Leaf 0x0 — Vendor Identification</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Vendor | Vendor ID string (e.g. `GenuineIntel`, `AuthenticAMD`) |
+| Max Basic CPUID Level | Highest supported basic leaf number |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x1 — Processor Info & Standard Features</b> &nbsp;🟢 AMD & Intel</summary>
+
+**Identification**
+
+| Feature | Value |
+|---|---|
+| Family | Display family number |
+| Model | Display model number |
+| Stepping | Silicon stepping revision |
+| Processor Type | Raw processor type field (0–3) |
+| APIC ID | Local APIC ID of the executing core |
+| CLFLUSH Size | Cache-line flush size in bytes |
+| Signature | Raw CPUID signature (hex) |
+
+**ECX Features**
+
+| Feature | Value |
+|---|---|
+| SSE3 / SSSE3 / SSE4.1 / SSE4.2 | Yes / No |
+| PCLMULQDQ | Yes / No — carry-less multiply |
+| DTES64 | Yes / No — 64-bit debug store |
+| MONITOR | Yes / No — MONITOR/MWAIT |
+| DS-CPL | Yes / No — CPL-qualified debug store |
+| VMX | Yes / No — Intel virtualization |
+| SMX | Yes / No — safer mode extensions |
+| EIST | Yes / No — Enhanced SpeedStep |
+| TM2 | Yes / No — thermal monitor 2 |
+| FMA | Yes / No — fused multiply-add |
+| CMPXCHG16B | Yes / No |
+| MOVBE | Yes / No |
+| POPCNT | Yes / No |
+| TSC-Deadline | Yes / No — TSC deadline timer for APIC |
+| AES | Yes / No |
+| XSAVE / OSXSAVE | Yes / No |
+| AVX | Yes / No |
+| F16C | Yes / No — half-precision conversions |
+| RDRAND | Yes / No |
+
+**EDX Features**
+
+| Feature | Value |
+|---|---|
+| FPU / VME / DE / PSE / TSC / MSR / PAE / MCE | Yes / No |
+| CX8 | Yes / No — CMPXCHG8B |
+| APIC | Yes / No |
+| SEP | Yes / No — SYSENTER/SYSEXIT |
+| MTRR / PGE / MCA / CMOV / PAT / PSE-36 | Yes / No |
+| PSN | Yes / No — processor serial number available |
+| CLFSH | Yes / No |
+| DS / ACPI | Yes / No |
+| MMX / FXSR / SSE / SSE2 | Yes / No |
+| SS | Yes / No — self-snoop |
+| TM | Yes / No — thermal monitor |
+| PBE | Yes / No — pending break enable |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x2 — TLB/Cache Descriptors (legacy)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| TLB/Cache Descriptors (raw) | Four raw hex register dumps requiring descriptor-table lookup |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x3 — Processor Serial Number</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Processor Serial Number | Hex serial string, or "Not Available" if disabled/unsupported |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x4 — Deterministic Cache Parameters</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| L1 Data Cache | Size (KB), ways of associativity, line size (B) |
+| L1 Instruction Cache | Size (KB), ways of associativity, line size (B) |
+| L2 Unified Cache | Size (KB), ways of associativity, line size (B) |
+| L3 Unified Cache | Size (KB), ways of associativity, line size (B) |
+
+*(One sub-leaf per cache level; iterated until an empty cache type is returned.)*
+
+</details>
+
+<details>
+<summary><b>Leaf 0x6 — Thermal & Power Management</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Digital Thermal Sensor | Yes / No |
+| Intel Turbo Boost / Turbo Boost Max 3.0 | Yes / No |
+| ARAT | Yes / No — always-running APIC timer |
+| PLN | Yes / No — power limit notification |
+| ECMD | Yes / No — extended clock modulation duty |
+| PTM | Yes / No — package thermal management |
+| HWP family (HWP, Notification, Activity Window, Energy Performance, Package Level, Capabilities, PECI Override, Flexible, Fast Access Mode) | Yes / No |
+| HDC | Yes / No — hardware duty cycling |
+| HW_Feedback / Ignore_Idle_Logical_Processor_HWP | Yes / No |
+| Digital Thermal Sensor Interrupt Thresholds | Count of supported thresholds |
+| Hardware Coordination Feedback | Yes / No |
+| ACNT2 | Yes / No |
+| Performance-Energy Bias | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x7, Subleaf 0 — Extended Features</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| FSGSBASE | Yes / No |
+| TSC_ADJUST | Yes / No |
+| SGX | Yes / No |
+| BMI1 / BMI2 | Yes / No |
+| HLE / RTM | Yes / No — TSX |
+| AVX2 | Yes / No |
+| SMEP / SMAP | Yes / No |
+| ERMS | Yes / No — enhanced rep movsb/stosb |
+| INVPCID | Yes / No |
+| PQM / PQE | Yes / No — platform QoS monitoring/enforcement |
+| MPX | Yes / No |
+| AVX512F / DQ / IFMA / PF / ER / CD / BW / VL | Yes / No |
+| RDSEED | Yes / No |
+| ADX | Yes / No |
+| CLFLUSHOPT / CLWB | Yes / No |
+| Intel PT | Yes / No |
+| SHA | Yes / No |
+| PREFETCHWT1 | Yes / No |
+| AVX512_VBMI / VBMI2 | Yes / No |
+| UMIP / PKU / OSPKE | Yes / No |
+| WAITPKG | Yes / No |
+| CET_SS | Yes / No |
+| GFNI / VAES / VPCLMULQDQ | Yes / No |
+| AVX512_VNNI / BITALG / VPOPCNTDQ | Yes / No |
+| RDPID | Yes / No |
+| CLDEMOTE | Yes / No |
+| MOVDIRI / MOVDIR64B | Yes / No |
+| ENQCMD | Yes / No |
+| AVX512_4VNNIW / 4FMAPS / VP2INTERSECT | Yes / No |
+| FSRM | Yes / No — fast short REP MOVSB |
+| MD_CLEAR | Yes / No |
+| TSX_FORCE_ABORT | Yes / No |
+| SERIALIZE | Yes / No |
+| HYBRID | Yes / No — hybrid core topology |
+| TSXLDTRK | Yes / No |
+| PCONFIG | Yes / No |
+| IBT | Yes / No — indirect branch tracking |
+| AMX-BF16 / TILE / INT8 | Yes / No |
+| IBRS_IBPB / STIBP | Yes / No |
+| L1D_FLUSH | Yes / No |
+| ARCH_CAPABILITIES | Yes / No |
+| SSBD | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x7, Subleaf 1 — Extended Features (cont.)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| AVX_VNNI | Yes / No |
+| AVX512_BF16 | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x7, Subleaf 2 — Extended Features (cont.)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| PSFD | Yes / No |
+| IPRED_CTRL | Yes / No |
+| RRSBA_CTRL | Yes / No |
+| DDPD_U | Yes / No |
+| BHI_CTRL | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x10 — Resource Director Technology (RDT)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Intel L3 CAT | Yes / No — L3 cache allocation |
+| L3 CAT Mask Length | Bit width of the L3 CAT capacity mask |
+| Intel L2 CAT | Yes / No — L2 cache allocation |
+| Intel MBA | Yes / No — memory bandwidth allocation |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x12 — SGX Capabilities</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| SGX1 | Yes / No |
+| SGX2 | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x14 — Intel Processor Trace</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Intel PT Max Subleaf | Number of additional PT sub-leaves |
+| CR3 filtering supported | Yes |
+| Configurable PSB and Cycle-Accurate Mode | Yes |
+| IP/TraceStop filtering & MSR preservation across warm reset | Yes |
+| MTC timing packet / COFI-based suppression | Yes |
+| ToPA output scheme | Yes |
+| ToPA multiple output regions | Yes |
+| Single-range output scheme | Yes |
+| Output to Trace Transport subsystem | Yes |
+| IP payloads are LIP | Yes |
+| PTWRITE supported | Yes |
+| Power Event Trace supported | Yes |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x16 — Processor Frequency Information</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Base Frequency (MHz) | Rated base clock |
+| Max Frequency (MHz) | Rated max turbo clock |
+| Bus Frequency (MHz) | Reference/bus clock |
+
+</details>
+
+<details>
+<summary><b>Leaf 0xA — Architectural Performance Monitoring</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| PMU Version | Performance-monitoring architecture version |
+| GP Performance Counters | Number of general-purpose counters |
+| GP Counter Width | Counter width in bits |
+| Fixed Performance Counters | Number of fixed-function counters |
+| Fixed Counter Width | Counter width in bits |
+| Core Cycles / Instruction Retired / Reference Cycles / LLC Reference / LLC Misses / Branch Instruction Retired / Branch Mispredict Retired Event | Available / Not Available |
+
+</details>
+
+<details>
+<summary><b>Leaf 0xD — Extended State (XSAVE/XSAVEC)</b> &nbsp;🟢 AMD & Intel</summary>
+
+**Subleaf 0**
+
+| Feature | Value |
+|---|---|
+| XCR0 Supported Features (Low/High) | Raw feature bitmap (hex) |
+| Current XSAVE Area Size (Enabled Features) | Bytes required for enabled state |
+| Max XSAVE Area Size (All Supported Features) | Bytes required for all supported state |
+
+**Subleaf 1**
+
+| Feature | Value |
+|---|---|
+| XSAVEOPT | Yes / No |
+| XSAVEC | Yes / No |
+| XGETBV_ECX1 | Yes / No |
+| XSAVES | Yes / No |
+| XSAVE Area Size (XCR0 \| IA32_XSS) | Bytes |
+
+**Subleaves 2–15** (one per active state component: x87, SSE, AVX, BNDREGS, BNDCSR, AVX-512 opmask/ZMM_Hi256/Hi16_ZMM, PKRU)
+
+| Feature | Value |
+|---|---|
+| `<State>` State Size | Bytes |
+| `<State>` State Offset | Byte offset within the XSAVE area |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x40000000 — Hypervisor Info</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Hypervisor Present | Yes / No (from leaf 0x1, ECX bit 31) |
+| Hypervisor Vendor | Vendor ID string (e.g. `KVMKVMKVM`, `VMwareVMware`) |
+| Hypervisor Max Leaf | Highest supported hypervisor leaf (hex) |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000002 – 0x80000004 — Brand String</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Brand | Full marketing name string, or "Not Available" |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000001 — Extended Feature Flags</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| LAHF/SAHF | Yes / No |
+| CMP_LEGACY | Yes / No |
+| SVM | Yes / No — secure virtual machine |
+| EXT_APIC | Yes / No |
+| CR8_LEGACY | Yes / No |
+| ABM | Yes / No — advanced bit manipulation |
+| SSE4A | Yes / No |
+| MISALIGNSSE | Yes / No |
+| 3DNOWPREFETCH | Yes / No |
+| OSVW | Yes / No |
+| IBS | Yes / No — instruction-based sampling |
+| XOP | Yes / No |
+| SKINIT | Yes / No |
+| WDT | Yes / No — watchdog timer |
+| LWP | Yes / No — lightweight profiling |
+| FMA4 | Yes / No |
+| TCE | Yes / No |
+| NODEID_MSR | Yes / No |
+| TBM | Yes / No — trailing bit manipulation |
+| TOPOEXT | Yes / No |
+| PERFCTR_CORE / NB / LLC | Yes / No |
+| BPEXT | Yes / No |
+| PTSC | Yes / No |
+| MWAITX | Yes / No |
+| SYSCALL | Yes / No |
+| NX | Yes / No — no-execute bit |
+| MMXEXT | Yes / No |
+| FXSR_OPT | Yes / No |
+| PDPE1GB | Yes / No — 1 GB pages |
+| RDTSCP | Yes / No |
+| LM | Yes / No — long mode (64-bit) |
+| 3DNOWEXT / 3DNOW | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000005 — L1 Cache/TLB (AMD)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| L1 DTLB / ITLB 2MB-4MB | Entry count, associativity |
+| L1 Data Cache (AMD) | Size (KB), associativity, line size (B) |
+| L1 Instruction Cache (AMD) | Size (KB), associativity, line size (B) |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000006 — L2/L3 Cache (AMD)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| L2 Cache (AMD) | Size (KB), associativity, line size (B) |
+| L3 Cache (AMD) | Size (KB), associativity, line size (B) |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000007 — Advanced Power Management</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| Temperature Sensor | Yes / No |
+| Frequency ID Control / Voltage ID Control | Yes / No |
+| Thermal Trip / Thermal Monitoring / Software Thermal Control | Yes / No |
+| 100MHz Steps | Yes / No |
+| Hardware P-State | Yes / No |
+| TSC Invariant | Yes / No |
+| Core Performance Boost | Yes / No |
+| Read-Only Effective Frequency | Yes / No |
+| Processor Feedback Interface | Yes / No |
+| Processor Power Reporting | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000008 — Address Sizes</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Physical Address bits | Number of physical address bits |
+| Virtual Address bits | Number of virtual address bits |
+| Guest Physical Address bits | (if nested paging is used) |
+| Performance TSC Size | Bits |
+| CLZERO | Yes / No |
+| InstRetCntMsr / RstrFpErrPtrs | Yes / No |
+| INVLPGB / INVLPGB_NESTED | Yes / No |
+| RDPRU | Yes / No |
+| MCOMMIT / WBNOINVD | Yes / No |
+| IBPB / IBRS / STIBP | Yes / No |
+| INT_WBINVD | Yes / No |
+| IbrsAlwaysOn / StibpAlwaysOn / IbrsPreferred / IbrsSameMode | Yes / No |
+| EferLmsleUnsupported | Yes / No |
+| SSBD / SsbdVirtSpecCtrl / SsbdNotRequired | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x8000000A — SVM (Secure Virtual Machine)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| SVM Revision | Revision number |
+| SVM ASIDs | Number of address space identifiers |
+| SVM Nested Paging | Yes / No |
+| SVM LBR Virtualization | Yes / No |
+| SVM Lock | Yes / No |
+| SVM NRIP Save | Yes / No |
+| SVM TSC Rate MSR | Yes / No |
+| SVM VMCB Clean | Yes / No |
+| SVM Flush by ASID | Yes / No |
+| SVM Decode Assists | Yes / No |
+| SVM Pause Filter / Pause Filter Threshold | Yes / No |
+| SVM AVIC | Yes / No |
+| SVM V_VMSAVE_VMLOAD | Yes / No |
+| SVM VGIF | Yes / No |
+| SVM GMET | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x8000001F — Encrypted Memory (SME/SEV)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| AMD SME | Yes / No — secure memory encryption |
+| AMD SEV | Yes / No — secure encrypted virtualization |
+| Page Flush MSR | Yes / No |
+| SEV-ES | Yes / No |
+| SEV-SNP | Yes / No |
+| VMPL | Yes / No |
+| C-bit location | Bit position of the encryption C-bit |
+| Encrypted guests supported | Count of supported ASIDs for encrypted guests |
+
+</details>
+
+
+
 
 ### `cpu_snapshot(core, coreNumbers=False, Kernel=True, User=True, Idle=True, PureKernalTime=False)` (Windows Only)
 
@@ -1105,7 +1342,7 @@ Gets a list of all available sensor names.
 |--------------|-------------------------------------------|
 | `list[str]`  | A list of all sensor names. |
 
-#### `get_sensors()`
+#### `get_sensors()` (4.0.0+)
 
 Gets a dictionary of all available sensors and their values.
 
@@ -1117,13 +1354,14 @@ Gets a dictionary of all available sensors and their values.
 
 #### `get_all_fan_rpms()`
 
-> **Note**
+> **Note** (4.0.0+)
 >
 > This method is kept for backward compatibility only.  
 > It no longer fetches data and always returns an empty array.
 >
 > Fan sensors are now available in the dictionary returned by `get_sensors()`.  
-> You can use the `liveview_helper` model shown below to parse the sensor name and determine which device it belongs to.
+> You can use the [liveview_helper](#liveview_helper-python-helper-module) model shown below to parse the sensor name and determine which device it belongs to.
+> **This method will be removed entirely in future releases.**
 
 **Returns**
 
