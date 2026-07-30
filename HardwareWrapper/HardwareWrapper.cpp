@@ -114,14 +114,74 @@ public:
             computer = comp;
         }
     }
-
     static void Update()
     {
         auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
         if (comp != nullptr)
         {
             for each(IHardware ^ hardware in comp->Hardware)
+            {
                 hardware->Update();
+
+                for each(IHardware ^ subHardware in hardware->SubHardware)
+                    subHardware->Update();
+            }
+        }
+    }
+    static void UpdateIfMatches(IHardware^ hw, int componentId)
+    {
+        switch (componentId)
+        {
+        case 1: // Motherboard
+            if (hw->HardwareType == HardwareType::Motherboard)
+                hw->Update();
+            break;
+        case 2: // SuperIO
+            if (hw->HardwareType == HardwareType::SuperIO)
+                hw->Update();
+            break;
+        case 3: // CPU
+            if (hw->HardwareType == HardwareType::Cpu)
+                hw->Update();
+            break;
+        case 4: // Memory
+            if (hw->HardwareType == HardwareType::Memory)
+                hw->Update();
+            break;
+        case 5: // GPU (Nvidia + AMD + Intel)
+            if (hw->HardwareType == HardwareType::GpuNvidia ||
+                hw->HardwareType == HardwareType::GpuAmd ||
+                hw->HardwareType == HardwareType::GpuIntel)
+            {
+                hw->Update();
+            }
+            break;
+        case 6: // Storage
+            if (hw->HardwareType == HardwareType::Storage)
+                hw->Update();
+            break;
+        case 7: // Network
+            if (hw->HardwareType == HardwareType::Network)
+                hw->Update();
+            break;
+        case 8: // Cooler
+            if (hw->HardwareType == HardwareType::Cooler)
+                hw->Update();
+            break;
+        case 9: // EmbeddedController
+            if (hw->HardwareType == HardwareType::EmbeddedController)
+                hw->Update();
+            break;
+        case 10: // PSU
+            if (hw->HardwareType == HardwareType::Psu)
+                hw->Update();
+            break;
+        case 11: // Battery
+            if (hw->HardwareType == HardwareType::Battery)
+                hw->Update();
+            break;
+        default:
+            break;
         }
     }
 
@@ -134,60 +194,30 @@ public:
 
         for each(IHardware ^ hardware in comp->Hardware)
         {
-            switch (componentId)
-            {
-            case 1: // Motherboard
-                if (hardware->HardwareType == HardwareType::Motherboard)
-                    hardware->Update();
-                break;
-            case 2: // SuperIO
-                if (hardware->HardwareType == HardwareType::SuperIO)
-                    hardware->Update();
-                break;
-            case 3: // CPU
-                if (hardware->HardwareType == HardwareType::Cpu)
-                    hardware->Update();
-                break;
-            case 4: // Memory
-                if (hardware->HardwareType == HardwareType::Memory)
-                    hardware->Update();
-                break;
-            case 5: // GPU (Nvidia + AMD + Intel)
-                if (hardware->HardwareType == HardwareType::GpuNvidia ||
-                    hardware->HardwareType == HardwareType::GpuAmd ||
-                    hardware->HardwareType == HardwareType::GpuIntel)
-                {
-                    hardware->Update();
-                }
-                break;
-            case 6: // Storage
-                if (hardware->HardwareType == HardwareType::Storage)
-                    hardware->Update();
-                break;
-            case 7: // Network
-                if (hardware->HardwareType == HardwareType::Network)
-                    hardware->Update();
-                break;
-            case 8: // Cooler
-                if (hardware->HardwareType == HardwareType::Cooler)
-                    hardware->Update();
-                break;
-            case 9: // EmbeddedController
-                if (hardware->HardwareType == HardwareType::EmbeddedController)
-                    hardware->Update();
-                break;
-            case 10: // PSU
-                if (hardware->HardwareType == HardwareType::Psu)
-                    hardware->Update();
-                break;
-            case 11: // Battery
-                if (hardware->HardwareType == HardwareType::Battery)
-                    hardware->Update();
-                break;
-            default:
-                break;
+            UpdateIfMatches(hardware, componentId);
+
+           for each(IHardware ^ subHardware in hardware->SubHardware)
+                UpdateIfMatches(subHardware, componentId);
+        }
+    }
+
+    static String^ GetSuperIoData() {
+        Init();
+        auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
+        if (comp == nullptr)
+            return "NON";
+        String^ fullname;
+        for each (IHardware ^ hardware in comp->Hardware)
+        {
+            if (hardware->HardwareType == HardwareType::Motherboard) {
+                for each (IHardware ^ subHardware in hardware->SubHardware)
+                    if (subHardware->HardwareType == HardwareType::SuperIO) {
+                        fullname = subHardware->Name + " - " + subHardware->Identifier->ToString();
+                        return fullname;
+                    }
             }
         }
+        return "NO";
     }
 
     static double GetCpuTemperature()
@@ -322,6 +352,83 @@ public:
         return sensorNames;
     }
 
+    static void PackHardwareSensors(IHardware^ hardware, std::vector<char>& buffer)
+{
+    for each (ISensor ^ sensor in hardware->Sensors)
+    {
+        String^ fullSensorName = String::Format(
+            "{0} - {1} - {2}",
+            hardware->Name,
+            sensor->SensorType.ToString(),
+            sensor->Name);
+
+        std::string name = marshal_as<std::string>(fullSensorName);
+
+        // Name + Null Terminator
+        buffer.insert(buffer.end(), name.begin(), name.end());
+        buffer.push_back('\0');
+
+        // Append sensor value as raw double bytes
+        double value = sensor->Value.HasValue ? (double)sensor->Value.Value : -1.0;
+
+        const char* p = reinterpret_cast<const char*>(&value);
+        buffer.insert(buffer.end(), p, p + sizeof(double));
+    }
+}
+
+    static std::vector<char> GetAllSensorsPacked()
+    {
+        Init();
+
+        std::vector<char> buffer;
+
+        auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
+        if (comp == nullptr)
+            return buffer;
+
+        for each (IHardware ^ hardware in comp->Hardware)
+        {
+            PackHardwareSensors(hardware, buffer);
+
+            for each (IHardware ^ subHardware in hardware->SubHardware)
+                PackHardwareSensors(subHardware, buffer);
+        }
+
+        return buffer;
+    }
+
+    static int GetHardwareIdByType(HardwareType Type) {
+        switch (Type) {
+        case HardwareType::Motherboard: return 1;
+        case HardwareType::SuperIO: return 2;
+        case HardwareType::Cpu: return 3;
+        case HardwareType::Memory: return 4;
+        case HardwareType::GpuNvidia: return 5;
+        case HardwareType::GpuIntel: return 5;
+        case HardwareType::GpuAmd: return 5;
+        case HardwareType::Storage: return 6;
+        case HardwareType::Network: return 7;
+        case HardwareType::Cooler: return 8;
+        case HardwareType::EmbeddedController: return 9;
+        case HardwareType::Psu: return 10;
+        case HardwareType::Battery: return 11;
+        default: return -1;
+        }
+        return -1;
+    }
+
+    static int GetHardwareIdByNameInternal(String^ HardwareName) {
+        Init();
+        auto comp = safe_cast<LibreHardwareMonitor::Hardware::Computer^>(computer);
+        if (comp == nullptr) return -1;
+        for each (IHardware ^ hardware in comp->Hardware) {
+            if (hardware->Name == HardwareName) return GetHardwareIdByType(hardware->HardwareType);
+            for each (IHardware ^ subHardware in hardware->SubHardware)
+                if (subHardware->Name == HardwareName) return GetHardwareIdByType(subHardware->HardwareType);
+        }
+        return -1;
+    }
+
     static double GetCpuFanRpmInternal()
     {
         return GetFanRpmForHardwareType(HardwareType::Cpu, nullptr);
@@ -384,37 +491,37 @@ extern "C" __declspec(dllexport) void InitHardwareMonitor()
 {
     MonitorManager::Init();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetCpuTemperature()
 {
     return MonitorManager::GetCpuTemperature();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetGpuTemperature()
 {
     return MonitorManager::GetGpuTemperature();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetMotherboardTemperature()
 {
     return MonitorManager::GetMotherboardTemperature();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetStorageTemperature()
 {
     return MonitorManager::GetStorageTemperature();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetAverageCpuCoreTemperature()
 {
     return MonitorManager::GetAverageCpuCoreTemperature();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetMaxCpuCoreTemperature()
 {
     return MonitorManager::GetMaxCpuCoreTemperature();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) void GetAvailableSensors(char*** sensorNames, int* count)
 {
     std::vector<std::string> names = MonitorManager::GetAllSensorNames();
@@ -442,7 +549,7 @@ extern "C" __declspec(dllexport) void GetAvailableSensors(char*** sensorNames, i
         strcpy_s((*sensorNames)[i], len, names[i].c_str());
     }
 }
-
+//Restricted
 extern "C" __declspec(dllexport) void FreeSensorNames(char** sensorNames, int count)
 {
     if (sensorNames != nullptr)
@@ -457,17 +564,17 @@ extern "C" __declspec(dllexport) void FreeSensorNames(char** sensorNames, int co
         CoTaskMemFree(sensorNames);
     }
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetCpuFanRpm()
 {
     return MonitorManager::GetCpuFanRpmInternal();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) double GetGpuFanRpm()
 {
     return MonitorManager::GetGpuFanRpmInternal();
 }
-
+//Restricted
 extern "C" __declspec(dllexport) void GetAllFanRpms(char*** fanNames, double** rpms, int* count)
 {
 
@@ -510,7 +617,7 @@ extern "C" __declspec(dllexport) void GetAllFanRpms(char*** fanNames, double** r
         (*rpms)[i] = rpmsVec[i];
     }
 }
-
+//Restricted
 extern "C" __declspec(dllexport) void FreeFanData(char** fanNames, double* rpms, int count)
 {
     if (fanNames != nullptr)
@@ -530,13 +637,26 @@ extern "C" __declspec(dllexport) void FreeFanData(char** fanNames, double* rpms,
     }
 }
 
-// New C-style exported function to get a specific sensor value by its full name
+// Restricted
 extern "C" __declspec(dllexport) double GetSpecificSensorValue(const char* fullSensorName)
 {
     // Marshal const char* to System::String^
+    if (fullSensorName == nullptr)
+        return -99;
     String^ fullSensorNameManaged = marshal_as<String^>(fullSensorName);
     return MonitorManager::GetSpecificSensorValueInternal(fullSensorNameManaged);
 }
+
+
+extern "C" __declspec(dllexport) int GetHardwareIdByName(const char* fullHardwareName)
+{
+    // Marshal const char* to System::String^
+    if (fullHardwareName == nullptr)
+        return -99;
+    String^ fullHardwareNameManaged = marshal_as<String^>(fullHardwareName);
+    return MonitorManager::GetHardwareIdByNameInternal(fullHardwareNameManaged);
+}
+
 extern "C" __declspec(dllexport) void UpdateHardwareMonitor()
 {
     MonitorManager::Update();
@@ -544,4 +664,35 @@ extern "C" __declspec(dllexport) void UpdateHardwareMonitor()
 extern "C" __declspec(dllexport) void SpecificUpdateHardwareTemp(int componentId)
 {
     MonitorManager::SpecificUpdate(componentId);
+}
+extern "C" __declspec(dllexport) void GetAllSensorsPacked(char** data, int* size)
+{
+    if (data == nullptr || size == nullptr)
+        return;
+
+    std::vector<char> buffer = MonitorManager::GetAllSensorsPacked();
+
+    *size = static_cast<int>(buffer.size());
+
+    if (*size == 0)
+    {
+        *data = nullptr;
+        return;
+    }
+
+    *data = (char*)CoTaskMemAlloc(*size);
+    if (*data == nullptr)
+    {
+        *size = 0;
+        return;
+    }
+
+    memcpy(*data, buffer.data(), *size);
+}
+extern "C" __declspec(dllexport) void FreePackedSensors(char* data)
+{
+    if (data != nullptr)
+    {
+        CoTaskMemFree(data);
+    }
 }

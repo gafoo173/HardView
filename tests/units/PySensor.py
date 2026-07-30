@@ -56,7 +56,7 @@ def test_pysensor():
         
         # Test getting sensor values by name
         print_info("Testing sensor value retrieval (first 10 sensors)...")
-        for i, sensor_name in enumerate(all_sensors[:10]):
+        for i, sensor_name in enumerate(all_sensors[:]):
             try:
                 value = sensor.GetValueByName(sensor_name)
                 print(f"  {i+1}. {sensor_name}: {value:.1f}")

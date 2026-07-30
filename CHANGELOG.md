@@ -4,6 +4,65 @@
 All notable changes to HardView Library (Python) will be documented in this file.
 
 
+## [4.0.0b0] - Beta Release
+
+### Highlights
+
+* **LiveView Module**
+
+  * Fixed an issue in the `HardView.LiveView` C++ extension where interval-based functions that internally call `Sleep` were holding the Python Global Interpreter Lock (GIL), preventing other Python threads from running.
+  * The GIL is now released before performing these waits, allowing concurrent Python thread execution.
+
+* **Major SMART Module Enhancements**
+
+  * Significantly improved the `HardView.SMART` module.
+  * Added many new features and expanded SMART information support.
+
+* **CPU Identification Fixes**
+
+  * Fixed issues in `cpuid.hpp` that caused incorrect interpretation of certain AMD cache features.
+  * Corrected Intel Processor Trace (Intel PT) feature detection on Intel CPUs.
+
+* **HardwareWrapper.dll Improvements**
+
+  * Updated `HardwareWrapper` to use the latest version of `LibreHardwareMonitorLib`, which no longer depends on WinRing0.
+  * Resolved Windows temperature sensor monitoring issues in the `HardView.LiveView` module.
+  * Introduced internal performance optimizations in `HardwareWrapper.dll`, providing noticeably better performance in `HardView.LiveView.PySensor`, especially when working with a large number of sensors.
+
+* **Experimental Process Module**
+
+  * Added a new experimental `HardView.process` module for Windows process management.
+
+* **Python Package Improvements**
+
+  * Added `liveview_helper.py`, providing helper functions to simplify interaction with the `HardView.LiveView` module.
+  * The wrapper provides a more convenient interface for common LiveView operations.
+  * Added Python type stub files (`.pyi`) to improve IDE support, autocomplete, and static type checking.
+  * Included type definitions for:
+    * `LiveView.pyi`
+    * `smbios.pyi`
+    * `SMART.pyi`
+
+
+* **HardView C++ Improvements**
+
+  * Improved the WMI component, including enhancements to the `win_helpers.h` library.
+  * Enhanced the SMART component with updates to `SMART.hpp` and the addition of `SMARTHelprs.hpp`.
+  * Added a new experimental Process component for process management with the `Process.hpp` library.
+
+* **Linux Support Status**
+
+  * Active development for Linux has been discontinued.
+  * Existing Linux functionality will remain available and will continue to be distributed as Linux wheels.
+  * However, no new Linux-specific features, improvements, or bug fixes are planned.
+  * Future development will focus primarily on the Windows implementation.  
+
+> **Compatibility:** No API changes have been introduced in this release. Existing function signatures and calling conventions remain unchanged, so applications developed for **3.0.1+** are expected to work with **4.0.0** without requiring code changes in most cases.
+>
+> **Behavior Change:** The `get_all_fan_rpms()` function no longer returns fan RPM data and will now always return an empty array. This change is intentional and should be taken into account if your application relies on this function.
+
+---
+
 ## [3.3.1] - Hotfix Release
 
 ### Highlights:
@@ -266,14 +325,9 @@ These functions were added to the `PyManageTemp` class in `HardView.LiveView`:
 
 ### Highlights:
 
-* **Refactor:**
-
-  * Each function moved to a separate C source file.
-  * Improved memory safety and leak prevention.1
-* **New Advanced Features:**
+* **New Features:**
 
   * `get_partitions_info()`
-  * `get_smart_info()`
   * `get_cpu_usage()`
   * `get_ram_usage()`
   * `get_system_performance()`
@@ -293,7 +347,7 @@ These functions were added to the `PyManageTemp` class in `HardView.LiveView`:
 
 ---
 
-## \[1.0.0] - First Stable Release
+## \[1.0.0]
 
 ### Highlights:
 

@@ -10,31 +10,33 @@ import pybind11
 # ==      HardView Main Extension (C)                          ==
 # =================================================================
 
+LEGACY_DIR = 'HardView/Legacy'
+
 hardview_source_files = [
-    'HardView/HardView.c',
-    'HardView/helpers.c',
-    'HardView/bios_info.c',
-    'HardView/system_info.c',
-    'HardView/baseboard_info.c',
-    'HardView/chassis_info.c',
-    'HardView/cpu_info.c',
-    'HardView/ram_info.c',
-    'HardView/disk_info.c',
-    'HardView/gpu_info.c',
-    'HardView/network_info.c',
-    'HardView/performance_monitor.c',
-    'HardView/advanced_storage_info.c',
-    'HardView/Smart_disk.c'
+    f'{LEGACY_DIR}/HardView.c',
+    f'{LEGACY_DIR}/helpers.c',
+    f'{LEGACY_DIR}/bios_info.c',
+    f'{LEGACY_DIR}/system_info.c',
+    f'{LEGACY_DIR}/baseboard_info.c',
+    f'{LEGACY_DIR}/chassis_info.c',
+    f'{LEGACY_DIR}/cpu_info.c',
+    f'{LEGACY_DIR}/ram_info.c',
+    f'{LEGACY_DIR}/disk_info.c',
+    f'{LEGACY_DIR}/gpu_info.c',
+    f'{LEGACY_DIR}/network_info.c',
+    f'{LEGACY_DIR}/performance_monitor.c',
+    f'{LEGACY_DIR}/advanced_storage_info.c',
+    f'{LEGACY_DIR}/Smart_disk.c'
 ]
 
 hardview_libraries = []
 hardview_extra_compile_args = []
 
 if sys.platform.startswith('win'):
-    hardview_source_files.append('HardView/win_helpers.c')
+    hardview_source_files.append(f'{LEGACY_DIR}/win_helpers.c')
     hardview_libraries.extend(['wbemuuid', 'ole32', 'oleaut32'])
 elif sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
-    hardview_source_files.append('HardView/linux_helpers.c')
+    hardview_source_files.append(f'{LEGACY_DIR}/linux_helpers.c')
 
 # Define the main C extension as a submodule of HardView
 hardview_module = Extension(
@@ -44,7 +46,7 @@ hardview_module = Extension(
     extra_compile_args=hardview_extra_compile_args,
     libraries=hardview_libraries,
     library_dirs=[],
-    include_dirs=['HardView']
+    include_dirs=[LEGACY_DIR]
 )
 
 # =================================================================
@@ -123,6 +125,22 @@ if sys.platform.startswith('win'):
     extensions.append(smart_module)
 
 # =================================================================
+# ==      Process Extension (C++) - Windows Only                ==
+# =================================================================
+if sys.platform.startswith('win'):
+    process_module = Extension(
+        'HardView.process',
+        sources=['HardView/Process/PyProcess.cpp'],
+        include_dirs=['HardView/Process', pybind11.get_include()],
+        libraries=['Psapi', 'Advapi32'],
+        extra_compile_args=['/std:c++17', '/MT'],  # Static linking for MSVC
+        extra_link_args=['-static-libgcc', '-static-libstdc++'],  # Static linking for MinGW
+        language='c++'
+    )
+    # Add the new module to the list of extensions to be built
+    extensions.append(process_module)
+
+# =================================================================
 # ==      Package Configuration                                ==
 # =================================================================
 
@@ -156,7 +174,9 @@ class build_ext(_build_ext):
                 # 32-bit Windows
                 dll_source_dir = 'HardView/LiveView/32'
 
-            dll_source_path = os.path.join(dll_source_dir, '*.dll')
+            files_to_copy = []
+            files_to_copy.extend(glob.glob(os.path.join(dll_source_dir, '*.dll')))
+            files_to_copy.extend(glob.glob(os.path.join(dll_source_dir, '*.json')))
 
             # The build directory for the package (e.g., build/lib.win-amd64-...)
             build_lib = self.build_lib
@@ -168,11 +188,10 @@ class build_ext(_build_ext):
             # Ensure the destination directory exists
             os.makedirs(dest_dir, exist_ok=True)
 
-            # Find and copy each DLL
-            for dll_file in glob.glob(dll_source_path):
-                print(f"Copying DLL: {dll_file} to {dest_dir}")
-                shutil.copy(dll_file, dest_dir)
-
+            # Copy the files
+            for file in files_to_copy:
+                print(f"Copying: {file} -> {dest_dir}")
+                shutil.copy2(file, dest_dir)
     def get_ext_filename(self, ext_name):
         # Get the original filename from the superclass to ensure the correct suffix
         original_filename = super().get_ext_filename(ext_name)
@@ -198,17 +217,17 @@ class build_ext(_build_ext):
 
 setup(
     name='HardView',
-    version='3.3.2',
+    version='4.0.0b1',
     description='A comprehensive Python library for collecting hardware information and real-time performance monitoring.',
     long_description='''
-# HardView 3.3.2
+# HardView 4.0.0b1
 
 A comprehensive Python library for querying low-level hardware information and monitoring system performance in real-time on Windows and Linux systems.
 
 ---
 
-### 3.3.2
-- Modifications to the HardView.SMART model
+### 4.0.0b1
+- Beta release
 ---
 
     ''',

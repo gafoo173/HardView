@@ -1,6 +1,11 @@
-# `HardView.LiveView` API Documentation
+<div align="center">
 
-  <img src="https://img.shields.io/badge/API_Version-1.0.0-informational" alt="API Version" height="30">                                                                                                            <img src="https://img.shields.io/badge/Module-LiveView-informational" alt="Module" height="30">
+<img src="../resources/LiveViewLogo.png" alt="HardView Logo" width="200"/>
+
+# `HardView.LiveView` API Documentation
+</div>
+
+
 
 `LiveView` is a high-performance, cross-platform C++ module with Python bindings designed for real-time system monitoring. It provides easy-to-use classes for tracking CPU, RAM, Disk, Network, GPU performance, and comprehensive temperature monitoring. The library is optimized for low overhead, making it suitable for integration into monitoring dashboards, performance-critical applications, and system analysis tools.
 
@@ -18,13 +23,14 @@ This document provides a comprehensive guide to the `LiveView` API, with detaile
 - [`PyLiveNetwork`](#pylivenetwork) - For monitoring network traffic (total or per-interface).
 - [`PyLiveGpu`](#pylivegpu) - For monitoring GPU utilization (Windows only).
 - [**Temperature Monitoring Classes**](#temperature-monitoring)
-  - [`PyTempCpu`](#pytempcpu) - For monitoring CPU temperature and fan speed (Windows).
-  - [`PyTempGpu`](#pytempgpu) - For monitoring GPU temperature and fan speed (Windows).
-  - [`PyTempOther`](#pytempother) - For monitoring motherboard and storage temperatures (Windows).
-  - [`PySensor`](#pysensor) - For advanced sensor monitoring (Windows).
-  - [`PyManageTemp`](#PyManageTemp) - For temperature monitoring management (Windows).
-  - [`PyLinuxSensor`](#pylinuxsensor) - For comprehensive sensor monitoring (Linux).
-- [`PyRawInfo`](#-pyrawinfo) - For accessing raw system firmware tables (Windows only).
+  - [`PyTempCpu`](#pytempcpu-windows-only---restricted) - **Restricted.** For monitoring CPU temperature and fan speed (Windows).
+  - [`PyTempGpu`](#pytempgpu-windows-only---restricted) - **Restricted.** For monitoring GPU temperature and fan speed (Windows).
+  - [`PyTempOther`](#pytempother-windows-only---restricted) - **Restricted.** For monitoring motherboard and storage temperatures (Windows).
+  - [`PySensor`](#pysensor-windows-only) - For advanced sensor monitoring (Windows).
+  - [`PyManageTemp`](#pymanagetemp-windows-only) - For temperature monitoring management (Windows).
+  - [`PyLinuxSensor`](#pylinuxsensor-linux-only) - For comprehensive sensor monitoring (Linux).
+- [`PyRawInfo`](#pyrawinfo-windows-only) - For accessing raw system firmware tables (Windows only).
+- [**LiveView Helper**](#liveview_helper-python-helper-module) - A Python helper module for LiveView.
 
 ---
 
@@ -119,233 +125,470 @@ for feature_name, feature_value in cpu_info:
 
 ```
 
-**Example Output(Intel)**
+## Available Features
 
-```
-Vendor: GenuineIntel
-Max Basic CPUID Level: 13
-Brand: Intel(R) Core(TM) i5-4210M CPU @ 2.60GHz
-Family: 6
-Model: 60
-Stepping: 3
-Processor Type: 0
-APIC ID: 3
-CLFLUSH Size: 64 bytes
-Signature: 0x306C3
-SSE3: Yes
-PCLMULQDQ: Yes
-DTES64: Yes
-MONITOR: Yes
-DS-CPL: Yes
-VMX: Yes
-SMX: No
-EIST: Yes
-TM2: Yes
-SSSE3: Yes
-FMA: Yes
-CMPXCHG16B: Yes
-SSE4.1: Yes
-SSE4.2: Yes
-MOVBE: Yes
-POPCNT: Yes
-TSC-Deadline: Yes
-AES: Yes
-XSAVE: Yes
-OSXSAVE: Yes
-AVX: Yes
-F16C: Yes
-RDRAND: Yes
-FPU: Yes
-VME: Yes
-DE: Yes
-PSE: Yes
-TSC: Yes
-MSR: Yes
-PAE: Yes
-MCE: Yes
-CX8: Yes
-APIC: Yes
-SEP: Yes
-MTRR: Yes
-PGE: Yes
-MCA: Yes
-CMOV: Yes
-PAT: Yes
-PSE-36: Yes
-PSN: No
-CLFSH: Yes
-DS: Yes
-ACPI: Yes
-MMX: Yes
-FXSR: Yes
-SSE: Yes
-SSE2: Yes
-SS: Yes
-TM: Yes
-PBE: Yes
-FSGSBASE: Yes
-TSC_ADJUST: Yes
-SGX: No
-BMI1: Yes
-HLE: No
-AVX2: Yes
-SMEP: Yes
-BMI2: Yes
-ERMS: Yes
-INVPCID: Yes
-RTM: No
-PQM: No
-MPX: No
-PQE: No
-AVX512F: No
-AVX512DQ: No
-RDSEED: No
-ADX: No
-SMAP: No
-AVX512_IFMA: No
-CLFLUSHOPT: No
-CLWB: No
-Intel PT: No
-AVX512PF: No
-AVX512ER: No
-AVX512CD: No
-SHA: No
-AVX512BW: No
-AVX512VL: No
-PREFETCHWT1: No
-AVX512_VBMI: No
-UMIP: No
-PKU: No
-OSPKE: No
-WAITPKG: No
-AVX512_VBMI2: No
-CET_SS: No
-GFNI: No
-VAES: No
-VPCLMULQDQ: No
-AVX512_VNNI: No
-AVX512_BITALG: No
-AVX512_VPOPCNTDQ: No
-RDPID: No
-CLDEMOTE: No
-MOVDIRI: No
-MOVDIR64B: No
-ENQCMD: No
-AVX512_4VNNIW: No
-AVX512_4FMAPS: No
-FSRM: No
-AVX512_VP2INTERSECT: No
-MD_CLEAR: Yes
-TSX_FORCE_ABORT: No
-SERIALIZE: No
-HYBRID: No
-TSXLDTRK: No
-PCONFIG: No
-IBT: No
-AMX-BF16: No
-AMX-TILE: No
-AMX-INT8: No
-IBRS_IBPB: Yes
-STIBP: Yes
-L1D_FLUSH: Yes
-ARCH_CAPABILITIES: No
-SSBD: Yes
-L1 Data Cache: 32 KB, 8-way, 64B line
-L1 Instruction Cache: 32 KB, 8-way, 64B line
-L2 Unified Cache: 256 KB, 8-way, 64B line
-L3 Unified Cache: 3072 KB, 12-way, 64B line
-Physical Address bits: 39
-Virtual Address bits: 48
-CLZERO: No
-InstRetCntMsr: No
-RstrFpErrPtrs: No
-INVLPGB: No
-RDPRU: No
-MCOMMIT: No
-WBNOINVD: No
-IBPB: No
-INT_WBINVD: No
-IBRS: No
-STIBP: No
-IbrsAlwaysOn: No
-StibpAlwaysOn: No
-IbrsPreferred: No
-IbrsSameMode: No
-EferLmsleUnsupported: No
-INVLPGB_NESTED: No
-SSBD: No
-SsbdVirtSpecCtrl: No
-SsbdNotRequired: No
-TLB/Cache Descriptors (raw): 0x76036301 0xF0B5FF 0x0 0xC10000
-Digital Thermal Sensor: Yes
-Intel Turbo Boost: Yes
-ARAT: Yes
-PLN: Yes
-ECMD: Yes
-PTM: Yes
-HWP: No
-HWP_Notification: No
-HWP_Activity_Window: No
-HWP_Energy_Performance: No
-HWP_Package_Level: No
-HDC: No
-Intel Turbo Boost Max 3.0: No
-HWP_Capabilities: No
-HWP_PECI_Override: No
-Flexible_HWP: No
-Fast_Access_Mode: No
-HW_Feedback: No
-Ignore_Idle_Logical_Processor_HWP: No
-Digital Thermal Sensor Interrupt Thresholds: 2
-Hardware Coordination Feedback: Yes
-ACNT2: No
-Performance-Energy Bias: Yes
-Temperature Sensor: No
-Frequency ID Control: No
-Voltage ID Control: No
-Thermal Trip: No
-Thermal Monitoring: No
-Software Thermal Control: No
-100MHz Steps: No
-Hardware P-State: No
-TSC Invariant: Yes
-Core Performance Boost: No
-Read-Only Effective Frequency: No
-Processor Feedback Interface: No
-Processor Power Reporting: No
-Hypervisor Present: No
-SMEP: Yes
-SMAP: No
-UMIP: No
-PKU: No
-CET_SS: No
-CET_IBT: No
-PMU Version: 3
-GP Performance Counters: 4
-GP Counter Width: 48 bits
-Fixed Performance Counters: 3
-Fixed Counter Width: 48 bits
-Core Cycles Event: Available
-Instruction Retired Event: Available
-Reference Cycles Event: Available
-LLC Reference Event: Available
-LLC Misses Event: Available
-Branch Instruction Retired Event: Available
-Branch Mispredict Retired Event: Available
-XCR0 Supported Features (Low): 0x7
-XCR0 Supported Features (High): 0x0
-Max XSAVE Area Size: 832 bytes
-Current XSAVE Area Size: 832 bytes
-XSAVEOPT: Yes
-XSAVEC: No
-XGETBV_ECX1: No
-XSAVES: No
-AVX State Size: 256 bytes
-AVX State Offset: 576 bytes
-Processor Serial Number: Not Available
-```
+CPU features are grouped below by **CPUID leaf** (the `EAX` input value passed to the `CPUID` instruction). Each group is collapsible and tagged with the vendors that expose it:
 
-### `CpuSnapShot(core, coreNumbers=False, Kernel=True, User=True, Idle=True, PureKernalTime=False)` (Windows Only)
+- 🟢 **AMD & Intel** — leaf is present and decoded the same way on both vendors
+- 🔵 **Intel Only** — leaf/feature set is Intel-specific
+- 🟠 **AMD Only** — leaf/feature set is AMD-specific
+
+
+<details>
+<summary><b>Leaf 0x0 — Vendor Identification</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Vendor | Vendor ID string (e.g. `GenuineIntel`, `AuthenticAMD`) |
+| Max Basic CPUID Level | Highest supported basic leaf number |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x1 — Processor Info & Standard Features</b> &nbsp;🟢 AMD & Intel</summary>
+
+**Identification**
+
+| Feature | Value |
+|---|---|
+| Family | Display family number |
+| Model | Display model number |
+| Stepping | Silicon stepping revision |
+| Processor Type | Raw processor type field (0–3) |
+| APIC ID | Local APIC ID of the executing core |
+| CLFLUSH Size | Cache-line flush size in bytes |
+| Signature | Raw CPUID signature (hex) |
+
+**ECX Features**
+
+| Feature | Value |
+|---|---|
+| SSE3 / SSSE3 / SSE4.1 / SSE4.2 | Yes / No |
+| PCLMULQDQ | Yes / No — carry-less multiply |
+| DTES64 | Yes / No — 64-bit debug store |
+| MONITOR | Yes / No — MONITOR/MWAIT |
+| DS-CPL | Yes / No — CPL-qualified debug store |
+| VMX | Yes / No — Intel virtualization |
+| SMX | Yes / No — safer mode extensions |
+| EIST | Yes / No — Enhanced SpeedStep |
+| TM2 | Yes / No — thermal monitor 2 |
+| FMA | Yes / No — fused multiply-add |
+| CMPXCHG16B | Yes / No |
+| MOVBE | Yes / No |
+| POPCNT | Yes / No |
+| TSC-Deadline | Yes / No — TSC deadline timer for APIC |
+| AES | Yes / No |
+| XSAVE / OSXSAVE | Yes / No |
+| AVX | Yes / No |
+| F16C | Yes / No — half-precision conversions |
+| RDRAND | Yes / No |
+
+**EDX Features**
+
+| Feature | Value |
+|---|---|
+| FPU / VME / DE / PSE / TSC / MSR / PAE / MCE | Yes / No |
+| CX8 | Yes / No — CMPXCHG8B |
+| APIC | Yes / No |
+| SEP | Yes / No — SYSENTER/SYSEXIT |
+| MTRR / PGE / MCA / CMOV / PAT / PSE-36 | Yes / No |
+| PSN | Yes / No — processor serial number available |
+| CLFSH | Yes / No |
+| DS / ACPI | Yes / No |
+| MMX / FXSR / SSE / SSE2 | Yes / No |
+| SS | Yes / No — self-snoop |
+| TM | Yes / No — thermal monitor |
+| PBE | Yes / No — pending break enable |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x2 — TLB/Cache Descriptors (legacy)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| TLB/Cache Descriptors (raw) | Four raw hex register dumps requiring descriptor-table lookup |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x3 — Processor Serial Number</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Processor Serial Number | Hex serial string, or "Not Available" if disabled/unsupported |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x4 — Deterministic Cache Parameters</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| L1 Data Cache | Size (KB), ways of associativity, line size (B) |
+| L1 Instruction Cache | Size (KB), ways of associativity, line size (B) |
+| L2 Unified Cache | Size (KB), ways of associativity, line size (B) |
+| L3 Unified Cache | Size (KB), ways of associativity, line size (B) |
+
+*(One sub-leaf per cache level; iterated until an empty cache type is returned.)*
+
+</details>
+
+<details>
+<summary><b>Leaf 0x6 — Thermal & Power Management</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Digital Thermal Sensor | Yes / No |
+| Intel Turbo Boost / Turbo Boost Max 3.0 | Yes / No |
+| ARAT | Yes / No — always-running APIC timer |
+| PLN | Yes / No — power limit notification |
+| ECMD | Yes / No — extended clock modulation duty |
+| PTM | Yes / No — package thermal management |
+| HWP family (HWP, Notification, Activity Window, Energy Performance, Package Level, Capabilities, PECI Override, Flexible, Fast Access Mode) | Yes / No |
+| HDC | Yes / No — hardware duty cycling |
+| HW_Feedback / Ignore_Idle_Logical_Processor_HWP | Yes / No |
+| Digital Thermal Sensor Interrupt Thresholds | Count of supported thresholds |
+| Hardware Coordination Feedback | Yes / No |
+| ACNT2 | Yes / No |
+| Performance-Energy Bias | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x7, Subleaf 0 — Extended Features</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| FSGSBASE | Yes / No |
+| TSC_ADJUST | Yes / No |
+| SGX | Yes / No |
+| BMI1 / BMI2 | Yes / No |
+| HLE / RTM | Yes / No — TSX |
+| AVX2 | Yes / No |
+| SMEP / SMAP | Yes / No |
+| ERMS | Yes / No — enhanced rep movsb/stosb |
+| INVPCID | Yes / No |
+| PQM / PQE | Yes / No — platform QoS monitoring/enforcement |
+| MPX | Yes / No |
+| AVX512F / DQ / IFMA / PF / ER / CD / BW / VL | Yes / No |
+| RDSEED | Yes / No |
+| ADX | Yes / No |
+| CLFLUSHOPT / CLWB | Yes / No |
+| Intel PT | Yes / No |
+| SHA | Yes / No |
+| PREFETCHWT1 | Yes / No |
+| AVX512_VBMI / VBMI2 | Yes / No |
+| UMIP / PKU / OSPKE | Yes / No |
+| WAITPKG | Yes / No |
+| CET_SS | Yes / No |
+| GFNI / VAES / VPCLMULQDQ | Yes / No |
+| AVX512_VNNI / BITALG / VPOPCNTDQ | Yes / No |
+| RDPID | Yes / No |
+| CLDEMOTE | Yes / No |
+| MOVDIRI / MOVDIR64B | Yes / No |
+| ENQCMD | Yes / No |
+| AVX512_4VNNIW / 4FMAPS / VP2INTERSECT | Yes / No |
+| FSRM | Yes / No — fast short REP MOVSB |
+| MD_CLEAR | Yes / No |
+| TSX_FORCE_ABORT | Yes / No |
+| SERIALIZE | Yes / No |
+| HYBRID | Yes / No — hybrid core topology |
+| TSXLDTRK | Yes / No |
+| PCONFIG | Yes / No |
+| IBT | Yes / No — indirect branch tracking |
+| AMX-BF16 / TILE / INT8 | Yes / No |
+| IBRS_IBPB / STIBP | Yes / No |
+| L1D_FLUSH | Yes / No |
+| ARCH_CAPABILITIES | Yes / No |
+| SSBD | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x7, Subleaf 1 — Extended Features (cont.)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| AVX_VNNI | Yes / No |
+| AVX512_BF16 | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x7, Subleaf 2 — Extended Features (cont.)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| PSFD | Yes / No |
+| IPRED_CTRL | Yes / No |
+| RRSBA_CTRL | Yes / No |
+| DDPD_U | Yes / No |
+| BHI_CTRL | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x10 — Resource Director Technology (RDT)</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Intel L3 CAT | Yes / No — L3 cache allocation |
+| L3 CAT Mask Length | Bit width of the L3 CAT capacity mask |
+| Intel L2 CAT | Yes / No — L2 cache allocation |
+| Intel MBA | Yes / No — memory bandwidth allocation |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x12 — SGX Capabilities</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| SGX1 | Yes / No |
+| SGX2 | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x14 — Intel Processor Trace</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Intel PT Max Subleaf | Number of additional PT sub-leaves |
+| CR3 filtering supported | Yes |
+| Configurable PSB and Cycle-Accurate Mode | Yes |
+| IP/TraceStop filtering & MSR preservation across warm reset | Yes |
+| MTC timing packet / COFI-based suppression | Yes |
+| ToPA output scheme | Yes |
+| ToPA multiple output regions | Yes |
+| Single-range output scheme | Yes |
+| Output to Trace Transport subsystem | Yes |
+| IP payloads are LIP | Yes |
+| PTWRITE supported | Yes |
+| Power Event Trace supported | Yes |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x16 — Processor Frequency Information</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| Base Frequency (MHz) | Rated base clock |
+| Max Frequency (MHz) | Rated max turbo clock |
+| Bus Frequency (MHz) | Reference/bus clock |
+
+</details>
+
+<details>
+<summary><b>Leaf 0xA — Architectural Performance Monitoring</b> &nbsp;🔵 Intel Only</summary>
+
+| Feature | Value |
+|---|---|
+| PMU Version | Performance-monitoring architecture version |
+| GP Performance Counters | Number of general-purpose counters |
+| GP Counter Width | Counter width in bits |
+| Fixed Performance Counters | Number of fixed-function counters |
+| Fixed Counter Width | Counter width in bits |
+| Core Cycles / Instruction Retired / Reference Cycles / LLC Reference / LLC Misses / Branch Instruction Retired / Branch Mispredict Retired Event | Available / Not Available |
+
+</details>
+
+<details>
+<summary><b>Leaf 0xD — Extended State (XSAVE/XSAVEC)</b> &nbsp;🟢 AMD & Intel</summary>
+
+**Subleaf 0**
+
+| Feature | Value |
+|---|---|
+| XCR0 Supported Features (Low/High) | Raw feature bitmap (hex) |
+| Current XSAVE Area Size (Enabled Features) | Bytes required for enabled state |
+| Max XSAVE Area Size (All Supported Features) | Bytes required for all supported state |
+
+**Subleaf 1**
+
+| Feature | Value |
+|---|---|
+| XSAVEOPT | Yes / No |
+| XSAVEC | Yes / No |
+| XGETBV_ECX1 | Yes / No |
+| XSAVES | Yes / No |
+| XSAVE Area Size (XCR0 \| IA32_XSS) | Bytes |
+
+**Subleaves 2–15** (one per active state component: x87, SSE, AVX, BNDREGS, BNDCSR, AVX-512 opmask/ZMM_Hi256/Hi16_ZMM, PKRU)
+
+| Feature | Value |
+|---|---|
+| `<State>` State Size | Bytes |
+| `<State>` State Offset | Byte offset within the XSAVE area |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x40000000 — Hypervisor Info</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Hypervisor Present | Yes / No (from leaf 0x1, ECX bit 31) |
+| Hypervisor Vendor | Vendor ID string (e.g. `KVMKVMKVM`, `VMwareVMware`) |
+| Hypervisor Max Leaf | Highest supported hypervisor leaf (hex) |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000002 – 0x80000004 — Brand String</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Brand | Full marketing name string, or "Not Available" |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000001 — Extended Feature Flags</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| LAHF/SAHF | Yes / No |
+| CMP_LEGACY | Yes / No |
+| SVM | Yes / No — secure virtual machine |
+| EXT_APIC | Yes / No |
+| CR8_LEGACY | Yes / No |
+| ABM | Yes / No — advanced bit manipulation |
+| SSE4A | Yes / No |
+| MISALIGNSSE | Yes / No |
+| 3DNOWPREFETCH | Yes / No |
+| OSVW | Yes / No |
+| IBS | Yes / No — instruction-based sampling |
+| XOP | Yes / No |
+| SKINIT | Yes / No |
+| WDT | Yes / No — watchdog timer |
+| LWP | Yes / No — lightweight profiling |
+| FMA4 | Yes / No |
+| TCE | Yes / No |
+| NODEID_MSR | Yes / No |
+| TBM | Yes / No — trailing bit manipulation |
+| TOPOEXT | Yes / No |
+| PERFCTR_CORE / NB / LLC | Yes / No |
+| BPEXT | Yes / No |
+| PTSC | Yes / No |
+| MWAITX | Yes / No |
+| SYSCALL | Yes / No |
+| NX | Yes / No — no-execute bit |
+| MMXEXT | Yes / No |
+| FXSR_OPT | Yes / No |
+| PDPE1GB | Yes / No — 1 GB pages |
+| RDTSCP | Yes / No |
+| LM | Yes / No — long mode (64-bit) |
+| 3DNOWEXT / 3DNOW | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000005 — L1 Cache/TLB (AMD)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| L1 DTLB / ITLB 2MB-4MB | Entry count, associativity |
+| L1 Data Cache (AMD) | Size (KB), associativity, line size (B) |
+| L1 Instruction Cache (AMD) | Size (KB), associativity, line size (B) |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000006 — L2/L3 Cache (AMD)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| L2 Cache (AMD) | Size (KB), associativity, line size (B) |
+| L3 Cache (AMD) | Size (KB), associativity, line size (B) |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000007 — Advanced Power Management</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| Temperature Sensor | Yes / No |
+| Frequency ID Control / Voltage ID Control | Yes / No |
+| Thermal Trip / Thermal Monitoring / Software Thermal Control | Yes / No |
+| 100MHz Steps | Yes / No |
+| Hardware P-State | Yes / No |
+| TSC Invariant | Yes / No |
+| Core Performance Boost | Yes / No |
+| Read-Only Effective Frequency | Yes / No |
+| Processor Feedback Interface | Yes / No |
+| Processor Power Reporting | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x80000008 — Address Sizes</b> &nbsp;🟢 AMD & Intel</summary>
+
+| Feature | Value |
+|---|---|
+| Physical Address bits | Number of physical address bits |
+| Virtual Address bits | Number of virtual address bits |
+| Guest Physical Address bits | (if nested paging is used) |
+| Performance TSC Size | Bits |
+| CLZERO | Yes / No |
+| InstRetCntMsr / RstrFpErrPtrs | Yes / No |
+| INVLPGB / INVLPGB_NESTED | Yes / No |
+| RDPRU | Yes / No |
+| MCOMMIT / WBNOINVD | Yes / No |
+| IBPB / IBRS / STIBP | Yes / No |
+| INT_WBINVD | Yes / No |
+| IbrsAlwaysOn / StibpAlwaysOn / IbrsPreferred / IbrsSameMode | Yes / No |
+| EferLmsleUnsupported | Yes / No |
+| SSBD / SsbdVirtSpecCtrl / SsbdNotRequired | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x8000000A — SVM (Secure Virtual Machine)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| SVM Revision | Revision number |
+| SVM ASIDs | Number of address space identifiers |
+| SVM Nested Paging | Yes / No |
+| SVM LBR Virtualization | Yes / No |
+| SVM Lock | Yes / No |
+| SVM NRIP Save | Yes / No |
+| SVM TSC Rate MSR | Yes / No |
+| SVM VMCB Clean | Yes / No |
+| SVM Flush by ASID | Yes / No |
+| SVM Decode Assists | Yes / No |
+| SVM Pause Filter / Pause Filter Threshold | Yes / No |
+| SVM AVIC | Yes / No |
+| SVM V_VMSAVE_VMLOAD | Yes / No |
+| SVM VGIF | Yes / No |
+| SVM GMET | Yes / No |
+
+</details>
+
+<details>
+<summary><b>Leaf 0x8000001F — Encrypted Memory (SME/SEV)</b> &nbsp;🟠 AMD Only</summary>
+
+| Feature | Value |
+|---|---|
+| AMD SME | Yes / No — secure memory encryption |
+| AMD SEV | Yes / No — secure encrypted virtualization |
+| Page Flush MSR | Yes / No |
+| SEV-ES | Yes / No |
+| SEV-SNP | Yes / No |
+| VMPL | Yes / No |
+| C-bit location | Bit position of the encryption C-bit |
+| Encrypted guests supported | Count of supported ASIDs for encrypted guests |
+
+</details>
+
+
+
+
+### `cpu_snapshot(core, coreNumbers=False, Kernel=True, User=True, Idle=True, PureKernalTime=False)` (Windows Only)
 
 (Windows-only) Gets a snapshot of CPU time counters for a specific core. Can also return the total number of cores.
 
@@ -383,16 +626,16 @@ if sys.platform == "win32":
     cpu_monitor = PyLiveCPU()
 
     # Get total number of cores
-    core_count = cpu_monitor.CpuSnapShot(core=0, coreNumbers=True)
+    core_count = cpu_monitor.cpu_snapshot(core=0, coreNumbers=True)
     print(f"CPU Core Count: {core_count}")
 
     # Get snapshot for core 0
-    snapshot = cpu_monitor.CpuSnapShot(core=0)
+    snapshot = cpu_monitor.cpu_snapshot(core=0)
     print(f"Snapshot for Core 0:")
     for key, value in snapshot.items():
         print(f" - {key}: {value}")
 else:
-    print("CpuSnapShot is only supported on Windows.")
+    print("cpu_snapshot is only supported on Windows.")
 ```
 
 **Example Output**
@@ -549,7 +792,7 @@ Returns the current disk read and write speeds in Megabytes per second (MB/s).
 Disk R/W (mode 1): Read MB/s: 0.00, Write MB/s: 0.00
 ```
 
-### `HighDiskUsage(threshold_mbps=80.0)`
+### `high_disk_usage(threshold_mbps=80.0)`
 
 Checks if the combined read or write speed exceeds a specified threshold. This method is only available when the class is initialized with `mode=1`.
 
@@ -576,7 +819,7 @@ Checks if the combined read or write speed exceeds a specified threshold. This m
 ```python
 from HardView.LiveView import PyLiveDisk
 disk_monitor = PyLiveDisk(mode=1)
-is_high = disk_monitor.HighDiskUsage(threshold_mbps=100.0)
+is_high = disk_monitor.high_disk_usage(threshold_mbps=100.0)
 print(f"High Disk Usage (>100 MB/s): {is_high}")
 ```
 
@@ -650,7 +893,7 @@ Per-Adapter Usage (mode 1):
  - Intel[R] Ethernet Connection I217-V: 0.0000 MB/s
 ```
 
-### `getHighCard()`
+### `get_high_card()`
 
 Identifies and returns the name of the network interface with the highest current usage.
 
@@ -675,7 +918,7 @@ This method takes no parameters.
 ```python
 from HardView.LiveView import PyLiveNetwork
 net_monitor = PyLiveNetwork()
-busiest_card = net_monitor.getHighCard()
+busiest_card = net_monitor.get_high_card()
 print(f"Highest Usage Card: {busiest_card}")
 ```
 
@@ -809,7 +1052,7 @@ else:
 
 The `LiveView` module provides comprehensive temperature monitoring capabilities for both Windows and Linux systems.
 
-## `PyTempCpu` (Windows Only)
+## `PyTempCpu` (Windows Only) - **Restricted**
 
 The `PyTempCpu` class monitors CPU temperature and fan speed on Windows systems.
 
@@ -873,7 +1116,7 @@ Returns the CPU fan RPM.
 
 Updates all CPU temperature and fan data by calling the hardware monitor update function.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()` (Alternative: `re_get()`)
 
 Re-retrieves CPU temperature and fan data without updating the hardware monitor.
 
@@ -905,7 +1148,7 @@ else:
 
 ---
 
-## `PyTempGpu` (Windows Only)
+## `PyTempGpu` (Windows Only) - **Restricted**
 
 The `PyTempGpu` class monitors GPU temperature and fan speed on Windows systems.
 
@@ -949,7 +1192,7 @@ Returns the GPU fan RPM.
 
 Updates all GPU temperature and fan data.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()` (Alternative: `re_get()`)
 
 Re-retrieves GPU temperature and fan data.
 
@@ -979,7 +1222,7 @@ else:
 
 ---
 
-## `PyTempOther` (Windows Only)
+## `PyTempOther` (Windows Only) - **Restricted**
 
 The `PyTempOther` class monitors motherboard and storage device temperatures on Windows systems.
 
@@ -1009,7 +1252,7 @@ Returns the motherboard temperature.
 |---------|-------------------------------------------|
 | `float` | The motherboard temperature in Celsius. |
 
-#### `get_Storage_temp()`
+#### `get_storage_temp()`
 
 Returns the storage device temperature.
 
@@ -1023,7 +1266,7 @@ Returns the storage device temperature.
 
 Updates all temperature data.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()` (Alternative: `re_get()`)
 
 Re-retrieves temperature data.
 
@@ -1039,7 +1282,7 @@ if sys.platform == "win32":
         other_temp = PyTempOther()
         
         print(f"Motherboard Temperature: {other_temp.get_mb_temp():.1f}°C")
-        print(f"Storage Temperature: {other_temp.get_Storage_temp():.1f}°C")
+        print(f"Storage Temperature: {other_temp.get_storage_temp():.1f}°C")
         
         # Update readings
         other_temp.update()
@@ -1073,7 +1316,7 @@ else:
 
 ### Methods
 
-#### `GetValueByName(name)`
+#### `get_value_by_name(name)`
 
 Gets a specific sensor value by name.
 
@@ -1089,7 +1332,7 @@ Gets a specific sensor value by name.
 |---------|-------------------------------------------|
 | `float` | The sensor value. |
 
-#### `getAllSensors()`
+#### `get_all_sensors()`
 
 Gets a list of all available sensor names.
 
@@ -1099,21 +1342,38 @@ Gets a list of all available sensor names.
 |--------------|-------------------------------------------|
 | `list[str]`  | A list of all sensor names. |
 
-#### `getAllFanRPMs()`
+#### `get_sensors()` (4.0.0+)
 
-Gets a list of all fan RPM data as name-value pairs.
+Gets a dictionary of all available sensors and their values.
+
+**Returns**
+
+| Type         | Description                               |
+|--------------|-------------------------------------------|
+| `dict[str, float]`  | A dictionary of sensor names and their values. |
+
+#### `get_all_fan_rpms()`
+
+> **Note** (4.0.0+)
+>
+> This method is kept for backward compatibility only.  
+> It no longer fetches data and always returns an empty array.
+>
+> Fan sensors are now available in the dictionary returned by `get_sensors()`.  
+> You can use the [liveview_helper](#liveview_helper-python-helper-module) model shown below to parse the sensor name and determine which device it belongs to.
+> **This method will be removed entirely in future releases.**
 
 **Returns**
 
 | Type                           | Description                               |
 |--------------------------------|-------------------------------------------|
-| `list[tuple[str, float]]`     | A list of tuples containing fan name and RPM. |
+| `list[tuple[str, float]]`      | Empty.                                     |
 
 #### `update()`
 
 Updates all sensor and fan data.
 
-#### `reget()` (Alternative: `ReGet()`)
+#### `reget()`
 
 Re-retrieves sensor and fan data.
 
@@ -1129,17 +1389,17 @@ if sys.platform == "win32":
         sensor = PySensor()
         sensor.update()     #The update is important after initialization here. 
         # Get all available sensors
-        all_sensors = sensor.getAllSensors()
+        all_sensors = sensor.get_all_sensors()
         print("Available Sensors:")
         for sensor_name in all_sensors[:10]:  # Show first 10 sensors
             try:
-                value = sensor.GetValueByName(sensor_name)
+                value = sensor.get_value_by_name(sensor_name)
                 print(f" - {sensor_name}: {value:.1f}°C")
             except:
                 print(f" - {sensor_name}: Unable to read")
         
         # Get all fan RPMs
-        fan_rpms = sensor.getAllFanRPMs()
+        fan_rpms = sensor.get_all_fan_rpms()
         print("\nFan RPMs:")
         for fan_name, rpm in fan_rpms:
             print(f" - {fan_name}: {rpm:.0f} RPM")
@@ -1177,11 +1437,11 @@ else:
 
 | Method                                | Description                                                         |
 | ------------------------------------- | ------------------------------------------------------------------- |
-| `Init()`                              | Initializes the hardware temperature monitor.                       |
-| `Close()`                             | Shuts down the hardware temperature monitor.                        |
-| `Update()`                            | Updates the hardware monitor data.                                  |
-| `SpecificUpdate(id: int)`             | Updates the temperature of a specific hardware component by its ID. |
-| `MultiSpecificUpdate(ids: list[int])` | Updates the temperatures of multiple hardware components at once.   |
+| `init()`                              | Initializes the hardware temperature monitor.                       |
+| `close()`                             | Shuts down the hardware temperature monitor.                        |
+| `update()`                            | Updates the hardware monitor data.                                  |
+| `specific_update(id: int)`             | Updates the temperature of a specific hardware component by its ID. |
+| `multi_specific_update(ids: list[int])` | Updates the temperatures of multiple hardware components at once.   |
 
 ### Component IDs
 
@@ -1203,12 +1463,12 @@ else:
 ```python
 if sys.platform == "win32":
     temp_manager = PyManageTemp()
-    temp_manager.Init()
+    temp_manager.init()
     
     # Update only CPU temperature
-    temp_manager.SpecificUpdate(3)  # 3 = CPU
+    temp_manager.specific_update(3)  # 3 = CPU
     
-    temp_manager.Close()
+    temp_manager.close()
 ```
 
 #### Multiple components update
@@ -1216,12 +1476,12 @@ if sys.platform == "win32":
 ```python
 if sys.platform == "win32":
     temp_manager = PyManageTemp()
-    temp_manager.Init()
+    temp_manager.init()
     
     # Update multiple components: CPU, GPU, Memory
-    temp_manager.MultiSpecificUpdate([3, 4, 5])
+    temp_manager.multi_specific_update([3, 4, 5])
     
-    temp_manager.Close()
+    temp_manager.close()
 ```
 
 ---
@@ -1246,7 +1506,7 @@ else:
 
 ### Methods
 
-#### `getCpuTemp()`
+#### `get_cpu_temp()`
 
 Returns the CPU package temperature.
 
@@ -1256,7 +1516,7 @@ Returns the CPU package temperature.
 |---------|-------------------------------------------|
 | `float` | The CPU temperature in Celsius. Returns -1 if not found. |
 
-#### `getChipsetTemp()`
+#### `get_chipset_temp()`
 
 Returns the chipset temperature.
 
@@ -1266,7 +1526,7 @@ Returns the chipset temperature.
 |---------|-------------------------------------------|
 | `float` | The chipset temperature in Celsius. Returns -1 if not found. |
 
-#### `getMotherboardTemp()`
+#### `get_motherboard_temp()`
 
 Returns the motherboard temperature.
 
@@ -1276,7 +1536,7 @@ Returns the motherboard temperature.
 |---------|-------------------------------------------|
 | `float` | The motherboard temperature in Celsius. Returns -1 if not found. |
 
-#### `getVRMTemp()`
+#### `get_vrm_temp()`
 
 Returns the VRM (Voltage Regulator Module) temperature.
 
@@ -1286,7 +1546,7 @@ Returns the VRM (Voltage Regulator Module) temperature.
 |---------|-------------------------------------------|
 | `float` | The VRM temperature in Celsius. Returns -1 if not found. |
 
-#### `getDriveTemp()`
+#### `get_drive_temp()`
 
 Returns the storage drive temperature.
 
@@ -1296,7 +1556,7 @@ Returns the storage drive temperature.
 |---------|-------------------------------------------|
 | `float` | The drive temperature in Celsius. Returns -1 if not found. |
 
-#### `getAllSensorNames()`
+#### `get_all_sensor_names()`
 
 Returns a list of all available sensor names.
 
@@ -1306,7 +1566,7 @@ Returns a list of all available sensor names.
 |--------------|-------------------------------------------|
 | `list[str]`  | A list of all available sensor names. |
 
-#### `findSensorName(name)`
+#### `find_sensor_name(name)`
 
 Finds sensors that match a specific name.
 
@@ -1322,7 +1582,7 @@ Finds sensors that match a specific name.
 |--------------------------------|-------------------------------------------|
 | `list[tuple[str, int]]`       | A list of tuples containing sensor name and index. |
 
-#### `GetSensorTemp(name, Match)`
+#### `get_sensor_temp(name, Match)`
 
 Gets the temperature of a specific sensor by name.
 
@@ -1339,7 +1599,7 @@ Gets the temperature of a specific sensor by name.
 |---------|-------------------------------------------|
 | `float` | The sensor temperature in Celsius. Returns -1 if not found. |
 
-#### `GetSensorsWithTemp()`
+#### `get_sensors_with_temp()`
 
 Gets all sensors with their temperature values.
 
@@ -1371,28 +1631,28 @@ if sys.platform == "linux":
         linux_sensor = PyLinuxSensor()
         
         # Get specific temperature readings
-        print(f"CPU Temperature: {linux_sensor.getCpuTemp():.1f}°C")
-        print(f"Motherboard Temperature: {linux_sensor.getMotherboardTemp():.1f}°C")
-        print(f"Chipset Temperature: {linux_sensor.getChipsetTemp():.1f}°C")
-        print(f"VRM Temperature: {linux_sensor.getVRMTemp():.1f}°C")
-        print(f"Drive Temperature: {linux_sensor.getDriveTemp():.1f}°C")
+        print(f"CPU Temperature: {linux_sensor.get_cpu_temp():.1f}°C")
+        print(f"Motherboard Temperature: {linux_sensor.get_motherboard_temp():.1f}°C")
+        print(f"Chipset Temperature: {linux_sensor.get_chipset_temp():.1f}°C")
+        print(f"VRM Temperature: {linux_sensor.get_vrm_temp():.1f}°C")
+        print(f"Drive Temperature: {linux_sensor.get_drive_temp():.1f}°C")
         
         # Get all available sensors
-        all_sensors = linux_sensor.getAllSensorNames()
+        all_sensors = linux_sensor.get_all_sensor_names()
         print(f"\nTotal Sensors Available: {len(all_sensors)}")
         
         # Show first few sensors with temperatures
-        sensors_with_temp = linux_sensor.GetSensorsWithTemp()
+        sensors_with_temp = linux_sensor.get_sensors_with_temp()
         print("\nAll Sensors with Temperatures:")
         for sensor_name, temp in sensors_with_temp[:10]:  # Show first 10
             if temp > 0:  # Only show valid temperatures
                 print(f" - {sensor_name}: {temp:.1f}°C")
         
         # Find specific sensor
-        core_sensors = linux_sensor.findSensorName("Core")
+        core_sensors = linux_sensor.find_sensor_name("Core")
         print(f"\nCore Sensors Found: {len(core_sensors)}")
         for sensor_name, index in core_sensors:
-            temp = linux_sensor.GetSensorTemp(sensor_name, True)
+            temp = linux_sensor.get_sensor_temp(sensor_name, True)
             if temp > 0:
                 print(f" - {sensor_name}: {temp:.1f}°C")
         
@@ -1426,7 +1686,7 @@ else:
     print("PyRawInfo is only supported on Windows.")
 ```
 
-### `RSMB()` (Static Method)
+### `rsmb()` (Static Method)
 
 Retrieves the raw SMBIOS (RSMB) data from the system firmware.
 
@@ -1455,7 +1715,7 @@ if sys.platform == "win32":
     from HardView.LiveView import PyRawInfo
     
     try:
-        smbios_data = PyRawInfo.RSMB()
+        smbios_data = PyRawInfo.rsmb()
         print(f"Raw SMBIOS Data (first 20 bytes): {smbios_data[:20]}...")
         print(f"Total SMBIOS Data Size: {len(smbios_data)} bytes")
     except Exception as e:
@@ -1526,13 +1786,494 @@ Always use try-catch blocks when working with hardware monitoring functions.
     In this case, you must use `.reget` to refresh all temperature sensor objects.
   * **When using `.update` from an individual temperature object**:
     This method performs **two tasks** — it updates the sensor values in both `libreHardwareMonitorlib` and `HardwareWrapper`, **and** updates the properties of the specific object you used it on.
-    Therefore, if you call `.update` on an individual object, there is **no need** to call `.reget` for that object. (In newer versions, you can use the SpecificUpdate function, which is better than the regular update functions)
+    Therefore, if you call `.update` on an individual object, there is **no need** to call `.reget` for that object. (In newer versions, you can use the specific_update function, which is better than the regular update functions)
 
 * **Performance tip**:
   After a global update using `PyManageTemp`’s `.Update` or calling `.update` on a specific temperature object, **do not** call `.Update` or `.update` again for the remaining objects.
   This would add unnecessary load, increase execution time, and cause redundant updates.
   Instead, use `.reget` to simply fetch the latest values.
 
+* **Starting from version 4.0.0**:
+  `PyTempCpu`, `PyTempGpu`, `PyTempOther` (and their `liveview_helper` wrappers) are **restricted** and no longer recommended for monitoring sensors. Use `PySensor` instead — it's faster and more accurate.
+
+  If you only want to monitor **one specific device** (not all sensors), you can still do this efficiently with `PySensor`:
+
+  1. Loop over the sensor map from `PySensor`.
+  2. For each sensor name, figure out which hardware it belongs to — either with `liveview_helper`'s `parse_sensor()`, or directly with `PyManageTemp.get_hardware_id_by_name(hardware_name)`, where `hardware_name` is just the first segment of the sensor name (see the `liveview_helper` section below for the exact sensor-name format). This call returns the hardware's ID.
+  3. To refresh just that device, call `PyManageTemp.specific_update(id)` — **not** `PySensor.update()`, since that updates everything.
+  4. Call `PySensor.reget()` to refresh the sensor map.
+  5. Call `PySensor.get_value_by_name(name)` to read the updated value for the sensor you care about.
+
+  This whole flow is fast, especially if you pass the hardware-name segment straight to `get_hardware_id_by_name()` rather than going through `liveview_helper`'s full `parse_sensor()` (which also builds Python objects) — that extra parsing isn't needed for this use case and adds avoidable overhead.
+  **example:**
+
+```python
+import time
+
+from HardView import LiveView
+from HardView.liveview_helper import HardwareType
+
+sensor = LiveView.PySensor()
+manager = LiveView.PyManageTemp()
+
+# Figure out once which sensor names belong to the CPU (no need to redo
+# this every loop iteration, as the sensor names are not expected to change
+# while monitoring the CPU).
+all_names = sensor.get_all_sensors()
+cpu_names = [
+    name
+    for name in all_names
+    if manager.get_hardware_id_by_name(name.split(" - ")[0]) == HardwareType.CPU
+]
+
+while True:
+
+    manager.specific_update(HardwareType.CPU)  # refresh CPU sensors only
+    sensor.reget()                              # refresh the sensor map
 
 
+    print("--- CPU Sensors ---")
+    for name in cpu_names:
+        print(f"{name}: {sensor.get_value_by_name(name)}")
 
+    time.sleep(1)
+
+```
+
+---
+
+## `liveview_helper` (Python Helper Module)
+
+`liveview_helper` is a small pure-Python convenience layer built **on top of** `HardView.LiveView`. It does not add any new C++/native functionality — it simply wraps the existing `PyTempCpu`, `PyTempGpu`, `PyTempOther`, `PySensor`, and `PyManageTemp` classes so that updating a temperature object's data becomes a single function call, without the caller having to remember which component ID to pass to `PyManageTemp.specific_update()`.
+
+---
+
+
+### `PyTempDisk` - Liveview_helper
+
+A subclass of `PyTempOther` that represents **Storage temperature only**. It inherits every method from `PyTempOther` (`get_mb_temp`, `get_storage_temp`, `reget`/`re_get`, ...), but overrides `update()` so that **only the Storage hardware is refreshed instead of updating all hardware components**.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempDisk
+
+disk_temp = PyTempDisk()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(6)` (Storage ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+#### `get_disk_temp()`
+
+Convenience alias for `get_storage_temp()`.
+
+**Returns**
+
+| Type    | Description                               |
+|---------|-------------------------------------------|
+| `float` | The storage drive temperature in Celsius. |
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempDisk
+
+disk_temp = PyTempDisk()
+print(f"Disk Temperature: {disk_temp.get_disk_temp():.1f}°C")
+
+disk_temp.update()
+print(f"Updated Disk Temperature: {disk_temp.get_disk_temp():.1f}°C")
+```
+
+---
+
+### `PyTempMotherboard` - Liveview_helper
+
+A subclass of `PyTempOther` that represents **Motherboard temperature only**. Same idea as `PyTempDisk`, but `update()` refreshes only the Motherboard branch.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempMotherboard
+
+mb_temp = PyTempMotherboard()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(1)` (Motherboard ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+#### `get_motherboard_temp()`
+
+Convenience alias for `get_mb_temp()`.
+
+**Returns**
+
+| Type    | Description                               |
+|---------|-------------------------------------------|
+| `float` | The motherboard temperature in Celsius.   |
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempMotherboard
+
+mb_temp = PyTempMotherboard()
+print(f"Motherboard Temperature: {mb_temp.get_motherboard_temp():.1f}°C")
+
+mb_temp.update()
+print(f"Updated Motherboard Temperature: {mb_temp.get_motherboard_temp():.1f}°C")
+```
+
+---
+
+### `update_hardware(temp_obj)`
+
+A generic updater that accepts **any** LiveView temperature object and refreshes it using the correct method for its type, so the caller does not need to know component IDs or call `PyManageTemp` directly.
+
+**Parameters**
+
+| Name       | Type                                                                                       | Description                                    |
+|------------|---------------------------------------------------------------------------------------------|-------------------------------------------------|
+| `temp_obj` | `PySensor` \| `PyTempCpu` \| `PyTempGpu` \| `PyTempOther` \| `PyTempDisk` \| `PyTempMotherboard` | The temperature object to update.               |
+
+**Returns**
+
+| Type   | Description                                            |
+|--------|---------------------------------------------------------|
+| *(same type as `temp_obj`)* | The same object passed in, with its data refreshed. |
+
+**Behavior by type**
+
+| Object type                          | Behavior                                                                                     |
+|---------------------------------------|-----------------------------------------------------------------------------------------------|
+| `PySensor`                             | Calls the object's own `.update()` directly (handles everything internally).                 |
+| `PyTempCpu`                            | `specific_update(3)` (CPU) then `.re_get()`.                                                  |
+| `PyTempGpu`                            | `specific_update(5)` (GPU) then `.re_get()`.                                                  |
+| `PyTempDisk`                           | `specific_update(6)` (Storage only) then `.re_get()`.                                         |
+| `PyTempMotherboard`                    | `specific_update(1)` (Motherboard only) then `.re_get()`.                                     |
+| `PyTempOther` (plain, not a subclass)  | `multi_specific_update([1, 6])` (Motherboard **and** Storage, since a plain `PyTempOther` holds both), then `.re_get()`. |
+
+Raises `TypeError` if `temp_obj` is not one of the supported types.
+
+> **Note:** `PyTempDisk` and `PyTempMotherboard` are both subclasses of `PyTempOther`, so the type check for them is performed **before** the plain `PyTempOther` check inside `update_hardware`. Otherwise a `PyTempDisk` or `PyTempMotherboard` instance would incorrectly match the plain `PyTempOther` branch and trigger an unnecessary update of both Motherboard and Storage.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+### `PyTempCPU` - Liveview_helper
+
+A subclass of `PyTempCpu` that overrides `update()` so it refreshes **only the CPU sensors** using `specific_update`, instead of triggering a full/generic hardware update. It inherits every other method from `PyTempCpu` (`get_temp`, `get_fan_rpm`, `re_get`, ...) unchanged.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempCPU
+
+cpu_temp = PyTempCPU()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(3)` (CPU ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempCPU
+
+cpu_temp = PyTempCPU()
+print(f"CPU Temperature: {cpu_temp.get_temp():.1f}°C")
+
+cpu_temp.update()
+print(f"Updated CPU Temperature: {cpu_temp.get_temp():.1f}°C")
+```
+
+---
+
+### `PyTempGPU` - Liveview_helper
+
+A subclass of `PyTempGpu` that overrides `update()` so it refreshes **only the GPU sensors** using `specific_update`, instead of triggering a full/generic hardware update. It inherits every other method from `PyTempGpu` unchanged.
+
+**Python Usage**
+
+```python
+from liveview_helper import PyTempGPU
+
+gpu_temp = PyTempGPU()
+```
+
+#### `update()`
+
+Calls `PyManageTemp().specific_update(5)` (GPU ID only), then `self.re_get()` to refresh the cached values on this object.
+
+**Parameters**
+
+This method takes no parameters.
+
+**Returns**
+
+This method does not return a value.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import PyTempGPU
+
+gpu_temp = PyTempGPU()
+print(f"GPU Temperature: {gpu_temp.get_temp():.1f}°C")
+
+gpu_temp.update()
+print(f"Updated GPU Temperature: {gpu_temp.get_temp():.1f}°C")
+```
+
+---
+
+### `update_hardware(temp_obj)`
+
+A generic updater that accepts **any** LiveView temperature object and refreshes it using the correct method for its type, so the caller does not need to know component IDs or call `PyManageTemp` directly.
+
+**Parameters**
+
+| Name       | Type                                                                                       | Description                                    |
+|------------|---------------------------------------------------------------------------------------------|-------------------------------------------------|
+| `temp_obj` | `PySensor` \| `PyTempCpu` \| `PyTempGpu` \| `PyTempOther` \| `PyTempDisk` \| `PyTempMotherboard` | The temperature object to update.               |
+
+**Returns**
+
+| Type   | Description                                            |
+|--------|---------------------------------------------------------|
+| *(same type as `temp_obj`)* | The same object passed in, with its data refreshed. |
+
+**Behavior by type**
+
+| Object type                          | Behavior                                                                                     |
+|---------------------------------------|-----------------------------------------------------------------------------------------------|
+| `PySensor`                             | Calls the object's own `.update()` directly (handles everything internally).                 |
+| `PyTempCpu`                            | `specific_update(3)` (CPU) then `.re_get()`.                                                  |
+| `PyTempGpu`                            | `specific_update(5)` (GPU) then `.re_get()`.                                                  |
+| `PyTempDisk`                           | `specific_update(6)` (Storage only) then `.re_get()`.                                         |
+| `PyTempMotherboard`                    | `specific_update(1)` (Motherboard only) then `.re_get()`.                                     |
+| `PyTempOther` (plain, not a subclass)  | `multi_specific_update([1, 6])` (Motherboard **and** Storage, since a plain `PyTempOther` holds both), then `.re_get()`. |
+
+Raises `TypeError` if `temp_obj` is not one of the supported types.
+
+> **Note:** `PyTempDisk` and `PyTempMotherboard` are both subclasses of `PyTempOther`, so the type check for them is performed **before** the plain `PyTempOther` check inside `update_hardware`. Otherwise a `PyTempDisk` or `PyTempMotherboard` instance would incorrectly match the plain `PyTempOther` branch and trigger an unnecessary update of both Motherboard and Storage.
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from HardView import LiveView
+from liveview_helper import PyTempDisk, PyTempMotherboard, update_hardware
+
+cpu = LiveView.PyTempCpu()
+update_hardware(cpu)
+print(f"CPU Temperature: {cpu.get_temp():.1f}°C")
+
+disk = PyTempDisk()
+update_hardware(disk)
+print(f"Disk Temperature: {disk.get_disk_temp():.1f}°C")
+
+mb = PyTempMotherboard()
+update_hardware(mb)
+print(f"Motherboard Temperature: {mb.get_motherboard_temp():.1f}°C")
+
+other = LiveView.PyTempOther()
+update_hardware(other)  # updates BOTH Motherboard and Storage
+print(f"MB: {other.get_mb_temp():.1f}°C, Storage: {other.get_storage_temp():.1f}°C")
+
+sensor = LiveView.PySensor()
+update_hardware(sensor)
+print(sensor.get_all_sensors())
+```
+### `HardwareType`
+
+An `IntEnum` built directly from `COMPONENT_IDS`, so it is always kept in sync with the same ID table used everywhere else in `liveview_helper` (`specific_update`, `multi_specific_update`, etc.).
+
+| Member                  | Value |
+|------------------------ |:-----:|
+| `Motherboard`           | 1     |
+| `SuperIO`               | 2     |
+| `CPU`                   | 3     |
+| `Memory`                | 4     |
+| `GPU`                   | 5     |
+| `Storage`               | 6     |
+| `Network`               | 7     |
+| `EmbeddedController`    | 9     |
+| `Cooler`                | 10    |
+| `Battery`               | 11    |
+
+**Python Usage**
+
+```python
+from liveview_helper import HardwareType
+
+print(HardwareType.Storage)        # HardwareType.Storage
+print(int(HardwareType.Storage))   # 6
+print(HardwareType(6))             # HardwareType.Storage
+```
+
+---
+
+### `SensorType`
+
+A plain `Enum` representing the sensor "type" segment that appears in a raw LiveView sensor name — for example the `Throughput` in `"HS-SSD-E100 256G - Throughput - Write Rate"`.
+
+| Member          | Value           |
+|-------------------|-----------------|
+| `Data`             | `"Data"`         |
+| `Load`              | `"Load"`        |
+| `Power`             | `"Power"`       |
+| `Clock`             | `"Clock"`       |
+| `Temperature`       | `"Temperature"` |
+| `Voltage`           | `"Voltage"`     |
+| `Throughput`        | `"Throughput"`  |
+| `Fan`        | `"Fan"`                |
+
+**Python Usage**
+
+```python
+from liveview_helper import SensorType
+
+print(SensorType.Throughput)        # SensorType.Throughput
+print(SensorType.Throughput.value)  # "Throughput"
+```
+
+---
+
+### `ParsedSensor`
+
+A simple container object returned by [`parse_sensor()`](#parse_sensorsensor_name).
+
+**Attributes**
+
+| Name             | Type            | Description                                              |
+|-------------------|-----------------|-----------------------------------------------------------|
+| `hardware_type`    | `HardwareType`  | The resolved hardware component the sensor belongs to.    |
+| `sensor_type`      | `SensorType`    | The kind of measurement the sensor reports.                |
+| `name`             | `str`           | The sensor's own name (last segment of the raw string).   |
+
+**Python Usage**
+
+```python
+from liveview_helper import parse_sensor
+
+parsed = parse_sensor("HS-SSD-E100 256G - Throughput - Write Rate")
+print(parsed.hardware_type)  # HardwareType.Storage
+print(parsed.sensor_type)    # SensorType.Throughput
+print(parsed.name)           # "Write Rate"
+```
+
+---
+
+### `parse_sensor(sensor_name)`
+
+Parses a raw LiveView sensor name string of the form `"<Hardware> - <Type> - <Name>"` into a [`ParsedSensor`](#parsedsensor) object.
+
+**Parameters**
+
+| Name           | Type  | Description                                                              |
+|-----------------|-------|---------------------------------------------------------------------------|
+| `sensor_name`    | `str` | The raw sensor name, e.g. as returned inside `PySensor.get_all_sensors()`. |
+
+**Returns**
+
+| Type            | Description                                                        |
+|------------------|----------------------------------------------------------------------|
+| `ParsedSensor`    | Object exposing `.hardware_type`, `.sensor_type`, and `.name`.       |
+
+## How it works
+
+* The string is split on the first two occurrences of the exact delimiter `" - "` (space, dash, space), using `str.split(" - ", 2)`.
+* This means dashes that are not surrounded by spaces (e.g. `"Filter-0000"`, `"2-WFP"`) are **not** treated as delimiters and remain part of the hardware name.
+* The first segment (the full hardware name, e.g. `"HS-SSD-E100 256G"` or `"Ethernet 2-WFP 802.3 MAC Layer LightWeight Filter-0000"`) is passed as-is, in full, to `PyManageTemp().get_hardware_id_by_name()`.
+* If `get_hardware_id_by_name()` returns a negative number, the hardware name could not be resolved **or an internal library error occurred**, and `parse_sensor` raises a `ValueError`.
+* Otherwise, the returned ID is converted into a `HardwareType` member.
+* The second segment (e.g. `"Throughput"`) is matched against the names of `SensorType` members **using a case-insensitive comparison**. If no matching member is found, a `ValueError` is raised.
+* The third (remaining) segment is used as-is for `.name`.
+
+
+**Raises**
+
+| Exception     | When                                                                                          |
+|----------------|------------------------------------------------------------------------------------------------|
+| `ValueError`    | The string does not contain at least two `" - "` delimiters, `get_hardware_id_by_name()` returns a negative id, the id doesn't map to a known `HardwareType`, or the type segment doesn't match any `SensorType`. |
+
+**Supported Environments**
+
+| Windows | Linux |
+|:-------:|:-----:|
+|   ✅    |   ❌  |
+
+**Example**
+
+```python
+from liveview_helper import parse_sensor
+
+parsed = parse_sensor("HS-SSD-E100 256G - Throughput - Write Rate")
+print(parsed)
+# ParsedSensor(hardware_type=<HardwareType.Storage: 6>, sensor_type=<SensorType.Throughput: 'Throughput'>, name='Write Rate')
+
+parsed2 = parse_sensor("Ethernet 2-WFP 802.3 MAC Layer LightWeight Filter-0000 - Data - Data Uploaded")
+print(parsed2.hardware_type, parsed2.sensor_type, parsed2.name)
+# HardwareType.Network SensorType.Data Data Uploaded
+```

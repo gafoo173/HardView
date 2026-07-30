@@ -1,24 +1,31 @@
 <div align="center">
 
-<img src="resources/logo.png" alt="HardView Logo" width="300"/>
+<img src="resources/logo.png" alt="HardView Logo" width="750"/>
 
 # HardView - Hardware Information Project
 
-<p>
-  <img src="https://img.shields.io/badge/PyPI_Stable-3.3.1-blue" alt="PyPI Stable Version" height="28">
-  <img src="https://img.shields.io/badge/downloads-10.7K-red" alt="Version" height="28">
-  <img src="https://img.shields.io/badge/python-3.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12%20|%203.13%20|%203.14-blue" alt="Supported Python versions" height="28">
+<p align="center">
+  <a href="https://pypi.org/project/HardView/">
+    <img src="https://img.shields.io/badge/PyPI-Stable%203.3.1-22C55E?logo=pypi&logoColor=white" alt="PyPI Stable" height="28">
+  </a>
+  <a href="https://pypi.org/project/HardView/4.0.0b1/">
+    <img src="https://img.shields.io/badge/PyPI-Beta%204.0.0b1-22C55E?logo=pypi&logoColor=white" alt="PyPI Beta" height="28">
+  </a>
+  <a href="https://docs.python.org/3/">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-22C55E?logo=python&logoColor=white" alt="Python 3.8+" height="28">
+  </a>
+  <a href="https://gafoo173.github.io/HardView/">
+    <img src="https://img.shields.io/badge/Docs-GitHub%20Pages-22C55E?logo=github&logoColor=white" alt="Documentation" height="28">
+  </a>
+  <a href="https://github.com/gafoo173/HardView/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-22C55E?logo=open-source-initiative&logoColor=white" alt="MIT License" height="28">
+  </a>
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" height="28">
-  <img src="https://img.shields.io/badge/Tools_license-GPL3-red" alt="License" height="28">
-  <img src="https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey" alt="Platforms" height="28">
-</p>
-
-<p>
-  <img src="https://img.shields.io/badge/_temperature-Windows%20%7C%20Linux-pink" alt="Temperature Monitoring" height="28">
-</p>
+  <img src="https://img.shields.io/badge/Windows-Full%20Support-3b4455" alt="Windows Full Support" height="28">
+  <img src="https://img.shields.io/badge/Linux-Basic-3b4455?logo=linux&logoColor=white" alt="Linux Support" height="28">
+  <img src="https://img.shields.io/badge/Sensors-Windows%20%7C%20Linux-3b4455" alt="Sensors Monitoring" height="28">
 
 <p align="center">
   <b>A comprehensive hardware monitoring solution with Python, C++, and C libraries</b><br>
@@ -39,6 +46,31 @@
 
 ---
 
+## 🧪 Quick Start
+
+Install HardView from PyPI:
+
+```bash
+pip install HardView
+```
+
+Then download `tests/quick_start.py` from this repository and run:
+
+```bash
+python quick_start.py
+```
+
+Or clone the repository and install HardView locally:
+
+```bash
+git clone https://github.com/gafoo173/HardView.git
+cd HardView
+pip install .
+python tests/quick_start.py
+```
+
+---
+
 ## 📦 HardView Project Overview
 
 HardView is a project that includes Python, C++, and C libraries, Windows drivers, and tools for monitoring hardware and displaying its information through various sources, whether from the system or other libraries. It provides a unified interface for developers to access information via libraries and a user interface for end-users through the tools.
@@ -56,14 +88,6 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 </tr>
 </thead>
 <tbody>
-
-<tr>
-<td><a href="./HardView"><b>HardView</b></a></td>
-<td><b>Legacy library</b> providing static hardware information for Windows and Linux.  
- Uses WMI and old query methods — kept for compatibility only.</td>
-<td>C</td>
-<td><b>Legacy (superseded by LiveView & SMBIOS)</b></td>
-</tr>
 
 
 <tr>
@@ -99,6 +123,14 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 <td>A set of <b>Windows kernel drivers</b> granting access to low-level hardware functionality useful for monitoring. Each driver comes with a header-only C++ library for easier integration. These drivers are <b>not used</b> by the main HardView libraries (Python or C++) since they are unsigned. They are provided for those who wish to sign and use them, or for personal use with local build and test signing.</td>
 <td>C/C++</td>
 <td>Optional drivers for advanced hardware access under Windows. Not required for standard HardView usage.</td>
+</tr>
+
+<tr>
+<td><a href="./HardView"><b>HardView</b></a></td>
+<td><b>Legacy library</b> providing static hardware information for Windows and Linux.  
+ Uses WMI and old query methods — kept for compatibility only.</td>
+<td>C</td>
+<td><b>Legacy (superseded by LiveView & SMBIOS)</b></td>
 </tr>
 
 <tr>
@@ -149,10 +181,8 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 <td width="50%" valign="top">
 
 ### 🌡️ Temperature Monitoring
-**Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) (**MPL-2.0**)  
-**Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) (**LGPL-2.1-or-later**)  
-See [`licenses/`](licenses/) for full license texts
-
+- **Windows**: Uses [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) 
+- **Linux**: Uses [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) 
 </td>
 </tr>
 </table>
@@ -239,99 +269,20 @@ It is recommended to review the header file beginning for any dependency notes.
 
 ---
 
-## ⚠️ Potential Issues on Windows
+## Potential Issues on Windows (resolved in version **4.0.0**)
 
 <details>
 <summary><b>HardView.LiveView Temperature Features</b></summary>
 
-The **temperature monitoring features** in `HardView.LiveView` rely on **LibreHardwareMonitorLib**, which in turn uses on **WinRing0**.  
-WinRing0 is an old and well-known driver used for reading from **MSR**, **physical memory**, and other low-level hardware resources.  
+The **temperature monitoring features** in `HardView.LiveView` rely on **LibreHardwareMonitorLib**, which previously depended on **WinRing0**.  
+WinRing0 is an old and well-known driver used to access **MSRs**, **physical memory**, and other low-level hardware resources.
 
-#### The Problem
-**WinRing0 is now blocked by Windows**.  
-This means you may encounter alerts from **Windows Defender** similar to this one:
-
-<div align="center">
-<img src="resources/1.png" alt="Windows Defender Alert" width="600"/>
-</div>
-
-You'll notice that **`python.sys`** is reported as the suspicious driver.  
-This has nothing to do with Python itself. What actually happens is:
-
-- LibreHardwareMonitorLib, when creating its driver, names it as **`<ProgramName>.sys`**.  
-- Since Python scripts run under **`python.exe`**, the driver ends up named **`python.sys`**.  
-- In reality, this file is just the **WinRing0 driver** renamed.
-
-#### Is It Dangerous?
-- WinRing0 is just a driver that grants access to resources that normally require kernel-mode from user-mode. The danger only arises if a malicious program abuses it.  
-- The driver created by LibreHardwareMonitorLib is **temporary**. It will be stop automatically when you restart your system.
-
-**It's recommended to delete the driver using sc delete or remove its file after the program finishes, to prevent any malicious software from exploiting it.**
-
-### Manually Stopping or Removing the Driver 
-
-If you want to close or remove the driver manually after running your script/program:
-
-1. Open **CMD as Administrator**.
-2. Run the following command to stop the driver:
-
-```bash
-sc stop R0<ProgramName>
-```
-
-- For Python scripts:  
-  ```bash
-  sc stop R0Python
-  ```
-- For an executable program named `X.exe`:  
-  ```bash
-  sc stop R0X
-  ```
-
-3. To permanently delete the driver, run:
-
-```bash
-sc delete R0Python
-```
-
-After that, you can manually delete the driver file.
+> In version **4.0.0**, the HardwareWrapper library was updated to use the latest version of [LibreHardwareMonitorlib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor), which no longer depends on WinRing0 and instead relies on the [PawnIO](https://pawnio.eu/) driver.
 </details>
 
 ---
 
 ## 💡 Usage Examples
-
-<details>
-<summary><b>HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)</b></summary>
-
-```python
-import HardView
-import json
-
-# JSON output
-bios_json = HardView.get_bios_info()
-cpu_json = HardView.get_cpu_info() #In Linux all outputs N/A in this function 
-
-# Python objects output
-#You must pass the parameter `false` in versions prior to 3.0.3, e.g. `HardView.get_bios_info_objects(false)`.
-
-bios_objects = HardView.get_bios_info_objects() 
-cpu_objects = HardView.get_cpu_info_objects() #On Linux, all outputs of this function show N/A It is recommended in 3.1.0+ to use the cpuid function from LiveView.PyLiveCPU.
-
-# Performance monitoring
-cpu_usage_json = HardView.get_cpu_usage()
-ram_usage_objects = HardView.get_ram_usage_objects()
-
-# Monitor over time
-cpu_monitor_json = HardView.monitor_cpu_usage_duration(5, 1000)
-ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500) 
-
-# Pretty print CPU info
-import pprint
-pprint.pprint(json.loads(cpu_json))
-```
-
-</details>
 
 <details>
 <summary><b>LiveView</b></summary>
@@ -444,217 +395,71 @@ print(f"Serial Number:   {info.baseboard.serial_number}")
 </details>
 
 <details>
-<summary><b>SMART  - Requires admin privileges (3.3.0+) </b></summary>
+<summary><b>SMART  - Requires admin privileges (4.0.0+) </b></summary>
 
 ```python
 #This code will work on Windows only.
 from HardView import SMART
 
-def generate_health_report(drive_number):
-    try:
-        reader = SMART.SmartReader(drive_number)
-        
-        print("\n" + "="*60)
-        print(f"DRIVE HEALTH REPORT - {reader.drive_path}")
-        print("="*60)
-        
-        # Basic Info
-        print(f"\n Basic Information:")
-        print(f"   Drive Type: {reader.get_drive_type()}")
-        print(f"   SMART Valid: {reader.is_valid}")
-        
-        # Temperature
-        temp = reader.get_temperature()
-        if temp != -1:
-            temp_status = "✓ Good" if temp < 50 else "  High"
-            print(f"\n  Temperature: {temp}°C - {temp_status}")
-        
-        # Usage Statistics
-        print(f"\n⏱️  Usage Statistics:")
-        hours = reader.get_power_on_hours()
-        print(f"   Power-On Hours: {hours} ({hours/24:.1f} days)")
-        print(f"   Power Cycles: {reader.get_power_cycle_count()}")
-        
-        # Health Status
-        print(f"\n💊 Health Status:")
-        realloc = reader.get_reallocated_sectors_count()
-        if realloc == 0:
-            print(f"   Reallocated Sectors: ✓ None (Excellent)")
-        else:
-            print(f"   Reallocated Sectors:   {realloc} (Needs Attention)")
-        
-        # SSD Specific
-        if reader.is_probably_ssd():
-            print(f"\n SSD Information:")
-            life = reader.get_ssd_life_left()
-            if life != -1:
-                life_status = "✓ Good" if life > 80 else "  Monitor" if life > 50 else " Critical"
-                print(f"   Life Remaining: {life}% - {life_status}")
-            
-            written = reader.get_total_bytes_written()
-            if written > 0:
-                written_tb = written / (1024**4)
-                print(f"   Total Written: {written_tb:.2f} TB")
-            
-            read = reader.get_total_bytes_read()
-            if read > 0:
-                read_tb = read / (1024**4)
-                print(f"   Total Read: {read_tb:.2f} TB")
-        
-        print("\n" + "="*60 + "\n")
-        
-    except Exception as e:
-        print(f"Error generating report: {e}")
+try:
+    drive_number = 0
+    info = SMART.get_disk_info_s(drive_number)
+    if info is None:
+        raise RuntimeError(f"Could not read SMART/IDENTIFY data for drive {drive_number}")
 
-# Generate reports for all drives
-readers, errors = SMART.scan_all_drives()
-for i, reader in enumerate(readers):
-    generate_health_report(i)
+    controller_type = SMART.detect_ssd_type(info)
+    controller_name = SMART.ssd_type_to_string(controller_type)
+
+    print(f"\nDrive:      \\\\.\\PhysicalDrive{drive_number}")
+    print(f"Model:      {info.model_upper}")
+    print(f"Firmware:   {info.firmware_rev}")
+    print(f"Media:      {'SSD' if info.is_ssd else 'HDD'}")
+    print(f"Controller: {controller_name}")
+    print("\n" + "="*70)
+    print(f"{'ID':<4} {'Attribute Name':<40} {'Current':<8} {'Worst':<8} {'Raw Value'}")
+    print("="*70)
+
+    for attr in info.attributes:
+        name = SMART.get_attribute_name_by_id_and_type(controller_type, attr.id)
+        print(f"{attr.id:02X}   {name:<40} {attr.current:<8} {attr.worst:<8} {attr.raw_value}")
+
+    print("="*70)
+
+except Exception as e:
+    print(f"Error: {e}")
 ```
 
 </details>
 
 
-
 <details>
-<summary><b>SDK Temperature (Rust) - Requires admin privileges</b></summary>
+<summary><b>HardView (Not recommended for monitoring in 3.1.0+. It's better to use LiveView)</b></summary>
 
-```rust
-//This code will work on Windows only.
-use libloading::{Library, Symbol};
-use std::os::raw::{c_double, c_int};
+```python
+import HardView
+import json
 
-type InitFn = unsafe extern "C" fn() -> c_int;
-type ShutdownFn = unsafe extern "C" fn();
-type GetTempFn = unsafe extern "C" fn() -> c_double;
-type UpdateFn = unsafe extern "C" fn();
+# JSON output
+bios_json = HardView.get_bios_info()
+cpu_json = HardView.get_cpu_info() #In Linux all outputs N/A in this function 
 
-// Check if required DLLs exist next to the executable
-fn check_dependencies() -> Result<(), String> {
-    let required_dlls = ["HardwareTemp.dll", "HardwareWrapper.dll", "LibreHardwareMonitorLib.dll", "HidSharp.dll"];
-    
-    let exe_dir = std::env::current_exe()
-        .map_err(|e| format!("Failed to get executable path: {}", e))?
-        .parent()
-        .ok_or("Failed to get executable directory")?
-        .to_owned();
+# Python objects output
+#You must pass the parameter `false` in versions prior to 3.0.3, e.g. `HardView.get_bios_info_objects(false)`.
 
-    let mut missing = Vec::new();
-    for dll in &required_dlls {
-        if !exe_dir.join(dll).exists() {
-            missing.push(*dll);
-        }
-    }
+bios_objects = HardView.get_bios_info_objects() 
+cpu_objects = HardView.get_cpu_info_objects() #On Linux, all outputs of this function show N/A It is recommended in 3.1.0+ to use the cpuid function from LiveView.PyLiveCPU.
 
-    if !missing.is_empty() {
-        return Err(format!("Missing DLLs: {}", missing.join(", ")));
-    }
-    Ok(())
-}
+# Performance monitoring
+cpu_usage_json = HardView.get_cpu_usage()
+ram_usage_objects = HardView.get_ram_usage_objects()
 
-fn main() {
-    // Check dependencies first
-    if let Err(error) = check_dependencies() {
-        eprintln!("Error: {}", error);
-        return;
-    }
+# Monitor over time
+cpu_monitor_json = HardView.monitor_cpu_usage_duration(5, 1000)
+ram_monitor_objects = HardView.monitor_ram_usage_duration_objects(3, 500) 
 
-    // Load the library from executable directory
-    let exe_dir = std::env::current_exe().unwrap().parent().unwrap().to_owned();
-    let dll_path = exe_dir.join("HardwareTemp.dll");
-    
-    let lib = unsafe { 
-        Library::new(&dll_path).expect("Failed to load HardwareTemp.dll") 
-    };
-
-    unsafe {
-        // Load required functions
-        let init: Symbol<InitFn> = lib.get(b"InitHardwareTempMonitor\0").expect("InitHardwareTempMonitor not found");
-        let get_cpu_temp: Symbol<GetTempFn> = lib.get(b"GetCpuTemperatureTemp\0").expect("GetCpuTemperatureTemp not found");
-        let update: Symbol<UpdateFn> = lib.get(b"UpdateHardwareMonitorTemp\0").expect("UpdateHardwareMonitorTemp not found");
-        let shutdown: Symbol<ShutdownFn> = lib.get(b"ShutdownHardwareTempMonitor\0").expect("ShutdownHardwareTempMonitor not found");
-
-        // Initialize hardware monitor
-        let init_result = init();
-        if init_result != 0 {
-            eprintln!("Failed to initialize hardware monitor. Error code: {}", init_result);
-            return;
-        }
-
-        // Update and get CPU temperature
-        update();
-        let cpu_temp = get_cpu_temp();
-
-        // Display result
-        match cpu_temp {
-            -1.0 => println!("CPU Temperature: ERROR - Run as Administrator or sensor not supported"),
-            -99.0 => println!("CPU Temperature: ERROR - Missing dependencies"),
-            temp => println!("CPU Temperature: {:.1} °C", temp),
-        }
-
-        // Cleanup
-        shutdown();
-    }
-}
-```
-
-</details>
-
-<details>
-<summary><b>MSR.hpp Example (C++) - needs MsrDrv.sys installed and running</b></summary>
-
-```cpp
-//this code will work in intel only
-#include "MSR.hpp"
-#include <iostream>
-
-int main() {
-    try {
-        // Create MSR driver instance
-        MSR::MsrDriver driver;
-
-        if (!driver.IsValid()) {
-            std::cerr << "MSR driver not available!" << std::endl;
-            return 1;
-        }
-
-        // Read CPU TjMax (maximum temperature)
-        int tjMax = 0;
-        if (MSR::Thermal::TryGetTjMax(driver, tjMax)) {
-            std::cout << "CPU TjMax: " << tjMax << "°C" << std::endl;
-        } else {
-            std::cerr << "Failed to get TjMax." << std::endl;
-        }
-
-        // Read current CPU temperature
-        int currentTemp = 0;
-        if (MSR::Thermal::TryGetCurrentTemperature(driver, currentTemp)) {
-            std::cout << "Current CPU Temperature: " << currentTemp << "°C" << std::endl;
-        } else {
-            std::cerr << "Failed to read CPU temperature." << std::endl;
-        }
-
-        // Read a specific MSR register (IA32_PLATFORM_ID)
-        try {
-            UINT64 platformId = driver.ReadMsr(MSR::Registers::IA32_PLATFORM_ID);
-            std::cout << "IA32_PLATFORM_ID MSR: 0x" 
-                      << std::hex << platformId << std::dec << std::endl;
-        } catch (const MSR::MsrException& ex) {
-            std::cerr << "Error reading MSR: " << ex.what() 
-                      << " (code: " << ex.GetErrorCode() << ")" << std::endl;
-        }
-
-    } catch (const MSR::DriverNotLoadedException& ex) {
-        std::cerr << "MSR driver not loaded: " << ex.what() << std::endl;
-        return 2;
-    } catch (const MSR::MsrException& ex) {
-        std::cerr << "MSR Exception: " << ex.what() 
-                  << " (code: " << ex.GetErrorCode() << ")" << std::endl;
-        return 3;
-    }
-
-    return 0;
-}
+# Pretty print CPU info
+import pprint
+pprint.pprint(json.loads(cpu_json))
 ```
 
 </details>
@@ -699,29 +504,6 @@ int main() {
 
 </details>
 
-<details>
-<summary><b>info.hpp (C++) - Linux Only</b></summary>
-
-```cpp
-#include "info.hpp"
-#include <iostream>
-using namespace LinuxInfo;
-
-int main() {
-    // Get CPU information
-    auto cpuInfo = getCPUInfo();
-
-    std::cout << "=== CPU Info ===\n";
-    for (const auto& [key, value] : cpuInfo) {
-        std::cout << key << ": " << value << "\n";
-    }
-
-    return 0;
-}
-```
-
-</details>
-
 ---
 
 ## 📖 Documentation
@@ -739,135 +521,27 @@ int main() {
 
 All documentation is in the `docs/` folder:
 
-* [`What.md`](./docs/What.md): **API Reference & Output Examples**  
-  Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
-* [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**  
-  Supported platforms, installation methods, and troubleshooting tips.
-* [`FAQ.md`](./docs/FAQ.md): **Frequently Asked Questions**  
-  Solutions to common installation, usage, and troubleshooting issues.
+
 * [`LiveViewAPI.md`](./docs/LiveViewAPI.md): **LiveView API Reference**  
   Detailed explanation of the LiveView module API, including functions, usage, and examples.
-* [`LiveViewErrors.md`](./docs/LiveViewErrors.md): **LiveView Errors & Exceptions**  
-  Guides and examples for handling errors and exceptions in the LiveView module.
+
+* [`SMART.md`](./docs/SMART.md): **SMART API Reference**
+  Full explanation of the SMART module API, including functions, usage, and examples.
+
+* [`SMBIOS.md`](./docs/SMBIOS.md): **SMBIOS API Reference**
+  Full explanation of the SMBIOS module API, including functions, usage, and examples.
+
+* [`What.md`](./docs/What.md): **API Reference & Output Examples (Legacy)**  
+  Full explanation of every function, what info it returns, how to use it from Python, and real output samples.
+
+* [`INSTALL.md`](./docs/INSTALL.md): **Installation Guide**  
+  Supported platforms, installation methods, and troubleshooting tips.
 
 </details>
 
 ---
 ## 📚 API Reference (Python)
 
-<details>
-<summary><b>HardView Functions</b></summary>
-
-<table>
-<thead>
-<tr>
-<th>Function (JSON)</th>
-<th>Function (Python Object)</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-
-<tr>
-<td><code>get_bios_info()</code></td>
-<td><code>get_bios_info_objects()</code></td>
-<td>BIOS vendor, version, release date</td>
-</tr>
-
-<tr>
-<td><code>get_system_info()</code></td>
-<td><code>get_system_info_objects()</code></td>
-<td>System manufacturer, product name, UUID</td>
-</tr>
-
-<tr>
-<td><code>get_baseboard_info()</code></td>
-<td><code>get_baseboard_info_objects()</code></td>
-<td>Motherboard info</td>
-</tr>
-
-<tr>
-<td><code>get_chassis_info()</code></td>
-<td><code>get_chassis_info_objects()</code></td>
-<td>Chassis/computer case info</td>
-</tr>
-
-<tr>
-<td><code>get_cpu_info()</code> <i>(Windows Only)</i></td>
-<td><code>get_cpu_info_objects()</code> <i>(Windows Only)</i></td>
-<td>Processor details</td>
-</tr>
-
-<tr>
-<td><code>get_ram_info()</code></td>
-<td><code>get_ram_info_objects()</code></td>
-<td>Memory modules and totals</td>
-</tr>
-
-<tr>
-<td><code>get_gpu_info()</code> <i>(Windows Only)</i></td>
-<td><code>get_gpu_info_objects()</code> <i>(Windows Only)</i></td>
-<td>GPU information</td>
-</tr>
-
-<tr>
-<td><code>get_disk_info()</code></td>
-<td><code>get_disk_info_objects()</code></td>
-<td>Storage devices</td>
-</tr>
-
-<tr>
-<td><code>get_network_info()</code></td>
-<td><code>get_network_info_objects()</code></td>
-<td>Network adapters</td>
-</tr>
-
-<tr>
-<td><code>get_partitions_info()</code></td>
-<td><code>get_partitions_info_objects()</code></td>
-<td>Disk partitions (advanced)</td>
-</tr>
-
-<tr>
-<td><code>get_cpu_usage()</code></td>
-<td><code>get_cpu_usage_objects()</code></td>
-<td>Current CPU usage</td>
-</tr>
-
-<tr>
-<td><code>get_ram_usage()</code></td>
-<td><code>get_ram_usage_objects()</code></td>
-<td>Current RAM usage</td>
-</tr>
-
-<tr>
-<td><code>get_system_performance()</code></td>
-<td><code>get_system_performance_objects()</code></td>
-<td>Combined CPU/RAM usage</td>
-</tr>
-
-<tr>
-<td><code>monitor_cpu_usage_duration(d, i)</code></td>
-<td><code>monitor_cpu_usage_duration_objects(d,i)</code></td>
-<td>Monitor CPU usage over time</td>
-</tr>
-
-<tr>
-<td><code>monitor_ram_usage_duration(d, i)</code></td>
-<td><code>monitor_ram_usage_duration_objects(d,i)</code></td>
-<td>Monitor RAM usage over time</td>
-</tr>
-
-<tr>
-<td><code>monitor_system_performance_duration(d,i)</code></td>
-<td><code>monitor_system_performance_duration_objects(d,i)</code></td>
-<td>Monitor system performance over time</td>
-</tr>
-
-</tbody>
-</table>
-
-</details>
 
 <details>
 <summary><b>LiveView Classes & Methods</b></summary>
@@ -889,14 +563,14 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyLiveCPU.cpuid()</code></b></td>
-<td><code>cpu_id()</code></td>
+<td><b><code>PyLiveCPU.cpu_id()</code></b></td>
+<td><code>cpuid()</code></td>
 <td>Get CPU details via CPUID instruction.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLiveCPU.CpuSnapShot(...)</code></b> <i>(Windows)</i></td>
-<td><code>cpu_snapshot(...)</code></td>
+<td><b><code>PyLiveCPU.cpu_snapshot(...)</code></b> <i>(Windows)</i></td>
+<td><code>CpuSnapShot(...)</code></td>
 <td>Get raw CPU time counters for a specific core or number of cores.</td>
 </tr>
 
@@ -919,8 +593,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyLiveDisk.HighDiskUsage(...)</code></b></td>
-<td><code>high_disk_usage(...)</code></td>
+<td><b><code>PyLiveDisk.high_disk_usage(...)</code></b></td>
+<td><code>HighDiskUsage(...)</code></td>
 <td>Check if disk R/W exceeds threshold.</td>
 </tr>
 
@@ -931,8 +605,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyLiveNetwork.getHighCard()</code></b></td>
-<td><code>get_high_card()</code></td>
+<td><b><code>PyLiveNetwork.get_high_card()</code></b></td>
+<td><code>getHighCard()</code></td>
 <td>Get name of network adapter with highest usage.</td>
 </tr>
 
@@ -991,8 +665,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempCpu.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PyTempCpu.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-read CPU temperature & fan RPM.</td>
 </tr>
 
@@ -1015,8 +689,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempGpu.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PyTempGpu.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-read GPU temperature and fan RPM.</td>
 </tr>
 
@@ -1027,8 +701,8 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempOther.get_Storage_temp()</code></b> <i>(Windows)</i></td>
-<td><code>get_storage_temp()</code></td>
+<td><b><code>PyTempOther.get_storage_temp()</code></b> <i>(Windows)</i></td>
+<td><code>get_Storage_temp()</code></td>
 <td>Get storage temperature.</td>
 </tr>
 
@@ -1039,33 +713,27 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PyTempOther.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PyTempOther.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-read other temperatures.</td>
 </tr>
 
 <tr>
-<td><b><code>PySensor.GetData(init=False)</code></b> <i>(Windows)</i></td>
-<td><code>get_data(init=False)</code></td>
+<td><b><code>PySensor.get_data(init=False)</code></b> <i>(Windows)</i></td>
+<td><code>GetData(init=False)</code></td>
 <td>Fetch sensors & fan data.</td>
 </tr>
 
 <tr>
-<td><b><code>PySensor.GetValueByName(name)</code></b> <i>(Windows)</i></td>
-<td><code>get_value_by_name(name)</code></td>
+<td><b><code>PySensor.get_value_by_name(name)</code></b> <i>(Windows)</i></td>
+<td><code>GetValueByName(name)</code></td>
 <td>Get sensor value by name.</td>
 </tr>
 
 <tr>
-<td><b><code>PySensor.getAllSensors()</code></b> <i>(Windows)</i></td>
-<td><code>get_all_sensors()</code></td>
+<td><b><code>PySensor.get_all_sensors()</code></b> <i>(Windows)</i></td>
+<td><code>getAllSensors()</code></td>
 <td>List all sensor names.</td>
-</tr>
-
-<tr>
-<td><b><code>PySensor.getAllFanRPMs()</code></b> <i>(Windows)</i></td>
-<td><code>get_all_fan_rpms()</code></td>
-<td>List all fan RPM readings.</td>
 </tr>
 
 <tr>
@@ -1075,86 +743,86 @@ All documentation is in the `docs/` folder:
 </tr>
 
 <tr>
-<td><b><code>PySensor.reget()</code></b></td>
-<td><code>re_get()</code></td>
+<td><b><code>PySensor.re_get()</code></b></td>
+<td><code>reget()</code></td>
 <td>Re-fetch sensors & fans data.</td>
 </tr>
 
 <tr>
-<td><b><code>PyManageTemp.Init()</code></b> <i>(Windows)</i></td>
-<td><code>init()</code></td>
+<td><b><code>PyManageTemp.init()</code></b> <i>(Windows)</i></td>
+<td><code>Init()</code></td>
 <td>Initialize temperature monitoring.</td>
 </tr>
 
 <tr>
-<td><b><code>PyManageTemp.Close()</code></b> <i>(Windows)</i></td>
-<td><code>close()</code></td>
+<td><b><code>PyManageTemp.close()</code></b> <i>(Windows)</i></td>
+<td><code>Close()</code></td>
 <td>Shutdown temperature monitoring.</td>
 </tr>
 
 <tr>
-<td><b><code>PyManageTemp.Update()</code></b> <i>(Windows)</i></td>
-<td><code>update()</code></td>
+<td><b><code>PyManageTemp.update()</code></b> <i>(Windows)</i></td>
+<td><code>Update()</code></td>
 <td>Update all temperature data.</td>
 </tr>
 
 <tr>
-<td><b><code>PyRawInfo.RSMB()</code></b> <i>(Windows)</i></td>
-<td><code>rsmb()</code></td>
+<td><b><code>PyRawInfo.rsmb()</code></b> <i>(Windows)</i></td>
+<td><code>RSMB()</code></td>
 <td>Get raw SMBIOS table bytes.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getCpuTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_cpu_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_cpu_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getCpuTemp()</code></td>
 <td>Get CPU temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getChipsetTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_chipset_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_chipset_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getChipsetTemp()</code></td>
 <td>Get chipset temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getMotherboardTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_motherboard_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_motherboard_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getMotherboardTemp()</code></td>
 <td>Get motherboard temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getVRMTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_vrm_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_vrm_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getVRMTemp()</code></td>
 <td>Get VRM/memory temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getDriveTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_drive_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_drive_temp()</code></b> <i>(Linux)</i></td>
+<td><code>getDriveTemp()</code></td>
 <td>Get storage temperature.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.getAllSensorNames()</code></b> <i>(Linux)</i></td>
-<td><code>get_all_sensor_names()</code></td>
+<td><b><code>PyLinuxSensor.get_all_sensor_names()</code></b> <i>(Linux)</i></td>
+<td><code>getAllSensorNames()</code></td>
 <td>List all sensor names.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.findSensorName(name)</code></b> <i>(Linux)</i></td>
-<td><code>find_sensor_name(name)</code></td>
+<td><b><code>PyLinuxSensor.find_sensor_name(name)</code></b> <i>(Linux)</i></td>
+<td><code>findSensorName(name)</code></td>
 <td>Search for a sensor name.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.GetSensorTemp(name, Match)</code></b> <i>(Linux)</i></td>
-<td><code>get_sensor_temp(name, Match)</code></td>
+<td><b><code>PyLinuxSensor.get_sensor_temp(name, Match)</code></b> <i>(Linux)</i></td>
+<td><code>GetSensorTemp(name, Match)</code></td>
 <td>Get sensor temperature by name.</td>
 </tr>
 
 <tr>
-<td><b><code>PyLinuxSensor.GetSensorsWithTemp()</code></b> <i>(Linux)</i></td>
-<td><code>get_sensors_with_temp()</code></td>
+<td><b><code>PyLinuxSensor.get_sensors_with_temp()</code></b> <i>(Linux)</i></td>
+<td><code>GetSensorsWithTemp()</code></td>
 <td>Get all sensors with their temperatures.</td>
 </tr>
 
@@ -1200,6 +868,48 @@ All documentation is in the `docs/` folder:
 <td><b><code>SmartValues</code></b></td>
 <td><code>revision_number, offline_data_collection_status, self_test_execution_status, total_time_to_complete_offline_data_collection</code></td>
 <td>SMART values structure</td>
+</tr>
+
+<tr>
+<td><b><code>SmartThreshold</code></b></td>
+<td><code>id, threshold</code></td>
+<td>Per-attribute failure threshold, from <code>get_smart_thresholds()</code></td>
+</tr>
+
+<tr>
+<td><b><code>StateByte</code></b></td>
+<td><code>byte, device_fault, stream_error</code></td>
+<td>Decoded device status byte found in the SMART error log</td>
+</tr>
+
+<tr>
+<td><b><code>ErrorCommand</code></b></td>
+<td><code>spvalue, feature, sector_count, lba, device, command, timestamp</code></td>
+<td>One of the 5 commands that preceded a logged error</td>
+</tr>
+
+<tr>
+<td><b><code>ErrorLogData</code></b></td>
+<td><code>error_commands, cerror, sector_count, lba, device, written_status, state, life_timestamp</code></td>
+<td>A single entry in the SMART Summary Error Log</td>
+</tr>
+
+<tr>
+<td><b><code>ErrorLog</code></b></td>
+<td><code>log_version, log_index, errors, error_count, checksum</code></td>
+<td>Full SMART Summary Error Log (log page 0x01), up to 5 recent entries</td>
+</tr>
+
+<tr>
+<td><b><code>SMARTInfoS</code></b></td>
+<td><code>model_upper, attributes, firmware_rev, is_ssd</code></td>
+<td>Model/firmware/attributes bundle used as input to <code>detect_ssd_type()</code></td>
+</tr>
+
+<tr>
+<td><b><code>SSDType</code></b></td>
+<td><i>enum</i></td>
+<td>Detected SSD controller/vendor family (e.g. <code>PHISON</code>, <code>SAMSUNG</code>, <code>HDD_GENERAL</code>, <code>GENERAL_SSD</code>, ...)</td>
 </tr>
 
 </tbody>
@@ -1305,6 +1015,196 @@ All documentation is in the `docs/` folder:
 <td><b><code>get_drive_type()</code></b></td>
 <td>---</td>
 <td>Get drive type as string ('SSD', 'HDD', or 'Unknown')</td>
+</tr>
+
+<tr>
+<td><b><code>fill_disk_info()</code></b></td>
+<td>---</td>
+<td>Send IDENTIFY DEVICE and return a dict with <code>model_number</code>, <code>serial_number</code>, <code>firmware_revision</code>, <code>user_addressable_sectors</code>, <code>nominal_media_rotation_rate</code>. Returns <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_thresholds()</code></b></td>
+<td>---</td>
+<td>Read the SMART attribute thresholds table, returns <code>list[SmartThreshold]</code></td>
+</tr>
+
+<tr>
+<td><b><code>read_log(log_number)</code></b></td>
+<td><code>log_number: int</code></td>
+<td>Read a raw SMART log page (e.g. 1 = Summary Error Log), returns 512 raw <code>bytes</code> or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>read_error_log()</code></b></td>
+<td>---</td>
+<td>Read and parse the SMART Summary Error Log (log page 0x01). Returns an <code>ErrorLog</code>, or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>run_test(test_type)</code></b></td>
+<td><code>test_type: int = 0x01</code></td>
+<td>Start a SMART self-test (SMART EXECUTE OFF-LINE IMMEDIATE). Defaults to a short off-line test</td>
+</tr>
+
+</tbody>
+</table>
+
+### Controller / Vendor Detection
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>get_disk_info_s(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>SMARTInfoS | None</code></td>
+<td>Open the given physical drive, read SMART + IDENTIFY data ready to pass to <code>detect_ssd_type()</code></td>
+</tr>
+
+<tr>
+<td><b><code>detect_ssd_type(info, raw_smart_data)</code></b></td>
+<td><code>info: SMARTInfoS, raw_smart_data: bytes | None = None</code></td>
+<td><code>SSDType</code></td>
+<td>Detect the SSD controller/vendor type (or <code>HDD_GENERAL</code>) from a <code>SMARTInfoS</code>. <code>raw_smart_data</code> is only needed to disambiguate a few Silicon Motion / ADATA models</td>
+</tr>
+
+<tr>
+<td><b><code>ssd_type_to_string(type)</code></b></td>
+<td><code>type: SSDType</code></td>
+<td><code>str</code></td>
+<td>Human-readable name for an <code>SSDType</code>, e.g. 'Phison', 'Samsung', 'HDD'</td>
+</tr>
+
+<tr>
+<td><b><code>get_attribute_name_by_id_and_type(type, attribute_id)</code></b></td>
+<td><code>type: SSDType, attribute_id: int</code></td>
+<td><code>str</code></td>
+<td>Vendor-specific human-readable name for a SMART attribute ID, falls back to a generic ATA name</td>
+</tr>
+
+</tbody>
+</table>
+
+### Vendor Detection Heuristics
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr><td><code>is_ssd_old(model_upper)</code></td><td><code>model_upper: str</code></td><td>Heuristic for older/generic SSD models</td></tr>
+<tr><td><code>is_ssd_mtron(attributes, model_upper, attribute_count)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, attribute_count: int</code></td><td>MTRON detection heuristic</td></tr>
+<tr><td><code>is_ssd_jmicron_60x(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>JMicron 60x controller detection</td></tr>
+<tr><td><code>is_ssd_jmicron_61x(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>JMicron 61x controller detection</td></tr>
+<tr><td><code>is_ssd_jmicron_66x(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>JMicron 66x controller detection</td></tr>
+<tr><td><code>is_ssd_indilinx(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>Indilinx controller detection</td></tr>
+<tr><td><code>is_ssd_intel_dc(model_upper)</code></td><td><code>model_upper: str</code></td><td>Intel Data Center SSD detection</td></tr>
+<tr><td><code>is_ssd_intel(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Intel SSD detection</td></tr>
+<tr><td><code>is_ssd_samsung(attributes, model_upper, is_ssd)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, is_ssd: bool</code></td><td>Samsung SSD detection</td></tr>
+<tr><td><code>is_ssd_sandforce(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>SandForce controller detection</td></tr>
+<tr><td><code>is_ssd_micron_mu03(model_upper, firmware_rev)</code></td><td><code>model_upper: str, firmware_rev: str</code></td><td>Micron MU03 detection</td></tr>
+<tr><td><code>is_ssd_micron(attributes, model_upper, firmware_rev)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str</code></td><td>Micron SSD detection</td></tr>
+<tr><td><code>is_ssd_ocz(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>OCZ SSD detection</td></tr>
+<tr><td><code>is_ssd_ocz_vector(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>OCZ Vector series detection</td></tr>
+<tr><td><code>is_ssd_ssstc(model_upper)</code></td><td><code>model_upper: str</code></td><td>SSSTC SSD detection</td></tr>
+<tr><td><code>is_ssd_plextor(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Plextor SSD detection</td></tr>
+<tr><td><code>is_ssd_sandisk(model_upper)</code></td><td><code>model_upper: str</code></td><td>SanDisk SSD detection</td></tr>
+<tr><td><code>is_ssd_kingston(model_upper)</code></td><td><code>model_upper: str</code></td><td>Kingston SSD detection</td></tr>
+<tr><td><code>is_ssd_corsair(model_upper)</code></td><td><code>model_upper: str</code></td><td>Corsair SSD detection</td></tr>
+<tr><td><code>is_ssd_toshiba(model_upper, is_ssd)</code></td><td><code>model_upper: str, is_ssd: bool</code></td><td>Toshiba SSD detection</td></tr>
+<tr><td><code>is_ssd_realtek(attributes)</code></td><td><code>attributes: list[SmartAttribute]</code></td><td>Realtek controller detection</td></tr>
+<tr><td><code>is_ssd_skhynix(model_upper)</code></td><td><code>model_upper: str</code></td><td>SK hynix SSD detection</td></tr>
+<tr><td><code>is_ssd_kioxia(model_upper)</code></td><td><code>model_upper: str</code></td><td>Kioxia SSD detection</td></tr>
+<tr><td><code>is_ssd_apacer(model_upper, firmware_rev)</code></td><td><code>model_upper: str, firmware_rev: str</code></td><td>Apacer SSD detection</td></tr>
+<tr><td><code>is_ssd_ymtc(model_upper)</code></td><td><code>model_upper: str</code></td><td>YMTC SSD detection</td></tr>
+<tr><td><code>is_ssd_scy(model_upper)</code></td><td><code>model_upper: str</code></td><td>SCY SSD detection</td></tr>
+<tr><td><code>is_ssd_recadata(model_upper)</code></td><td><code>model_upper: str</code></td><td>Recadata SSD detection</td></tr>
+<tr><td><code>is_ssd_silicon_motion_cvc(model_upper)</code></td><td><code>model_upper: str</code></td><td>Silicon Motion CVC controller detection</td></tr>
+<tr><td><code>is_ssd_silicon_motion(attributes, model_upper, firmware_rev, raw_smart_data)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str, raw_smart_data: bytes | None = None</code></td><td>Silicon Motion controller detection</td></tr>
+<tr><td><code>is_ssd_phison(attributes, model_upper, firmware_rev)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str</code></td><td>Phison controller detection</td></tr>
+<tr><td><code>is_ssd_wdc(model_upper)</code></td><td><code>model_upper: str</code></td><td>WDC SSD detection</td></tr>
+<tr><td><code>is_ssd_seagate(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Seagate SSD detection</td></tr>
+<tr><td><code>is_ssd_marvell(attributes, model_upper, firmware_rev)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str, firmware_rev: str</code></td><td>Marvell controller detection</td></tr>
+<tr><td><code>is_ssd_maxiotek(attributes, model_upper)</code></td><td><code>attributes: list[SmartAttribute], model_upper: str</code></td><td>Maxiotek controller detection</td></tr>
+<tr><td><code>is_ssd_adata_industrial(model_upper)</code></td><td><code>model_upper: str</code></td><td>ADATA Industrial SSD detection</td></tr>
+
+</tbody>
+</table>
+
+### Low-Level Raw SCSI / NVMe Helpers
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>get_scsi_path(path)</code></b></td>
+<td><code>path: str</code></td>
+<td><code>str</code></td>
+<td>Resolve a device path (e.g. '\\\\.\\PhysicalDrive0') to its underlying '\\\\.\\SCSIn:' path, or '' on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_scsi_address(path)</code></b></td>
+<td><code>path: str</code></td>
+<td><code>(port, path_id, target_id, lun) | None</code></td>
+<td>Get the SCSI address of a device path, or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_intel(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page via generic Intel NVMe pass-through. Returns 512 bytes, or <code>None</code> on failure</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_samsung(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page via Samsung's vendor-specific SCSI security protocol commands</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_storage_query(drive_number)</code></b></td>
+<td><code>drive_number: int</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page via the standard Windows <code>IOCTL_STORAGE_QUERY_PROPERTY</code> query. Usually the first one to try</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_intel_rst(drive_number, scsi_port, scsi_target_id)</code></b></td>
+<td><code>drive_number: int = -1, scsi_port: int = 0, scsi_target_id: int = 0</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page through an Intel Rapid Storage Technology (RST) SCSI miniport pass-through</td>
+</tr>
+
+<tr>
+<td><b><code>get_smart_attribute_nvme_intel_vroc(drive_number, scsi_port, scsi_target_id)</code></b></td>
+<td><code>drive_number: int = -1, scsi_port: int = 0, scsi_target_id: int = 0</code></td>
+<td><code>bytes | None</code></td>
+<td>Read the raw NVMe SMART/Health log page through an Intel Virtual RAID on CPU (VROC) SCSI miniport pass-through</td>
 </tr>
 
 </tbody>
@@ -1571,6 +1471,362 @@ All documentation is in the `docs/` folder:
 
 </details>
 
+<details>
+<summary><b>Process Module (Experimental 4.0.0+)</b></summary>
+
+<i>Windows Only</i> — wraps <code>ProcessControl</code> for opening, inspecting, and controlling a running process (memory, priority, modules, suspend/resume, PEB command line, etc.).
+
+### Main Classes
+
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Properties</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>Process</code></b></td>
+<td>---</td>
+<td>Main class wrapping a handle to a running process</td>
+</tr>
+
+<tr>
+<td><b><code>ModuleInfo</code></b></td>
+<td><code>name, address, size</code></td>
+<td>A loaded module (DLL) inside the target process</td>
+</tr>
+
+<tr>
+<td><b><code>ProcessBasicInfo</code></b></td>
+<td><code>pid, parent_pid, thread_count, priority_base, exe_name</code></td>
+<td>Basic process info from a ToolHelp32 snapshot</td>
+</tr>
+
+<tr>
+<td><b><code>ProcessInfoEx</code></b></td>
+<td><code>number_of_threads, image_name, base_priority, priority_class, priority_class_name, pid, handle_count, session_id, peak_virtual_size, virtual_size, peak_working_set_size, working_set_size, quota_paged_pool_usage, quota_nonpaged_pool_usage, pagefile_usage, peak_pagefile_usage, private_page_count</code></td>
+<td>Extended process info from <code>NtQuerySystemInformation</code></td>
+</tr>
+
+<tr>
+<td><b><code>CpuTimes</code></b></td>
+<td><code>kernel_time, user_time, creation_time, exit_time</code></td>
+<td>Raw FILETIME process CPU time counters (100-ns units)</td>
+</tr>
+
+</tbody>
+</table>
+
+### Process Methods
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>Process(pid, enable_debug_privilege, access)</code></b></td>
+<td><code>pid: int, enable_debug_privilege: bool = False, access: int = PROCESS_ALL_ACCESS</code></td>
+<td>Open a handle to an existing process by PID</td>
+</tr>
+
+<tr>
+<td><b><code>get_ram_usage()</code></b></td>
+<td>---</td>
+<td>Get the process working set size in bytes</td>
+</tr>
+
+<tr>
+<td><b><code>get_cpu_times()</code></b></td>
+<td>---</td>
+<td>Get kernel/user/creation/exit times as a <code>CpuTimes</code> object</td>
+</tr>
+
+<tr>
+<td><b><code>get_modules()</code></b></td>
+<td>---</td>
+<td>Get the loaded modules (DLLs) as <code>list[ModuleInfo]</code></td>
+</tr>
+
+<tr>
+<td><b><code>suspend(one_thread, thread_id)</code></b></td>
+<td><code>one_thread: bool = False, thread_id: int = 0</code></td>
+<td>Suspend all threads, or a single thread if <code>one_thread=True</code></td>
+</tr>
+
+<tr>
+<td><b><code>resume(one_thread, thread_id)</code></b></td>
+<td><code>one_thread: bool = False, thread_id: int = 0</code></td>
+<td>Resume all threads, or a single thread if <code>one_thread=True</code></td>
+</tr>
+
+<tr>
+<td><b><code>kill(exit_code)</code></b></td>
+<td><code>exit_code: int = 0</code></td>
+<td>Terminate the process</td>
+</tr>
+
+<tr>
+<td><b><code>get_process_info()</code></b></td>
+<td>---</td>
+<td>Get basic process info (returns <code>ProcessBasicInfo</code>)</td>
+</tr>
+
+<tr>
+<td><b><code>read_memory(address, size)</code></b></td>
+<td><code>address: int, size: int</code></td>
+<td>Read <code>size</code> bytes from process memory at <code>address</code>, returns <code>bytes</code></td>
+</tr>
+
+<tr>
+<td><b><code>write_memory(address, data)</code></b></td>
+<td><code>address: int, data: bytes</code></td>
+<td>Write <code>data</code> to process memory at <code>address</code></td>
+</tr>
+
+<tr>
+<td><b><code>set_priority(priority_class)</code></b></td>
+<td><code>priority_class: int</code></td>
+<td>Set the process priority class</td>
+</tr>
+
+<tr>
+<td><b><code>get_priority()</code></b></td>
+<td>---</td>
+<td>Get the raw process priority class value</td>
+</tr>
+
+<tr>
+<td><b><code>get_process_info_ex()</code></b></td>
+<td>---</td>
+<td>Get extended process info (returns <code>ProcessInfoEx</code>)</td>
+</tr>
+
+<tr>
+<td><b><code>get_cmdline()</code></b></td>
+<td>---</td>
+<td>Read the process command line via its PEB</td>
+</tr>
+
+<tr>
+<td><b><code>get_current_directory()</code></b></td>
+<td>---</td>
+<td>Read the process current directory via its PEB</td>
+</tr>
+
+<tr>
+<td><b><code>enable_privilege(privilege_name)</code></b></td>
+<td><code>privilege_name: str</code></td>
+<td>Enable a privilege (e.g. <code>'SeDebugPrivilege'</code>) on this process's token</td>
+</tr>
+
+</tbody>
+</table>
+
+### Static Methods
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>Process.get_process_map()</code></b></td>
+<td><code>dict[str, int]</code></td>
+<td>Map of <code>{process_name: pid}</code> for all running processes (ToolHelp32 snapshot)</td>
+</tr>
+
+<tr>
+<td><b><code>Process.get_process_info_map()</code></b></td>
+<td><code>dict[int, ProcessInfoEx]</code></td>
+<td>Map of <code>{pid: ProcessInfoEx}</code> for all running processes (<code>NtQuerySystemInformation</code>)</td>
+</tr>
+
+</tbody>
+</table>
+
+### Module-Level Functions
+
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Parameters</th>
+<th>Returns</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><b><code>get_priority_name(priority)</code></b></td>
+<td><code>priority: int</code></td>
+<td><code>str</code></td>
+<td>Human-readable name of a Windows priority class value</td>
+</tr>
+
+<tr>
+<td><b><code>enable_privilege(privilege_name)</code></b></td>
+<td><code>privilege_name: str</code></td>
+<td><code>bool</code></td>
+<td>Enable a privilege on the current process token</td>
+</tr>
+
+</tbody>
+</table>
+
+### Module-Level Constants
+
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr><td><code>IDLE_PRIORITY_CLASS</code></td><td>Idle priority class value</td></tr>
+<tr><td><code>BELOW_NORMAL_PRIORITY_CLASS</code></td><td>Below-normal priority class value</td></tr>
+<tr><td><code>NORMAL_PRIORITY_CLASS</code></td><td>Normal priority class value</td></tr>
+<tr><td><code>ABOVE_NORMAL_PRIORITY_CLASS</code></td><td>Above-normal priority class value</td></tr>
+<tr><td><code>HIGH_PRIORITY_CLASS</code></td><td>High priority class value</td></tr>
+<tr><td><code>REALTIME_PRIORITY_CLASS</code></td><td>Realtime priority class value</td></tr>
+<tr><td><code>PROCESS_ALL_ACCESS</code></td><td>Default access-rights mask used when opening a process</td></tr>
+
+</tbody>
+</table>
+
+</details>
+
+<details>
+<summary><b>HardView Functions (Legacy)</b></summary>
+
+<table>
+<thead>
+<tr>
+<th>Function (JSON)</th>
+<th>Function (Python Object)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><code>get_bios_info()</code></td>
+<td><code>get_bios_info_objects()</code></td>
+<td>BIOS vendor, version, release date</td>
+</tr>
+
+<tr>
+<td><code>get_system_info()</code></td>
+<td><code>get_system_info_objects()</code></td>
+<td>System manufacturer, product name, UUID</td>
+</tr>
+
+<tr>
+<td><code>get_baseboard_info()</code></td>
+<td><code>get_baseboard_info_objects()</code></td>
+<td>Motherboard info</td>
+</tr>
+
+<tr>
+<td><code>get_chassis_info()</code></td>
+<td><code>get_chassis_info_objects()</code></td>
+<td>Chassis/computer case info</td>
+</tr>
+
+<tr>
+<td><code>get_cpu_info()</code> <i>(Windows Only)</i></td>
+<td><code>get_cpu_info_objects()</code> <i>(Windows Only)</i></td>
+<td>Processor details</td>
+</tr>
+
+<tr>
+<td><code>get_ram_info()</code></td>
+<td><code>get_ram_info_objects()</code></td>
+<td>Memory modules and totals</td>
+</tr>
+
+<tr>
+<td><code>get_gpu_info()</code> <i>(Windows Only)</i></td>
+<td><code>get_gpu_info_objects()</code> <i>(Windows Only)</i></td>
+<td>GPU information</td>
+</tr>
+
+<tr>
+<td><code>get_disk_info()</code></td>
+<td><code>get_disk_info_objects()</code></td>
+<td>Storage devices</td>
+</tr>
+
+<tr>
+<td><code>get_network_info()</code></td>
+<td><code>get_network_info_objects()</code></td>
+<td>Network adapters</td>
+</tr>
+
+<tr>
+<td><code>get_partitions_info()</code></td>
+<td><code>get_partitions_info_objects()</code></td>
+<td>Disk partitions (advanced)</td>
+</tr>
+
+<tr>
+<td><code>get_cpu_usage()</code></td>
+<td><code>get_cpu_usage_objects()</code></td>
+<td>Current CPU usage</td>
+</tr>
+
+<tr>
+<td><code>get_ram_usage()</code></td>
+<td><code>get_ram_usage_objects()</code></td>
+<td>Current RAM usage</td>
+</tr>
+
+<tr>
+<td><code>get_system_performance()</code></td>
+<td><code>get_system_performance_objects()</code></td>
+<td>Combined CPU/RAM usage</td>
+</tr>
+
+<tr>
+<td><code>monitor_cpu_usage_duration(d, i)</code></td>
+<td><code>monitor_cpu_usage_duration_objects(d,i)</code></td>
+<td>Monitor CPU usage over time</td>
+</tr>
+
+<tr>
+<td><code>monitor_ram_usage_duration(d, i)</code></td>
+<td><code>monitor_ram_usage_duration_objects(d,i)</code></td>
+<td>Monitor RAM usage over time</td>
+</tr>
+
+<tr>
+<td><code>monitor_system_performance_duration(d,i)</code></td>
+<td><code>monitor_system_performance_duration_objects(d,i)</code></td>
+<td>Monitor system performance over time</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
 ---
 
 ## 📊 Sensor Value Fetch Flow (LiveView)
@@ -1754,26 +2010,17 @@ You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).
 
 ---
 
-## 🧪 Quick Start And Tests
-
-<div align="center">
-  
-### LiveView Tests
-
-The LiveView test files are located in [tests/units](https://github.com/gafoo173/HardView/blob/main/tests/units)
-
-</div>
-
----
----
-
 <div align="center">
 
 ## 🌟 HardView — Your Window into Hardware Information
 
 <p>
-<b>See</b> <a href="./docs/What.md"><code>HardView API</code></a> for the full HardView API<br>
-<b>See</b> <a href="./docs/LiveViewAPI.md"><code>LiveView API</code></a> for the full LiveView API
+
+<b>See</b> <a href="./docs/LiveViewAPI.md"><code>LiveView API</code></a> for the full LiveView API<br>
+<b>See</b> <a href="./docs/SMART.md"><code>SMART API</code></a> for the full SMART API<br>
+<b>See</b> <a href="./docs/SMBIOS.md"><code>SMBIOS API</code></a> for the full SMBIOS API<br>
+<b>See</b> <a href="./docs/What.md"><code>HardView API (legacy)</code></a> for the full HardView API
+
 </p>
 
 ---

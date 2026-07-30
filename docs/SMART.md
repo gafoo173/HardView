@@ -1,10 +1,16 @@
+<div align="center">
+
+<img src="../resources/SMARTLogo.png" alt="HardView Logo" width="200"/>
+
 # HardView.SMART Module Documentation
+
+</div>
 
 ## Overview
 
 The `HardView.SMART` module provides a Python interface for reading S.M.A.R.T (Self-Monitoring, Analysis and Reporting Technology) data from storage drives on Windows systems. It allows you to monitor drive health, temperature, usage statistics, and other critical metrics.
 
-**NVMe Not Supported**
+**NVMe:** `SmartReader` itself targets ATA/SATA SMART. It does not decode NVMe SMART/Health data automatically, but raw NVMe log pages can be fetched with the low-level `get_smart_attribute_nvme_*()` functions (see [Low-Level NVMe / SCSI Functions](#low-level-nvme--scsi-functions)) and parsed yourself.
 
 **Platform Support:** Windows only
 
@@ -16,11 +22,25 @@ The `HardView.SMART` module provides a Python interface for reading S.M.A.R.T (S
 
 1. [Classes](#classes)
    - [SmartAttribute](#smartattribute)
+   - [SmartThreshold](#smartthreshold)
+   - [StateByte](#statebyte)
+   - [ErrorCommand](#errorcommand)
+   - [ErrorLogData](#errorlogdata)
+   - [ErrorLog](#errorlog)
    - [SmartValues](#smartvalues)
    - [SmartReader](#smartreader)
-2. [Functions](#functions)
+   - [SMARTInfoS](#smartinfos)
+2. [Enums](#enums)
+   - [SSDType](#ssdtype)
+3. [Functions](#functions)
    - [scan_all_drives()](#scan_all_drives)
-3. [Usage Examples](#usage-examples)
+   - [get_disk_info_s()](#get_disk_info_s)
+   - [detect_ssd_type()](#detect_ssd_type)
+   - [ssd_type_to_string()](#ssd_type_to_string)
+   - [get_attribute_name_by_id_and_type()](#get_attribute_name_by_id_and_type)
+   - [Vendor Detection Heuristics (`is_ssd_*`)](#vendor-detection-heuristics-is_ssd_)
+   - [Low-Level NVMe / SCSI Functions](#low-level-nvme--scsi-functions)
+4. [Usage Examples](#usage-examples)
 
 ---
 
@@ -53,14 +73,120 @@ for attr in reader.valid_attributes:
 
 > **Note:**  
 > The names of **S.M.A.R.T. attributes** may vary depending on the manufacturer or model.  
-> The SMART system used by the **`SMART.hpp`** library only tries to interpret the most common attributes.  
-> It does this through simple `switch`-case logic, without any manufacturer-specific analysis.  
-> Therefore, it’s **not recommended** to rely on it for uncommon attributes or those that differ across brands.  
+> The `.name` property above only tries to interpret the most common attributes, through simple generic `switch`-case logic, without any manufacturer-specific analysis.  
+> It's **not recommended** to rely on it for uncommon attributes or those that differ across brands.  
 >  
-> If you want your program to analyze S.M.A.R.T. data accurately,  
-> retrieve the **hard drive name or model** from `IDENTIFY_DEVICE_DATA`,  
-> then interpret the attribute IDs according to the **drive type and manufacturer**.
+> For accurate, manufacturer-aware interpretation, use the newer workflow instead:  
+> [`get_disk_info_s()`](#get_disk_info_s) → [`detect_ssd_type()`](#detect_ssd_type) → [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type).  
+> This detects the actual controller/vendor (Samsung, Phison, SandForce, Marvell, plain HDD, ...) from the model string and SMART data, then looks up attribute names for *that specific vendor* instead of guessing generically. See [Example 4](#example-4-display-all-attributes-recommended-way) below.
 
+
+---
+
+### SmartThreshold
+
+Represents the failure threshold for a single SMART attribute, as reported by the drive's threshold table. Obtained via [`SmartReader.get_smart_thresholds()`](#get_smart_thresholds).
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | int | Attribute ID this threshold applies to |
+| `threshold` | int | Failure threshold value |
+
+#### Example
+
+```python
+reader = SMART.SmartReader(0)
+for t in reader.get_smart_thresholds():
+    print(f"Attribute {t.id:02X}: fails below {t.threshold}")
+```
+
+---
+
+### StateByte
+
+Decodes the device status byte found in SMART error log entries. You normally get this via `ErrorLogData.state` rather than constructing it directly.
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `byte` | int | Raw status byte |
+| `device_fault` | bool | Whether a device fault was flagged |
+| `stream_error` | bool | Whether a streaming error was flagged |
+
+#### Methods
+
+##### `get_device_state()`
+**Returns:** `str` - Human-readable device state (e.g. `"Active/Idle"`, `"Standby"`)
+
+---
+
+### ErrorCommand
+
+One of the commands that preceded a logged error. Found inside [`ErrorLogData.error_commands`](#errorlogdata).
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `spvalue` | int | Feature/SP value |
+| `feature` | int | Feature register |
+| `sector_count` | int | Sector count register |
+| `lba` | tuple[int, int, int] | LBA bytes as `(low, mid, high)` |
+| `device` | int | Device/head register |
+| `command` | int | ATA command byte |
+| `timestamp` | int | Command timestamp |
+
+---
+
+### ErrorLogData
+
+A single entry from the SMART Summary Error Log. Found inside [`ErrorLog.errors`](#errorlog).
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `error_commands` | list[[ErrorCommand](#errorcommand)] | The 5 commands that preceded this error |
+| `cerror` | int | Error register at time of error |
+| `sector_count` | int | Sector count register at time of error |
+| `lba` | tuple[int, int, int] | LBA bytes as `(low, mid, high)` |
+| `device` | int | Device/head register |
+| `written_status` | int | Written status byte |
+| `state` | [StateByte](#statebyte) | Decoded device state at time of error |
+| `life_timestamp` | int | Power-on hours when this error occurred |
+
+---
+
+### ErrorLog
+
+The parsed SMART Summary Error Log (log page `0x01`). Obtained via [`SmartReader.read_error_log()`](#read_error_log).
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `log_version` | int | Error log version |
+| `log_index` | int | Index of the most recent error |
+| `errors` | list[[ErrorLogData](#errorlogdata)] | Up to 5 most recent error entries |
+| `error_count` | int | Total number of errors logged by the device (lifetime) |
+| `checksum` | int | Log page checksum |
+
+#### Example
+
+```python
+reader = SMART.SmartReader(0)
+log = reader.read_error_log()
+if log is not None:
+    print(f"Total lifetime errors: {log.error_count}")
+    for entry in log.errors:
+        print(f"  cerror=0x{entry.cerror:02X} state={entry.state.get_device_state()} "
+              f"power_on_hours={entry.life_timestamp}")
+else:
+    print("No error log available on this drive")
+```
 
 ---
 
@@ -222,6 +348,8 @@ else:
     print("Temperature not available")
 ```
 
+> **Accuracy note:** This method works by checking a handful of well-known attribute IDs (e.g. `0xC2`/`0xBE`) in a simple, fixed order. It is a convenient shortcut, but it isn't manufacturer-aware and can be wrong or miss the temperature attribute entirely on some drives. For reliable results, use [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) + [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) to identify the correct attribute for that specific controller, then read its `raw_value` directly.
+
 ---
 
 ##### `get_power_on_hours()`
@@ -237,6 +365,8 @@ days = hours // 24
 print(f"Drive has been powered on for {hours} hours ({days} days)")
 ```
 
+> **Accuracy note:** Same caveat as `get_temperature()` — this reads attribute ID `0x09` using simple generic logic, without manufacturer-specific handling. Prefer [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) + [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) if you need to be sure the ID actually means "power-on hours" for that drive.
+
 ---
 
 ##### `get_power_cycle_count()`
@@ -250,6 +380,8 @@ Gets the number of power cycles (on/off cycles).
 cycles = reader.get_power_cycle_count()
 print(f"Power cycle count: {cycles}")
 ```
+
+> **Accuracy note:** Reads attribute ID `0x0C` using the same simple, non-vendor-aware logic described above. Use [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) + [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) if accuracy matters.
 
 ---
 
@@ -268,6 +400,8 @@ else:
     print("No reallocated sectors - drive is healthy")
 ```
 
+> **Accuracy note:** Reads attribute ID `0x05` using the same simple, non-vendor-aware logic. For critical health decisions, prefer [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) + [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) to confirm the attribute actually represents reallocated sectors on that vendor's drives.
+
 ---
 
 ##### `get_ssd_life_left()`
@@ -283,6 +417,8 @@ if reader.is_probably_ssd():
     if life != -1:
         print(f"SSD Life Remaining: {life}%")
 ```
+
+> **Accuracy note:** SSD "life remaining" is stored under **different attribute IDs on different controllers** (e.g. `0xE7`/`0xE8`/`0xE9`/`0xBB` depending on the vendor). This method checks a handful of common IDs with simple generic logic and is a best-effort guess, not a guarantee. For a reliable reading, use [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) to identify the actual controller, then use [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) to find and read the correct life/wear attribute for that specific vendor.
 
 ---
 
@@ -300,6 +436,8 @@ if reader.is_probably_ssd():
     print(f"Total Written: {written_gb:.2f} GB")
 ```
 
+> **Accuracy note:** Same caveat as `get_ssd_life_left()` — the "bytes written" attribute (and its unit/scale) varies by controller. Prefer [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) + [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) for a controller-accurate reading.
+
 ---
 
 ##### `get_total_bytes_read()`
@@ -316,6 +454,8 @@ if reader.is_probably_ssd():
     print(f"Total Read: {read_gb:.2f} GB")
 ```
 
+> **Accuracy note:** Same caveat as `get_ssd_life_left()` and `get_total_bytes_written()`. Prefer [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) + [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) for a controller-accurate reading.
+
 ---
 
 ##### `get_wear_leveling_count()`
@@ -329,6 +469,8 @@ Gets the wear leveling count (SSD specific).
 wear = reader.get_wear_leveling_count()
 print(f"Wear Leveling Count: {wear}")
 ```
+
+> **Accuracy note:** Wear-leveling is reported under different attribute IDs depending on the controller (e.g. `0xAD`/`0xB1`/`0xE1` depending on vendor). This method guesses via simple, non-vendor-aware logic. Prefer [`get_disk_info_s()`](#get_disk_info_s) + [`detect_ssd_type()`](#detect_ssd_type) + [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) for the correct attribute on a specific controller.
 
 ---
 
@@ -374,6 +516,192 @@ print(f"Drive Type: {drive_type}")
 
 ---
 
+##### `fill_disk_info()`
+Sends IDENTIFY DEVICE to the drive and returns a simplified summary. (The full ATA IDENTIFY structure is not exposed field-by-field — this covers the fields most people need.)
+
+**Returns:** `dict` or `None` on failure, with keys:
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `model_number` | str | Drive model string |
+| `serial_number` | str | Drive serial number |
+| `firmware_revision` | str | Firmware revision string |
+| `user_addressable_sectors` | int | Total addressable sectors |
+| `nominal_media_rotation_rate` | int | `1` = SSD (non-rotating), `0` = not reported, otherwise RPM |
+
+**Example:**
+
+```python
+info = reader.fill_disk_info()
+if info:
+    print(f"{info['model_number']} (FW {info['firmware_revision']})")
+    print(f"Serial: {info['serial_number']}")
+```
+
+---
+
+##### `get_smart_thresholds()`
+Reads the SMART attribute threshold table.
+
+**Returns:** `list[SmartThreshold]`
+
+**Example:**
+
+```python
+for t in reader.get_smart_thresholds():
+    print(f"Attribute {t.id:02X} fails below {t.threshold}")
+```
+
+---
+
+##### `read_log(log_number)`
+Reads a raw SMART log page.
+
+**Parameters:**
+- `log_number` (int): Log page number (e.g. `1` = Summary Error Log, `6` = Self-Test Log)
+
+**Returns:** `bytes` (512 raw bytes) or `None` on failure
+
+**Example:**
+
+```python
+raw = reader.read_log(6)
+if raw is not None:
+    print(f"Self-test log page: {len(raw)} bytes")
+```
+
+---
+
+##### `read_error_log()`
+Reads and parses the SMART Summary Error Log (log page `0x01`).
+
+**Returns:** [`ErrorLog`](#errorlog) or `None` on failure
+
+**Example:**
+
+```python
+log = reader.read_error_log()
+if log is not None:
+    print(f"Lifetime error count: {log.error_count}")
+```
+
+---
+
+##### `run_test(test_type=0x01)`
+Starts a SMART self-test (`SMART EXECUTE OFF-LINE IMMEDIATE`).
+
+**Parameters:**
+- `test_type` (int, optional): Test type, default `0x01` (short self-test)
+
+**Returns:** `bool` - `True` if the test was successfully started
+
+> **📋 Details**
+>
+> This issues an actual `SMART EXECUTE OFF-LINE IMMEDIATE` ATA command directly to the drive over `IOCTL_ATA_PASS_THROUGH_DIRECT`:
+>
+> | Register | Value | Meaning |
+> |----------|-------|---------|
+> | Command | `0xB0` | SMART |
+> | Features | `0xD4` | EXECUTE OFF-LINE IMMEDIATE |
+> | Sector Count | `test_type` | Selects which test to run (see table below) |
+> | LBA Mid / LBA High | `0x4F` / `0xC2` | SMART signature bytes |
+>
+> Once the drive accepts the command, it starts performing the requested self-test in its firmware, with real timing.
+>
+> **`test_type` values (ATA/ATAPI Command Set, SMART EXECUTE OFF-LINE IMMEDIATE, Sector Count field):**
+>
+> | `test_type` | Test |
+> |-------------|------|
+> | `0x01` | Short Self-Test |
+> | `0x02` | Extended (Long) Self-Test |
+> | `0x03` | Conveyance Self-Test |
+> | `0x7F` | Abort Self-Test |
+>
+>
+> See the [ATA/ATAPI Command Set - 3 (ACS-3)](https://people.freebsd.org/~imp/asiabsdcon2015/works/d2161r5-ATAATAPI_Command_Set_-_3.pdf), section **7.48.5 (SMART EXECUTE OFF-LINE IMMEDIATE)**, for the full list of sub-command values and behavior.
+
+**Example:**
+
+```python
+if reader.run_test():
+    print("Self-test started successfully")
+
+# Explicit test type, e.g. extended self-test
+if reader.run_test(0x02):
+    print("Extended self-test started")
+```
+
+---
+
+### SMARTInfoS
+
+A bundle of model, firmware, attributes, and media type, used as the input to [`detect_ssd_type()`](#detect_ssd_type). Obtained via [`get_disk_info_s()`](#get_disk_info_s).
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `model_upper` | str | Drive model string (uppercased) |
+| `attributes` | list[[SmartAttribute](#smartattribute)] | All valid SMART attributes read from the drive |
+| `firmware_rev` | str | Firmware revision string |
+| `is_ssd` | bool | Whether the drive was identified as non-rotational (SSD) |
+
+---
+
+## Enums
+
+### SSDType
+
+The controller/vendor family detected by [`detect_ssd_type()`](#detect_ssd_type). Passed to [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) and [`ssd_type_to_string()`](#ssd_type_to_string).
+
+| Value | Meaning |
+|-------|---------|
+| `HDD_GENERAL` | Traditional (rotational) hard disk drive |
+| `ADATA_INDUSTRIAL` | ADATA industrial-grade SSD |
+| `SANDISK` | SanDisk |
+| `WDC` | Western Digital |
+| `SEAGATE` | Seagate |
+| `MTRON` | Mtron |
+| `TOSHIBA` | Toshiba |
+| `JMICRON_66X` | JMicron JMF66x controller |
+| `JMICRON_61X` | JMicron JMF61x controller |
+| `JMICRON_60X` | JMicron JMF60x controller |
+| `INDILINX` | Indilinx controller |
+| `INTEL_DC` | Intel Data Center SSD |
+| `INTEL` | Intel (consumer) SSD |
+| `SAMSUNG` | Samsung |
+| `MICRON_MU03` | Micron MU03 firmware family |
+| `MICRON` | Micron (other) |
+| `SANDFORCE` | SandForce controller |
+| `OCZ` | OCZ |
+| `OCZ_VECTOR` | OCZ Vector series |
+| `SSSTC` | SSSTC |
+| `PLEXTOR` | Plextor |
+| `KINGSTON` | Kingston |
+| `CORSAIR` | Corsair |
+| `REALTEK` | Realtek controller |
+| `SK_HYNIX` | SK hynix |
+| `KIOXIA` | Kioxia |
+| `SILICON_MOTION_CVC` | Silicon Motion (CVC firmware variant) |
+| `SILICON_MOTION` | Silicon Motion controller |
+| `PHISON` | Phison controller |
+| `MARVELL` | Marvell controller |
+| `MAXIOTEK` | Maxiotek controller |
+| `APACER` | Apacer |
+| `YMTC` | YMTC (Yangtze Memory) |
+| `SCY` | SCY |
+| `RECADATA` | Recadata |
+| `GENERAL_SSD` | Detected as an SSD, but the specific vendor/controller is unknown |
+
+```python
+from HardView import SMART
+
+print(SMART.SSDType.SAMSUNG)        # SSDType.SAMSUNG
+print(int(SMART.SSDType.SAMSUNG))   # underlying integer value
+```
+
+---
+
 ## Functions
 
 ### scan_all_drives()
@@ -412,6 +740,142 @@ for reader in readers:
     print(f"\n{reader.drive_path}")
     print(f"  Type: {reader.get_drive_type()}")
     print(f"  Temperature: {reader.get_temperature()}°C")
+```
+
+---
+
+### get_disk_info_s()
+
+Opens the given physical drive, reads its SMART attributes and IDENTIFY data, and returns a [`SMARTInfoS`](#smartinfos) ready to pass to [`detect_ssd_type()`](#detect_ssd_type). This is the recommended entry point for the accurate attribute-interpretation workflow.
+
+```python
+get_disk_info_s(drive_number: int) -> SMARTInfoS | None
+```
+
+**Parameters:**
+- `drive_number` (int): Physical drive number (0, 1, 2, ...)
+
+**Returns:** [`SMARTInfoS`](#smartinfos), or `None` if the drive couldn't be opened or read
+
+**Example:**
+
+```python
+from HardView import SMART
+
+info = SMART.get_disk_info_s(0)
+if info is not None:
+    print(f"Model: {info.model_upper}")
+    print(f"Firmware: {info.firmware_rev}")
+    print(f"Attributes read: {len(info.attributes)}")
+```
+
+---
+
+### detect_ssd_type()
+
+Detects the SSD controller/vendor type (or `HDD_GENERAL`) from a [`SMARTInfoS`](#smartinfos). This is the "controller detection" step — pass its result to [`get_attribute_name_by_id_and_type()`](#get_attribute_name_by_id_and_type) to interpret attributes accurately.
+
+```python
+detect_ssd_type(info: SMARTInfoS, raw_smart_data: bytes | None = None) -> SSDType
+```
+
+**Parameters:**
+- `info` ([SMARTInfoS](#smartinfos)): Result of [`get_disk_info_s()`](#get_disk_info_s)
+- `raw_smart_data` (bytes, optional): Raw 512-byte SMART READ DATA buffer. Only needed to disambiguate a small number of Silicon Motion / ADATA models; safe to omit otherwise.
+
+**Returns:** [`SSDType`](#ssdtype)
+
+**Example:**
+
+```python
+info = SMART.get_disk_info_s(0)
+controller_type = SMART.detect_ssd_type(info)
+print(SMART.ssd_type_to_string(controller_type))   # e.g. "Phison"
+```
+
+---
+
+### ssd_type_to_string()
+
+```python
+ssd_type_to_string(type: SSDType) -> str
+```
+
+Human-readable name for an [`SSDType`](#ssdtype), e.g. `"Phison"`, `"Samsung"`, `"HDD"`.
+
+---
+
+### get_attribute_name_by_id_and_type()
+
+Vendor-specific, human-readable name for a SMART attribute ID, given the [`SSDType`](#ssdtype) returned by [`detect_ssd_type()`](#detect_ssd_type). Falls back to a generic ATA name when the vendor doesn't define anything special for that ID. **This is the accurate replacement for `SmartAttribute.name`.**
+
+```python
+get_attribute_name_by_id_and_type(type: SSDType, attribute_id: int) -> str
+```
+
+**Parameters:**
+- `type` ([SSDType](#ssdtype)): Controller type from [`detect_ssd_type()`](#detect_ssd_type)
+- `attribute_id` (int): The attribute's `id`
+
+**Returns:** `str`
+
+**Example:**
+
+```python
+info = SMART.get_disk_info_s(0)
+controller_type = SMART.detect_ssd_type(info)
+
+for attr in info.attributes:
+    name = SMART.get_attribute_name_by_id_and_type(controller_type, attr.id)
+    print(f"[{attr.id:02X}] {name}: {attr.raw_value}")
+```
+
+---
+
+### Vendor Detection Heuristics (`is_ssd_*`)
+
+These are the individual per-vendor checks used internally by [`detect_ssd_type()`](#detect_ssd_type) (e.g. `is_ssd_phison()`, `is_ssd_samsung()`, `is_ssd_sandforce()`, ...). They're exposed for completeness, but **most users should just call `detect_ssd_type()`** instead of these — it runs the full, correctly-ordered set of checks for you.
+
+| Functions |
+|-----------|
+| `is_ssd_old`, `is_ssd_mtron`, `is_ssd_jmicron_60x`, `is_ssd_jmicron_61x`, `is_ssd_jmicron_66x`, `is_ssd_indilinx`, `is_ssd_sandforce`, `is_ssd_silicon_motion`, `is_ssd_silicon_motion_cvc`, `is_ssd_phison`, `is_ssd_marvell`, `is_ssd_maxiotek`, `is_ssd_realtek`, `is_ssd_intel`, `is_ssd_intel_dc`, `is_ssd_samsung`, `is_ssd_micron`, `is_ssd_micron_mu03`, `is_ssd_toshiba`, `is_ssd_kioxia`, `is_ssd_skhynix`, `is_ssd_sandisk`, `is_ssd_wdc`, `is_ssd_seagate`, `is_ssd_ymtc`, `is_ssd_adata_industrial`, `is_ssd_ocz`, `is_ssd_ocz_vector`, `is_ssd_ssstc`, `is_ssd_plextor`, `is_ssd_kingston`, `is_ssd_corsair`, `is_ssd_apacer`, `is_ssd_scy`, `is_ssd_recadata` |
+
+Each takes some combination of `attributes` (`list[SmartAttribute]`), `model_upper` (`str`), and `firmware_rev` (`str`) — matching what's on the corresponding [`SMARTInfoS`](#smartinfos) — and returns `bool`.
+
+```python
+info = SMART.get_disk_info_s(0)
+if SMART.is_ssd_phison(info.attributes, info.model_upper, info.firmware_rev):
+    print("Looks like a Phison controller")
+```
+
+---
+
+### Low-Level NVMe / SCSI Functions
+
+These bypass `SmartReader` entirely and talk to the device through vendor/platform-specific pass-through mechanisms. Each returns the raw **512-byte NVMe SMART/Health Information Log page** as `bytes`, or `None` on failure — the layout isn't modeled as a struct here, so parse it yourself against the NVMe Base Specification (Log Page ID `02h`).
+
+| Function | Description |
+|----------|-------------|
+| `get_scsi_path(path: str) -> str` | Resolves a device path (e.g. `\\.\PhysicalDrive0`) to its underlying `\\.\SCSIn:` path |
+| `get_scsi_address(path: str) -> tuple[int,int,int,int] \| None` | Returns `(port, path_id, target_id, lun)` for a device path |
+| `get_smart_attribute_nvme_intel(drive_number: int) -> bytes \| None` | Reads via generic Intel NVMe pass-through |
+| `get_smart_attribute_nvme_samsung(drive_number: int) -> bytes \| None` | Reads via Samsung's vendor-specific SCSI security protocol commands |
+| `get_smart_attribute_nvme_storage_query(drive_number: int) -> bytes \| None` | Reads via the standard Windows `IOCTL_STORAGE_QUERY_PROPERTY`. Usually the first one to try. |
+| `get_smart_attribute_nvme_intel_rst(drive_number=-1, scsi_port=0, scsi_target_id=0) -> bytes \| None` | Reads via an Intel Rapid Storage Technology (RST) SCSI miniport pass-through |
+| `get_smart_attribute_nvme_intel_vroc(drive_number=-1, scsi_port=0, scsi_target_id=0) -> bytes \| None` | Reads via an Intel Virtual RAID on CPU (VROC) SCSI miniport pass-through |
+
+For `get_smart_attribute_nvme_intel_rst()` / `get_smart_attribute_nvme_intel_vroc()`: pass a physical `drive_number` and the SCSI address will be resolved automatically, or pass `drive_number=-1` with an explicit `scsi_port`/`scsi_target_id` if you already know it.
+
+**Example:**
+
+```python
+from HardView import SMART
+
+raw = SMART.get_smart_attribute_nvme_storage_query(0)
+if raw is not None:
+    print(f"Got {len(raw)} bytes of NVMe SMART/Health log data")
+else:
+    print("Not an NVMe drive, or this access method isn't supported here")
 ```
 
 ---
@@ -523,144 +987,39 @@ if errors:
         print(f"  Drive {drive_num}: {error}")
 ```
 
-### Example 4: Display All Attributes
+### Example 4: Display All Attributes (Recommended Way)
+
+This uses the controller-detection workflow — `get_disk_info_s()` → `detect_ssd_type()` → `get_attribute_name_by_id_and_type()` — instead of the generic `attr.name`, so attribute names are interpreted correctly for the *actual* controller/vendor detected, not just guessed generically.
 
 ```python
 from HardView import SMART
 
 try:
-    reader = SMART.SmartReader(0)
-    
-    print(f"\nDrive: {reader.drive_path}")
-    print(f"Type: {reader.get_drive_type()}")
-    print(f"SMART Revision: {reader.revision_number}")
+    drive_number = 0
+    info = SMART.get_disk_info_s(drive_number)
+    if info is None:
+        raise RuntimeError(f"Could not read SMART/IDENTIFY data for drive {drive_number}")
+
+    controller_type = SMART.detect_ssd_type(info)
+    controller_name = SMART.ssd_type_to_string(controller_type)
+
+    print(f"\nDrive:      \\\\.\\PhysicalDrive{drive_number}")
+    print(f"Model:      {info.model_upper}")
+    print(f"Firmware:   {info.firmware_rev}")
+    print(f"Media:      {'SSD' if info.is_ssd else 'HDD'}")
+    print(f"Controller: {controller_name}")
     print("\n" + "="*70)
     print(f"{'ID':<4} {'Attribute Name':<40} {'Current':<8} {'Worst':<8} {'Raw Value'}")
     print("="*70)
-    
-    for attr in reader.valid_attributes:
-        print(f"{attr.id:02X}   {attr.name:<40} {attr.current:<8} {attr.worst:<8} {attr.raw_value}")
-    
+
+    for attr in info.attributes:
+        name = SMART.get_attribute_name_by_id_and_type(controller_type, attr.id)
+        print(f"{attr.id:02X}   {name:<40} {attr.current:<8} {attr.worst:<8} {attr.raw_value}")
+
     print("="*70)
-    
+
 except Exception as e:
     print(f"Error: {e}")
 ```
 
-### Example 5: Monitor Drive Temperature
-
-```python
-from HardView import SMART
-import time
-
-try:
-    reader = SMART.SmartReader(0)
-    
-    print(f"Monitoring temperature for: {reader.drive_path}")
-    print("Press Ctrl+C to stop\n")
-    
-    while True:
-        reader.refresh()
-        temp = reader.get_temperature()
-        
-        if temp != -1:
-            status = "NORMAL" if temp < 50 else "⚠️  HIGH"
-            print(f"Temperature: {temp}°C - {status}")
-        else:
-            print("Temperature not available")
-        
-        time.sleep(5)
-        
-except KeyboardInterrupt:
-    print("\nMonitoring stopped")
-except Exception as e:
-    print(f"Error: {e}")
-```
-
-### Example 6: Drive Health Report
-
-```python
-from HardView import SMART
-
-def generate_health_report(drive_number):
-    try:
-        reader = SMART.SmartReader(drive_number)
-        
-        print("\n" + "="*60)
-        print(f"DRIVE HEALTH REPORT - {reader.drive_path}")
-        print("="*60)
-        
-        # Basic Info
-        print(f"\n📊 Basic Information:")
-        print(f"   Drive Type: {reader.get_drive_type()}")
-        print(f"   SMART Valid: {reader.is_valid}")
-        
-        # Temperature
-        temp = reader.get_temperature()
-        if temp != -1:
-            temp_status = "✓ Good" if temp < 50 else "⚠️  High"
-            print(f"\n🌡️  Temperature: {temp}°C - {temp_status}")
-        
-        # Usage Statistics
-        print(f"\n⏱️  Usage Statistics:")
-        hours = reader.get_power_on_hours()
-        print(f"   Power-On Hours: {hours} ({hours/24:.1f} days)")
-        print(f"   Power Cycles: {reader.get_power_cycle_count()}")
-        
-        # Health Status
-        print(f"\n💊 Health Status:")
-        realloc = reader.get_reallocated_sectors_count()
-        if realloc == 0:
-            print(f"   Reallocated Sectors: ✓ None (Excellent)")
-        else:
-            print(f"   Reallocated Sectors: ⚠️  {realloc} (Needs Attention)")
-        
-        # SSD Specific
-        if reader.is_probably_ssd():
-            print(f"\n💾 SSD Information:")
-            life = reader.get_ssd_life_left()
-            if life != -1:
-                life_status = "✓ Good" if life > 80 else "⚠️  Monitor" if life > 50 else "🔴 Critical"
-                print(f"   Life Remaining: {life}% - {life_status}")
-            
-            written = reader.get_total_bytes_written()
-            if written > 0:
-                written_tb = written / (1024**4)
-                print(f"   Total Written: {written_tb:.2f} TB")
-            
-            read = reader.get_total_bytes_read()
-            if read > 0:
-                read_tb = read / (1024**4)
-                print(f"   Total Read: {read_tb:.2f} TB")
-        
-        print("\n" + "="*60 + "\n")
-        
-    except Exception as e:
-        print(f"Error generating report: {e}")
-
-# Generate reports for all drives
-readers, errors = SMART.scan_all_drives()
-for i, reader in enumerate(readers):
-    generate_health_report(i)
-```
-
-## Error Handling
-
-The module raises `RuntimeError` exceptions when:
-- Drive cannot be opened (insufficient permissions, drive doesn't exist)
-- SMART cannot be enabled on the drive
-- SMART data cannot be read
-
-Always use try-except blocks when working with SMART data:
-
-```python
-from HardView import SMART
-
-try:
-    reader = SMART.SmartReader(0)
-    # Your code here
-except RuntimeError as e:
-    print(f"Failed to read SMART data: {e}")
-except Exception as e:
-    print(f"Unexpected error: {e}")
-```
+> This same `controller_type` also plugs straight into the vendor-specific attribute lookup for anything else you compute manually from `info.attributes` — for example, finding the correct "SSD life remaining" or "wear leveling" attribute instead of relying on `SmartReader.get_ssd_life_left()` / `get_wear_leveling_count()`'s generic guesses (see the accuracy notes on those methods above).
