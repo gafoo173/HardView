@@ -47,9 +47,9 @@
 // --- HardView Includes ---
 #include "../../cpuid/cpuid.hpp"
 #include "../../cpuid/cpuidHelpers.hpp"
-#include "../../C++/Headers/WMI/WMI_info.hpp"
 #ifdef _WIN32
 #include "include/HardwareTemp.h" //For Hardware temperature
+#include "../../C++/Headers/WMI/WMI_info.hpp"
 
 // --- Platform-Specific Includes & Definitions ---
 #include <pdh.h>
