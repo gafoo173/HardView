@@ -4601,6 +4601,22 @@ bool GetSmartAttributeNVMeIntelVroc(int physicalDriveId, int scsiPort, int scsiT
     return bRet;
 }
 
+int GetDriveNumberByPath(const std::string& path)
+{
+    constexpr std::string_view prefix = R"(\\.\PhysicalDrive)";
+
+    if (path.find(prefix) != 0)
+        return -1;
+
+    try
+    {
+        return std::stoi(path.substr(prefix.size()));
+    }
+    catch (...)
+    {
+        return -1;
+    }
+}
 
 
 } // namespace smart_reader

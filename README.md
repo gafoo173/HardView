@@ -471,34 +471,33 @@ pprint.pprint(json.loads(cpu_json))
 ```cpp
 #include "SMART.hpp"
 #include <iostream>
-#include <vector>
-#include <memory>
 
 int main() {
-    try {
+
         // Scan all available drives (0-7)
         auto drives = smart_reader::ScanAllDrives(8);
-
+        std::cout << "Found " << drives.size() << " drives." << std::endl;
         for (const auto& drive : drives) {
-            std::cout << "Drive: " << drive->GetDrivePath() << "\n";
-            std::cout << "Type: " << drive->GetDriveType() << "\n";
-            std::cout << "Temperature: " << drive->GetTemperature() << " °C\n";
-            std::cout << "Power-On Hours: " << drive->GetPowerOnHours() << "\n";
-            std::cout << "Power Cycle Count: " << drive->GetPowerCycleCount() << "\n";
-            std::cout << "Reallocated Sectors: " << drive->GetReallocatedSectorsCount() << "\n";
-
-            if (drive->IsProbablySsd()) {
-                std::cout << "SSD Life Left: " << drive->GetSsdLifeLeft() << "%\n";
-                std::cout << "Total Bytes Written: " << drive->GetTotalBytesWritten() << "\n";
-                std::cout << "Total Bytes Read: " << drive->GetTotalBytesRead() << "\n";
-                std::cout << "Wear Leveling Count: " << drive->GetWearLevelingCount() << "\n";
+            try {
+                smart_reader::SMARTInfoS info;
+                smart_reader::GetDiskInfoS(smart_reader::GetDriveNumberByPath(drive->GetDrivePath()), info);
+                smart_reader::SmartValues raw = drive->GetRawData();
+                smart_reader::SSDType typ = smart_reader::DetectSSDType(info,(const BYTE*)&raw);
+                std::cout << "Drive: " << drive->GetDrivePath() << "\n";
+                std::cout << "Frimware Revision: " << info.firmwareRev << "\n";
+                std::cout << "Drive Model: " << info.modelUpper << "\n";
+                std::cout << "SSD Type: " << smart_reader::SSDTypeToString(typ) << "\n";;
+                for (const auto& attr : info.attributes) {
+                    std::cout << "Attribute: " << smart_reader::GetAttributeNameByIDAndType(typ,attr.Id) << " Current: " << (int)attr.Current << " Worst: " << (int)attr.Worst << " Raw: " << (attr.GetRawValue()) <<  "\n";
+                }
+            }  catch (const std::exception& e) {
+                std::cout << "Error: " << e.what() << "\n";
             }
 
             std::cout << "-------------------------------------\n";
         }
-    } catch (const std::exception& e) {
-        std::cerr << "Error reading SMART data: " << e.what() << std::endl;
-    }
+        return 0;
+    
 }
 ```
 
