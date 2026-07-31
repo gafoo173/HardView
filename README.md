@@ -51,7 +51,7 @@
 Install HardView from PyPI:
 
 ```bash
-pip install HardView
+pip install "HardView>=4.0.0"
 ```
 
 Then download `tests/quick_start.py` from this repository and run:
