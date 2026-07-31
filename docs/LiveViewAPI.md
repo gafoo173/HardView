@@ -1384,29 +1384,15 @@ Re-retrieves sensor and fan data.
 import sys
 if sys.platform == "win32":
     from HardView.LiveView import PySensor
-    
+
     try:
         sensor = PySensor()
-        sensor.update()     #The update is important after initialization here. 
-        # Get all available sensors
-        all_sensors = sensor.get_all_sensors()
+        sensor.update()     # The update is important after initialization here.
+        # Get all available sensors as a dict[str, float]
+        all_sensors = sensor.get_sensors()
         print("Available Sensors:")
-        for sensor_name in all_sensors[:10]:  # Show first 10 sensors
-            try:
-                value = sensor.get_value_by_name(sensor_name)
-                print(f" - {sensor_name}: {value:.1f}°C")
-            except:
-                print(f" - {sensor_name}: Unable to read")
-        
-        # Get all fan RPMs
-        fan_rpms = sensor.get_all_fan_rpms()
-        print("\nFan RPMs:")
-        for fan_name, rpm in fan_rpms:
-            print(f" - {fan_name}: {rpm:.0f} RPM")
-        
-        # Update readings
-        sensor.update()
-        
+        for sensor_name, value in all_sensors.items():
+            print(f" - {sensor_name}: {value}")
     except Exception as e:
         print(f"Error with sensor monitoring: {e}")
 else:
