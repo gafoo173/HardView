@@ -2018,7 +2018,7 @@ You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).
 <b>See</b> <a href="./docs/LiveViewAPI.md"><code>LiveView API</code></a> for the full LiveView API<br>
 <b>See</b> <a href="./docs/SMART.md"><code>SMART API</code></a> for the full SMART API<br>
 <b>See</b> <a href="./docs/SMBIOS.md"><code>SMBIOS API</code></a> for the full SMBIOS API<br>
-<b>See</b> <a href="./docs/What.md"><code>HardView API (legacy)</code></a> for the full HardView API
+<b>See</b> <a href="./docs/What.md"><code>HardView API (legacy)</code></a> for the full Legacy HardView API
 
 </p>
 
