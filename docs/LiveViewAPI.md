@@ -1754,32 +1754,55 @@ Always use try-catch blocks when working with hardware monitoring functions.
 - **Sensor classes**: Provide the most comprehensive hardware information
 - **GPU monitoring**: May not work well with integrated GPUs
 
-### Usage Tips for Temperature Classes in Windows
+## Usage Guidelines for PyTempX Sensor Objects on Windows
+
+### General Rules
+
+- In `PySensor`, some sensors rely on the difference between two readings. Therefore, you must call `.update()` after initialization to ensure that these sensors return accurate values.
+
+- The `.update()` method, when called on any sensor-monitoring object, updates **all sensors inside the monitoring library**, not only the sensors associated with that object.
+
+---
+
+### Sensor Monitoring Objects
+
+All sensor-monitoring objects accept a single `bool` parameter named `init`, which defaults to `True`.
+
+Its purpose is to initialize the monitoring library if it has not already been initialized.
+
+There is no problem with initializing the library from multiple objects. If the library has already been initialized, it will not reload the DLLs if they are already loaded.
+
+#### `.update()` Method
+
+For sensor-monitoring objects other than `PyManageTemp`, the `.update()` method performs the following operations:
+
+1. Re-reads all sensors available on the system and updates their values inside the DLLs.
+2. Re-reads the sensors monitored by the specific object on which `.update()` was called.
+
+#### `.reget()` Method
+
+For sensor-monitoring objects, the `.reget()` method re-reads **only the sensors monitored by the specific object**.
+
 > **Note:**  
-> Before performing the first read on Windows, make sure to update the values to ensure accurate results. This is especially important within the `PySensor` class, as some sensors require an initial update after initialization to return correct values.
+> "Re-reading" here means reading the data already stored inside the DLLs. It does **not** mean reading the sensors directly from the hardware.
 
 
-* **For simple scripts** (e.g., monitoring only CPU temperature):
-  You can enable automatic initialization by passing true Or do not pass anything by default is true when creating a temperature monitoring object, then update it using the `.update` method .
+#### `PyManageTemp`
 
-* **For larger programs** or **comprehensive scripts** that monitor all sensors:
-  It’s recommended to create an object from the `PyManageTemp` class, use the `.Init` method for initialization, and `.Update` for updating.
+`PyManageTemp` is different from the other sensor-monitoring objects. It does not monitor any sensors itself. Instead, its purpose is to interact directly with the monitoring DLLs.
 
-* **Important note on update behavior**:
+Therefore, calling `.update()` on a `PyManageTemp` object updates the sensor readings inside the DLLs **without re-reading the updated values for all other sensor-monitoring objects**.
 
-  * **When using `.Update` from the `PyManageTemp` object**:
-    This updates the sensor values inside the `libreHardwareMonitorlib` and `HardwareWrapper` libraries, **but does not** update the properties of the temperature objects inside the classes.
-    In this case, you must use `.reget` to refresh all temperature sensor objects.
-  * **When using `.update` from an individual temperature object**:
-    This method performs **two tasks** — it updates the sensor values in both `libreHardwareMonitorlib` and `HardwareWrapper`, **and** updates the properties of the specific object you used it on.
-    Therefore, if you call `.update` on an individual object, there is **no need** to call `.reget` for that object. (In newer versions, you can use the specific_update function, which is better than the regular update functions)
+Those objects must perform a separate `.reget()` operation to refresh their sensor values.
 
-* **Performance tip**:
-  After a global update using `PyManageTemp`’s `.Update` or calling `.update` on a specific temperature object, **do not** call `.Update` or `.update` again for the remaining objects.
-  This would add unnecessary load, increase execution time, and cause redundant updates.
-  Instead, use `.reget` to simply fetch the latest values.
+See the `PyManageTemp` documentation above for information about the methods available in this object.
 
-* **Starting from version 4.0.0**:
+> ** Performance Warning:**  
+> The `.update()` method is not a lightweight operation and has a measurable performance cost. Therefore, you should perform `.update()` only once when possible, and then use `.reget()` for the remaining objects to retrieve their updated values.
+
+---
+
+### Starting from version 4.0.0
   `PyTempCpu`, `PyTempGpu`, `PyTempOther` (and their `liveview_helper` wrappers) are **restricted** and no longer recommended for monitoring sensors. Use `PySensor` instead — it's faster and more accurate.
 
   If you only want to monitor **one specific device** (not all sensors), you can still do this efficiently with `PySensor`:
