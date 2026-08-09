@@ -1742,8 +1742,6 @@ This script will execute various `LiveView` functions and display their outputs,
 
 Most classes will throw runtime errors if:
 - Required libraries are not available
-- Hardware is not supported
-- Permissions are insufficient
 - System resources are unavailable
 
 Always use try-catch blocks when working with hardware monitoring functions.
