@@ -1,16 +1,3 @@
-"""
-Type stubs for the smbios pybind11 extension module (HardView project).
-
-Reads and parses SMBIOS (DMI) hardware information tables: BIOS, system,
-baseboard, chassis, processors, memory, caches, ports, slots, batteries,
-and thermal/voltage/cooling probes.
-
-Note: SMBIOS.hpp (the underlying C++ header) was not provided, so the
-scalar field types below (int/str) are inferred from field names and
-common SMBIOS conventions rather than read directly from the struct
-definitions. Double-check against SMBIOS.hpp if precise typing matters.
-"""
-
 from typing import List, Tuple
 
 # ------------------------------------------------------------------
