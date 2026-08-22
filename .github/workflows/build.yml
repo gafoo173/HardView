@@ -5,10 +5,23 @@ on:
     branches:
       - main
       - 4.0.0b1
+    paths:
+      - 'C++/**'
+      - 'HardView/**'
+      - 'HardwareWrapper/**'
+      - 'cpuid/**'
+      - 'setup.py'
+
   pull_request:
     branches:
       - main
       - 4.0.0b1
+    paths:
+      - 'C++/**'
+      - 'HardView/**'
+      - 'HardwareWrapper/**'
+      - 'cpuid/**'
+      - 'setup.py'
 
 jobs:
   build-linux:
