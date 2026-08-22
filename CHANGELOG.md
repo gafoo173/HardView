@@ -57,9 +57,9 @@ All notable changes to HardView Library (Python) will be documented in this file
   * However, no new Linux-specific features, improvements, or bug fixes are planned.
   * Future development will focus primarily on the Windows implementation.  
 
-> **Compatibility:** No API changes have been introduced in this release. Existing function signatures and calling conventions remain unchanged, so applications developed for **3.0.1+** are expected to work with **4.0.0** without requiring code changes in most cases.
->
-> **Behavior Change:** The `get_all_fan_rpms()` function no longer returns fan RPM data and will now always return an empty array. This change is intentional and should be taken into account if your application relies on this function.
+> [!IMPORTANT]
+> **Compatibility:** None of the function signatures from previous releases have been modified, and the calling conventions remain unchanged. Applications developed for **3.0.1+** are expected to work with **4.0.0** without requiring any code changes, **except for `get_all_fan_rpms()`**, as this function has been removed in **4.0.0**.
+
 
 ---
 
