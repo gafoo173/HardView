@@ -6,22 +6,24 @@ on:
       - main
       - 4.0.0b1
     paths:
-      - 'C++/**'
+      - 'C\+\+/**'
       - 'HardView/**'
       - 'HardwareWrapper/**'
       - 'cpuid/**'
       - 'setup.py'
+      - '.github/workflows/build.yml'
 
   pull_request:
     branches:
       - main
       - 4.0.0b1
     paths:
-      - 'C++/**'
+      - 'C\+\+/**'
       - 'HardView/**'
       - 'HardwareWrapper/**'
       - 'cpuid/**'
       - 'setup.py'
+      - '.github/workflows/build.yml'
 
 jobs:
   build-linux:
