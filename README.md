@@ -262,7 +262,6 @@ Requires the `lm-sensors` library to be installed for hardware monitoring.
 
 Check the top of each library header file for listed dependencies.  
 Most libraries have no external dependencies.  
-Exception: `SPD.hpp` requires `InpOutx64.dll`.  
 It is recommended to review the header file beginning for any dependency notes.
 
 </details>
