@@ -3,31 +3,40 @@
 // This example loads the library, checks for any additional dependencies,
 // then tests some functions and prints the results, such as CPU Temperature
 
+
 package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"syscall"
-	"unsafe"
 )
 
 // HardwareTemp represents the hardware temperature monitor
 type HardwareTemp struct {
-	dll                   *syscall.DLL
-	initProc              *syscall.Proc
-	shutdownProc          *syscall.Proc
-	getCpuTempProc        *syscall.Proc
-	getGpuTempProc        *syscall.Proc
-	getMotherboardProc    *syscall.Proc
-	getStorageTempProc    *syscall.Proc
-	getAvgCpuTempProc     *syscall.Proc
-	getMaxCpuTempProc     *syscall.Proc
-	getCpuFanRpmProc      *syscall.Proc
-	getGpuFanRpmProc      *syscall.Proc
-	updateMonitorProc     *syscall.Proc
+	dll                *syscall.DLL
+	initProc           *syscall.Proc
+	shutdownProc       *syscall.Proc
+	getCpuTempProc     *syscall.Proc
+	getGpuTempProc     *syscall.Proc
+	getMotherboardProc *syscall.Proc
+	getStorageTempProc *syscall.Proc
+	getAvgCpuTempProc  *syscall.Proc
+	getMaxCpuTempProc  *syscall.Proc
+	getCpuFanRpmProc   *syscall.Proc
+	getGpuFanRpmProc   *syscall.Proc
+	updateMonitorProc  *syscall.Proc
+}
+
+// callFloat64 calls a no-argument export that returns a C `double`.
+// The double comes back in XMM0, which Go exposes as the second return value (r2).
+func callFloat64(p *syscall.Proc) float64 {
+	_, xmm0, _ := p.Call()
+	return math.Float64frombits(uint64(xmm0))
 }
 
 // Check if required DLLs exist next to the executable
@@ -55,15 +64,12 @@ func checkRequiredDLLs() error {
 	}
 
 	if len(missing) > 0 {
+		lines := make([]string, len(missing))
+		for i, dll := range missing {
+			lines[i] = fmt.Sprintf("  - %s", dll)
+		}
 		return fmt.Errorf("ERROR: The following required DLL files are missing from the executable directory:\n%s\n\nExecutable directory: %s\n\nPlease ensure all DLL files are placed in the same directory as the executable.",
-			strings.Join(func() []string {
-				result := make([]string, len(missing))
-				for i, dll := range missing {
-					result[i] = fmt.Sprintf("  - %s", dll)
-				}
-				return result
-			}(), "\n"),
-			exeDir)
+			strings.Join(lines, "\n"), exeDir)
 	}
 
 	return nil
@@ -89,17 +95,17 @@ func NewHardwareTemp(dllName string) (*HardwareTemp, error) {
 
 	// Load all function procedures with error handling
 	funcMap := map[string]**syscall.Proc{
-		"InitHardwareTempMonitor":           &hw.initProc,
-		"ShutdownHardwareTempMonitor":       &hw.shutdownProc,
-		"GetCpuTemperatureTemp":             &hw.getCpuTempProc,
-		"GetGpuTemperatureTemp":             &hw.getGpuTempProc,
-		"GetMotherboardTemperatureTemp":     &hw.getMotherboardProc,
-		"GetStorageTemperatureTemp":         &hw.getStorageTempProc,
-		"GetAverageCpuCoreTemperatureTemp":  &hw.getAvgCpuTempProc,
-		"GetMaxCpuCoreTemperatureTemp":      &hw.getMaxCpuTempProc,
-		"GetCpuFanRpmTemp":                  &hw.getCpuFanRpmProc,
-		"GetGpuFanRpmTemp":                  &hw.getGpuFanRpmProc,
-		"UpdateHardwareMonitorTemp":         &hw.updateMonitorProc,
+		"InitHardwareTempMonitor":          &hw.initProc,
+		"ShutdownHardwareTempMonitor":      &hw.shutdownProc,
+		"GetCpuTemperatureTemp":            &hw.getCpuTempProc,
+		"GetGpuTemperatureTemp":            &hw.getGpuTempProc,
+		"GetMotherboardTemperatureTemp":    &hw.getMotherboardProc,
+		"GetStorageTemperatureTemp":        &hw.getStorageTempProc,
+		"GetAverageCpuCoreTemperatureTemp": &hw.getAvgCpuTempProc,
+		"GetMaxCpuCoreTemperatureTemp":     &hw.getMaxCpuTempProc,
+		"GetCpuFanRpmTemp":                 &hw.getCpuFanRpmProc,
+		"GetGpuFanRpmTemp":                 &hw.getGpuFanRpmProc,
+		"UpdateHardwareMonitorTemp":        &hw.updateMonitorProc,
 	}
 
 	for funcName, procPtr := range funcMap {
@@ -117,7 +123,8 @@ func NewHardwareTemp(dllName string) (*HardwareTemp, error) {
 // Init initializes the hardware monitor
 func (hw *HardwareTemp) Init() int {
 	ret, _, _ := hw.initProc.Call()
-	return int(ret)
+	// The export returns a C `int` (32 bits); the upper half of RAX is undefined.
+	return int(int32(ret))
 }
 
 // Shutdown shuts down the hardware monitor
@@ -132,52 +139,28 @@ func (hw *HardwareTemp) Update() {
 }
 
 // GetCpuTemp returns CPU temperature
-func (hw *HardwareTemp) GetCpuTemp() float64 {
-	ret, _, _ := hw.getCpuTempProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetCpuTemp() float64 { return callFloat64(hw.getCpuTempProc) }
 
 // GetGpuTemp returns GPU temperature
-func (hw *HardwareTemp) GetGpuTemp() float64 {
-	ret, _, _ := hw.getGpuTempProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetGpuTemp() float64 { return callFloat64(hw.getGpuTempProc) }
 
 // GetMotherboardTemp returns motherboard temperature
-func (hw *HardwareTemp) GetMotherboardTemp() float64 {
-	ret, _, _ := hw.getMotherboardProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetMotherboardTemp() float64 { return callFloat64(hw.getMotherboardProc) }
 
 // GetStorageTemp returns storage temperature
-func (hw *HardwareTemp) GetStorageTemp() float64 {
-	ret, _, _ := hw.getStorageTempProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetStorageTemp() float64 { return callFloat64(hw.getStorageTempProc) }
 
 // GetAvgCpuCoreTemp returns average CPU core temperature
-func (hw *HardwareTemp) GetAvgCpuCoreTemp() float64 {
-	ret, _, _ := hw.getAvgCpuTempProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetAvgCpuCoreTemp() float64 { return callFloat64(hw.getAvgCpuTempProc) }
 
 // GetMaxCpuCoreTemp returns maximum CPU core temperature
-func (hw *HardwareTemp) GetMaxCpuCoreTemp() float64 {
-	ret, _, _ := hw.getMaxCpuTempProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetMaxCpuCoreTemp() float64 { return callFloat64(hw.getMaxCpuTempProc) }
 
 // GetCpuFanRpm returns CPU fan RPM
-func (hw *HardwareTemp) GetCpuFanRpm() float64 {
-	ret, _, _ := hw.getCpuFanRpmProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetCpuFanRpm() float64 { return callFloat64(hw.getCpuFanRpmProc) }
 
 // GetGpuFanRpm returns GPU fan RPM
-func (hw *HardwareTemp) GetGpuFanRpm() float64 {
-	ret, _, _ := hw.getGpuFanRpmProc.Call()
-	return *(*float64)(unsafe.Pointer(&ret))
-}
+func (hw *HardwareTemp) GetGpuFanRpm() float64 { return callFloat64(hw.getGpuFanRpmProc) }
 
 // Helper function to display temperature values with error handling
 func displayTempValue(name string, value float64, unit string) {
@@ -204,6 +187,9 @@ func displayRpmValue(name string, value float64) {
 }
 
 func main() {
+	// The CLR-hosting wrapper keeps per-thread state: stay on one OS thread.
+	runtime.LockOSThread()
+
 	// Check for required DLLs before attempting to load
 	if err := checkRequiredDLLs(); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
@@ -218,7 +204,6 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to load DLL: %v\n", err)
 		os.Exit(1)
 	}
-	defer hw.Shutdown()
 
 	// Initialize the hardware monitor
 	initResult := hw.Init()
@@ -244,5 +229,6 @@ func main() {
 	displayRpmValue("CPU Fan", hw.GetCpuFanRpm())
 	displayRpmValue("GPU Fan", hw.GetGpuFanRpm())
 
+	hw.Shutdown()
 	fmt.Println("\nHardware monitor shutdown successfully!")
 }
