@@ -1870,84 +1870,21 @@ classDiagram
 
 <div align="center">
 
-<table>
-<thead>
-<tr>
-<th width="300">Feature</th>
-<th width="150">Windows</th>
-<th width="150">Linux</th>
-</tr>
-</thead>
-<tbody>
-
-<tr>
-<td><b>BIOS Info</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>System Info</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>Baseboard Info</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>Chassis Info</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>CPU Info</b></td>
-<td>✅ yes</td>
-<td>✅ yes (by LiveView)</td>
-</tr>
-
-<tr>
-<td><b>RAM Info</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>Disks</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>Network</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>Advanced Storage / SMART</b></td>
-<td>✅ yes</td>
-<td>❌ No</td>
-</tr>
-
-<tr>
-<td><b>Performance Monitoring</b></td>
-<td>✅ yes</td>
-<td>✅ yes</td>
-</tr>
-
-<tr>
-<td><b>Sensors</b></td>
-<td>✅ yes (by LiveView)</td>
-<td>✅ yes (by LiveView)</td>
-</tr>
-
-</tbody>
-</table>
+| Feature | Windows | Linux |
+|:--|:--:|:--:|
+| BIOS Info | Yes | Yes |
+| System Info | Yes | Yes |
+| Baseboard Info | Yes | Yes |
+| Chassis Info | Yes | Yes |
+| CPU Info | Yes | Yes (by LiveView) |
+| RAM Info | Yes | Yes |
+| Disks | Yes | Yes |
+| Network | Yes | Yes |
+| SMBIOS | Yes | No |
+| PCI | Yes | No |
+| Advanced Storage / SMART | Yes | No |
+| Performance Monitoring | Yes | Yes |
+| Sensors | Yes (by LiveView) | Yes (by LiveView) |
 
 </div>
 
