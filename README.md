@@ -38,15 +38,15 @@
 
 <div align="center">
 
-## 📋 Table of Contents
+## Table of Contents
 
-[Overview](#-hardview-project-overview) • [Features](#-key-features) • [Installation](#-installation-python) • [Usage](#-usage-examples) • [Documentation](#-documentation) • [API Reference](#-api-reference-python) • [Platform Support](#platform-support) 
+[Overview](#hardview-project-overview) • [Features](#key-features) • [Installation](#installation-python) • [Usage](#usage-examples) • [Documentation](#documentation) • [API Reference](#api-reference-python) • [Platform Support](#platform-support) 
 
 </div>
 
 ---
 
-## 🧪 Quick Start
+## Quick Start
 
 Install HardView from PyPI:
 
@@ -71,7 +71,7 @@ python tests/quick_start.py
 
 ---
 
-## 📦 HardView Project Overview
+## HardView Project Overview
 
 HardView is a project that includes Python, C++, and C libraries, Windows drivers, and tools for monitoring hardware and displaying its information through various sources, whether from the system or other libraries. It provides a unified interface for developers to access information via libraries and a user interface for end-users through the tools.
 
@@ -147,7 +147,7 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 <div align="center">
 
@@ -191,7 +191,7 @@ HardView is a project that includes Python, C++, and C libraries, Windows driver
 
 ---
 
-## 🚀 Installation (Python)
+## Installation (Python)
 
 <table>
 <tr>
@@ -219,7 +219,7 @@ pip install .
 </table>
 
 <details>
-<summary><b>📚 Full setup instructions and platform support</b></summary>
+<summary><b>Full setup instructions and platform support</b></summary>
 
 For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 
@@ -227,7 +227,7 @@ For supported platforms and full setup instructions, see `docs/INSTALL.md`.
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 <details>
 <summary><b>Python (Windows)</b></summary>
@@ -281,7 +281,7 @@ WinRing0 is an old and well-known driver used to access **MSRs**, **physical mem
 
 ---
 
-## 💡 Usage Examples
+## Usage Examples
 
 <details>
 <summary><b>LiveView</b></summary>
@@ -504,18 +504,18 @@ int main() {
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 <div align="center">
 
 ### Full documentation is available on the GitHub Pages website:
 
-### 🌐 [https://gafoo173.github.io/HardView/](https://gafoo173.github.io/HardView/)
+### [https://gafoo173.github.io/HardView/](https://gafoo173.github.io/HardView/)
 
 </div>
 
 <details>
-<summary><b>📁 Documentation Files</b></summary>
+<summary><b>Documentation Files</b></summary>
 
 All documentation is in the `docs/` folder:
 
@@ -538,7 +538,7 @@ All documentation is in the `docs/` folder:
 </details>
 
 ---
-## 📚 API Reference (Python)
+## API Reference (Python)
 
 
 <details>
@@ -1827,7 +1827,7 @@ All documentation is in the `docs/` folder:
 
 ---
 
-## 📊 Sensor Value Fetch Flow (LiveView)
+## Sensor Value Fetch Flow (LiveView)
 
 <div align="center">
 
@@ -1890,7 +1890,7 @@ classDiagram
 
 ---
 
-## 🛠️ Development
+## Development
 
 ### Build Instructions
 
@@ -1919,7 +1919,7 @@ python setup.py build_ext --inplace
 
 ---
 
-## 📄 License
+## License
 
 <div align="center">
 
@@ -1947,7 +1947,7 @@ You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).
 
 <div align="center">
 
-## 🌟 HardView — Your Window into Hardware Information
+## HardView — Your Window into Hardware Information
 
 <p>
 
@@ -1965,15 +1965,3 @@ You can read the full license terms in the file: [LICENSE.GPL3](./LICENSE.GPL3).
 </p>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
