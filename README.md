@@ -375,7 +375,7 @@ Full documentation is available on the GitHub Pages website: **[gafoo173.github.
 All documentation files are in the `docs/` folder:
 
 - [`LiveViewAPI.md`](./docs/LiveViewAPI.md): LiveView API reference
-- [`HardwareTempAPI.ms`](./docs/HardwareTempAPI.md) HardwareTemp-SDK API reference
+- [`HardwareTempAPI.md`](./docs/HardwareTempAPI.md) HardwareTemp-SDK API reference
 - [`SMART.md`](./docs/SMART.md): SMART API reference
 - [`SMBIOS.md`](./docs/SMBIOS.md): SMBIOS API reference
 - [`What.md`](./docs/What.md): legacy HardView API reference and output examples
