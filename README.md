@@ -727,7 +727,7 @@ python setup.py build_ext --inplace
 
 - **Core project (HardView):** All core project files, including project-specific libraries and header files, are licensed under the **MIT License** and are free for personal and commercial use.
 - **Tools folder:** All tools in [`Tools`](./Tools) are licensed under the **GNU General Public License v3 (GPL-3)**. See [`LICENSE.GPL3`](./LICENSE.GPL3) for the full terms.
-- **Third-party libraries:** Third-party libraries and dependencies used by the project are licensed under their respective licenses. Their licenses and copyright notices are documented in [`Third-Party.md`](./Third-Party.md).
+- **Third-party libraries:** Third-party libraries and dependencies used by the project are licensed under their respective licenses. Their licenses are documented in [`Third-Party.md`](./Third-Party.md).
 
 ---
 
