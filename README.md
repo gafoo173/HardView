@@ -316,7 +316,7 @@ int main() {
                 std::cout << "Drive: " << drive->GetDrivePath() << "\n";
                 std::cout << "Frimware Revision: " << info.firmwareRev << "\n";
                 std::cout << "Drive Model: " << info.modelUpper << "\n";
-                std::cout << "SSD Type: " << smart_reader::SSDTypeToString(typ) << "\n";;
+                std::cout << "SSD Type: " << smart_reader::SSDTypeToString(typ) << "\n";
                 for (const auto& attr : info.attributes) {
                     std::cout << "Attribute: " << smart_reader::GetAttributeNameByIDAndType(typ,attr.Id) << " Current: " << (int)attr.Current << " Worst: " << (int)attr.Worst << " Raw: " << (attr.GetRawValue()) <<  "\n";
                 }
